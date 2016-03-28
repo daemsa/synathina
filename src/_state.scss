@@ -1,0 +1,21 @@
+.is-table {
+   display: table !important;
+}
+.is-tablecell {
+   display: table-cell !important;
+   vertical-align: middle;
+}
+.is-relative {
+   position: relative;
+}
+.is-static {
+   position: static !important;
+}
+
+.is-oveflow-hidden {
+   overflow: hidden !important;
+}
+
+.is-visible {
+   visibility: visible !important;
+}

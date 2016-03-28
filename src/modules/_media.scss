@@ -1,0 +1,21 @@
+.media {
+   display: table;
+   width: 100%;
+   .media-left {
+      display: table-cell;
+   }
+   .media-body {
+      display: table-cell;
+      vertical-align: top;
+      p {
+         font-size: 15px;
+         font-weight: 400;
+      }
+   }
+   .media-img {
+      display: table-cell;
+      img {
+         @include img-responsive;
+      }
+   }
+}

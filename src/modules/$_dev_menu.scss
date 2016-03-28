@@ -1,0 +1,41 @@
+// DEVELOPER NAV
+.debug .dev_menu {
+   display: none;
+   width: calc(100% - 82px);
+   padding: 2px 2px;
+   background: rgba(255,153,51,0.9);
+   //display: table;
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   z-index: 99999;
+   &:before {
+      font-family: "Lucida Console", Monaco, monospace;
+      content: 'developer navigation';
+      font-size: 8px;
+      font-style: italic;
+      position: absolute !important;
+      right:0;
+      top:-15px;
+      width: 200px;
+      line-height: 20px;
+      background: rgba(255,153,51,0.9);
+      text-align: center;
+      @include transition(top .2s);
+   }
+   nav > a {
+      display: table-cell;
+      width: 1%;
+      color: black;
+      font-size: 14px;
+      line-height: 9px;
+      padding: 5px 0;
+      font-family: "Lucida Console", Monaco, monospace;
+      vertical-align: middle;
+      text-align: center;
+      &.black {
+         background-color: #000;
+         color: rgba(255,153,51,0.9);
+      }
+   }
+}

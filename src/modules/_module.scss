@@ -1,0 +1,186 @@
+/* ==|====================
+   Module/Box
+   ======================= */
+
+.module {
+
+}
+
+.module-head  {
+
+}
+
+.module-title {
+
+}
+
+.module-body  {
+
+}
+
+.module-footer  {
+
+}
+.module--center {
+   text-align: center;
+   margin: auto;
+
+}
+.module-debug {
+   //@include vertical-align;
+   right: 10%;
+   top: 10%;
+   position: absolute;
+   width: auto;
+   //color: orange;
+   //font-weight: bold;
+   //font-family: 'Monaco', Arial;
+   //font-size: 30px;
+}
+
+
+.inline-list {
+   @include inline-list;
+}
+
+
+.module-embed {
+   position: relative;
+   padding-bottom: 68.615984%;
+   & > iframe, & > video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+   }
+}
+
+
+// ** synathina variations **/
+
+.module--synathina {
+   $color-blue : #05c0de;
+   @include clearfix;
+   z-index: 1;
+   position: relative;
+    &.skewed{
+      position: relative;
+
+      @include skew2($side: bottom, $bg: #fff, $deg: 2deg, $top: auto, $bottom: -20px, $width: 100%, $height: 40px);
+
+      &:before {
+         background-color: inherit;
+         z-index: -1;
+         @media(min-width: $screen-sm){
+            //z-index: auto !important;
+         }
+      }
+   }
+   .module-wrapper {
+      max-width: 768px;
+      margin: auto;
+      padding:0 20px;
+   }
+
+   .module-title {
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 32px;
+      color: $color-blue;
+      padding-top: 34px;
+   }
+   p, .module-body {
+      font-size: 15px;
+      font-weight: 400;
+   }
+   a {
+      color: $color-blue;
+      font-weight: bold;
+   }
+   .media {
+
+      position: relative;
+      + .media {
+         margin-top: 20px;
+      }
+   }
+   .media-left {
+      vertical-align: top;
+      padding-right: 20px;
+      .fill {
+         @include fill($padding-bottom: 100%);
+         background-size: cover;
+         background-position: top center;
+         background-repeat: no-repeat;
+         display: block;
+         background-size: 90%;
+         width: 68px;
+         &--collect {
+            background-position: 0 0;
+         }
+         &--connect {
+            background-position: 0 36%;
+         }
+         &--filter {
+            background-position: 0 72%;
+         }
+         &--merge {
+            background-position: 0 108%;
+         }
+      }
+   }
+   .media-heading {
+      font-size: 20px;
+      line-height: 22px;
+      font-weight: bold;
+      color: $color-blue;
+      margin:0;
+      + p {
+         margin: 0;
+      }
+   }
+}
+.module-skewed:before {
+   content: '';
+   position: absolute;
+   left: 0;
+   bottom: -7%;
+   overflow: visible;
+   width: 100%;
+   //height: 50%;
+   height: 50%;
+   background: inherit;
+   z-index: -1;
+   -webkit-transform: skewY(2deg);
+   -moz-transform: skewY(2deg);
+   -ms-transform: skewY(2deg);
+   -o-transform: skewY(2deg);
+   transform: skewY(2deg);
+   -webkit-backface-visibility: hidden;
+}
+
+.module-progress {
+   max-width: 992px;
+   margin: auto;
+   text-align: center;
+   //@include cells;
+   & > * {
+      width: 48%;
+      display: inline-block;
+      vertical-align: top;
+   }
+
+}
+
+.module-title--layout {
+   font-size: 32px;
+   font-weight: 500;
+}
+
+.module-skewed, .module--gray {
+   background-color: #ebebeb;
+}

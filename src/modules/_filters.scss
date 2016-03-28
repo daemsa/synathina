@@ -1,0 +1,17 @@
+.filter {}
+.filter-checkbox {
+   @include clearfix;
+   margin-top: 20px;
+   margin-bottom: 20px;
+   .form-group {
+      float: left;
+      font-size: 14px;
+      input[type=checkbox] + label:before {
+         width: 20px;
+         font-size: 20px;
+      }
+      + .form-group {
+         margin-left: 20px;
+      }
+   }
+}
