@@ -39,7 +39,7 @@ $gray : #cccccc !default;
 
    // filters
    .filters {
-      margin-top: 20px;
+      margin-top: 30px;
       .filter-search, .form-group  {
          display: inline-block;
          //float: left;
@@ -80,6 +80,22 @@ $gray : #cccccc !default;
    }
    .documents-list {
       margin-top: 30px;
+   }
+
+   .gallery {
+      margin: auto;
+      padding: 0 30px;
+      &-title {
+         margin-top: 60px;
+         padding-top:30px;
+         padding-bottom: 20px;
+      }
+      .slick-arrow.slick-prev {
+         left: -10px;
+      }
+      .slick-arrow.slick-next {
+         right: -10px;
+      }
    }
 
 }
@@ -156,4 +172,99 @@ $gray : #cccccc !default;
       margin-top: 5px;
    }
 
+}
+
+
+/// Draseis inside page
+.l-draseis {
+   &__col-left {
+      width: 45%;
+      float: left;
+      @media(max-width: 700px){
+         width: 100%;
+         float: none;
+      }
+   }
+   &__col-right {
+      width: 55%;
+      float: left;
+      padding-left: 30px;
+      padding-top: 20px;
+      @media(max-width: 700px){
+         width: 100%;
+         float: none;
+         margin-top: 70px;
+      }
+   }
+
+   &__banner {
+      img {
+         max-width: 100%;
+         height: auto;   
+      }
+   }
+}
+.l-draseis {
+
+}
+.l-draseis--article {
+   @extend .container-fluid;
+   max-width: 1240px;
+   margin-bottom: 100px;
+
+   & > .clearfix {
+      margin-top: 10px;
+   }
+
+   .list-group--draseis {
+      .list-group-link {
+        font-size: 15px;
+        font-weight: 300;
+        color: rgb(93, 93, 93);
+        line-height: 1.133;
+      }
+      .list-group-item {
+         & > * + *{
+            margin-top: 5px;
+         }
+         .inline-list a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5d5d5d;
+         }
+         a:not(.list-group-link){
+            text-decoration: underline;
+         }
+         .list-group-link {
+            display: block;
+            margin-top: 16px;
+            font-size: 15px;
+         }
+         .inline-list--separated:not(.thematiki--list) {
+            li {
+               &:after {
+                  margin: 0 5px;
+                  color: #5d5d5d;
+               }
+            }
+
+         }
+         .thematiki--list  {
+            margin-top: 16px;
+            a {
+               font-size: 24px;
+            }
+         }
+      }
+
+   }
+
+   // typography
+   h4, h5, h6 {
+      margin-bottom: 20px !important;
+   }
+
+   .gallery--thumbnail .gallery-item  {
+      width: 33.333%;
+   }
 }

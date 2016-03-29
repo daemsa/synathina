@@ -89,6 +89,22 @@
    .thumbnail .caption  p {
       margin-top: 5px;
    }
+   .caption {
+      color: #5d5d5d;
+      &-title {
+         font-size: 24px;
+         display: block;
+         font-weight: bold;
+      }
+      &-details {
+         font-size: 16px;
+         display: block;
+      }
+      &-italic {
+         display: block;
+         margin-top: 5px;
+      }
+   }
    .gallery-item {
       @include make-xs-column(3, 10px);
    }

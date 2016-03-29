@@ -11,6 +11,12 @@ $link-color : #008cd1;
       margin:0;
       line-height: 26px;
    }
+   h4, h5, h6 {
+      color: $text-color;
+      font-size: 15px;
+      margin:0;
+      line-height: 17px;
+   }
    p {
       color: $gray-text;
       margin: 0;
@@ -57,7 +63,7 @@ $link-color : #008cd1;
    a {
       color: #43c0ea;
       font-style: italic;
-      font-weight: bold;      
+      font-weight: bold;
    }
 }
 .thumbnail {
@@ -74,5 +80,14 @@ $link-color : #008cd1;
       font-size: 25px;
       font-weight: 400;
       line-height: 25px;;
+   }
+}
+
+.l-draseis {
+   color : #5d5d5d;
+   .list-group-item {
+      p {
+         margin: 0;
+      }
    }
 }
