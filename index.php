@@ -54,7 +54,7 @@
 <script>
     window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
 </script>
-
+<script src="js/vendor/jquery-ui.min.js"></script>
 <script src="js/vendor/imagesloaded.pkgd.min.js"></script>
 <script src="js/vendor/eventemitter2.js"></script>
 <script src="js/_plugins.js"></script>
@@ -92,6 +92,7 @@
     <script type="text/javascript" src="js/vendor/slick.min.js"></script>
     <script src="js/site/main.js"></script>
     <script src="js/ui.js"></script>
+
 <?php } ?>
 
 </body>

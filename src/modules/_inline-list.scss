@@ -32,3 +32,13 @@
       }
    }
 }
+
+.inline-list--headlines {
+   li, a {
+      font-size: 22px;
+      font-weight: bold;
+   }
+   a {
+      text-decoration: underline;
+   }
+}

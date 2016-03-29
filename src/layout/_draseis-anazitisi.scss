@@ -1,9 +1,159 @@
+$coral : #05bddc !default;
+$gray : #cccccc !default;
+
 .l-draseis{
-   @extend .container;
+   @extend .container-fluid;
+   max-width: 1240px;
+   margin-bottom: 100px;
 }
 .l-draseis {
+
    .module + .btn {
       margin-top: 20px;
       padding: 10px;
    }
+
+   .inline-child-center {
+      margin-top: 0px;
+      border-bottom: 1px solid #dfdfdf;
+      padding-bottom: 20px;
+   }
+
+   // headlines
+   .inline-list--headlines {
+      margin-top:32px;
+      & > li {
+         &:after {
+            color: #5d5d5d;
+         }
+         a {
+            color: $gray
+         }
+         &.selected, &:hover, &:focus {
+            a {
+               color: $coral;
+            }
+         }
+      }
+   }
+
+   // filters
+   .filters {
+      margin-top: 20px;
+      .filter-search, .form-group  {
+         display: inline-block;
+         //float: left;
+      }
+      .filter-search + .form-group {
+         margin-left: 20px;
+      }
+      .form-group {
+         font-size: 14px;
+         font-weight: bold;
+         color: #5d5d5d;
+         input[type=checkbox] + label:before {
+            width: 20px;;
+         }
+         & + .form-group {
+            margin-left: 20px;
+         }
+      }
+      .filter-checkbox {
+         display: inline-block;
+         //float: left;
+      }
+      .block {
+         margin: 20px 0;
+      }
+   }
+   .filter-results {
+      margin-top: 20px;
+      @include clearfix;
+      //@include flexbox;
+      //@include flex-wrap(wrap);
+   }
+
+   .form-group {
+      input {
+         border: 1px solid black;
+      }
+   }
+   .documents-list {
+      margin-top: 30px;
+   }
+
+}
+
+.flexbox {
+
+   .l-draseis .filter-results {
+      margin-top: 20px;
+      @include clearfix;
+      @include flexbox;
+      @include flex-wrap(wrap);
+      @include flex-direction(row);
+      .media {
+         float: none;
+         width: 50%;
+         @media(max-width: $screen-sm){
+            width: 100%;
+         }
+      }
+   }
+
+   .l-draseis {
+      .documents-list-row {
+         @include clearfix;
+         @include flexbox;
+         @include flex-wrap(wrap);
+         @include flex-direction(row);
+      }
+      .documents-list-item {
+         width: 25%;
+         @media(max-width: $screen-xs){
+            width: 50%;
+         }
+      }
+   }
+
+}
+
+.l-draseis .filter-results {
+   .media {
+      padding: 30px 0;
+      width: 50%;
+      float: left;
+      @media(max-width: $screen-sm){
+         width: 100%;
+      }
+   }
+   .media-left {
+      img {
+         max-width: 100%;
+         height: auto;
+      }
+   }
+   .media-title {
+      color: #5d5d5d;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 16px;
+   }
+   .media-body {
+      text-align: left;
+      padding: 0 20px;
+      p {
+         font-size: 14px;
+         font-weight: 400;
+      }
+   }
+   .week-margin {
+      color: #5d5d5d;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 16px;
+      display: block;
+      margin-top: 5px;
+   }
+
 }

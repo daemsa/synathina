@@ -71,3 +71,16 @@ var Gallery = (function(global) {
    })
    var gallery;
 })(window);
+
+
+var DateP = (function(global){
+   //function init(){
+   var datepickerFrom = $('[rel="js-datepicker-from"]');
+   var datepickerTo = $('[rel="js-datepicker-to"]');
+
+   $(datepickerFrom).datepicker();
+   $(datepickerTo).datepicker();
+
+   //}
+   //var datepickerFrom, datepickerTo;
+})(window)

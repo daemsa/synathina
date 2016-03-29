@@ -53,7 +53,13 @@ $link-color : #008cd1;
    }
 }
 
-
+.media-body {
+   a {
+      color: #43c0ea;
+      font-style: italic;
+      font-weight: bold;      
+   }
+}
 .thumbnail {
    h3 {
       font-weight: bold;

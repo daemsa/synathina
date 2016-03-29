@@ -34,19 +34,22 @@
 }
 .btn--skewed {
    position: relative;
+   & > * {
+      z-index: 999;
+   }
 }
 .btn--skewed:before {
    content: '';
    position: absolute;
    left: 0;
-   top: -36px;
+   top: -4px;
    width: 100%;
-   height: 60px;
-   background: #00bcd4;
+   height: 10px;
+   background: inherit;
    -webkit-transform: skewY(2.5deg);
    -moz-transform: skewY(2.5deg);
    -ms-transform: skewY(2.5deg);
    -o-transform: skewY(2.5deg);
    transform: skewY(2.5deg);
-   -webkit-backface-visibility: hidden;
+   -webkit-backface-visibility: hidden;;
 }
