@@ -4214,6 +4214,9 @@ button {
   width: 300px;
   height: 300px; }
 
+.l-news {
+  padding-bottom: 20px; }
+
 .l-news--list .latest-articles > *:nth-child(even) {
   background: #fff; }
 .l-news--list .latest-articles > *:nth-child(odd) {
@@ -4291,6 +4294,9 @@ button {
       width: 50%; } }
   .l-news--list .thumbnail-list__item + .thumbnail-list__item {
     margin-bottom: 50px; }
+
+.l-news--article .document-download {
+  margin-top: 20px; }
 
 .l-synathina .module--synathina:nth-child(even) .module-skewed, .l-teams--listing .module--synathina:nth-child(even) .module-skewed {
   background: #fff !important; }
@@ -4644,6 +4650,9 @@ button {
     height: auto; }
 .c-article figure[role="complementary"] .figure-item + .figure-item {
   margin-top: 25px; }
+
+.c-article__content {
+  padding-top: 20px; }
 
 #map {
   width: 100%;
@@ -6499,6 +6508,50 @@ a.list-item-title:hover {
   padding-bottom: 112.017167%;
   display: block; }
 
+.video-container {
+  height: 0;
+  padding-bottom: 56.25%;
+  zoom: 1;
+  position: relative;
+  margin: auto; }
+  .video-container--25 {
+    max-width: 25%; }
+  .video-container--50 {
+    max-width: 50%; }
+  .video-container--75 {
+    max-width: 75%; }
+  .video-container--100 {
+    max-width: 100%; }
+
+.video-container > iframe, .video-container > video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+.document-download {
+  color: #5d5d5d; }
+  .document-download h5, .document-download h3, .document-download h4 {
+    margin-top: 0;
+    margin-bottom: 10px; }
+  .document-download .inline-list {
+    padding: 20px 0 10px 0;
+    background-color: #d3d3d3;
+    text-align: center; }
+    .document-download .inline-list > * {
+      margin: 0 20px; }
+  .document-download .fa {
+    font-size: 60px; }
+  .document-download .doc-icon {
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: block; }
+    .document-download .doc-icon--pdf {
+      background-image: url(../img/icons/adobe_pdf_icon.png); }
+
 input[type=checkbox] {
   display: none; }
 
@@ -6594,6 +6647,8 @@ input[type=radio]:checked + label:before {
 .c-article {
   font-size: 15px;
   font-weight: 400; }
+  .c-article .color-orange {
+    color: #fc8f0a; }
   .c-article h1 {
     color: #5d5d5d;
     font-weight: 300;
@@ -6616,6 +6671,14 @@ input[type=radio]:checked + label:before {
     font-weight: bold; }
     .c-article a:hover {
       text-decoration: underline; }
+  .c-article img {
+    max-width: 100%;
+    height: auto; }
+  .c-article video, .c-article iframe {
+    width: 100%;
+    max-width: 560px;
+    margin: auto;
+    display: block; }
 
 .latest-articles {
   color: #5d5d5d; }

@@ -2,6 +2,10 @@ $text-color : #5d5d5d;
 $link-color : #008cd1;
 // article component content styles
 .c-article {
+   // colors
+   .color-orange {
+      color: $orange;
+   }
    font-size: 15px;
    font-weight: 400;
    h1 {
@@ -31,6 +35,18 @@ $link-color : #008cd1;
       &:hover {
          text-decoration: underline;
       }
+   }
+
+   //media
+   img {
+      max-width: 100%;
+      height: auto;
+   }
+   video, iframe {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      display: block;
    }
 }
 

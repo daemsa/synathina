@@ -1,4 +1,7 @@
-.l-news {}
+.l-news {
+   padding-bottom: 20px;
+
+}
 .l-news--list, .l-news--article {
    @extend .container;
 }
@@ -68,5 +71,12 @@
       & + .thumbnail-list__item {
          margin-bottom: 50px;
       }
+   }
+}
+
+
+.l-news--article {
+   .document-download {
+      margin-top: 20px;
    }
 }
