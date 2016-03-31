@@ -22,19 +22,6 @@ $gray : #cccccc !default;
    // headlines
    .inline-list--headlines {
       margin-top:32px;
-      & > li {
-         &:after {
-            color: #5d5d5d;
-         }
-         a {
-            color: $gray
-         }
-         &.selected, &:hover, &:focus {
-            a {
-               color: $coral;
-            }
-         }
-      }
    }
 
    // filters
@@ -200,7 +187,7 @@ $gray : #cccccc !default;
    &__banner {
       img {
          max-width: 100%;
-         height: auto;   
+         height: auto;
       }
    }
 }
@@ -266,5 +253,8 @@ $gray : #cccccc !default;
 
    .gallery--thumbnail .gallery-item  {
       width: 33.333%;
+      @media(max-width: $screen-xs){
+         width: 50%;
+      }
    }
 }

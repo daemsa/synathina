@@ -88,8 +88,10 @@
     </script>
 <?php } else { ?>
     <!-- ELSE load web site source files and dependecies -->
-    <script type="text/javascript" src="js/vendor/dev_menu.js"></script>
+    <!--script type="text/javascript" src="js/vendor/dev_menu.js"></script-->
     <script type="text/javascript" src="js/vendor/slick.min.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery.magnific-popup.min.js"></script>
+
     <script src="js/site/main.js"></script>
     <script src="js/ui.js"></script>
 

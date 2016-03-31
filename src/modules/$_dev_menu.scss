@@ -1,8 +1,8 @@
 // DEVELOPER NAV
 .debug .dev_menu {
    display: none;
-   width: calc(100% - 82px);
-   padding: 2px 2px;
+   width: 100%;
+   padding: 0px 10px;
    background: rgba(255,153,51,0.9);
    //display: table;
    position: fixed;
@@ -24,8 +24,17 @@
       @include transition(top .2s);
    }
    nav > a {
-      display: table-cell;
-      width: 1%;
+      outline: 1px solid black;
+      margin: 10px;
+      &:hover {
+         background-color: #000;
+         color: rgba(255,153,51,0.9);
+      }
+      + a {
+         margin: 10px;
+      }
+      display: inline-block;
+      //width: 1%;
       color: black;
       font-size: 14px;
       line-height: 9px;

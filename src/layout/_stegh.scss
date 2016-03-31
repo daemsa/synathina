@@ -1,0 +1,15 @@
+.l-stegh {
+   @extend .container-fluid;
+   max-width: 1240px;
+}
+.l-stegh .module + .btn {
+   margin-top: 30px;
+   padding: 10px;
+   background-color: #ebebeb;
+   color: #5d5d5d;
+}
+.l-stegh .inline-list--headline {
+   a {
+      text-transform: underline;
+   }
+}

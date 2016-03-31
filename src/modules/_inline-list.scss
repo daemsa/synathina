@@ -41,4 +41,17 @@
    a {
       text-decoration: underline;
    }
+   & > li {
+      &:after {
+         color: #5d5d5d;
+      }
+      a {
+         color: $gray
+      }
+      &.selected, &:hover, &:focus {
+         a {
+            color: $coral;
+         }
+      }
+   }
 }

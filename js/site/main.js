@@ -84,3 +84,15 @@ var DateP = (function(global){
    //}
    //var datepickerFrom, datepickerTo;
 })(window)
+
+
+var Popup = (function(global){
+   $('.gallery-item').magnificPopup({
+     delegate: 'a', // child items selector, by clicking on it popup will open
+     type: 'image',
+     // other options
+     gallery: {
+       enabled: true
+     },
+   });
+})(window);

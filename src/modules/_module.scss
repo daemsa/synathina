@@ -92,6 +92,12 @@
       line-height: 32px;
       color: $color-blue;
       padding-top: 34px;
+      // variations
+      &--subtitle {
+         font-size: 22px;
+         color: $color-blue;
+         font-weight: 300;
+      }
    }
    p, .module-body {
       font-size: 15px;
