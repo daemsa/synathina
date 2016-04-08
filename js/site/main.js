@@ -96,3 +96,74 @@ var Popup = (function(global){
      },
    });
 })(window);
+
+
+var jsScrollpane = function(global){
+
+  $('.scroll-pane').jScrollPane();
+
+  $(window).resize(function(){
+    $('.scroll-pane').jScrollPane();
+  });  
+
+}(window);
+
+var Diary = function(global){
+  state = {
+    currentTab : 0,
+    currentLabel: 0,
+    nextTab : 1,
+    prevTab : null
+  }
+  function init(){
+    dates = $('.diary-labels').children();
+    diary = $('.c-diary');
+    btn_left = diary.find('[rel=js-left]');
+    btn_right = diary.find('[rel=js-right]');
+    container = diary.find('[rel=js-container]');
+    items = diary.find('.tab');
+    items_length = items.length -1;
+    dates_length = dates.length -1;
+    console.log(dates_length)
+    console.log(items_length)
+    // add events
+    btn_left.on('click', showPrev);
+    btn_right.on('click', showNext);
+
+  }
+  function showNext(){
+    if(state.currentTab < items_length) {
+      items.removeClass('active');
+      dates.removeClass('active');
+      state.currentTab += 1;
+      state.currentLabel -=1;
+      $(items[state.currentTab]).addClass('active');
+      $(dates[state.currentTab]).addClass('active');
+    }
+    console.log(state.currentTab);
+    console.log(state.currentLabel);
+  }
+
+  function showPrev(){
+    if(state.currentTab > 0 ) {
+      items.removeClass('active');
+      dates.removeClass('active');
+      state.currentTab -= 1;
+      state.currentLabel -=1;
+      $(items[state.currentTab]).addClass('active');
+      $(dates[state.currentTab]).addClass('active');
+    }
+    console.log(state.currentTab);
+    console.log(state.currentLabel);
+  }
+
+
+  var btn_left, btn_right, container, diary, state, items_length, dates;
+
+  return {
+    init: init
+  }
+}
+
+myDiary = Diary();
+myDiary.init();

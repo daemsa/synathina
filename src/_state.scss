@@ -5,6 +5,10 @@
    display: table-cell !important;
    vertical-align: middle;
 }
+.is-inline-block {
+	display: inline-block !important;
+	width: auto;
+}
 .is-relative {
    position: relative;
 }

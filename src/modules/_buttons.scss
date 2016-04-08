@@ -53,3 +53,20 @@
    transform: skewY(2.5deg);
    -webkit-backface-visibility: hidden;;
 }
+
+
+.btn--skewed--bottom:before {
+   content: '';
+   position: absolute;
+   left: 0;
+   //top: 90% !important;  
+   width: 100%;
+   height: 10px;
+   background: inherit;
+   -webkit-transform: skewY(1.5deg) translateY(406%);
+   -moz-transform: skewY(1.5deg) translateY(406%);
+   -ms-transform: skewY(1.5deg) translateY(406%);
+   -o-transform: skewY(1.5deg) translateY(406%);
+   transform: skewY(1.5deg) translateY(406%);
+   -webkit-backface-visibility: hidden;
+}

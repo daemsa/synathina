@@ -55,3 +55,9 @@
       }
    }
 }
+// colors
+.inline-list--orange {
+   li:after, a {
+      color: #f28e21;
+   }
+}

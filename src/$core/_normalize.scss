@@ -19,7 +19,9 @@ html {
 body {
   margin: 0;
 }
-
+*:focus {
+  outline: 0 !important;
+}
 // HTML5 display definitions
 // ==========================================================================
 

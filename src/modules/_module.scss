@@ -190,3 +190,7 @@
 .module-skewed, .module--gray {
    background-color: #ebebeb;
 }
+
+.module-cells {
+   @include cells();
+}
