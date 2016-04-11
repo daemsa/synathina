@@ -163,7 +163,20 @@ var Activities = (function(global) {
       Activities.current_polygon = arguments[0];
       polygon = arguments[0];
       cat_filter = arguments[1];
-      var Cluster = [];
+      //var Cluster = [];
+      //
+      if(window.clusterer !== undefined){
+        console.log('in')
+        window.category.length=0;
+        window.clusterer.clearMarkers();
+      }
+
+      window.category = [];
+      window.clusterer = new MarkerClusterer(map, [], {
+        gridSize : 50,
+        maxZoom : 20
+      });
+
       for (var i=0; i<arguments.length; i++){
         if (arguments[i] instanceof MarkerClusterer){
             //mc = arguments[i];
@@ -176,22 +189,16 @@ var Activities = (function(global) {
        */
 
       if (Activities.is_filtered_bySlider == true && Activities.yearRangeBuffer !== null && cat_filter === undefined) {
-
           for( var i = 0; i < coordinatesArray.length; i += 1) {
-
             activities[i].marker.setVisible(false)
           }
-
           filterActivities(Activities.yearRangeBuffer);
-
-      //} else if(Activities.is_filtered_byCategory) {
 
       } else {
 
         if(cat_filter !== undefined){
           Filter.run = true;
-          //console.log(cat_filter)
-          //
+
             for( var i = 0; i < coordinatesArray.length; i += 1) {
                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
                if( polygon.Contains(point)) {
@@ -201,34 +208,35 @@ var Activities = (function(global) {
 
                   if(index || cat_filter.length == 0){
                       activities[i].marker.setVisible(true);
-                      Cluster.push(activities[i].marker);
-                      //console.log('NEEDLE: '+needle+ '===' +cat_filter+ '  RESULT='+index);
+                      category.push(activities[i].marker);
                   }else {
                      activities[i].marker.setVisible(false);
-                     //console.log('NEEDLE: '+needle+ '===' +cat_filter+ '  RESULT='+index);
                   }
-
-                  
-
               }
             }
+            // pushing markers to cluster
+            clusterer.clearMarkers();
+            clusterer.addMarkers(category);
+            category.length=0;
 
-            var markerCluster = new MarkerClusterer(map, Cluster);
         } else {
 
             for( var i = 0; i < coordinatesArray.length; i += 1) {
               var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
               if( polygon.Contains(point)) {
                  activities[i].marker.setVisible(true)
-                 console.log(activities[i].marker)
-                 Cluster.push(activities.marker);
+                 category.push(activities[i].marker);
               }
               else {
                  activities[i].marker.setVisible(false);
               }
             }
-                     var markerCluster = new MarkerClusterer(map, Cluster);
-         console.log(markerCluster);
+
+            clusterer.clearMarkers();
+            clusterer.addMarkers(category);
+            category.length=0;
+
+
         }
 
         // threading with Category

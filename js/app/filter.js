@@ -89,6 +89,7 @@
         RECORDS = Filter.category_filters.category_entity;
 
         var filters = [];
+        /*
         var checkAll = checkboxes[0];
 
         checkAll.addEventListener('click', function(evt){
@@ -109,34 +110,33 @@
            }
 
         });
-
-
+        */
         //console.log(filters.length)
         for ( var i = 1; i < checkboxes.length; i++ ){
-          checkboxes[i].addEventListener('click', function(evt) {
-            hasRun = 1;
-            run = 'true';
-            evt.stopPropagation();
-            evt.stopImmediatePropagation();
-              if(this.checked === false) {
+          /*
+            if(checkboxes[i].checked === false) {
 
-                  filters.pop(parseInt(this.dataset.id));
-                  console.log(filters);
-                  //debugger;
-                  //console.log(evt.target.dataset.id)
-                  Activities.setActivitiesVisibility(Activities.current_polygon, filters)
+                filters.pop(parseInt(checkboxes[i].dataset.id));
+            } else if(checkboxes[i].checked === true) {
+                filters.push(parseInt(checkboxes[i].dataset.id));
+            }          
+            */
+            checkboxes[i].addEventListener('click', function(evt) {
+              //hasRun = 1;
+              //run = 'true';
+              evt.stopPropagation();
+              evt.stopImmediatePropagation();
+                if(this.checked === false) {
 
-              } else if(this.checked === true) {
-                  filters.push(parseInt(this.dataset.id));
-                  Activities.setActivitiesVisibility(Activities.current_polygon, filters)
-                  //evt.target.checked =false;
-              }
-
-          });
+                    filters.pop(parseInt(this.dataset.id));
+                    Activities.setActivitiesVisibility(Activities.current_polygon, filters)
+                } else if(this.checked === true) {
+                    filters.push(parseInt(this.dataset.id));
+                    Activities.setActivitiesVisibility(Activities.current_polygon, filters)
+                    //evt.target.checked =false;
+                }
+            });
         }
-
-
-
     }
 
     function filterByCategory(filters, RECORDS) {

@@ -124,8 +124,7 @@ var Diary = function(global){
     items = diary.find('.tab');
     items_length = items.length -1;
     dates_length = dates.length -1;
-    console.log(dates_length)
-    console.log(items_length)
+
     // add events
     btn_left.on('click', showPrev);
     btn_right.on('click', showNext);
@@ -140,8 +139,6 @@ var Diary = function(global){
       $(items[state.currentTab]).addClass('active');
       $(dates[state.currentTab]).addClass('active');
     }
-    console.log(state.currentTab);
-    console.log(state.currentLabel);
   }
 
   function showPrev(){
@@ -153,8 +150,7 @@ var Diary = function(global){
       $(items[state.currentTab]).addClass('active');
       $(dates[state.currentTab]).addClass('active');
     }
-    console.log(state.currentTab);
-    console.log(state.currentLabel);
+
   }
 
 
@@ -165,5 +161,82 @@ var Diary = function(global){
   }
 }
 
-myDiary = Diary();
-myDiary.init();
+
+$(document).ready(function() {
+  myDiary = Diary();
+  myDiary.init();    
+});
+
+
+
+var Popup = (function(){
+  $('.js-open-popup').magnificPopup({
+    items: {
+        src: '<div class="white-popup">Hello World!</div>',
+        type: 'inline'
+    }
+  });
+})();
+
+
+var Embed = function(){
+
+  function doEmbed(){
+
+    console.log('in');
+
+    if (!document.getElementsByClassName) {
+        // If IE8
+        var getElementsByClassName = function(node, classname) {
+            var a = [];
+            var re = new RegExp('(^| )'+classname+'( |$)');
+            var els = node.getElementsByTagName("*");
+            for(var i=0,j=els.length; i<j; i++)
+                if(re.test(els[i].className))a.push(els[i]);
+            return a;
+        }
+        var videos = getElementsByClassName(document.body,"youtube");
+    } else {
+        var videos = document.getElementsByClassName("youtube");
+    }
+ 
+    var nb_videos = videos.length;
+
+    for (var i=0; i<nb_videos; i++) {
+        // Finf youtube video thumbnail id
+        videos[i].style.backgroundImage = 'url(http://i.ytimg.com/vi/' + videos[i].id + '/sddefault.jpg)';
+ 
+        // Custom Play icon 
+        var play = document.createElement("div");
+        play.setAttribute("class","play");
+        videos[i].appendChild(play);
+ 
+        videos[i].onclick = function() {
+            // Create iframe with autoplaytrue
+            var iframe = document.createElement("iframe");
+            var iframe_url = "https://www.youtube.com/embed/" + this.id + "?autoplay=1&autohide=1";
+            if (this.getAttribute("data-params")) iframe_url+='&'+this.getAttribute("data-params");
+            iframe.setAttribute("src",iframe_url);
+            iframe.setAttribute("frameborder",'0');
+ 
+            // The height and width of the iFrame should be the same as parent
+            iframe.style.width  = this.style.width;
+            iframe.style.height = this.style.height;
+ 
+            // Replace the YouTube thumbnail with YouTube Player
+            this.parentNode.replaceChild(iframe, this);
+        }
+    }
+  }
+  function init(){
+    doEmbed();
+  }
+  return {
+    init : init
+  }
+}
+
+$(document).ready(function(){
+  var myEmbed = Embed()
+  myEmbed.init();
+})

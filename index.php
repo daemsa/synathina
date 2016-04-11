@@ -52,8 +52,10 @@
 <footer></footer>
 
 <script>
-    window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    //window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
 </script>
+<script type="text/javascript" src="js/vendor/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.magnific-popup.min.js"></script>
 <script src="js/vendor/jquery-ui.min.js"></script>
 <script src="js/vendor/imagesloaded.pkgd.min.js"></script>
 <script src="js/vendor/eventemitter2.js"></script>
@@ -94,6 +96,7 @@
     <script type="text/javascript" src="js/vendor/jquery.magnific-popup.min.js"></script>
     <script type="text/javascript" src="js/vendor/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/vendor/jscrollpane.js"></script>
+    
     <script src="js/site/main.js"></script>
     <script src="js/ui.js"></script>
 

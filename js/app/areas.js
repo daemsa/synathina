@@ -55,12 +55,16 @@ var Areas = (function(global){
           myPolygon.setMap(map);
 
           myPolygon.addListener('click', function(e){
+            // reset clusterer
+
+
             var pt = myPolygon.getCenter();
             map.setZoom(14);
             map.panTo( { lat: pt.lat(), lng: pt.lng() } );
 
             // threading with activity object
             //EVT.emit('show-activities', this);
+            
             Activities.setActivitiesVisibility(this);
 
             //var map = new google.maps.Map(document.getElementById("map"), options);

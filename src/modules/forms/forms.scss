@@ -4,6 +4,18 @@
       height: 22px;
       padding: 2px;
       outline: 0;
+   
    }
+   textarea {
+   	border: 1px solid #000;
+   }
+}
 
+// inline form 
+.form-inline {
+	& > .form-group {
+		display: inline-block;
+		margin-bottom: 0;
+		vertical-align: middle;
+	}
 }
