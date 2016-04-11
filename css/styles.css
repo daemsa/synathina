@@ -5732,6 +5732,9 @@ button {
 /* ==|====================
    Module/Box
    ======================= */
+.module--popup {
+  max-width: 600px; }
+
 .module--center {
   text-align: center;
   margin: auto; }
@@ -8038,6 +8041,20 @@ img.mfp-img {
   max-width: 500px;
   margin: 20px auto; }
 
+.popup-title {
+  margin-top: 0;
+  font-size: 16px;
+  font-weight: bold; }
+
+.newsletter {
+  padding: 0 20px 50px; }
+  .newsletter .btn {
+    padding: 5px 10px; }
+  .newsletter .form-group input {
+    height: 33px; }
+  .newsletter-label {
+    margin-bottom: 20px; }
+
 input[type=checkbox] {
   display: none; }
 
@@ -8119,6 +8136,10 @@ input[type=radio]:checked + label:before {
   outline: 0; }
 .form textarea {
   border: 1px solid #000; }
+.form-label {
+  margin-top: 0;
+  font-size: 16px;
+  font-weight: bold; }
 
 .form-inline > .form-group {
   display: inline-block;
