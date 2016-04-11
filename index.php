@@ -24,7 +24,7 @@
 <header class="l-header">
   <?php include('_modules/nav_menu.html'); ?>
 </header>
-<?php //include ('_modules/_dev_menu.html'); ?>
+<?php include ('_modules/_dev_menu.html'); ?>
 <div class="logo-container">
    <a href="" class="logo logo-athens" alt="Δήμος Αθηναίων">
    </a>

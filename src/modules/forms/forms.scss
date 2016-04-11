@@ -24,3 +24,46 @@
 		vertical-align: middle;
 	}
 }
+
+
+
+div {
+  margin:0 0 0.75em 0;
+}
+
+input[type="radio"] {
+    display:none;
+}
+input[type="radio"] + label {
+    color: #000;
+    font-family:Arial, sans-serif;
+    font-size:14px;
+}
+input[type="radio"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  0;
+    border-radius:  0;
+}
+
+input[type="radio"] + label span {
+     background-color:#fff;
+     border: 1px solid #000;
+}
+
+input[type="radio"]:checked + label span{
+     background-color:#000;
+     border: 1px solid #000;
+}
+
+input[type="radio"] + label span,
+input[type="radio"]:checked + label span {
+//  -webkit-transition:background-color 0.4s linear;
+  //-o-transition:background-color 0.4s linear;
+  //-moz-transition:background-color 0.4s linear;
+  //transition:background-color 0.4s linear;
+}
