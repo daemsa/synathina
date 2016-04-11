@@ -204,7 +204,6 @@ var Embed = function(){
 
     for (var i=0; i<nb_videos; i++) {
         // Finf youtube video thumbnail id
-        // http://img.youtube.com/vi/{youtube video id}/0.jpg
         videos[i].style.backgroundImage = 'url(http://img.youtube.com/vi/' + videos[i].id + '/0.jpg)';
  
         // Custom Play icon 
