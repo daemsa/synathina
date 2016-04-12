@@ -25,7 +25,20 @@
 		vertical-align: middle;
 	}
 }
-
+.form-inline--cells {
+  display: table;
+  width: 100%;
+  & > .form-group {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+.form-inline--flex {
+  @include flexbox;
+}
+.v-middle {
+  vertical-align: middle !important;
+}
 
 input[type="radio"] {
     display:none;
@@ -68,3 +81,4 @@ input[type="radio"]:checked + label span {
 .input--large {
   width: 100%;
 }
+

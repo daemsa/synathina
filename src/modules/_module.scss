@@ -198,3 +198,76 @@
 .module-cells {
    @include cells();
 }
+
+// insides
+
+
+.module__forms {
+   $labelweight : bold;
+   $labelsize : 16px;
+   $bordercolor : #5d5d5d;
+   padding: 0 20px;
+   textarea {
+      width: 100%;
+   }
+   label {
+      font-size: $labelsize;
+      font-weight: $labelweight;
+      color: #5d5d5d;
+   }
+   .filters {
+      & > label {
+         font-size: $labelsize !important;
+         font-weight: $labelweight !important;
+      }
+      label {
+         font-size: 13px;
+      }
+   }
+   .is-block.is-italic {
+      margin-top: 2px;
+   }
+   [type="submit"] {
+      padding: 5px 10px;
+   }
+   .form {
+      & > .form-inline + .form-inline{
+         margin-bottom: 20px;
+      }
+      & > .form-inline.filters {
+         margin-bottom: 20px;  
+      }
+
+      label.is-block {
+         margin-bottom: 5px;
+      }        
+   }
+   input[type=checkbox] + label:before, input[type=radio] + label:before {
+      width: 20px;
+   }
+   input {
+      height: 32px !important;
+   }
+   .form-inline {
+      .form-group {
+         margin: 10px 0 0px 0;
+         + .form-group {
+            margin-left: 5px;
+         }
+      }  
+
+   }
+   .form-group--tail {
+      margin-top: 40px !important;
+   }
+   .form-group--upload {
+      margin-left: 20px !important;
+   }
+
+   .form--bordered {
+      border-bottom: 1px solid $bordercolor;
+      padding-bottom: 24px;
+      padding-top: 24px;
+   }
+   
+}

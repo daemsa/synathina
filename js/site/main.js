@@ -239,7 +239,9 @@ var Embed = function(){
 $(document).ready(function(){
   var myEmbed = Embed()
   myEmbed.init();
-  var fileBorwser = new FileChooser('.file-browser', {});
+  //var fileBrowser = new FileChooser('.file-browser', {});
+  var fileBrowser2 = new FileChooser('.file-browser-2', {});
+  var fileBrowser3 = new FileChooser('.file-browser-three', {});
 })
 
 
@@ -286,7 +288,9 @@ var FileChooser = function () {
         });
     };
     FileChooser.prototype.appendElements = function appendElements() {
+        console.log(this.originalInput)
         var parent = this.originalInput.parentNode;
+        //console.log(parent)
         this.originalInput.classList.add('file-chooser-hidden');
         this.wrapper.appendChild(this.input);
         this.wrapper.appendChild(this.clearButton);

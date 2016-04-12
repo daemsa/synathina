@@ -1,0 +1,11 @@
+.l-register {
+   @extend .container;
+   padding-bottom: 200px;
+	label, .filters label {
+		line-height: 20px !important;
+	}
+   .register {
+   		@extend .module__forms;
+
+   }
+}
