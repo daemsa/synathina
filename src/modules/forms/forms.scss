@@ -4,7 +4,8 @@
       height: 22px;
       padding: 2px;
       outline: 0;
-   
+
+     
    }
    textarea {
    	border: 1px solid #000;
@@ -66,4 +67,9 @@ input[type="radio"]:checked + label span {
   //-o-transition:background-color 0.4s linear;
   //-moz-transition:background-color 0.4s linear;
   //transition:background-color 0.4s linear;
+}
+
+// input classes
+.input--large {
+  width: 100%;
 }

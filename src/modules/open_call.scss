@@ -1,0 +1,18 @@
+.open-call {
+	padding: 0 20px;
+	textarea {
+		width: 100%;
+	}
+	input[type=checkbox] + label:before	{
+		width: 20px;
+	}
+	.form-inline {
+		.form-group {
+			margin: 10px 0 0px 0;
+			+ .form-group {
+				margin-left: 5px;
+			}
+		}		
+	}
+	
+}

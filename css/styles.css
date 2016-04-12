@@ -8055,47 +8055,101 @@ img.mfp-img {
   .newsletter-label {
     margin-bottom: 20px; }
 
-input[type=checkbox] {
-  display: none; }
+.open-call {
+  padding: 0 20px; }
+  .open-call textarea {
+    width: 100%; }
+  .open-call input[type=checkbox] + label:before {
+    width: 20px; }
+  .open-call .form-inline .form-group {
+    margin: 10px 0 0px 0; }
+    .open-call .form-inline .form-group + .form-group {
+      margin-left: 5px; }
 
-input[type=checkbox] + label:before {
-  font-family: FontAwesome;
-  display: inline-block;
-  width: 30px;
-  cursor: pointer; }
+/*
+ input[type=checkbox] { display:none; } 
+ input[type=checkbox] + label:before {
+   font-family: FontAwesome;
+   display: inline-block;
+   width: 30px;
+   cursor: pointer;
+ }
 
-input[type=checkbox] + label:before {
-  content: "\f096"; }
+ input[type=checkbox] + label:before {
+  content: "\f096"; 
+ }
+ input[type=checkbox] + label:before { 
+    letter-spacing: 10px;
+ } 
 
-input[type=checkbox] + label:before {
-  letter-spacing: 10px; }
+ input[type=checkbox]:checked + label:before { 
+    content: "\f0c8"; 
+ } 
+ input[type=checkbox]:checked + label:before { 
+    letter-spacing: 5px; 
+ }  
 
-input[type=checkbox]:checked + label:before {
-  content: "\f0c8"; }
+ input[type=radio] { display:none; } 
+ input[type=radio] + label:before {
+   font-family: FontAwesome;
+   display: inline-block;
+   width: 30px;
+   cursor: pointer;
+ }
 
-input[type=checkbox]:checked + label:before {
-  letter-spacing: 5px; }
+ input[type=radio] + label:before {
+  content: "\f096"; 
+ }
+ input[type=radio] + label:before { 
+    letter-spacing: 10px;
+ } 
 
-input[type=radio] {
-  display: none; }
-
-input[type=radio] + label:before {
-  font-family: FontAwesome;
-  display: inline-block;
-  width: 30px;
-  cursor: pointer; }
-
-input[type=radio] + label:before {
-  content: "\f096"; }
-
-input[type=radio] + label:before {
-  letter-spacing: 10px; }
-
-input[type=radio]:checked + label:before {
-  content: "\f0c8"; }
-
-input[type=radio]:checked + label:before {
-  letter-spacing: 5px; }
+ input[type=radio]:checked + label:before { 
+    content: "\f0c8"; 
+ } 
+ input[type=radio]:checked + label:before { 
+    letter-spacing: 5px; 
+ }     
+ */
+input[type=checkbox], input[type=radio] {
+  position: absolute;
+  opacity: 0; }
+  input[type=checkbox] + label, input[type=radio] + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0; }
+  input[type=checkbox] + label:before, input[type=radio] + label:before {
+    content: '' !important;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 1px solid #000; }
+  input[type=checkbox]:focus + label:before, input[type=checkbox]:hover + label:before, input[type=radio]:focus + label:before, input[type=radio]:hover + label:before {
+    background: #fc8f0a;
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.12); }
+  input[type=checkbox]:checked + label:before, input[type=radio]:checked + label:before {
+    background: #fc8f0a; }
+  input[type=checkbox].disabled + label, input[type=checkbox][disabled] + label, input[type=radio].disabled + label, input[type=radio][disabled] + label {
+    color: #b8b8b8; }
+  input[type=checkbox].disabled + label:before, input[type=checkbox][disabled] + label:before, input[type=radio].disabled + label:before, input[type=radio][disabled] + label:before {
+    box-shadow: none;
+    background: #ddd; }
+  input[type=checkbox]:checked + label:after, input[type=radio]:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg); }
 
 .label-horizontal {
   height: 100%;
@@ -8174,6 +8228,9 @@ input[type="radio"] + label span {
 input[type="radio"]:checked + label span {
   background-color: #000;
   border: 1px solid #000; }
+
+.input--large {
+  width: 100%; }
 
 .syn-select {
   -webkit-appearance: none;
