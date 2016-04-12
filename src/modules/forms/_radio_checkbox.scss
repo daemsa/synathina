@@ -57,7 +57,6 @@
   input[type=checkbox], input[type=radio] {
     position: absolute; // take it out of document flow
     opacity: 0; // hide it
-
     & + label {
       position: relative;
       cursor: pointer;

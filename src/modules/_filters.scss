@@ -22,3 +22,9 @@
       border-top: 1px solid #dfdfdf;
    }
 }
+
+.filters {
+   & > .form-group {
+      margin-top: 20px;
+   }
+}
