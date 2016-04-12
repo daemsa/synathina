@@ -7094,6 +7094,9 @@ a.list-item-title:hover {
   padding: 17px 0;
   border-top: 1px solid #dfdfdf; }
 
+.filters > .form-group {
+  margin-top: 20px; }
+
 .documents-list-row {
   margin-left: -5px;
   margin-right: -5px; }
@@ -8059,12 +8062,83 @@ img.mfp-img {
   padding: 0 20px; }
   .open-call textarea {
     width: 100%; }
+  .open-call label {
+    font-size: 16px;
+    font-weight: bold; }
+  .open-call .filters > label {
+    font-size: 16px !important;
+    font-weight: bold !important; }
+  .open-call .filters label {
+    font-size: 13px; }
+  .open-call [type="submit"] {
+    padding: 5px 10px; }
+  .open-call .form > div {
+    margin-top: 20px; }
+  .open-call .form label.is-block {
+    margin-bottom: 5px; }
   .open-call input[type=checkbox] + label:before {
     width: 20px; }
+  .open-call input {
+    height: 32px !important; }
   .open-call .form-inline .form-group {
     margin: 10px 0 0px 0; }
     .open-call .form-inline .form-group + .form-group {
       margin-left: 5px; }
+  .open-call .form-group--tail {
+    margin-top: 40px !important; }
+  .open-call .form-group--upload {
+    margin-left: 20px !important; }
+
+.file-chooser {
+  position: relative;
+  display: inline-block; }
+  .file-chooser .file-chooser-input {
+    background: white;
+    border: 1px solid gray;
+    border-right: none;
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-size: inherit;
+    cursor: default;
+    padding-right: 80px;
+    white-space: pre;
+    text-overflow: ellipsis;
+    width: 100%; }
+  .file-chooser:after {
+    content: 'ανέβασμα';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px !important;
+    background: #000000;
+    border: none;
+    border-radius: 0;
+    color: #FFF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .25s; }
+    .file-chooser:after:hover {
+      background: black; }
+  .file-chooser .file-chooser-clear {
+    position: absolute;
+    right: 80px;
+    background: none;
+    border: none;
+    padding: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0;
+    transition: color .25s, opacity .25s; }
+    .file-chooser .file-chooser-clear:after {
+      content: '\00D7';
+      font-size: 20px; }
+    .file-chooser .file-chooser-clear:hover {
+      color: red; }
+  .file-chooser:hover .file-chooser-clear {
+    opacity: 1; }
+  .file-chooser .file-chooser-hidden {
+    display: none; }
 
 /*
  input[type=checkbox] { display:none; } 
@@ -8199,9 +8273,6 @@ input[type=checkbox], input[type=radio] {
   display: inline-block;
   margin-bottom: 0;
   vertical-align: middle; }
-
-div {
-  margin: 0 0 0.75em 0; }
 
 input[type="radio"] {
   display: none; }

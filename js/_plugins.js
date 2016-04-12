@@ -102,3 +102,24 @@ if ( typeof define === 'function' && define.amd ) {
 }
 
 })( window );
+
+
+var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+        if (window.CP.shouldStopExecution(2)) {
+            break;
+        }
+        var source = arguments[i];
+        for (var key in source) {
+            if (window.CP.shouldStopExecution(1)) {
+                break;
+            }
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+                target[key] = source[key];
+            }
+        }
+        window.CP.exitedLoop(1);
+    }
+    return target;
+    window.CP.exitedLoop(2);
+};

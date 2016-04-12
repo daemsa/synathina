@@ -239,4 +239,85 @@ var Embed = function(){
 $(document).ready(function(){
   var myEmbed = Embed()
   myEmbed.init();
+  var fileBorwser = new FileChooser('.file-browser', {});
 })
+
+
+var FileChooser = function () {
+    function FileChooser(element, settings) {
+        if (typeof element === 'string') {
+            element = document.querySelector(element);
+        }
+        this.settings = FileChooser.getSettings(settings);
+        this.originalInput = element;
+        this.wrapper = FileChooser.createWrapper();
+        this.input = FileChooser.createInput(this.settings.placeholder);
+        this.clearButton = FileChooser.createClearButton();
+        this.appendElements();
+        this.attachListeners();
+    }
+    FileChooser.prototype.setText = function setText(text) {
+        this.input.value = text;
+    };
+    FileChooser.prototype.reset = function reset() {
+        this.wrapper.reset();
+    };
+    FileChooser.prototype.open = function open() {
+        this.originalInput.click();
+    };
+    FileChooser.prototype.attachListeners = function attachListeners() {
+        var _this = this;
+        this.wrapper.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            _this.open();
+        });
+        this.wrapper.addEventListener('submit', function (ev) {
+            return ev.preventDefault();
+        });
+        this.clearButton.addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            _this.reset();
+        });
+        this.originalInput.addEventListener('click', function (ev) {
+            return ev.stopPropagation();
+        });
+        this.originalInput.addEventListener('change', function (ev) {
+            _this.setText(ev.target.value);
+        });
+    };
+    FileChooser.prototype.appendElements = function appendElements() {
+        var parent = this.originalInput.parentNode;
+        this.originalInput.classList.add('file-chooser-hidden');
+        this.wrapper.appendChild(this.input);
+        this.wrapper.appendChild(this.clearButton);
+        parent.insertBefore(this.wrapper, this.originalInput);
+        this.wrapper.appendChild(this.originalInput);
+    };
+    FileChooser.getDefaults = function getDefaults() {
+        return {
+            buttonText: 'ανέβασμα',
+            placeholder: 'Παρακαλώ επιλέξτε αρχείο'
+        };
+    };
+    FileChooser.getSettings = function getSettings(settings) {
+        return _extends({}, FileChooser.getDefaults(), settings);
+    };
+    FileChooser.createWrapper = function createWrapper() {
+        var wrapper = document.createElement('form');
+        wrapper.classList.add('file-chooser');
+        return wrapper;
+    };
+    FileChooser.createInput = function createInput(placeholder) {
+        var input = document.createElement('input');
+        input.setAttribute('readonly', true);
+        input.setAttribute('placeholder', placeholder);
+        input.classList.add('file-chooser-input');
+        return input;
+    };
+    FileChooser.createClearButton = function createClearButton() {
+        var clearButton = document.createElement('button');
+        clearButton.classList.add('file-chooser-clear');
+        return clearButton;
+    };
+    return FileChooser;
+}();

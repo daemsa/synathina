@@ -14,8 +14,8 @@
                <textarea name="open_call_description" id="open_call_description"  rows="10"></textarea>
                <span class="is-block is-italic">(πχ. Ανοιχτό Κάλεσμα για Εθελοντές από την ομάδα Άλφα)</span>         
             </div>
-            
-            <div class="form-inline">
+
+            <div class="form-inline filters">
                <label for="" class="is-block">Θεματική ενότητα*:</label>
                <div class="form-group">
                   <input id="box9" type="checkbox">
@@ -54,10 +54,20 @@
                   <label for="box17" class="label-horizontal">ΤΟΥΡΙΣΜΟΣ</label>
                </div>
             </div>
-
-            <div class="form-group">
-               <button type="submit" class="btn btn--coral btn--bold">Καταχώρηση</button>
-            </div>   
+            <div class="form-inline">
+               <div class="form-group">
+                  <label for="date_end" class="is-block">Ημερομηνία λήξης*:</label>
+                  <input type="text" rel="js-datepicker-to" name="date_end">
+               </div> 
+               <div class="form-group form-group--upload">
+                  <label for="upload" class="is-block">Σχετικά αρχείa:</label>
+                  <input type="file" name="upload" id="upload" class="file-browser">
+               </div>                
+            </div>
+            <div class="form-group form-group--tail is-block clearfix">
+               <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
+               <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώρηση</button>
+            </div>
          </form>
       </div>
 
