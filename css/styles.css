@@ -4587,6 +4587,78 @@ button {
 .v-top {
   vertical-align: top; }
 
+/**
+ * 50 - 50 flex layout column
+ */
+.l-fg6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  justify-content: space-between; }
+  .l-fg6 > * {
+    width: calc(50% - 10px);
+    display: inline-block;
+    margin-bottom: 20px; }
+    @media (max-width: 768px) {
+      .l-fg6 > * {
+        width: calc(100% - 10px); } }
+    .l-fg6 > * input {
+      display: block;
+      width: 100%; }
+
+.l-fg4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  -webkit-align-items: baseline;
+  -moz-align-items: baseline;
+  align-items: baseline; }
+  .l-fg4 > * {
+    width: calc(33% - 10px);
+    margin-bottom: 20px; }
+    @media (max-width: 660px) {
+      .l-fg4 > * {
+        width: calc(50% - 10px); } }
+    @media (max-width: 480px) {
+      .l-fg4 > * {
+        width: calc(100% - 10px); } }
+    .l-fg4 > * input {
+      display: block;
+      width: 100%; }
+
+.l-ig6 > * {
+  margin: 0; }
+  @media (min-width: 992px) {
+    .l-ig6 > * {
+      width: calc(30% - 20px);
+      margin: 0; } }
+  .l-ig6 > * input {
+    display: block;
+    width: 100%; }
+
 .l-header {
   overflow: hidden;
   width: 100%; }
@@ -5921,8 +5993,6 @@ button {
     padding: 5px 10px; }
   .module__forms .form > .form-inline + .form-inline, .l-register .register .form > .form-inline + .form-inline, .open-call .form > .form-inline + .form-inline {
     margin-bottom: 20px; }
-  .module__forms .form > .form-inline.filters, .l-register .register .form > .form-inline.filters, .open-call .form > .form-inline.filters {
-    margin-bottom: 20px; }
   .module__forms .form label.is-block, .l-register .register .form label.is-block, .open-call .form label.is-block {
     margin-bottom: 5px; }
   .module__forms input[type=checkbox] + label:before, .l-register .register input[type=checkbox] + label:before, .open-call input[type=checkbox] + label:before, .module__forms input[type=radio] + label:before, .l-register .register input[type=radio] + label:before, .open-call input[type=radio] + label:before {
@@ -5933,6 +6003,9 @@ button {
     margin: 10px 0 0px 0; }
     .module__forms .form-inline .form-group + .form-group, .l-register .register .form-inline .form-group + .form-group, .open-call .form-inline .form-group + .form-group {
       margin-left: 5px; }
+      @media (max-width: 480px) {
+        .module__forms .form-inline .form-group + .form-group, .l-register .register .form-inline .form-group + .form-group, .open-call .form-inline .form-group + .form-group {
+          margin-left: 0px; } }
   .module__forms .form-group--tail, .l-register .register .form-group--tail, .open-call .form-group--tail {
     margin-top: 40px !important; }
   .module__forms .form-group--upload, .l-register .register .form-group--upload, .open-call .form-group--upload {
@@ -8290,6 +8363,8 @@ input[type=checkbox], input[type=radio] {
   display: inline-block;
   margin-bottom: 0;
   vertical-align: middle; }
+.form-inline > label {
+  width: 100%; }
 
 .form-inline--cells {
   display: table;
@@ -8299,6 +8374,13 @@ input[type=checkbox], input[type=radio] {
     vertical-align: middle; }
 
 .form-inline--flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.form-flex-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;

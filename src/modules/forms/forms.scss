@@ -24,6 +24,9 @@
 		margin-bottom: 0;
 		vertical-align: middle;
 	}
+  & > label {
+    width: 100%;
+  }
 }
 .form-inline--cells {
   display: table;
@@ -35,6 +38,10 @@
 }
 .form-inline--flex {
   @include flexbox;
+}
+
+.form-flex-6 {
+  @include flexbox; 
 }
 .v-middle {
   vertical-align: middle !important;
