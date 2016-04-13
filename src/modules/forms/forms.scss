@@ -33,6 +33,18 @@
   & > label {
     width: 100%;
   }
+  & > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+.form-tooltip {
+  font-size: 24px;
+  line-height: 30px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 5px;
+  cursor: pointer;
 }
 .form-inline--cells {
   display: table;
@@ -40,6 +52,14 @@
   & > .form-group {
     display: table-cell;
     vertical-align: middle;
+    input {
+      //width: 80%;
+    }
+  }
+  &.v-bottom {
+    & > * {
+      vertical-align: bottom;
+    }
   }
 }
 .form-inline--flex {
@@ -94,4 +114,27 @@ input[type="radio"]:checked + label span {
 .input--large {
   width: 100%;
 }
+.input--medium {
+  width: 50%;
+}
 
+.form {
+  .team-avatar {
+    line-height: 34px;
+  }
+}
+
+
+.form-block {
+  position : relative;
+  .btn--add {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    bottom: 1px;
+    right: 0px;
+    background: url('../img/icons/cross.png') center no-repeat;
+    background-color: #000;
+    background-size: 24px 24px;
+  }
+}

@@ -241,7 +241,8 @@ $(document).ready(function(){
   myEmbed.init();
   //var fileBrowser = new FileChooser('.file-browser', {});
   var fileBrowser2 = new FileChooser('.file-browser-2', {});
-  var fileBrowser3 = new FileChooser('.file-browser-three', {});
+//  var fileBrowser3 = new FileChooser('.file-browser-three', {});
+  var fileBrowser4 = new FileChooser('.file-browser-4', {});
 })
 
 
@@ -325,3 +326,30 @@ var FileChooser = function () {
     };
     return FileChooser;
 }();
+
+var ContactMap = (function(){
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.9908372, lng: 23.7383394}, 
+        zoom: 13,
+        mapTypeControl: true,
+        styles : styledArray
+      }); 
+
+      map.controls[google.maps.ControlPosition.TOP_CENTER];
+
+      var ctaLayer = new google.maps.KmlLayer({
+        url: 'js-collections/masks/aLayer01.kml',
+        map: map
+      });      
+
+      // creating and setting only one infowindow available to the map scope
+      infoWindow = Info;
+      map.infoWindow = infoWindow.createWindow();
+    //map.panTo({lat: pt.lat(), lng: pt.lng() });      
+
+  
+    }
+
+  }();

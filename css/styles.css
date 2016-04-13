@@ -200,15 +200,15 @@ th {
     .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register {
       width: 1240px; } }
 
-.container-fluid, .l-draseis, .l-draseis--article, .l-stegh {
+.container-fluid, .l-draseis, .l-draseis--article, .l-stegh, .l-contact {
   margin-right: auto;
   margin-left: auto;
   padding-left: 20px;
   padding-right: 20px; }
-  .container-fluid:before, .l-draseis:before, .l-draseis--article:before, .l-stegh:before, .container-fluid:after, .l-draseis:after, .l-draseis--article:after, .l-stegh:after {
+  .container-fluid:before, .l-draseis:before, .l-draseis--article:before, .l-stegh:before, .l-contact:before, .container-fluid:after, .l-draseis:after, .l-draseis--article:after, .l-stegh:after, .l-contact:after {
     content: " ";
     display: table; }
-  .container-fluid:after, .l-draseis:after, .l-draseis--article:after, .l-stegh:after {
+  .container-fluid:after, .l-draseis:after, .l-draseis--article:after, .l-stegh:after, .l-contact:after {
     clear: both; }
 
 .row {
@@ -4604,7 +4604,12 @@ button {
   -ms-flex-pack: justify;
   -webkit-justify-content: space-between;
   -moz-justify-content: space-between;
-  justify-content: space-between; }
+  justify-content: space-between;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  -webkit-align-items: baseline;
+  -moz-align-items: baseline;
+  align-items: baseline; }
   .l-fg6 > * {
     width: calc(50% - 10px);
     display: inline-block;
@@ -4660,6 +4665,16 @@ button {
       width: calc(30% - 20px);
       margin: 0; } }
   .l-ig6 > * input {
+    display: block;
+    width: 100%; }
+
+.l-ig4 > * {
+  margin: 0; }
+  @media (min-width: 992px) {
+    .l-ig4 > * {
+      width: calc(30% - 20px);
+      margin: 0; } }
+  .l-ig4 > * input {
     display: block;
     width: 100%; }
 
@@ -5173,6 +5188,16 @@ button {
   padding-bottom: 200px; }
   .l-register label, .l-register .filters label {
     line-height: 20px !important; }
+
+.l-contact .inline-list--socialmedia {
+  margin-top: 20px; }
+.l-contact .contact-map {
+  margin-top: 30px;
+  background-color: #5d5d5d; }
+
+.l-contact__wrapper {
+  max-width: 768px;
+  margin: auto; }
 
 .c-article:before, .c-article:after {
   content: " ";
@@ -6014,10 +6039,20 @@ button {
     margin-top: 40px !important; }
   .module__forms .form-group--upload, .l-register .register .form-group--upload, .open-call .form-group--upload {
     margin-left: 20px !important; }
+  .module__forms .margin0, .l-register .register .margin0, .open-call .margin0 {
+    margin: 0 !important; }
   .module__forms .form--bordered, .l-register .register .form--bordered, .open-call .form--bordered {
     border-bottom: 1px solid #5d5d5d;
     padding-bottom: 24px;
     padding-top: 24px; }
+    .module__forms .form--bordered > .form-group, .l-register .register .form--bordered > .form-group, .open-call .form--bordered > .form-group {
+      margin-bottom: 20px !important; }
+  .module__forms .form--padded, .l-register .register .form--padded, .open-call .form--padded {
+    padding-bottom: 24px;
+    padding-top: 24px; }
+    .module__forms .form--padded--16, .l-register .register .form--padded--16, .open-call .form--padded--16 {
+      padding-bottom: 16px;
+      padding-top: 16px; }
 
 .inline-list {
   color: #000000;
@@ -6063,6 +6098,33 @@ button {
   color: #d3d3d3; }
 .inline-list--headlines > li.selected a, .inline-list--headlines > li:hover a, .inline-list--headlines > li:focus a {
   color: #05bddc; }
+
+.inline-list--socialmedia > li + li {
+  margin-left: 10px; }
+.inline-list--socialmedia > li a {
+  color: #fff;
+  width: 53px;
+  height: 53px;
+  font-size: 40px;
+  display: table;
+  text-decoration: none !important; }
+  .inline-list--socialmedia > li a > i {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center; }
+  .inline-list--socialmedia > li a.facebook {
+    background-color: #395a95; }
+  .inline-list--socialmedia > li a.twitter {
+    background-color: #29a4dd; }
+  .inline-list--socialmedia > li a.linkedin {
+    background-color: #027ab3; }
+  .inline-list--socialmedia > li a.instagram {
+    background-color: #026285; }
+.inline-list--socialmedia .inline-list__label {
+  color: #05bddc;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px; }
 
 .inline-list--orange li:after, .inline-list--orange a {
   color: #f28e21; }
@@ -8169,10 +8231,32 @@ img.mfp-img {
   max-width: 500px;
   margin: 20px auto; }
 
+.graylight-popup {
+  background: #ebebeb; }
+
 .popup-title {
   margin-top: 0;
   font-size: 16px;
   font-weight: bold; }
+
+.popup {
+  position: relative;
+  width: 100%; }
+  .popup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px; }
+  .popup__content {
+    padding: 20px 20px; }
+  .popup.popup--questionmark {
+    font-size: 14px;
+    font-style: italic;
+    color: #000000; }
+
+.popup--small {
+  max-width: 360px; }
 
 .newsletter {
   padding: 0 20px 50px; }
@@ -8233,6 +8317,9 @@ img.mfp-img {
     opacity: 1; }
   .file-chooser .file-chooser-hidden {
     display: none; }
+
+.contact-map {
+  height: 262px; }
 
 /*
  input[type=checkbox] { display:none; } 
@@ -8374,6 +8461,17 @@ input[type=checkbox], input[type=radio] {
   vertical-align: middle; }
 .form-inline > label {
   width: 100%; }
+.form-inline > * {
+  display: inline-block;
+  vertical-align: middle; }
+
+.form-tooltip {
+  font-size: 24px;
+  line-height: 30px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 5px;
+  cursor: pointer; }
 
 .form-inline--cells {
   display: table;
@@ -8381,6 +8479,8 @@ input[type=checkbox], input[type=radio] {
   .form-inline--cells > .form-group {
     display: table-cell;
     vertical-align: middle; }
+  .form-inline--cells.v-bottom > * {
+    vertical-align: bottom; }
 
 .form-inline--flex {
   display: -webkit-box;
@@ -8427,6 +8527,24 @@ input[type="radio"]:checked + label span {
 
 .input--large {
   width: 100%; }
+
+.input--medium {
+  width: 50%; }
+
+.form .team-avatar {
+  line-height: 34px; }
+
+.form-block {
+  position: relative; }
+  .form-block .btn--add {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    bottom: 1px;
+    right: 0px;
+    background: url("../img/icons/cross.png") center no-repeat;
+    background-color: #000;
+    background-size: 24px 24px; }
 
 .syn-select {
   -webkit-appearance: none;

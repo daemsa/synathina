@@ -1,0 +1,17 @@
+.l-contact {
+	@extend .container-fluid;
+	.inline-list--socialmedia {
+		margin-top: 20px;
+	}
+	.contact-map {
+		margin-top: 30px;
+		background-color: #5d5d5d;
+	}
+	input {
+
+	}
+}
+.l-contact__wrapper {
+	max-width: $screen-sm;
+	margin: auto;
+}

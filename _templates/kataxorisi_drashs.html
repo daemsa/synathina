@@ -4,7 +4,7 @@
 <div class="l-register">
    <div class="module module--synathina">
       <div class="module-skewed">
-         <!-- Content Module -->
+         <!-- Content Module --> 
          <div class="register">
             <h3 class="popup-title">Καταχώρηση δράσης:</h3>
             <form action="" class="form">
@@ -23,11 +23,181 @@
                   <textarea class="form-control max-600" id="activity_description" rows="8" required=""></textarea>
                   <span class="is-block is-italic">(το δελτίο τύπου της δράσης σας)</span>
                </div>  
-               <div class="form-group">
-                     <label for="ypotitlos_drashs" class="is-block">Υπότιτλος δράσης*:</label>
-                     <input type="text" name="ypotitlos_drashs" id="ypotitlos_drashs">
-                     <a class="form-tooltip"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
-               </div>                          	
+               <!-- clone start -->
+               <div class="form-block" rel="js-form-block">
+	               <div class="form-group form--padded--16">
+							<label for="ypotitlos_drashs" class="is-block">Υπότιτλος δράσης:</label>
+							<input type="text" name="ypotitlos_drashs"  class="input--medium" id="ypotitlos_drashs" />
+							<a class="form-tooltip"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+	               </div>                          	
+	               <div class="form form--padded--16"> 
+	               	<label for="activity_description" class="is-block">Τοποθεσία*:</label>
+	               	<div class="form-inline--cells form-inline v-bottom">
+				            <div class="form-group">	
+									<label for="ypotitlos_drashs" class="is-block">ΔΙΕΥΘΥΝΣΗ*:</label>
+									<input type="text" name="ypotitlos_drashs" id="ypotitlos_drashs" />
+				            </div>                          	                              	
+								<div class="form-group">
+								 	<input id="box21" type="checkbox">
+								 	<label for="box21" class="label-horizontal"><small>ΧΡΗΣΗ ΣΤΕΓΗΣ ΣΥΝΑΘΗΝΑ</small></label>
+								</div>
+							</div>	       
+	               </div>
+	               <div class="form form--padded--16">
+	               	<label for="activity_description" class="is-block">Χρονολογία*:</label>
+	               	<div class="form-inline--cells form-inline v-bottom">
+		               	<div class="form-group">
+		               		<label for="date" class="is-block">ΗΜΕΡΟΜΗΝΙΑ</label>
+		               		<input type="date" class="form-control" id="from_date" required />    
+		               	</div>
+								<div class="form-group">
+								 	<input id="box21" type="checkbox">
+								 	<label for="box21" class="label-horizontal"><small>ΕΠΑΝΑΛΑΜΒΑΝΟΜΕΝΗ ΣΤΕΓΗ</small></label>
+								</div>
+	               	</div>
+	               </div>
+						<div class="form-inline filters form--padded">
+							<label for="activity_description" class="is-block">Θεματικές δραστηριοποίησης*:</label>
+	                  <div class="form-group">
+	                     <input id="box15" type="checkbox">
+	                     <label for="box15" class="label-horizontal">ΑΛΛΗΛΕΓΓΥΗ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box16" type="checkbox">
+	                     <label for="box16" class="label-horizontal">ΠΟΛΙΤΙΣΜΟΣ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box17" type="checkbox">
+	                     <label for="box17" class="label-horizontal">ΟΙΚΟΝΟΜΙΑ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box18" type="checkbox">
+	                     <label for="box18" class="label-horizontal">ΔΗΜΟΣΙΟΣ ΧΩΡΟΣ</label>
+	                  </div>                  
+	                  <div class="form-group">
+	                     <input id="box18" type="checkbox">
+	                     <label for="box18" class="label-horizontal">ΠΕΡΙΒΑΛΛΟΝ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box19" type="checkbox">
+	                     <label for="box19" class="label-horizontal">ΤΕΧΝΟΛΟΓΙΑ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box20" type="checkbox">
+	                     <label for="box20" class="label-horizontal">ΥΓΕΙΑ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box21" type="checkbox">
+	                     <label for="box21" class="label-horizontal">ΕΚΠΑΙΔΕΥΣΗ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box22" type="checkbox">
+	                     <label for="box22" class="label-horizontal">ΕΝΗΜΕΡΩΣΗ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box23" type="checkbox">
+	                     <label for="box23" class="label-horizontal">ΤΟΥΡΙΣΜΟΣ</label>
+	                  </div>
+	                  <div class="form-group">
+	                     <input id="box24" type="checkbox">
+	                     <label for="box24" class="label-horizontal">ΠΑΙΔΙ</label>
+	                  </div>                  
+						</div>
+						<div class="form--bordered">
+							<div class="form-group">
+								<label for="date" class="is-block">Συνεργαζόμενες ομάδες</label>
+								<div class="form-group form-inline v-center">
+									<input type="text">
+									<a href="" class="team-avatar"><img src="http://placehold.it/32x32" alt=""></a>
+									<a href="" class="team-avatar"><img src="http://placehold.it/32x32" alt=""></a>
+									<a href="" class="team-avatar"><img src="http://placehold.it/32x32" alt=""></a>
+
+								</div>
+							</div>
+						</div>
+						<button class="btn btn--black btn--add" rel="js-add-new-form-block"></button>
+					</div>
+					<!-- clone end -->
+               <div class="form form--bordered"> 
+                  <div class="margin0 form-group form-group--upload">
+                     <label for="box7" class="is-block">Φωτογραφίες*:</label>
+                     <input type="file" name="upload" id="box5" class="file-browser-4">
+                     <span class="is-block is-italic"><small>( μπορείτε να ανεβάσετε την  αφίσα της  δράσης σας, φωτογραφίες 
+							της τρέχουσας δράσης σας ή και φωτογραφίες από προηγούμενες δράσεις )</small></span>
+                  </div>
+						<div class="form-group">
+						 	<input id="box21" type="checkbox">
+						 	<label for="box21" class="label-horizontal"><small>ΧΡΗΣΗ ΥΠΗΡΕΣΙΩΝ ΔΗΜΟΥ ΑΘΗΝΑΙΩΝ</small></label>
+						</div> 		
+						<div class="form-group">
+							<label for="box7" class="is-block">Θέλω να...:</label>
+						 	<select name="" id="">
+						 		<option value=""></option>
+						 		<option value=""></option>
+						 	</select>
+						</div> 								
+                  <div class="form-group max-600">
+                  	<label for="activity_description" class="is-block">Μήνυμα:</label>
+                  	<textarea name="" id="" rows="6"></textarea>
+                  </div>
+               </div>
+					<div class="form-inline filters form--padded">
+						<label for="activity_description" class="is-block">Θα επιθυμούσa την υποστήριξη σε*:</label>
+                  <div class="form-group">
+                     <input id="box15" type="checkbox">
+                     <label for="box15" class="label-horizontal">ΑΛΛΗΛΕΓΓΥΗ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box16" type="checkbox">
+                     <label for="box16" class="label-horizontal">ΠΟΛΙΤΙΣΜΟΣ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box17" type="checkbox">
+                     <label for="box17" class="label-horizontal">ΟΙΚΟΝΟΜΙΑ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box18" type="checkbox">
+                     <label for="box18" class="label-horizontal">ΔΗΜΟΣΙΟΣ ΧΩΡΟΣ</label>
+                  </div>                  
+                  <div class="form-group">
+                     <input id="box18" type="checkbox">
+                     <label for="box18" class="label-horizontal">ΠΕΡΙΒΑΛΛΟΝ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box19" type="checkbox">
+                     <label for="box19" class="label-horizontal">ΤΕΧΝΟΛΟΓΙΑ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box20" type="checkbox">
+                     <label for="box20" class="label-horizontal">ΥΓΕΙΑ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box21" type="checkbox">
+                     <label for="box21" class="label-horizontal">ΕΚΠΑΙΔΕΥΣΗ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box22" type="checkbox">
+                     <label for="box22" class="label-horizontal">ΕΝΗΜΕΡΩΣΗ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box23" type="checkbox">
+                     <label for="box23" class="label-horizontal">ΤΟΥΡΙΣΜΟΣ</label>
+                  </div>
+                  <div class="form-group">
+                     <input id="box24" type="checkbox">
+                     <label for="box24" class="label-horizontal">ΠΑΙΔΙ</label>
+                  </div>                  
+					</div>
+
+               <div class="form-group is-block form--padded">
+                  <label for="activity_description" class="is-block">Μήνυμα προς τους υποστηρικτές*:</label>
+                  <textarea class="form-control max-600" id="activity_description" rows="8" required=""></textarea>
+               </div>  
+               <div class="form-group form-group--tail is-block clearfix">
+                  <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
+                  <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώρηση</button>
+               </div>                             
+
             </form>
         </div>      	
       </div>

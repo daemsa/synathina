@@ -55,6 +55,44 @@
       }
    }
 }
+.inline-list--socialmedia {
+   & > li {
+      & + li {
+         margin-left: 10px;
+      }
+      a {
+         color: #fff;
+         width: 53px;
+         height: 53px;
+         font-size: 40px;
+         display: table;
+         text-decoration: none !important;
+         & > i {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+         }
+         &.facebook {
+            background-color: #395a95;
+         }
+         &.twitter {
+            background-color: #29a4dd;
+         }
+         &.linkedin {
+            background-color: #027ab3;
+         }
+         &.instagram {
+            background-color: #026285;
+         }
+      }
+   }
+   .inline-list__label {
+      color: $coral;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+   }
+}
 // colors
 .inline-list--orange {
    li:after, a {

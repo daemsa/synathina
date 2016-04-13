@@ -26,7 +26,6 @@
       map.infoWindow = infoWindow.createWindow();
     //map.panTo({lat: pt.lat(), lng: pt.lng() });      
 
-  
     }
 
     var infoFun, c_filter;
