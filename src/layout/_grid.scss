@@ -17,6 +17,12 @@
 			width: 100%;
 		}
 	}
+	.file-chooser {
+		display: block;
+		input[type="upload"] {
+			display: block;
+		}
+	}
 }
 
 .l-fg4 {

@@ -4615,6 +4615,10 @@ button {
     .l-fg6 > * input {
       display: block;
       width: 100%; }
+  .l-fg6 .file-chooser {
+    display: block; }
+    .l-fg6 .file-chooser input[type="upload"] {
+      display: block; }
 
 .l-fg4 {
   display: -webkit-box;
@@ -8354,10 +8358,15 @@ input[type=checkbox], input[type=radio] {
   outline: 0; }
 .form textarea {
   border: 1px solid #000; }
+  .form textarea.max-600 {
+    max-width: 600px; }
 .form-label {
   margin-top: 0;
   font-size: 16px;
   font-weight: bold; }
+
+.max-600 {
+  max-width: 600px; }
 
 .form-inline > .form-group {
   display: inline-block;
