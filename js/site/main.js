@@ -377,22 +377,26 @@ var FormClone = function(global){
              this.id = match[1] + (cloneIndex)
           }
       });
+      $("#form-block"+(cloneIndex)).find('.remove').removeClass('is-visuallyhidden');
+      
       $("#form-block"+(cloneIndex)).on('click', 'button.clone', clone);
       $("#form-block"+(cloneIndex)).on('click', 'button.remove', remove);
-      setTimeout(function(){
-         //$("#form-block"+(cloneIndex)).removeClass('is-visuallyhidden');
-      }, 5000)
+
+      hiddenStatus.attr({
+         'value' : cloneIndex
+      });
 
       cloneIndex++;
    }
 
    function init(){
+      hiddenStatus = $('[name="clones"]');
       adder = $('[rel="js-add-new-form-block"]');
       block = $('[rel="js-form-block"]');
       adder.on('click', clone);
    }
    var regex = /^(.+?)(\d+)$/i;
-   var adder, block, cloneIndex = $('.form-block').length;
+   var adder, block, hiddenStatus, cloneIndex = $('.form-block').length;
 
    return {
       init: init
