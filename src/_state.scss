@@ -26,3 +26,7 @@
 .is-visible {
    visibility: visible !important;
 }
+.is-visuallyhidden {
+   visibility: hidden !important;
+   height: 0;
+}
