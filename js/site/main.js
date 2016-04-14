@@ -239,20 +239,24 @@ var Embed = function(){
 $(document).ready(function(){
   var myEmbed = Embed()
   myEmbed.init();
+  renderFileUploaders();
   //var fileBrowser = new FileChooser('.file-browser', {});
-  var fileBrowser2 = new FileChooser('.file-browser-2', {});
+  //var fileBrowser2 = new FileChooser('.file-browser-2', {});
 //  var fileBrowser3 = new FileChooser('.file-browser-three', {});
-  var fileBrowser4 = new FileChooser('.file-browser-4', {});
+  //var fileBrowser4 = new FileChooser('.file-browser-4', {});
 })
 
-
+var renderFileUploaders = function(){
+   var browsers = document.querySelectorAll('.file-browser');
+   var uploaders = [];
+   for( i=0; i < browsers.length; i++ ) {
+      uploaders[i] = new FileChooser(browsers[i], {});
+   }
+};
 var FileChooser = function () {
     function FileChooser(element, settings) {
         if (typeof element === 'string') {
             element = document.querySelector(element);
-        }
-        if(element === null){
-           return false;
         }
         this.settings = FileChooser.getSettings(settings);
         this.originalInput = element;
@@ -292,9 +296,6 @@ var FileChooser = function () {
         });
     };
     FileChooser.prototype.appendElements = function appendElements() {
-        if(originalInput === null){
-           return false;
-        }
         var parent = this.originalInput.parentNode;
         //console.log(parent)
         this.originalInput.classList.add('file-chooser-hidden');
