@@ -2,13 +2,23 @@
 .debug .dev_menu {
    display: none;
    width: 100%;
-   padding: 0px 10px;
-   background: rgba(255,153,51,0.9);
-   //display: table;
+   padding: 20px 10px;
+   background: rgba(255,255,255,0.8);
    position: fixed;
-   bottom: 0;
+   top:44px;
    left: 0;
    z-index: 99999;
+   nav {
+      padding-top: 20px;
+   }
+   &.open {
+      display: block;
+      height: 100%;
+   }
+   .is-relative {
+      max-height: calc(100% - 64px);
+      overflow-y: auto;
+   }
    &:before {
       font-family: "Lucida Console", Monaco, monospace;
       content: 'developer navigation';
@@ -16,35 +26,47 @@
       font-style: italic;
       position: absolute !important;
       right:0;
-      top:-15px;
+      top:-20px;
       width: 200px;
       line-height: 20px;
-      background: rgba(255,153,51,0.9);
+      background: rgba(255, 255, 255, 0.8);
       text-align: center;
       @include transition(top .2s);
    }
    nav > a {
       outline: 1px solid black;
-      margin: 10px;
+      background-color: rgba(255,153,51,0.9);
       &:hover {
          background-color: #000;
          color: rgba(255,153,51,0.9);
       }
       + a {
-         margin: 10px;
+         margin-top: 10px;
       }
-      display: inline-block;
-      //width: 1%;
-      color: black;
+      display: block;
+      height: 32px;
+      margin: auto;
+      color: white;
       font-size: 14px;
-      line-height: 9px;
-      padding: 5px 0;
+      font-weight: bold;
+      line-height: 32px;
       font-family: "Lucida Console", Monaco, monospace;
       vertical-align: middle;
       text-align: center;
       &.black {
          background-color: #000;
          color: rgba(255,153,51,0.9);
+      }
+   }
+   &__tpls, &__forms {
+      @include make-sm-column(6);
+   }
+   &__forms  {
+      a {
+         background-color: $coral !important;
+         &:hover{
+            color: yellow !important;
+         }
       }
    }
 }

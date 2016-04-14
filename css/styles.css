@@ -6199,12 +6199,20 @@ a.list-item-title:hover {
 .debug .dev_menu {
   display: none;
   width: 100%;
-  padding: 0px 10px;
-  background: rgba(255, 153, 51, 0.9);
+  padding: 20px 10px;
+  background: rgba(255, 255, 255, 0.8);
   position: fixed;
-  bottom: 0;
+  top: 44px;
   left: 0;
   z-index: 99999; }
+  .debug .dev_menu nav {
+    padding-top: 20px; }
+  .debug .dev_menu.open {
+    display: block;
+    height: 100%; }
+  .debug .dev_menu .is-relative {
+    max-height: calc(100% - 64px);
+    overflow-y: auto; }
   .debug .dev_menu:before {
     font-family: "Lucida Console", Monaco, monospace;
     content: 'developer navigation';
@@ -6212,22 +6220,24 @@ a.list-item-title:hover {
     font-style: italic;
     position: absolute !important;
     right: 0;
-    top: -15px;
+    top: -20px;
     width: 200px;
     line-height: 20px;
-    background: rgba(255, 153, 51, 0.9);
+    background: rgba(255, 255, 255, 0.8);
     text-align: center;
     -webkit-transition: top 0.2s;
     -o-transition: top 0.2s;
     transition: top 0.2s; }
   .debug .dev_menu nav > a {
     outline: 1px solid black;
-    margin: 10px;
-    display: inline-block;
-    color: black;
+    background-color: rgba(255, 153, 51, 0.9);
+    display: block;
+    height: 32px;
+    margin: auto;
+    color: white;
     font-size: 14px;
-    line-height: 9px;
-    padding: 5px 0;
+    font-weight: bold;
+    line-height: 32px;
     font-family: "Lucida Console", Monaco, monospace;
     vertical-align: middle;
     text-align: center; }
@@ -6235,10 +6245,23 @@ a.list-item-title:hover {
       background-color: #000;
       color: rgba(255, 153, 51, 0.9); }
     .debug .dev_menu nav > a + a {
-      margin: 10px; }
+      margin-top: 10px; }
     .debug .dev_menu nav > a.black {
       background-color: #000;
       color: rgba(255, 153, 51, 0.9); }
+  .debug .dev_menu__tpls, .debug .dev_menu__forms {
+    position: relative;
+    min-height: 1px;
+    padding-left: 20px;
+    padding-right: 20px; }
+    @media (min-width: 768px) {
+      .debug .dev_menu__tpls, .debug .dev_menu__forms {
+        float: left;
+        width: 50%; } }
+  .debug .dev_menu__forms a {
+    background-color: #05bddc !important; }
+    .debug .dev_menu__forms a:hover {
+      color: yellow !important; }
 
 .menu {
   list-style-type: none; }
