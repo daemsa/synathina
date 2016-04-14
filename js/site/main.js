@@ -104,7 +104,7 @@ var jsScrollpane = function(global){
 
   $(window).resize(function(){
     $('.scroll-pane').jScrollPane();
-  });  
+  });
 
 }(window);
 
@@ -164,7 +164,7 @@ var Diary = function(global){
 
 $(document).ready(function() {
   myDiary = Diary();
-  myDiary.init();    
+  myDiary.init();
 });
 
 
@@ -199,18 +199,18 @@ var Embed = function(){
     } else {
         var videos = document.getElementsByClassName("youtube");
     }
- 
+
     var nb_videos = videos.length;
 
     for (var i=0; i<nb_videos; i++) {
         // Finf youtube video thumbnail id
         videos[i].style.backgroundImage = 'url(http://img.youtube.com/vi/' + videos[i].id + '/0.jpg)';
- 
-        // Custom Play icon 
+
+        // Custom Play icon
         var play = document.createElement("div");
         play.setAttribute("class","play");
         videos[i].appendChild(play);
- 
+
         videos[i].onclick = function() {
             // Create iframe with autoplaytrue
             var iframe = document.createElement("iframe");
@@ -218,11 +218,11 @@ var Embed = function(){
             if (this.getAttribute("data-params")) iframe_url+='&'+this.getAttribute("data-params");
             iframe.setAttribute("src",iframe_url);
             iframe.setAttribute("frameborder",'0');
- 
+
             // The height and width of the iFrame should be the same as parent
             iframe.style.width  = this.style.width;
             iframe.style.height = this.style.height;
- 
+
             // Replace the YouTube thumbnail with YouTube Player
             this.parentNode.replaceChild(iframe, this);
         }
@@ -250,6 +250,9 @@ var FileChooser = function () {
     function FileChooser(element, settings) {
         if (typeof element === 'string') {
             element = document.querySelector(element);
+        }
+        if(element === null){
+           return false;
         }
         this.settings = FileChooser.getSettings(settings);
         this.originalInput = element;
@@ -289,7 +292,9 @@ var FileChooser = function () {
         });
     };
     FileChooser.prototype.appendElements = function appendElements() {
-        console.log(this.originalInput)
+        if(originalInput === null){
+           return false;
+        }
         var parent = this.originalInput.parentNode;
         //console.log(parent)
         this.originalInput.classList.add('file-chooser-hidden');
@@ -329,27 +334,6 @@ var FileChooser = function () {
 
 var ContactMap = (function(){
 
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 37.9908372, lng: 23.7383394}, 
-        zoom: 13,
-        mapTypeControl: true,
-        styles : styledArray
-      }); 
 
-      map.controls[google.maps.ControlPosition.TOP_CENTER];
 
-      var ctaLayer = new google.maps.KmlLayer({
-        url: 'js-collections/masks/aLayer01.kml',
-        map: map
-      });      
-
-      // creating and setting only one infowindow available to the map scope
-      infoWindow = Info;
-      map.infoWindow = infoWindow.createWindow();
-    //map.panTo({lat: pt.lat(), lng: pt.lng() });      
-
-  
-    }
-
-  }();
+})();

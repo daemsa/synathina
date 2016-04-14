@@ -25,7 +25,7 @@
 /*!
  * classie - class helper functions
  * from bonzo https://github.com/ded/bonzo
- * 
+ *
  * classie.has( elem, 'my-class' ) -> true/false
  * classie.add( elem, 'my-new-class' )
  * classie.remove( elem, 'my-unwanted-class' )
@@ -123,3 +123,22 @@ var _extends = Object.assign || function (target) {
     return target;
     window.CP.exitedLoop(2);
 };
+
+
+var DEV = (function(global){
+
+      button = document.querySelector('.dev-menu-button');
+      menu = document.querySelector('.dev_menu');
+      body = document.querySelector('body');
+
+      button.addEventListener('click', toggleDevMenu);
+
+   function toggleDevMenu(e) {
+      e.preventDefault();
+      classie.toggleClass(menu, 'open')
+      classie.toggleClass(body, 'is-oveflow-hidden')
+   }
+
+   var button, menu;
+
+})();

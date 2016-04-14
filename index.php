@@ -24,6 +24,7 @@
 <header class="l-header">
   <?php include('_modules/nav_menu.html'); ?>
 </header>
+<?php include ('_modules/menu_toggler.html'); ?>
 <?php include ('_modules/_dev_menu.html'); ?>
 <div class="logo-container">
    <a href="" class="logo logo-athens" alt="Δήμος Αθηναίων">
@@ -88,15 +89,15 @@
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry">
     </script>
-    
+
 <?php } else { ?>
     <!-- ELSE load web site source files and dependecies -->
-    <script type="text/javascript" src="js/vendor/dev_menu.js"></script>
+    <!--script type="text/javascript" src="js/vendor/dev_menu.js"></script--->
     <script type="text/javascript" src="js/vendor/slick.min.js"></script>
     <script type="text/javascript" src="js/vendor/jquery.magnific-popup.min.js"></script>
     <script type="text/javascript" src="js/vendor/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/vendor/jscrollpane.js"></script>
-    
+
     <script src="js/site/main.js"></script>
     <script src="js/ui.js"></script>
 
