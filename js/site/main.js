@@ -344,22 +344,14 @@ var ContactMap = (function(){
 
 var FormClone = function(global){
 
-   function findLastCloned(){
-      //console.log($("#form-block"+cloneIndex-1));
-      console.log("#form-block"+(cloneIndex-1));
-   }
    function remove(e){
-      $(this).parents(".form-block").animate({
-         'height' : '0',
-         'opacity' : '0'
-      }, 300, function(){
-            $(this).parents(".form-block").remove();
-      })
+      $(this).parents(".form-block").remove();
+      cloneIndex--;
    }
+
    function clone(e) {
       e.preventDefault();
-      console.log(e.target);
-      var lastAdded = findLastCloned()
+
       $(this).parents(".form-block").clone()
       .insertAfter("#form-block"+(cloneIndex-1))
       .attr({
@@ -377,8 +369,8 @@ var FormClone = function(global){
              this.id = match[1] + (cloneIndex)
           }
       });
+
       $("#form-block"+(cloneIndex)).find('.remove').removeClass('is-visuallyhidden');
-      
       $("#form-block"+(cloneIndex)).on('click', 'button.clone', clone);
       $("#form-block"+(cloneIndex)).on('click', 'button.remove', remove);
 
