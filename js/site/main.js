@@ -244,6 +244,8 @@ $(document).ready(function(){
   //var fileBrowser2 = new FileChooser('.file-browser-2', {});
 //  var fileBrowser3 = new FileChooser('.file-browser-three', {});
   //var fileBrowser4 = new FileChooser('.file-browser-4', {});
+  var myForm = FormClone;
+  myForm.init();
 })
 
 var renderFileUploaders = function(){
@@ -338,3 +340,62 @@ var ContactMap = (function(){
 
 
 })();
+
+
+var FormClone = function(global){
+
+   function findLastCloned(){
+      //console.log($("#form-block"+cloneIndex-1));
+      console.log("#form-block"+(cloneIndex-1));
+   }
+   function remove(e){
+      $(this).parents(".form-block").animate({
+         'height' : '0',
+         'opacity' : '0'
+      }, 300, function(){
+            $(this).parents(".form-block").remove();
+      })
+   }
+   function clone(e) {
+      e.preventDefault();
+      console.log(e.target);
+      var lastAdded = findLastCloned()
+      $(this).parents(".form-block").clone()
+      .insertAfter("#form-block"+(cloneIndex-1))
+      .attr({
+         "id" : "form-block" +  cloneIndex,
+         'style' : 'height:0; opacity: 0; margin-top : 20px'
+      }).animate({
+         'height' : '100%',
+         opacity : '1'
+      }, 300)
+      .find("*")
+      .each(function() {
+          var id = this.id || "";
+          var match = id.match(regex) || [];
+          if (match.length == 3) {
+             this.id = match[1] + (cloneIndex)
+          }
+      });
+      $("#form-block"+(cloneIndex)).on('click', 'button.clone', clone);
+      $("#form-block"+(cloneIndex)).on('click', 'button.remove', remove);
+      setTimeout(function(){
+         //$("#form-block"+(cloneIndex)).removeClass('is-visuallyhidden');
+      }, 5000)
+
+      cloneIndex++;
+   }
+
+   function init(){
+      adder = $('[rel="js-add-new-form-block"]');
+      block = $('[rel="js-form-block"]');
+      adder.on('click', clone);
+   }
+   var regex = /^(.+?)(\d+)$/i;
+   var adder, block, cloneIndex = $('.form-block').length;
+
+   return {
+      init: init
+   }
+
+}(window);
