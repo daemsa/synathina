@@ -163,8 +163,7 @@ var Activities = (function(global) {
       Activities.current_polygon = arguments[0];
       polygon = arguments[0];
       cat_filter = arguments[1];
-      //var Cluster = [];
-      //
+      //Clusterer
       if(window.clusterer !== undefined){
         console.log('in')
         window.category.length=0;
@@ -255,16 +254,32 @@ var Activities = (function(global) {
       var date_from = Math.floor(dates[0]);
       var date_to = Math.floor(dates[1]);
 
+      if(window.clusterer !== undefined){
+        console.log('in')
+        window.category.length=0;
+        window.clusterer.clearMarkers();
+      }
+
+      window.category = [];
+      window.clusterer = new MarkerClusterer(map, [], {
+        gridSize : 50,
+        maxZoom : 20
+      });
+
       for( var i = 0; i < coordinatesArray.length; i += 1) {
          var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
          if( Activities.current_polygon.Contains(point)) {
              if( activities[i].year >= date_from && activities[i].year <= date_to){
                 activities[i].marker.setVisible(true);
+                category.push(activities[i].marker);
              } else {
                 activities[i].marker.setVisible(false);
              }
           }
       }
+      clusterer.clearMarkers();
+      clusterer.addMarkers(category);
+      category.length=0;
 
    }
 

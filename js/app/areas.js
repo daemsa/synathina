@@ -64,12 +64,8 @@ var Areas = (function(global){
 
             // threading with activity object
             //EVT.emit('show-activities', this);
-            
-            Activities.setActivitiesVisibility(this);
 
-            //var map = new google.maps.Map(document.getElementById("map"), options);
-            
-            
+            Activities.setActivitiesVisibility(this);
 
             for (i in polygonsArray) {
               if (polygonsArray[i] !== this) {
