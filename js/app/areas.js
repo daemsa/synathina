@@ -9,7 +9,6 @@ var Areas = (function(global){
         lng : InputObj.features[i].geometry.coordinates[0],
         lat : InputObj.features[i].geometry.coordinates[1],
       });
-      //console.log(arrayCoords);
     }
     return arrayCoords
   }
@@ -243,7 +242,10 @@ var Areas = (function(global){
         initPolygons(Athens[i], Athens[i].styles)
       }
    }
-
+  /**
+   * BACKENDINFO: This JSON array describes overview details about each city's sector,
+   * on production this must me retuned from the webservice
+   */
   var Athens = [
     {
       details : {

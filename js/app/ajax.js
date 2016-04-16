@@ -4,11 +4,9 @@ var AjaxCall = (function(global) {
      var xmlDoc;
 
      if (window.XMLHttpRequest) {
-       // code for IE7+, Firefox, Chrome, Opera, Safari
        xmlDoc = new XMLHttpRequest();
      }
      else {
-       // code for IE6, IE5
        xmlDoc = new ActiveXObject("Microsoft.XMLHTTP");
      }
 
@@ -27,14 +25,14 @@ var AjaxCall = (function(global) {
      }
 
      xmlDoc.send();
-   }   
-  /** jquery  */
+   }
+  /** moved here as seemed more relative to this scope */
    function kmlToJson(func, kmlPath) {
     $.ajax(kmlPath).done(function(xml) {
       geoJSON = toGeoJSON.kml(xml);
       func(geoJSON)
-    });      
-   } 
+    });
+   }
 
    return {
       get : myGet,

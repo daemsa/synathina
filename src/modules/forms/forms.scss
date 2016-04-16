@@ -149,3 +149,14 @@ input[type="radio"]:checked + label span {
     background-size: 24px 24px;
   }
 }
+
+
+// form elements state
+
+.form-block--hidden {
+   //@include transition(.3s all );
+   visibility: hidden !important;
+   height: 0 !important;
+   padding: 0 !important;
+   margin:0 !important;
+}

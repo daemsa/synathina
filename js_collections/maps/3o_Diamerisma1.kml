@@ -10,13 +10,6 @@
 			</Point>
 		</Placemark>
 		<Placemark>
-			<name>annis k salaminias</name>
-			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
-			<Point>
-				<coordinates>23.6869097,37.9784222,0.0</coordinates>
-			</Point>
-		</Placemark>
-		<Placemark>
 			<name>ag.annis kai orfews</name>
 			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
 			<Point>
@@ -24,17 +17,10 @@
 			</Point>
 		</Placemark>
 		<Placemark>
-			<name>annis k mikeli</name>
+			<name>markoni k lewf.athinwn</name>
 			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
 			<Point>
-				<coordinates>23.6912441,37.9832594,0.0</coordinates>
-			</Point>
-		</Placemark>
-		<Placemark>
-			<name>annis k polikarpou</name>
-			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
-			<Point>
-				<coordinates>23.6935401,37.9859654,0.0</coordinates>
+				<coordinates>23.6984754,37.9934571,0.0</coordinates>
 			</Point>
 		</Placemark>
 		<Placemark>
@@ -42,6 +28,13 @@
 			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
 			<Point>
 				<coordinates>23.6944413,37.9875382,0.0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>athinwn kai mitrodorou</name>
+			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
+			<Point>
+				<coordinates>23.706543400000005,37.9880286,0.0</coordinates>
 			</Point>
 		</Placemark>
 		<Placemark>
@@ -59,17 +52,24 @@
 			</Point>
 		</Placemark>
 		<Placemark>
-			<name>markoni k lewf.athinwn</name>
+			<name>annis k polikarpou</name>
 			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
 			<Point>
-				<coordinates>23.6984754,37.9934571,0.0</coordinates>
+				<coordinates>23.6935401,37.9859654,0.0</coordinates>
 			</Point>
 		</Placemark>
 		<Placemark>
-			<name>athinwn kai mitrodorou</name>
+			<name>annis k salaminias</name>
 			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
 			<Point>
-				<coordinates>23.706543400000005,37.9880286,0.0</coordinates>
+				<coordinates>23.6869097,37.9784222,0.0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>annis k mikeli</name>
+			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
+			<Point>
+				<coordinates>23.6912441,37.9832594,0.0</coordinates>
 			</Point>
 		</Placemark>
 		<Placemark>

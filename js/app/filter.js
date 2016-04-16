@@ -7,14 +7,10 @@
       $('div#slider3').html('');
       dateFormat = d3.time.format('%Y-%m-%d %H:%M:%S');
       numberFormat = d3.format('0');
-      //console.log(today)
-      //today.year = d3.time.year(today).getFullYear();
-      //console.log(today);
+
       activities.forEach(function (d) {
         d.dd = dateFormat.parse(d.marker.db_data.date);
         d.year = d3.time.year(d.dd).getFullYear();
-        //d.close = +d.close; // coerce to number
-        //d.open = +d.open;
       });
 
       dispatch = d3.dispatch('filter');
@@ -57,8 +53,9 @@
       num = facts.groupAll().reduceCount().value();
       return num;
     }
-      function contains(needle) {
-        // Per spec, the way to identify NaN is that it is not equal to itself
+
+    function contains(needle) {
+
         var findNaN = needle !== needle;
         var indexOf;
 
@@ -83,6 +80,7 @@
 
         return indexOf.call(this, needle) > -1;
     };
+
     function initCategoryFilters(){
 
         checkboxes = Filter.category_filters.category_NodeList;
@@ -119,7 +117,7 @@
                 filters.pop(parseInt(checkboxes[i].dataset.id));
             } else if(checkboxes[i].checked === true) {
                 filters.push(parseInt(checkboxes[i].dataset.id));
-            }          
+            }
             */
             checkboxes[i].addEventListener('click', function(evt) {
               //hasRun = 1;
