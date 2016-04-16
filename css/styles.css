@@ -4628,6 +4628,8 @@ button {
     display: block; }
     .l-fg6 .file-chooser input[type="upload"] {
       display: block; }
+  .l-fg6 .form-group--upload {
+    margin-left: 0 !important; }
 
 .l-fg4 {
   display: -webkit-box;
@@ -5192,6 +5194,9 @@ button {
   padding-bottom: 200px; }
   .l-register label, .l-register .filters label {
     line-height: 20px !important; }
+
+.l-register .register .l-fg6 .form-group--upload {
+  margin-left: 0 !important; }
 
 .l-contact .inline-list--socialmedia {
   margin-top: 20px; }
@@ -8584,6 +8589,12 @@ input[type="radio"]:checked + label span {
     background: url("../img/icons/line.png") center no-repeat;
     background-color: #000;
     background-size: 24px 24px; }
+
+.form-block--hidden {
+  visibility: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important; }
 
 .syn-select {
   -webkit-appearance: none;

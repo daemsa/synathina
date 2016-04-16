@@ -1,12 +1,27 @@
 window.EVT = new EventEmitter2();
+
+$(document).ready(function(){
+
+  myEmbed = Embed()
+  myEmbed.init();
+  renderFileUploaders();
+  myForm = FormClone;
+  myForm.init();
+  myDiary = Diary();
+  myDiary.init();
+
+  register = Register;
+  register.init();
+
+  var myEmbed, myForm, myDiary;
+})
+
 var Main = (function(global){
    // init App on window load
    $(global).load(function(){
       EVT.emit('init');
    });
 })(window);
-
-
 
 var Gallery = (function(global) {
    //galleryContainer = document.querySelector(".gallery--multirow[rel=js-start-gallery]");
@@ -26,7 +41,7 @@ var Gallery = (function(global) {
    var galleryThumb = $('.gallery--thumbnail[rel=js-start-gallery]');
 
    $.each(galleryThumb, function(index, el){
-      // /console.log(el)
+
       $(el).slick({
             dots: true,
             customPaging : function(slider, i) {
@@ -62,16 +77,12 @@ var Gallery = (function(global) {
                  slidesToScroll: 1
                }
              }
-             // You can unslick at a given breakpoint now by adding:
-             // settings: "unslick"
-             // instead of a settings object
            ]
       });
 
    })
    var gallery;
 })(window);
-
 
 var DateP = (function(global){
    //function init(){
@@ -85,7 +96,6 @@ var DateP = (function(global){
    //var datepickerFrom, datepickerTo;
 })(window)
 
-
 var Popup = (function(global){
    $('.gallery-item').magnificPopup({
      delegate: 'a', // child items selector, by clicking on it popup will open
@@ -96,7 +106,6 @@ var Popup = (function(global){
      },
    });
 })(window);
-
 
 var jsScrollpane = function(global){
 
@@ -161,14 +170,6 @@ var Diary = function(global){
   }
 }
 
-
-$(document).ready(function() {
-  myDiary = Diary();
-  myDiary.init();
-});
-
-
-
 var Popup = (function(){
   $('.js-open-popup').magnificPopup({
     items: {
@@ -178,12 +179,9 @@ var Popup = (function(){
   });
 })();
 
-
 var Embed = function(){
 
   function doEmbed(){
-
-    console.log('in');
 
     if (!document.getElementsByClassName) {
         // If IE8
@@ -236,18 +234,6 @@ var Embed = function(){
   }
 }
 
-$(document).ready(function(){
-  var myEmbed = Embed()
-  myEmbed.init();
-  renderFileUploaders();
-  //var fileBrowser = new FileChooser('.file-browser', {});
-  //var fileBrowser2 = new FileChooser('.file-browser-2', {});
-//  var fileBrowser3 = new FileChooser('.file-browser-three', {});
-  //var fileBrowser4 = new FileChooser('.file-browser-4', {});
-  var myForm = FormClone;
-  myForm.init();
-})
-
 var renderFileUploaders = function(){
    var browsers = document.querySelectorAll('.file-browser');
    var uploaders = [];
@@ -294,7 +280,13 @@ var FileChooser = function () {
             return ev.stopPropagation();
         });
         this.originalInput.addEventListener('change', function (ev) {
-            _this.setText(ev.target.value);
+           console.log(ev.target.files)
+           var str = '';
+           for (var i = 0; i < ev.target.files.length; i += 1) {
+             str += ev.target.files[i].name+ ', ';
+           }
+           str = str.slice(0, -2);
+           _this.setText(str);
         });
     };
     FileChooser.prototype.appendElements = function appendElements() {
@@ -324,6 +316,7 @@ var FileChooser = function () {
         var input = document.createElement('input');
         input.setAttribute('readonly', true);
         input.setAttribute('placeholder', placeholder);
+        input.setAttribute('multiple', 'multilple');
         input.classList.add('file-chooser-input');
         return input;
     };
@@ -335,20 +328,11 @@ var FileChooser = function () {
     return FileChooser;
 }();
 
-var ContactMap = (function(){
-
-
-
-})();
-
-
 var FormClone = function(global){
-
    function remove(e){
       $(this).parents(".form-block").remove();
       cloneIndex--;
    }
-
    function clone(e) {
       e.preventDefault();
 
@@ -395,3 +379,182 @@ var FormClone = function(global){
    }
 
 }(window);
+
+
+var Register = (function(global){
+
+    var LegalComponent = function() {
+
+      function init(){
+         container = $('[rel="js-choose-legal-type"]');
+         inputs = container.find('input');
+         target = $('[rel="js-show-legal-types"]');
+
+         $.each(inputs, function(i, elem){
+           $(elem).on('click', checkValue);
+         });
+      }
+
+      function checkValue(evt){
+
+         if(evt.currentTarget.value === 'yes'){
+            $(target).removeClass('form-block--hidden');
+            $(target).find('input').prop('disabled', false);
+
+            state.is_legal_type = true;
+         }
+         if(evt.currentTarget.value === 'no'){
+
+            $(target).addClass('form-block--hidden');
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('checked', false);
+
+            state.is_legal_type = false;
+            profitComp.clearFields();
+            profitComp.hideComp();
+         }
+      }
+
+      var container, inputs, target;
+
+      return {
+         init : init
+      }
+   }();
+
+   var ProfitComponent = function() {
+
+      function init(){
+         container = $('[rel="js-show-legal-types"]');
+         inputs = container.find('input');
+         target = $('[rel="js-show-profit-types"]');
+         target_children = target.find('input');
+
+         $.each(inputs, function(i, elem){
+           $(elem).on('click', checkValue);
+         });
+
+         $.each(target_children, function(i, elem){
+            $(elem).on('click', clearOtherOption.bind(this, target_children));
+            $(elem).on('keyup', clearNonProfitRadios.bind(this, target_children));
+         });
+      }
+
+      function checkValue(evt){
+
+         if(evt.currentTarget.value === 'yes'){
+            $(target).removeClass('form-block--hidden');
+            $(target).find('input').prop('disabled', false);
+
+            state.is_profit_type = true;
+         }
+
+         if(evt.currentTarget.value === 'no'){
+            $(target).addClass('form-block--hidden');
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('value', '');
+            $(target).find('input').prop('checked', false);
+
+
+
+            state.is_profit_type = false;
+         }
+      }
+
+      function clearFields(){
+         if(state.is_legal_type === false){
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('value', '');
+         }
+      }
+      function hideComp(){
+         $(target).addClass('form-block--hidden');
+      }
+
+      function clearNonProfitRadios(){
+         var inputs = arguments[0];
+         $.each(inputs, function(i, elem){
+            if(this.type === 'text'){
+               $(this).on('keyup', function(e){
+                  $.each(inputs, function(i, elem){
+                     if(this.type === 'radio'){
+                        $(elem).prop('checked', false);
+                     }
+
+                  })
+               })
+            }
+         })
+      }
+      function clearOtherOption(){
+         var inputs = arguments[0];
+         $.each(inputs, function(i, elem){
+            $(elem).prop('value', '');
+         })
+
+      }
+
+      var container, inputs, target, target_children
+
+      return {
+         init: init,
+         clearFields : clearFields,
+         hideComp : hideComp
+      }
+   }();
+
+   var ActionComponent = function() {
+      function init(){
+         container = $('[rel="js-choose-action-type"]');
+         inputs = container.find('input');
+         target = $('[rel="js-show-action-type"]');
+
+         $.each(inputs, function(i, elem){
+           $(elem).on('click', checkValue);
+         });
+      }
+      function checkValue(evt){
+
+         if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === true){
+            $(target).removeClass('form-block--hidden');
+            $(target).find('input').prop('disabled', false);
+
+            state.is_support_teams = true;
+
+         } else if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === false) {
+            $(target).addClass('form-block--hidden');
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('checked', false);
+
+            state.is_support_teams = false;
+         }
+
+      }
+      var container, inputs, target;
+      return {
+         init: init
+      }
+   }();
+
+   function init(){
+      legalComp = LegalComponent;
+      profitComp = ProfitComponent;
+      actionComp = ActionComponent;
+
+      legalComp.init();
+      profitComp.init();
+      actionComp.init();
+
+   }
+   state = {
+      is_legal_type : false,
+      is_profit_type : false,
+      is_support_teams : false
+   }
+   var state, legalComp, profitComp, actionComp
+
+   return {
+      init : init
+   }
+
+})(window)
