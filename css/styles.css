@@ -5198,6 +5198,18 @@ button {
 .l-register .register .l-fg6 .form-group--upload {
   margin-left: 0 !important; }
 
+.l-register .filters .form-group--floated:before, .l-register .filters .form-group--floated:after {
+  content: " ";
+  display: table; }
+.l-register .filters .form-group--floated:after {
+  clear: both; }
+.l-register .filters .form-group--floated > input {
+  float: left; }
+.l-register .filters .form-group--floated > label {
+  float: right;
+  margin-left: 5px;
+  line-height: 32px !important; }
+
 .l-contact .inline-list--socialmedia {
   margin-top: 20px; }
 .l-contact .contact-map {
@@ -8496,6 +8508,18 @@ input[type=checkbox], input[type=radio] {
 .form-inline > * {
   display: inline-block;
   vertical-align: middle; }
+
+.form-group--floated:before, .form-group--floated:after {
+  content: " ";
+  display: table; }
+.form-group--floated:after {
+  clear: both; }
+.form-group--floated > input {
+  float: left; }
+.form-group--floated > label {
+  float: right;
+  margin-left: 5px;
+  line-height: 32px !important; }
 
 .form-tooltip {
   font-size: 24px;
