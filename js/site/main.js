@@ -403,6 +403,7 @@ var Register = (function(global){
 
             state.is_legal_type = true;
          }
+
          if(evt.currentTarget.value === 'no'){
 
             $(target).addClass('form-block--hidden');
@@ -410,6 +411,7 @@ var Register = (function(global){
             $(target).find('input').prop('checked', false);
 
             state.is_legal_type = false;
+
             profitComp.clearFields();
             profitComp.hideComp();
          }
@@ -512,16 +514,19 @@ var Register = (function(global){
          $.each(inputs, function(i, elem){
            $(elem).on('click', checkValue);
          });
+        
       }
+
       function checkValue(evt){
 
          if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === true){
             $(target).removeClass('form-block--hidden');
             $(target).find('input').prop('disabled', false);
-
+            subCatComp.init(target)
             state.is_support_teams = true;
 
          } else if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === false) {
+
             $(target).addClass('form-block--hidden');
             $(target).find('input').prop('disabled', true);
             $(target).find('input').prop('checked', false);
@@ -534,12 +539,59 @@ var Register = (function(global){
       return {
          init: init
       }
+
+   }();
+
+   var SubCategoryFilters = function(){
+      function init(args) {
+
+        container = $(args);
+        target = $('[rel="js-show-category-types"]');
+        inputs = container.find(' > .form-group > input ');
+
+        $.each(inputs, function(i, elem){
+          $(elem).on('click', checkValue);
+        });        
+        
+      }
+      function checkValue(evt){
+
+         if(evt.currentTarget.value === 'show' && evt.currentTarget.checked === true){
+            var dataId = $(evt.currentTarget).attr('data-href');
+            $(dataId).removeClass('form-block--hidden');
+            $(dataId).addClass('is-shown');
+            $(dataId).find('input').prop('disabled', false);
+            //state.is_support_teams = true;
+
+         } else if(evt.currentTarget.value === 'show' && evt.currentTarget.checked === false) {
+            /*
+            $.each(inputs, function(i, elem){
+              if($(elem).hasClass('is-shown')){
+                $(this).addClass('form-block--hidden');
+              }
+            });
+            */                    
+            var dataId = $(evt.currentTarget).attr('data-href');
+            
+            $(dataId).addClass('form-block--hidden');
+            $(dataId).find('input').prop('disabled', true);
+            $(dataId).find('input').prop('checked', false);
+
+            //state.is_support_teams = false;
+         }
+
+      }      
+      var container, inputs, target, targetPool
+      return {
+        init : init
+      }
    }();
 
    function init(){
       legalComp = LegalComponent;
       profitComp = ProfitComponent;
       actionComp = ActionComponent;
+      subCatComp = SubCategoryFilters;
 
       legalComp.init();
       profitComp.init();
@@ -551,7 +603,7 @@ var Register = (function(global){
       is_profit_type : false,
       is_support_teams : false
    }
-   var state, legalComp, profitComp, actionComp
+   var state, legalComp, profitComp, actionComp, subCatComp;
 
    return {
       init : init
