@@ -8594,7 +8594,10 @@ input[type="radio"]:checked + label span {
   visibility: hidden !important;
   height: 0 !important;
   padding: 0 !important;
-  margin: 0 !important; }
+  margin: 0 !important;
+  position: absolute;
+  left: -9999px;
+  top: -9999px; }
 
 .syn-select {
   -webkit-appearance: none;
