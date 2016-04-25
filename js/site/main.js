@@ -610,3 +610,11 @@ var Register = (function(global){
    }
 
 })(window)
+
+
+var Close = (function(b) {
+  var close = document.querySelector('.alert-dismissible .close');
+  close.addEventListener('click', function(e){
+    e.currentTarget.display = 'none';
+  })
+}();
