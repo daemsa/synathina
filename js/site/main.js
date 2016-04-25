@@ -614,7 +614,9 @@ var Register = (function(global){
 
 var Close = (function(b) {
   var close = document.querySelector('.alert-dismissible .close');
-  close.addEventListener('click', function(e){
-    e.currentTarget.display = 'none';
-  })
+  if(close !== undefined){
+    close.addEventListener('click', function(e){
+      e.currentTarget.parentNode.style.display = 'none';    
+    });
+  }
 })();
