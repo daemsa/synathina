@@ -308,7 +308,7 @@ var FileChooser = function () {
         return _extends({}, FileChooser.getDefaults(), settings);
     };
     FileChooser.createWrapper = function createWrapper() {
-        var wrapper = document.createElement('form');
+        var wrapper = document.createElement('div');
         wrapper.classList.add('file-chooser');
         return wrapper;
     };
