@@ -617,4 +617,4 @@ var Close = (function(b) {
   close.addEventListener('click', function(e){
     e.currentTarget.display = 'none';
   })
-}();
+})();
