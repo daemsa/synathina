@@ -616,7 +616,6 @@ var Register = (function(global){
 var Close = (function(b) {
   var close = document.querySelector('.alert-dismissible .close');
   if(close !== undefined && close !== null){
-    alert();
     close.addEventListener('click', function(e){
       e.currentTarget.parentNode.style.display = 'none';    
     });
