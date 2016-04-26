@@ -399,7 +399,7 @@ var Register = (function(global){
 
          if(evt.currentTarget.value === 'yes'){
             $(target).removeClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', false);
+            $(target).find('input').prop('disabled', false);
 
             state.is_legal_type = true;
          }
@@ -407,7 +407,7 @@ var Register = (function(global){
          if(evt.currentTarget.value === 'no'){
 
             $(target).addClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('disabled', true);
             $(target).find('input').prop('checked', false);
 
             state.is_legal_type = false;
@@ -446,16 +446,16 @@ var Register = (function(global){
 
          if(evt.currentTarget.value === 'yes'){
             $(target).removeClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', false);
+            $(target).find('input').prop('disabled', false);
 
             state.is_profit_type = true;
          }
 
          if(evt.currentTarget.value === 'no'){
             $(target).addClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', true);
-            $(target).find('input').prop('value', '');
-            $(target).find('input').prop('checked', false);
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input[type="text"]').prop('value', '');
+            $(target).find('input[type="radio"]').prop('checked', false);
 
 
 
@@ -465,8 +465,8 @@ var Register = (function(global){
 
       function clearFields(){
          if(state.is_legal_type === false){
-            //$(target).find('input').prop('disabled', true);
-            $(target).find('input').prop('value', '');
+            $(target).find('input').prop('disabled', true);
+            $(target).find('input[type="text"]').prop('value', '');
          }
       }
       function hideComp(){
@@ -491,7 +491,8 @@ var Register = (function(global){
       function clearOtherOption(){
          var inputs = arguments[0];
          $.each(inputs, function(i, elem){
-            $(elem).prop('value', '');
+            if(elem.type=='text')
+              $(elem).prop('value', '');
          })
 
       }
@@ -521,14 +522,14 @@ var Register = (function(global){
 
          if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === true){
             $(target).removeClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', false);
+            $(target).find('input').prop('disabled', false);
             subCatComp.init(target)
             state.is_support_teams = true;
 
          } else if(evt.currentTarget.value === 'supporter' && evt.currentTarget.checked === false) {
 
             $(target).addClass('form-block--hidden');
-            //$(target).find('input').prop('disabled', true);
+            $(target).find('input').prop('disabled', true);
             $(target).find('input').prop('checked', false);
 
             state.is_support_teams = false;
@@ -560,7 +561,7 @@ var Register = (function(global){
             var dataId = $(evt.currentTarget).attr('data-href');
             $(dataId).removeClass('form-block--hidden');
             $(dataId).addClass('is-shown');
-            //$(dataId).find('input').prop('disabled', false);
+            $(dataId).find('input').prop('disabled', false);
             //state.is_support_teams = true;
 
          } else if(evt.currentTarget.value === 'show' && evt.currentTarget.checked === false) {
@@ -574,7 +575,7 @@ var Register = (function(global){
             var dataId = $(evt.currentTarget).attr('data-href');
             
             $(dataId).addClass('form-block--hidden');
-            //$(dataId).find('input').prop('disabled', true);
+            $(dataId).find('input').prop('disabled', true);
             $(dataId).find('input').prop('checked', false);
 
             //state.is_support_teams = false;
