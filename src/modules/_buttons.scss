@@ -54,7 +54,12 @@
    -webkit-backface-visibility: hidden;;
 }
 
-
+.btn--notrans {
+   &:hover {
+      background-color: transparent;
+      color: #000;
+   }
+}
 .btn--skewed--bottom:before {
    content: '';
    position: absolute;

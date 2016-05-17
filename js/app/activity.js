@@ -101,12 +101,13 @@ var Activities = (function(global) {
             content_img: data.content_img,
             logo: data.log,
             logo_sponsor: data.logo_sponsor,
-            logo_team: data.logo_team
+            logo_team: data.logo_team,
+            url : 'http://steficon-demo.eu/synathina'
          },
          icon : src
       });
      // TEMPLATE  INFO WINDOW
-     var contentString = '<div class="info"> <div class="info-title info-title--address">'+data.title+'</div> <div class="info-meta"><span class="info-address">'+data.address+'</span>, <span class="info-date">'+data.date+'</span></div> <div class="info-source">'+data.team_name+'</div> <div class="info-img"><img src="'+data.source+'""></div> <div class="info-description">'+data.content+'<a href="">/περισσότερα</a> </div> <div class="info-badge"> <div class="info-badge-item info-badge-item--sponsor-logo"> <i class="fill"></i> </div> <div class="info-badge-item info-badge-item--team-logo"> <i class="fill"></i> </div> <div class="info-badge-item info-badge-item--team-power"> <i class="fill"></i> </div> </div> </div>';
+     var contentString = '<div class="info"> <div class="info-title info-title--address">'+data.title+'</div> <div class="info-meta"><span class="info-address">'+data.address+'</span>, <span class="info-date">'+data.date+'</span></div> <div class="info-source">'+data.team_name+'</div> <div class="info-img"><img src="'+data.content_img+'""></div> <div class="info-description">'+data.content+'<a href="'+data.url+'">/περισσότερα</a> </div> <div class="info-badge"> <div class="info-badge-item info-badge-item--sponsor-logo"> <i class="fill"></i> </div> <div class="info-badge-item info-badge-item--team-logo"> <i class="fill"></i> </div> <div class="info-badge-item info-badge-item--team-power"> <i class="fill"></i> </div> </div> </div>';
 
       this.marker = marker;
 
@@ -126,13 +127,16 @@ var Activities = (function(global) {
 
       try {
          dat = JSON.parse(data.response);
+         //dat = data.response;
       } catch(e) {
           //JSON parse error, this is not json
-          alert('JSON parse error : '+e);
+          //alert('JSON parse error : '+e);
+          console.log(e)
           return false;
       }
 
       collection = JSON.parse(data.response);
+      console.log(collection.length);
       //setTimeout(func, delay)
       Categories.init(collection);
 
@@ -142,6 +146,7 @@ var Activities = (function(global) {
       for( var i = 0; i < coordinatesArray.length; i += 1) {
          var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
          // create activities with marker object as property
+         
          activities[i] = new Activity(map, coordinatesArray[i], collection.features[i]);
          activities[i].marker.setVisible(false);
       }
@@ -298,7 +303,8 @@ var Activities = (function(global) {
 
 
    function init() {
-      AjaxCall.get('js_collections/activities/array.json', populateActivities);
+      //AjaxCall.get('js_collections/activities/array.json', populateActivities);
+      AjaxCall.get('http://steficon-demo.eu/synathina/actions.php', populateActivities);
    }
 
    var res, collection, activities = [], markersArray = [], coordinatesArray, polygon, contentString, saFilter, saSlider, current_polygon, cachedMarkers = [], markerClusterer, categories;

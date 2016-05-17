@@ -244,7 +244,7 @@ var Areas = (function(global){
    }
   /**
    * BACKENDINFO: This JSON array describes overview details about each city's sector,
-   * on production this must me retuned from the webservice
+   * on production this must be retuned from the webservice
    */
   var Athens = [
     {
