@@ -24,6 +24,10 @@
   right:0;
   margin: auto;
 }
+.d3-slider-axis text {
+  font-size: 12px;
+  font-weight: bold;
+}
 .time-space {
    text-align: center;
 
@@ -40,6 +44,7 @@
       float: left;
       position: relative;
       width: 2vw;
+      display: none;
       @media(min-width: $screen-md){
         width: 1.079vw;
       }      

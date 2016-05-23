@@ -11,22 +11,27 @@
       activities.forEach(function (d) {
         d.dd = dateFormat.parse(d.marker.db_data.date);
         d.year = d3.time.year(d.dd).getFullYear();
+        d.month = d3.time.month(d.dd).getMonth()+1
       });
 
       dispatch = d3.dispatch('filter');
-      accessor = function(d){return d.year;};
+      accessor = function(d){return d.year};
       range = d3.extent(activities, accessor);
-
       if(Activities.yearRangeBuffer === null) {
 
         var today = new Date()
-        today = today.getFullYear();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0 WTF!!!
+        var yyyy = today.getFullYear();
+
         //range[0] = today
+        // + 1 year to make slider more usable
+        range[1] += 1;
         d3.select("div#slider3")
-          .call(d3.slider().axis(true).min(range[0]).max(range[1]).value([today, range[1]])
+          .call(d3.slider().axis(true).min(range[0]).max(range[1]).value([yyyy, range[1]])
           .on("slide",function(evt, value, activities){
               dispatch.filter(value);
-              hasRun = 1; //!!!!!
+              //hasRun = 1; //!!!!!
         }));
       } else {
 
@@ -87,38 +92,8 @@
         RECORDS = Filter.category_filters.category_entity;
 
         var filters = [];
-        /*
-        var checkAll = checkboxes[0];
 
-        checkAll.addEventListener('click', function(evt){
-           evt.stopPropagation();
-           evt.stopImmediatePropagation();
-
-           if(this.checked === false) {
-              for ( var i = 1; i < checkboxes.length; i++ ){
-                 checkboxes[i].checked = false;
-              }
-           }
-
-           if(this.checked === true){
-             for ( var i = 1; i < checkboxes.length; i++ ){
-                checkboxes[i].checked = true;
-                //EVT.emit('clickEmmit');
-             }
-           }
-
-        });
-        */
-        //console.log(filters.length)
         for ( var i = 1; i < checkboxes.length; i++ ){
-          /*
-            if(checkboxes[i].checked === false) {
-
-                filters.pop(parseInt(checkboxes[i].dataset.id));
-            } else if(checkboxes[i].checked === true) {
-                filters.push(parseInt(checkboxes[i].dataset.id));
-            }
-            */
             checkboxes[i].addEventListener('click', function(evt) {
               //hasRun = 1;
               //run = 'true';
@@ -137,34 +112,6 @@
         }
     }
 
-    function filterByCategory(filters, RECORDS) {
-
-
-      /*
-        if ($.inArray(evt.target.dataset.id, Activities.categoryIdArr) === -1) {
-            Activities.categoryIdArr.push(evt.target.dataset.id);
-        } else {
-            Activities.categoryIdArr.pop(Activities.categoryIdArr[evt.target.dataset.id]);
-        }
-          //Activities.makeCatFiltering(Activities.categoryIdArr);
-        Activities.setActivitiesVisibility(Activities.current_polygon, Activities.categoryIdArr);
-
-      console.log(activities);
-      var Arr = [];
-      var Brr = [];
-      var found = 0;
-      for (var i = 0; i < activities.length; i += 1 ) {
-        for (var z = 0; z < filters.length; z += 1 ) {
-          if(activities[i].marker.db_data.category_id === filters[z] ){
-            //Activities.setActivitiesVisibility(Activities.current_polygon );
-            //console.log(activities[i].marker.db_data.category_id)
-            Activites.filterActivities(Activities.yearRangeBuffer, filters);
-          }
-        }
-      }*/
-
-
-    }
 
     var accesor, range, activities, category_filters, input_filters = [], hasRun = 0;
     //EVT.on('init-filter', setupFilter);
@@ -173,7 +120,7 @@
       initSliderFilter :initSliderFilter,
       initCategoryFilters :initCategoryFilters,
       count : countFacts,
-      filterByCategory : filterByCategory,
+      //filterByCategory : filterByCategory,
       activities,
       category_filters,
       input_filters,

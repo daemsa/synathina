@@ -25,6 +25,7 @@ var Activities = (function(global) {
       //return catNew;
   }
   function contains2(needle) {
+     //INFO EDW FILTRARW
     // Per spec, the way to identify NaN is that it is not equal to itself
     var findNaN = needle !== needle;
     var indexOf;
@@ -50,6 +51,24 @@ var Activities = (function(global) {
 
     return indexOf.call(this, needle) > -1;
 };
+   function findIn(){
+      //console.log(arguments);
+      //console.log(obj_categories[y]+' === '+filter_array[x]);
+      filter_array = arguments[0];
+      obj_categories = arguments[1];
+
+      for( x = 0; x<filter_array.length; x += 1){
+
+            for( y = 0; y < obj_categories.length; y += 1){
+               //console.log(obj_categories[y]+' === '+filter_array[x]);
+               if(obj_categories[y] === filter_array[x]){
+                  return true;
+               }
+            }
+      }
+
+      var filter_array, obj_categories
+   }
    function checkActivityDate(a_date){
       var today = new Date();
       var a_day = new Date(a_date);
@@ -124,7 +143,6 @@ var Activities = (function(global) {
       console.log(myMap);
    }
    function populateActivities(data) {
-
       try {
          dat = JSON.parse(data.response);
          //dat = data.response;
@@ -132,13 +150,16 @@ var Activities = (function(global) {
           //JSON parse error, this is not json
           //alert('JSON parse error : '+e);
           console.log(e)
+          var test = eval( "(" + JSON.parse(data.response) + ")" );
+          //console.log(test);
           return false;
       }
 
       collection = JSON.parse(data.response);
-      console.log(collection.length);
+      console.log(collection)
+      //console.log(collection.length);
       //setTimeout(func, delay)
-      Categories.init(collection);
+
 
 
       coordinatesArray = createMarkersArray(collection);
@@ -146,14 +167,15 @@ var Activities = (function(global) {
       for( var i = 0; i < coordinatesArray.length; i += 1) {
          var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
          // create activities with marker object as property
-         
+
          activities[i] = new Activity(map, coordinatesArray[i], collection.features[i]);
          activities[i].marker.setVisible(false);
       }
 
       //markerClusterer = new MarkerClusterer(map, cachedMarkers, {});
       //markerClusterer.clearMarkers();
-
+      // INIT CATEGORIES
+      Categories.init(collection);
    }
 
    function refreshMap(markers) {
@@ -161,13 +183,15 @@ var Activities = (function(global) {
          markerClusterer.clearMarkers();
       }
       markerClusterer = new MarkerClusterer(map, markers, {});
+
    }
 
    function setActivitiesVisibility (){
-
+      var allMarkers = activities;
       Activities.current_polygon = arguments[0];
       polygon = arguments[0];
       cat_filter = arguments[1];
+      console.log(cat_filter)
       //Clusterer
       if(window.clusterer !== undefined){
         console.log('in')
@@ -176,17 +200,19 @@ var Activities = (function(global) {
       }
 
       window.category = [];
+      
       window.clusterer = new MarkerClusterer(map, [], {
         gridSize : 50,
-        maxZoom : 20
+        maxZoom : 20,
+        imagePath: 'https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'
       });
-
+      /**
       for (var i=0; i<arguments.length; i++){
         if (arguments[i] instanceof MarkerClusterer){
             //mc = arguments[i];
         }
       }
-
+      */
       /**
        * [if user clicks on polygon and already have used filtering, use the latter year ranges also for the next polygon]
        * @param  {[boolean]} Activities.is_filtered []
@@ -199,25 +225,27 @@ var Activities = (function(global) {
           filterActivities(Activities.yearRangeBuffer);
 
       } else {
-
         if(cat_filter !== undefined){
+           //console.log(arguments);
           Filter.run = true;
-
+            var allMarkers = [];
             for( var i = 0; i < coordinatesArray.length; i += 1) {
                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-               if( polygon.Contains(point)) {
+               if( polygon.Contains(point) ) {
+                  //needle = parseInt(activities[i].marker.db_data.category_id);
+                  //index = contains2.call(cat_filter, needle); // true
 
-                  needle = parseInt(activities[i].marker.db_data.category_id);
-                  index = contains2.call(cat_filter, needle); // true
-
-                  if(index || cat_filter.length == 0){
+                  index = findIn(cat_filter, activities[i].marker.db_data.category_id);
+                  if(index){
                       activities[i].marker.setVisible(true);
                       category.push(activities[i].marker);
+                      //HERE//
                   }else {
                      activities[i].marker.setVisible(false);
                   }
               }
             }
+            console.log(category.length);
             // pushing markers to cluster
             clusterer.clearMarkers();
             clusterer.addMarkers(category);
@@ -228,8 +256,11 @@ var Activities = (function(global) {
             for( var i = 0; i < coordinatesArray.length; i += 1) {
               var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
               if( polygon.Contains(point)) {
-                 activities[i].marker.setVisible(true)
+
+                 activities[i].marker.setVisible(true);
+                 checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
                  category.push(activities[i].marker);
+
               }
               else {
                  activities[i].marker.setVisible(false);
@@ -244,7 +275,7 @@ var Activities = (function(global) {
         }
 
         // threading with Category
-        Categories.createCategory();
+        //Categories.createCategory();
         // threading with Filter
         saFilter = Filter(activities);
         saFilter.initSliderFilter();
@@ -253,7 +284,12 @@ var Activities = (function(global) {
 
       }
    }
+   function checkSameLocation(a){
+      //console.log(a);
+   }
+   function createLocationSpace(a){
 
+   }
    function filterActivities(dates, filter) {
      Filter.run = true;
       var date_from = Math.floor(dates[0]);
@@ -289,6 +325,7 @@ var Activities = (function(global) {
    }
 
    function createMarkersArray(){
+      //console.log(arguments)
       InputObj = arguments[0];
 
       for(var i = 0; i < InputObj.features.length; i += 1){
@@ -309,7 +346,7 @@ var Activities = (function(global) {
 
    var res, collection, activities = [], markersArray = [], coordinatesArray, polygon, contentString, saFilter, saSlider, current_polygon, cachedMarkers = [], markerClusterer, categories;
 
-   var iconBase = 'img/markers/';
+   var iconBase = 'http://steficon-demo.eu/synathina/templates/synathina/img/markers/';
    var icons = {
      past: {
        icon: iconBase + 'marker_grey.png'

@@ -322,14 +322,14 @@ ul.context-menu-list li {
   width: 9px;
   height: 9px;
   background: #F8F8F8;
-  border: 1px solid #DDD;
+  border: 1px solid #ebebeb;
 }
 
 .diary .dragdealer .handle {
   position: absolute;
   width: 9px;
   height: 9px;
-  background: #C5C5C5;
+  //background: #C5C5C5;
 }
 
 .diary .dragdealer .disabled {
@@ -510,3 +510,116 @@ ul.context-menu-list li {
   width: 100%;
 }
 
+
+
+.diary {
+
+  ul {list-style-type: none;}
+  body {font-family: Verdana,sans-serif;}
+
+  .month {
+      padding: 70px 25px;
+      background: #1abc9c;
+      display: none;
+  }
+
+  .month ul {
+      margin: 0;
+      padding: 0;
+  }
+
+  .month ul li {
+      color: white;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+  }
+
+  .month .prev {
+      float: left;
+      padding-top: 10px;
+  }
+
+  .month .next {
+      float: right;
+      padding-top: 10px;
+  }
+
+  .weekdays {
+      margin: 0;
+      padding: 10px 0;
+      background-color: #ebebeb;
+
+  }
+
+  .weekdays li {
+      display: inline-block;
+      width: 13.6%;
+      color: #666;
+      text-align: center;
+      color: $blue-ele;
+      font-weight: bold;
+  }
+
+  .days {
+      //padding: 10px 0;
+      background: #eee;
+      margin: 0;
+      @include clearfix();
+      @include flexbox;
+      @include flex-flow(wrap);
+  }
+
+  .days li {
+      list-style-type: none;
+      display: inline-block;
+      float: left;
+      //width: 13.6%;
+      height: 81px;
+
+      text-align: right;
+      margin-bottom: 0px;
+      font-size:12px;
+      color: #777;
+      border-top: 1px solid #ccc;
+      position: relative;
+      padding: 10px;
+
+      @include flex-grow(1);
+      @include flex-shrink(0);
+      @include flex-basis(13.6%);
+      &:last-of-type{
+        @include flex-grow(0);
+        @include flex-shrink(0);
+        @include flex-basis(13.6%);        
+      }
+
+      + li {
+        border-right: 1px solid #ccc;
+      }
+      &:first-of-type{
+        border-right: 1px solid #ccc; 
+      }
+  }
+
+  .days li .active {
+      //padding: 5px;
+      background: #1abc9c;
+      color: white !important
+  }
+
+  /* Add media queries for smaller screens */
+  @media screen and (max-width:720px) {
+      .weekdays li, .days li {width: 13.1%;}
+  }
+
+  @media screen and (max-width: 420px) {
+      .weekdays li, .days li {width: 12.5%;}
+      .days li .active {padding: 2px;}
+  }
+
+  @media screen and (max-width: 290px) {
+      .weekdays li, .days li {width: 12.2%;}
+  }
+
+}

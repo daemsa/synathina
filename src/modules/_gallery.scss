@@ -21,7 +21,7 @@
    &-frame {
       @include clearfix;
    }
-
+   
    .slick-arrow {
       @include vertical-align;
       width: 25px;
@@ -80,7 +80,10 @@
 
 }
 
-
+.gallery--charts {
+   @include make-row(0);
+   margin-top: 42px;
+}
 .gallery--thumbnail {
    @include make-row(10px);
    .thumbnail > .fill {

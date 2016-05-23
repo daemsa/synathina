@@ -12,31 +12,8 @@ $(document).ready(function(){
 
   register = Register;
   register.init();
-  // charts
-  myChart1 = Chart1;
-  myChart1.init('.chart--1 .bar-value');
 
-  var ctx = document.getElementById("myChart2");
-  var myChart2 = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3]
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-  });
-  var myEmbed, myForm, myDiary, register, myChart1, myChart2;
+  var myEmbed, myForm, myDiary;
 })
 
 var Main = (function(global){
@@ -107,35 +84,13 @@ var Gallery = (function(global) {
    var gallery;
 })(window);
 
-var GalleryChart = (function(global){
-
-  gallery = $('.gallery--charts');
-  gallery.slick();
-
-  var gallery;
-})(window)
-
 var DateP = (function(global){
    //function init(){
    var datepickerFrom = $('[rel="js-datepicker-from"]');
    var datepickerTo = $('[rel="js-datepicker-to"]');
 
-   //$(datepickerFrom).datepicker();
-   //$(datepickerTo).datepicker();
-	 
-	$(datepickerFrom).datepicker({
-		 onSelect: function(dateText, inst) {
-			var form=document.querySelector("[rel='js-actions-form']");
-			form.submit();
-		 }
-	});
-
-	$(datepickerTo).datepicker({
-		 onSelect: function(dateText, inst) {
-			var form=document.querySelector("[rel='js-actions-form']");
-			form.submit();
-		 }
-	});	 
+   $(datepickerFrom).datepicker();
+   $(datepickerTo).datepicker();
 
    //}
    //var datepickerFrom, datepickerTo;
@@ -661,88 +616,8 @@ var Register = (function(global){
 var Close = (function(b) {
   var close = document.querySelector('.alert-dismissible .close');
   if(close !== undefined && close !== null){
-    //alert();
     close.addEventListener('click', function(e){
-      e.currentTarget.parentNode.style.display = 'none';
+      e.currentTarget.parentNode.style.display = 'none';    
     });
   }
 })();
-
-var Chart1 = function(global, $){
-  function animateHeight(obj){
-      $(obj).animate({
-        height : $(obj).attr('data-value')+'%'
-      }, 1000)    
-  }
-  function calculatePairs(){
-    pairs = $('[data-pair]');
-    var pairResult = [];
-    for(i = 1; i < pairs.length/bars.length+1; i += 1){
-      //pairResult[i] = $('[data-pair='+i+']')
-      var aPair = $('[data-pair='+i+']');
-      var aPairSum = sum(aPair);
-      if(max < aPairSum.result){
-        max = aPairSum.result
-      }
-
-      renderResult(aPairSum, max)
-    }
-  }
-  function renderGraph(){
-    var elems = $('[data-pair'); 
-    var tmpArr = [];
-    var maxValue = 0;
-    var maxElem;
-    var maxIndex = 0;
-    //console.log(elems)
-    elems.each(function(index, elem){
-      tmpArr.push({
-        id : elem.id.replace('input', 'graph'),
-        value : parseFloat(elem.dataset.value)
-      });
-      if(maxValue <= tmpArr[index].value){
-        maxValue = tmpArr[index].value;
-        maxElem = tmpArr[index].id;
-        maxIndex = index;
-      }          
-    });
-    //console.log(tmpArr)
-    $('#'+maxElem).attr('data-value', 100);
-    for ( i in tmpArr ){
-      $('#'+tmpArr[i].id).attr('data-value', (tmpArr[i].value/maxValue)*100)  
-    }
-  }
-  function renderResult(args, max){
-    $('[data-pair-sum='+args.selector+']').html(args.result);
-    $('.chart-overview-value').html(max+' δράσεις');
-    elems = $('[data-pair-percent]');
-  }
-  function sum(){
-    var exports = {};
-    args = arguments[0]
-    value1 = parseInt(args[0].dataset.value);
-    value2 = parseInt(args[1].dataset.value);
-    exports.result = value1+value2;
-    exports.selector = args[0].dataset.pair;
-
-    return exports
-  }
-
-  function init(args){
-    parent = $(args).closest('.chart');
-    bars = parent.find('[rel="js-bar"]');
-    barValues = $(args);
-    calculatePairs();
-    renderGraph();
-    barValues.each(function(index, el){
-        animateHeight($(el));
-    })
-    
-  }
-
-  var barValues, str, parent, bars, max = 0, results = []
-
-  return {
-    init : init
-  }
-}(window, jQuery)

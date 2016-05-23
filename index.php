@@ -1,4 +1,7 @@
 <?php include('functions/functions.php');?>
+<?php
+    header('Access-Control-Allow-Origin: *');
+?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -61,6 +64,7 @@
 <script src="js/vendor/imagesloaded.pkgd.min.js"></script>
 <script src="js/vendor/eventemitter2.js"></script>
 <script src="js/_plugins.js"></script>
+<!--script src="js/vendor/Chart.js"></script-->
 
 <?php if($homepage || $_REQUEST['tpl'] === 'homepage') { ?>
 
@@ -71,7 +75,8 @@
     <script src="js/vendor/crossfilter.min.js"></script>
     <script src="js/vendor/dc.min.js"></script>
     <script src="js/vendor/d3.slider.js"></script>
-    <script src=js/vendor/markerclusterer.js></script>
+    <!--script src=js/vendor/markerclusterer.js></script-->
+    <!--script type="text/javascript" src="https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer_compiled.js"></script-->
 
     <!-- Application -->
     <script src="js/app/filter.js"></script>
@@ -97,7 +102,7 @@
     <script type="text/javascript" src="js/vendor/jquery.magnific-popup.min.js"></script>
     <script type="text/javascript" src="js/vendor/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/vendor/jscrollpane.js"></script>
-
+    <script src="js/vendor/d3.min.js"></script>
     <script src="js/site/main.js"></script>
     <script src="js/ui.js"></script>
 

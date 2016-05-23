@@ -1,16 +1,33 @@
 var Categories = (function(global){
 
    function init(){
-      data = arguments[0];
+      //data = arguments[0];
       categoriesHTMLparent = document.querySelector("[rel*=js-create-categories]");
+      AjaxCall.get('http://steficon-demo.eu/synathina/categories_filters.php', func);
    }
+   function func(data){
+      try {
+         dat = JSON.parse(data.response);
+      } catch(e) {
+          //JSON parse error, this is not json
+          console.log(e)
+          var test = eval( "(" + JSON.parse(data.response) + ")" );
+          return false;
+      }
 
-   function createCategory(){
+      collection = JSON.parse(data.response);
+      //console.log(collection);
+
+      createCategory(collection);
+
+   }
+   function createCategory(data){
 
       if(categories_created) {
          return false;
       }
       var exports = {}
+      /**
       for( var i = 0; i < data.features.length; i += 1) {
 
          categories.push({
@@ -18,7 +35,15 @@ var Categories = (function(global){
             category_name : data.features[i].category_name,
          });
       }
+      */
+      //console.log(data);
 
+      for (var i = 0; i < data.length; i += 1) {
+         categories.push({
+            category_id : parseInt(data[i].category.id),
+            category_name : data[i].category.name
+         });
+      }
       // append categories in DOM
       elements = renderCategory(uniqueCategory(categories));
       categories = uniqueCategory(categories);
@@ -26,11 +51,12 @@ var Categories = (function(global){
       exports.category_entity = categories;
       elements.length = 0;
       Filter.category_filters = exports;
+
    }
 
    function renderCategory(cat){
       categoriesHTMLparent.querySelector('form').insertAdjacentHTML('beforeend',
-         '<div class="form-group" > <input id="catAll" data-id="catAll" type="checkbox"> <label for="catAll" class="label-horizontal">Check All</label> </div>'
+         '<div class="form-group" style="visibility:hidden" > <input id="catAll" data-id="catAll" type="checkbox"> <label for="catAll" class="label-horizontal">Check All</label> </div>'
       )
       for( var i = 0; i < cat.length; i ++){
          var categoriesTPL = '<div class="form-group" > <input id="cat'+cat[i].category_id+'" data-id="'+cat[i].category_id+'" type="checkbox"> <label for="cat'+cat[i].category_id+'" class="label-horizontal">'+cat[i].category_name+'</label> </div>';

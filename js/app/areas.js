@@ -56,7 +56,6 @@ var Areas = (function(global){
           myPolygon.addListener('click', function(e){
             // reset clusterer
 
-
             var pt = myPolygon.getCenter();
             map.setZoom(14);
             map.panTo( { lat: pt.lat(), lng: pt.lng() } );
@@ -85,7 +84,7 @@ var Areas = (function(global){
             }
             // triggers Cross Object event binded functions
             EVT.emit('show-cross');
-            EVT.emit('send-polygon-details', this.details)
+            EVT.emit('send-polygon-details', this)
           });
 
           myPolygon.addListener('mouseover', function(evt){
@@ -116,7 +115,7 @@ var Areas = (function(global){
             }
             // triggers Cross Object event binded functions
             EVT.emit('show-cross');
-            EVT.emit('send-polygon-details', this.details)
+            EVT.emit('send-polygon-details', this)
           });
 
           myPolygon.addListener('mouseout', function(evt){
@@ -236,12 +235,36 @@ var Areas = (function(global){
         init : init
       }
    }
+   function populateAreas(data) {
+
+      try {
+         //console.log(data.response)
+         dat = JSON.parse(data.response);
+      } catch(e) {
+          //JSON parse error, this is not json
+          //alert('JSON parse error : '+e);
+          console.log(e)
+          return false;
+      }
+
+      collection = JSON.parse(data.response);
+      console.log(collection.length);
+
+      for( var i = 0; i < collection.length; i += 1) {
+         initPolygons(collection[i], collection[i].styles)
+      }
+   }
 
    function initAreas() {
+      AjaxCall.get('http://steficon-demo.eu/synathina/areas.php',  populateAreas);
+      /**
       for( var i = 0; i < Athens.length; i += 1) {
         initPolygons(Athens[i], Athens[i].styles)
       }
+      */
+
    }
+
   /**
    * BACKENDINFO: This JSON array describes overview details about each city's sector,
    * on production this must be retuned from the webservice
@@ -337,6 +360,7 @@ var Areas = (function(global){
          fillOpacity: 0.5
       }
    },
+
    {
      details : {
       name : 'e_diamerisma',
@@ -354,6 +378,25 @@ var Areas = (function(global){
         fillColor: '#dd9e58',
         fillOpacity: 0.5
      }
+   },
+
+    {
+      details : {
+        name : 'd_diamerisma',
+        id : '7',
+        title : '<strong>4o</strong> Διαμέρισμα',
+        population : '<strong class=\"cross-side-title\">4<sup>oς</sup></strong> <br> πληθυσμός',
+        teams : '49 ομάδες',
+        activities: '1122'
+      },
+      kmlPath  : 'js_collections/maps/4o_Diamerisma.kml',
+      styles : {
+         strokeColor: '#24c2e9',
+         strokeOpacity: 1,
+         strokeWeight: 0,
+         fillColor: '#24c2e9',
+         fillOpacity: 0.5
+      }
    }
   ];
 
