@@ -364,16 +364,47 @@ $(document).ready(function (){
 		}
 		if($('#box2').is(':checked')){
 			var donations=0;
+			var sub_donations=0;
 			$('input', $('.registration-donations')).each(function () {
 				//console.log($(this)); //log every element found to console output
 				if($(this).is(':checked')){
+					
 					donations=1;
+					
+					if( $('#donation-1').is(':checked') || $('#donation-16').is(':checked') ) {
+						
+						if ( $('#donation-1').is(':checked') ) {
+							
+							$('input', $('#subcat1')).each(function () {
+								if($(this).is(':checked')){
+									sub_donations=1;
+								}
+							});
+							
+						} else if  ( $('#donation-16').is(':checked') ) {
+							
+							$('input', $('#subcat2')).each(function () {
+								if($(this).is(':checked')){
+									sub_donations=1;
+								}
+							});
+						
+						}
+						
+					}
 				}
 			});
 
-			if(donations==0){
-				alert('Συμπληρώστε τουλαχιστον μία προσφορά');
-				return false;
+			if( donations==0 || sub_donations==0 ){
+				if(donations==0) {
+					alert('Συμπληρώστε τουλαχιστον μία προσφορά');
+					return false;
+				}
+				
+				if(sub_donations==0){
+					alert('Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής');
+					return false;
+				}
 			}
 		}
 		if($('#box8').is(':checked')||$('#box9').is(':checked')){
