@@ -111,6 +111,10 @@ foreach($teams_data as $team_data){
 						 <input id="box41" type="radio" name="jform[team_or_org]" value="12" <?=($team_or_org==12?'checked="checked"':'')?> disabled>
 						 <label for="box41" class="label-horizontal">ΕΙΜΑΙ ΕΠΙΧΕΙΡΙΣΗ/ΕΤΑΙΡΕΙΑ</label>
 					</div>
+                    <div class="form-group">
+						 <input id="box41" type="radio" name="jform[team_or_org]" value="13" <?=($team_or_org==13?'checked="checked"':'')?> disabled>
+						 <label for="box41" class="label-horizontal">ΕΙΜΑΙ ΙΔΙΩΤΗΣ/ΔΗΜΟΤΗΣ</label>
+					</div>
 				</div>
 				<div class="form-inline l-fg6">
 					<div class="form-group">
