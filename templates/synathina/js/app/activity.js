@@ -100,7 +100,7 @@ var Activities = (function(global) {
    }	
 	 function stegiText(myArr){
 		 titlesArray = createTitlesArray(myArr);
-		 var synathina_text='<div style="overflow:auto; background-color:#FFF"><div class="info info-stegi-container"><h3>Δράσεις που πραγματοποιούνται στη στέγη του συνΑθηνά</h3>';
+		 var synathina_text='<div style="overflow:auto; background-color:#FFF"><div class="info info-stegi-container"><h3>Δράσεις που πραγματοποιούνται στη στέγη του συνΑθηνά</h3><img src="/templates/synathina/images/stegi-pin-image.jpg"/>';
 			for( var i = 0; i < titlesArray.length; i += 1) {
 				var synathina_text=synathina_text+'<div class="info-title-stegi info-title--address"><a href="'+titlesArray[i].url+'">'+titlesArray[i].title+'</a><div class="info-meta"> <span class="info-date">'+titlesArray[i].dates+'</span></div><div class="info-source"><a href="'+titlesArray[i].team_url+'">'+titlesArray[i].team_name+'</a></div></div>';
 			}			
