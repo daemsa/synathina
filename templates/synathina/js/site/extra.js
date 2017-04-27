@@ -357,7 +357,7 @@ $(document).ready(function (){
 				return false;		
 			}
 		} 
-		if($('#box3').is(':checked')||$('#box4').is(':checked')||$('#box41').is(':checked')){
+		if($('#box3').is(':checked')||$('#box4').is(':checked')||$('#box41').is(':checked')||$('#box42').is(':checked')){
 		}else{
 			alert('Συμπληρώστε τύπο ομάδας');
 			return false;
