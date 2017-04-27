@@ -133,6 +133,10 @@ $params_editor = array( 'smilies'=> '0' ,
 							 <input id="box41" type="radio" name="jform[team_or_org]" value="12">
 							 <label for="box41" class="label-horizontal">ΕΙΜΑΙ ΕΠΙΧΕΙΡΙΣΗ/ΕΤΑΙΡΕΙΑ</label>
 						</div>
+                        <div class="form-group">
+							 <input id="box42" type="radio" name="jform[team_or_org]" value="13">
+							 <label for="box42" class="label-horizontal">ΕΙΜΑΙ ΙΔΙΩΤΗΣ/ΔΗΜΟΤΗΣ</label>
+						</div>
 					</div>
 					<div class="form-inline l-fg6">
 						<div class="form-group">
