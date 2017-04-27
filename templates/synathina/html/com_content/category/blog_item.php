@@ -73,10 +73,13 @@ if($note=='synathina'){
 	for($y=2013; $y<=date('Y'); $y++){
 		$slider_2_all_teams+=${'slider_2_'.$y};
 	}
-	$replace_array=array($slider_1_all,$slider_2_all_teams);
-	$replace_array1=array('{total_actions}','{total_teams}');
+	
+	$total_donators = donators_count();
+	
+	$replace_array=array($slider_1_all,$slider_2_all_teams,$total_donators);
+	$replace_array1=array('{total_actions}','{total_teams}','{total_donators}');
 ?>				
-				<?php echo str_replace($replace_array1,$replace_array,$this->item->introtext); ?>
+	<?php echo str_replace($replace_array1,$replace_array,$this->item->introtext); ?>
 		 </div>
 <?php
 	if($this->item->counter==$this->item->total){

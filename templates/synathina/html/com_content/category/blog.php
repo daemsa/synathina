@@ -42,6 +42,17 @@ function teams_count2($year){
 	return $num_rows;
 }
 
+function donators_count() {
+	$db = JFactory::getDBO();
+	$query= "SELECT t.id , t.name
+			FROM #__teams AS t
+			INNER JOIN #__users AS u ON u.id=t.user_id
+			WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1";
+	$db->setQuery($query);
+	$db->execute();
+	return $db->getNumRows();
+}
+
 function count_actions_1($year){
 	$db = JFactory::getDBO();
 	$where='';
