@@ -191,10 +191,9 @@ var Activities = (function(global) {
         //cachedMarkers.push(marker);
         //var markerCluster = new MarkerClusterer(map, cachedMarkers);
    }
-   function showActivities(polygon) {
-      myMap = polygon.getMap();
-      console.log(myMap);
-   }
+   //function showActivities(polygon) {
+     // myMap = polygon.getMap();
+   //}
    function populateActivities(data) {
       try {
          dat = JSON.parse(data.response);
@@ -209,11 +208,9 @@ var Activities = (function(global) {
       }
 
       collection = JSON.parse(data.response);
-      console.log(collection)
-      //console.log(collection.length);
+      console.log(collection);
+      
       //setTimeout(func, delay)
-
-
 
       coordinatesArray = createMarkersArray(collection);
 
@@ -229,28 +226,55 @@ var Activities = (function(global) {
       //markerClusterer.clearMarkers();
       // INIT CATEGORIES
       Categories.init(collection);
+	  console.log("function->populateActivities");
+	  showActivitiesOnInit();
    }
 
-   function refreshMap(markers) {
-      if (markerClusterer) {
-         markerClusterer.clearMarkers();
-      }
-      markerClusterer = new MarkerClusterer(map, markers, {});
-
-   }
+   //function refreshMap(markers) {
+      //if (markerClusterer) {
+         //markerClusterer.clearMarkers();
+      //}
+      //markerClusterer = new MarkerClusterer(map, markers, {});
+   //}
+   
+   function showActivitiesOnInit() { 
+		console.log("function->showActivitiesOnInit");
+		//console.log(coordinatesArray);
+		
+		var markers = coordinatesArray.map(function(location, i) {
+          return new google.maps.Marker({
+			icon: 'http://www.synathina.gr/templates/synathina/img/markers/marker_orange.png',
+            position: location
+          });
+        });
+	
+		window.markerCluster = new MarkerClusterer(map, markers,	{
+			imagePath: 'http://www.synathina.gr/images/template/m',
+			maxZoom: 17
+			}
+		);
+		
+  	}
 
    function setActivitiesVisibility (){
+	  console.log("function->setActivitiesVisibility");
       var allMarkers = activities;
       Activities.current_polygon = arguments[0];
       polygon = arguments[0];
       cat_filter = arguments[1];
-      //console.log(cat_filter)
-      //Clusterer
+      //console.log(cat_filter);
+	  
+	  if(window.markerCluster !== undefined){
+       	window.markerCluster.clearMarkers();
+      }
+      
+	  //Clusterer
       if(window.clusterer !== undefined){
-        //console.log('in')
         window.category.length=0;
         window.clusterer.clearMarkers();
       }
+	  
+	  
 
       window.category = [];
 
@@ -270,7 +294,7 @@ var Activities = (function(global) {
             activities[i].marker.setVisible(false)
           }
           filterActivities(Activities.yearRangeBuffer);
-
+			
       } else {
 				//dennis additions
 				var thematic_check_exists=0;
@@ -282,22 +306,18 @@ var Activities = (function(global) {
 				//end of dennis additions
 				
         if(cat_filter !== undefined && thematic_check_exists==1){
-					console.log('dennis');
-           //console.log(arguments);
-          Filter.run = true;
+			console.log('dennis');
+          	Filter.run = true;
             var allMarkers = [];
             for( var i = 0; i < coordinatesArray.length; i += 1) {
                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
                if( polygon.Contains(point) ) {
-                  //needle = parseInt(activities[i].marker.db_data.category_id);
-                  //index = contains2.call(cat_filter, needle); // true
-
                   index = findIn(cat_filter, activities[i].marker.db_data.category_id);
                   if(index){
                       activities[i].marker.setVisible(true);
                       category.push(activities[i].marker);
                       //HERE//
-                  }else {
+                  } else {
                      activities[i].marker.setVisible(false);
                   }
               }
@@ -307,9 +327,9 @@ var Activities = (function(global) {
             clusterer.clearMarkers();
             clusterer.addMarkers(category);
             category.length=0;
-
+			
         } else {
-
+			
             for( var i = 0; i < coordinatesArray.length; i += 1) {
               var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
               if( polygon.Contains(point)) {
@@ -317,9 +337,10 @@ var Activities = (function(global) {
                  activities[i].marker.setVisible(true);
                  checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
                  category.push(activities[i].marker);
-
+				 
               }
               else {
+				 
                  activities[i].marker.setVisible(false);
               }
             }
@@ -327,8 +348,6 @@ var Activities = (function(global) {
             clusterer.clearMarkers();
             clusterer.addMarkers(category);
             category.length=0;
-
-
         }
 
         // threading with Category
@@ -422,8 +441,7 @@ var Activities = (function(global) {
    function init() {
       //AjaxCall.get('js_collections/activities/array.json', populateActivities);
       AjaxCall.get('http://www.synathina.gr/actions.php', populateActivities);
-			window.synathina_var=synathina('http://www.synathina.gr/actions_stegi.php');
-			//console.log('dennis');
+	  window.synathina_var=synathina('http://www.synathina.gr/actions_stegi.php');
    }
 
 
@@ -440,14 +458,13 @@ var Activities = (function(global) {
    };
 
    global.EVT.on('init', init);
-	 //global.EVT.on('init1', init1);
 
    // threading with Area
-   global.EVT.on('show-activities', setActivitiesVisibility);
-
+   //global.EVT.on('show-activities', setActivitiesVisibility);
+   //global.EVT.on('init', setActivitiesVisibility);
+   
    return {
       init : init,
-			//init1 : init1,
       filterActivities : filterActivities,
       setActivitiesVisibility : setActivitiesVisibility,
       current_polygon : current_polygon,
