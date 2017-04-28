@@ -135,25 +135,25 @@ var Activities = (function(global) {
             id: data.id,
             is_featured: data.is_featured,
             slug: data.slug,
-						url: data.url,
-						team_url: data.team_url,
+			url: data.url,
+			team_url: data.team_url,
             category_id: data.category_id,
             category_name : data.category_name,
             team_id: data.team_id,
-						action_id: data.action_id,
+			action_id: data.action_id,
             team_name: data.team_name,
             team_members: data.team_members,
             sponsor_title: data.sponsor_title,
             date: data.date,
-						date_end: data.date_end,
-						dates: data.dates,
+			date_end: data.date_end,
+			dates: data.dates,
             title: data.title,
             content: data.content,
             content_img: data.content_img,
             logo: data.log,
             logo_sponsor: data.logo_sponsor,
             logo_team: data.logo_team,
-						coordinates : data.coordinates
+			coordinates : data.coordinates
          },
          icon : src
       });
@@ -208,11 +208,24 @@ var Activities = (function(global) {
       }
 
       collection = JSON.parse(data.response);
-      console.log(collection);
+      //console.log(collection);
       
       //setTimeout(func, delay)
 
       coordinatesArray = createMarkersArray(collection);
+	  
+	  for ( var i = 0; i < 10; i++) {
+		  var currentRow = coordinatesArray[i];
+		  
+		  for ( var j = 0; j < coordinatesArray.length; j++) {
+			  if (coordinatesArray[j].lat != '37.980522' && coordinatesArray[j].lng != '23.726839' && currentRow.lat == coordinatesArray[j].lat && currentRow.lng == coordinatesArray[j].lng) {
+				  //console.log(coordinatesArray[j]);
+				  coordinatesArray[j].lat = coordinatesArray[j].lat + (Math.random() -.5) / 1500;
+				  coordinatesArray[j].lng = coordinatesArray[j].lng + (Math.random() -.5) / 1500;
+				  //console.log(coordinatesArray[j]);
+				}
+		  }
+	  }
 
       for( var i = 0; i < coordinatesArray.length; i += 1) {
          var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
@@ -264,6 +277,7 @@ var Activities = (function(global) {
       cat_filter = arguments[1];
       //console.log(cat_filter);
 	  
+	  //clear all markers from init markerCluster created from the above function
 	  if(window.markerCluster !== undefined){
        	window.markerCluster.clearMarkers();
       }
@@ -274,8 +288,6 @@ var Activities = (function(global) {
         window.clusterer.clearMarkers();
       }
 	  
-	  
-
       window.category = [];
 
       window.clusterer = new MarkerClusterer(map, [], {
@@ -309,7 +321,8 @@ var Activities = (function(global) {
 			console.log('dennis');
           	Filter.run = true;
             var allMarkers = [];
-            for( var i = 0; i < coordinatesArray.length; i += 1) {
+            for( var i = 0; i < coordinatesArray.length; i += 1) {			
+				
                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
                if( polygon.Contains(point) ) {
                   index = findIn(cat_filter, activities[i].marker.db_data.category_id);
@@ -331,16 +344,15 @@ var Activities = (function(global) {
         } else {
 			
             for( var i = 0; i < coordinatesArray.length; i += 1) {
-              var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+              
+			  var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+			 
               if( polygon.Contains(point)) {
-
                  activities[i].marker.setVisible(true);
                  checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
                  category.push(activities[i].marker);
-				 
               }
               else {
-				 
                  activities[i].marker.setVisible(false);
               }
             }
@@ -412,6 +424,7 @@ var Activities = (function(global) {
             lng : InputObj.features[i].coordinates[1],
          });
       }
+	  
       return markersArray;
    }
 	 
