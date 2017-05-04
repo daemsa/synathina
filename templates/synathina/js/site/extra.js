@@ -724,3 +724,7 @@ function delete_file_confirmation(user_id,file_id,file_path,abspath) {
 		return false;
 	}
 }
+
+$('.mfp-close').click(function(){
+	$('.overlay').css('display','none');
+});

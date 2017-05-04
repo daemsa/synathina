@@ -134,6 +134,20 @@ $note = $db->loadResult();
 </head>
 
 <body class="">
+<?php if ( !isset($_COOKIE['video-overlay']) ) : ?>
+    <div class="overlay">
+        <div class="overlay-container">
+            <div class="video-player">
+                <div class="iframe-scaler">
+                    <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+                    <jdoc:include type="modules" name="video-overlay" style="none" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <?php setcookie('video-overlay', '1', time() + (86400 * 365), "/"); ?>
+<?php endif; ?>
 <header class="l-header">
 	<div class="hamburger hamburger--squeeze pull-right <?=($homepage&&!$mobile_detect->isMobile()?'is-active':'')?>" rel="js-toggle-menu">
 	 <div class="hamburger-box ">

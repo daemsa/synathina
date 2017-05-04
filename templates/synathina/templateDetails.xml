@@ -40,6 +40,7 @@
 		<position>toolkits</position>
 		<position>slider</position>
 		<position>opencall</position>
+		<position>video-overlay</position>
 	</positions>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.tpl_synathina.ini</language>

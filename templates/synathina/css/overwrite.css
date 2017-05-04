@@ -1391,9 +1391,76 @@ ul.graph {
 width:5%;
 }
 
-
-
-
 .info{
  height:550px;
 }
+
+.overlay {
+	top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    outline: none !important;
+	background-color: rgba(0,0,0,0.8);
+	z-index: 2000;
+}
+
+.overlay-container {
+	padding-top: 40px;
+    padding-bottom: 40px;
+	text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+	top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.overlay-container:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.video-player {
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+	line-height: 0;
+    width: 100%;
+	max-width: 853px;
+}
+
+.video-player .iframe-scaler {
+	width: 100%;
+    height: 0;
+    overflow: hidden;
+    padding-top: 56.25%;
+}
+
+.video-player .mfp-close {
+	top: -40px;
+    text-align: right;
+    width: 100%;
+	color: #FFF;
+}
+
+.video-player p {
+	margin: 0;
+	padding: 0;
+}
+
+.video-player iframe {
+	position: absolute;
+	display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: #000;
+}
+
