@@ -86,17 +86,17 @@ var Activities = (function(global) {
    }
 	 
    function synathina(url) {
-			$.ajax({
-					type: 'GET', 
-					url: url,
-					async: false,
-					dataType: 'json',
-					success: function(data) {
-					}
-			}).done(function(data, statusText, resObject) {
-					 synathina_text=stegiText(data);
-			});
-		 return synathina_text;
+		$.ajax({
+				type: 'GET', 
+				url: url,
+				async: false,
+				dataType: 'json',
+				success: function(data) {
+				}
+		}).done(function(data, statusText, resObject) {
+				 synathina_text=stegiText(data);
+		});
+	 return synathina_text;
    }	
 	 function stegiText(myArr){
 		 titlesArray = createTitlesArray(myArr);
@@ -220,8 +220,8 @@ var Activities = (function(global) {
 		  for ( var j = 0; j < coordinatesArray.length; j++) {
 			  if (coordinatesArray[j].lat != '37.980522' && coordinatesArray[j].lng != '23.726839' && currentRow.lat == coordinatesArray[j].lat && currentRow.lng == coordinatesArray[j].lng) {
 				  //console.log(coordinatesArray[j]);
-				  coordinatesArray[j].lat = coordinatesArray[j].lat + (Math.random() -.5) / 1500;
-				  coordinatesArray[j].lng = coordinatesArray[j].lng + (Math.random() -.5) / 1500;
+				 coordinatesArray[j].lat = coordinatesArray[j].lat + (Math.random() -.5) / 1500;
+				 coordinatesArray[j].lng = coordinatesArray[j].lng + (Math.random() -.5) / 1500;
 				  //console.log(coordinatesArray[j]);
 				}
 		  }
@@ -251,22 +251,23 @@ var Activities = (function(global) {
    //}
    
    function showActivitiesOnInit() { 
+
 		console.log("function->showActivitiesOnInit");
-		//console.log(coordinatesArray);
 		
-		var markers = coordinatesArray.map(function(location, i) {
-          return new google.maps.Marker({
-			icon: 'http://www.synathina.gr/templates/synathina/img/markers/marker_orange.png',
-            position: location
-          });
-        });
+		var markers=[];
 	
+		for( var i = 0; i < coordinatesArray.length; i += 1) {
+              activities[i].marker.setVisible(true);
+			  markers.push(activities[i].marker);
+        }
+		
 		window.markerCluster = new MarkerClusterer(map, markers,	{
-			imagePath: 'http://www.synathina.gr/images/template/m',
-			maxZoom: 17
+			gridSize : 50,
+			maxZoom : 14,
+			imagePath: 'http://www.synathina.gr/images/template/m'
 			}
 		);
-		
+				
   	}
 
    function setActivitiesVisibility (){

@@ -17,7 +17,7 @@
         center: {lat: 37.9908372, lng: 23.7383394}, 
         zoom: zoom,		
 		minZoom: 11,
-		maxZoom: 21,
+		maxZoom: 17,
         mapTypeControl: true,
         styles : styledArray
       }); 
