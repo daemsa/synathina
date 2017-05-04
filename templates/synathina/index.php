@@ -139,7 +139,7 @@ $note = $db->loadResult();
         <div class="overlay-container">
             <div class="video-player">
                 <div class="iframe-scaler">
-                    <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+                    <button type="button" class="mfp-close">×</button>
                     <jdoc:include type="modules" name="video-overlay" style="none" />
                 </div>
             </div>
