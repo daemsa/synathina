@@ -10,10 +10,12 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 ?>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <form action="<?php echo JRoute::_('index.php?option=com_support&layout=edit&id=' . (int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 	<div class="form-horizontal">
         <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_SUPPORT_TYPE_DETAILS'); ?></legend>
+        	<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+        	<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details',  JText::_('COM_SUPPORT_TYPE_DETAILS')); ?>
             <div class="row-fluid">
                 <div class="span6">
                     <?php foreach ($this->form->getFieldset() as $field): ?>
@@ -24,6 +26,8 @@ defined('_JEXEC') or die('Restricted Access');
                     <?php endforeach; ?>
                 </div>
             </div>
+            <?php echo JHtml::_('bootstrap.endTab'); ?>
+			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
         </fieldset>
     </div>
     <input type="hidden" name="task" value="support.edit" />
