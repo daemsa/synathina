@@ -389,8 +389,10 @@ $(document).ready(function (){
 								}
 							});
 						
-						}
+						} 
 						
+					} else if ( !$('#donation-1').is(':checked') && !$('#donation-16').is(':checked') ) {
+						sub_donations=1;
 					}
 				}
 			});
