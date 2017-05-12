@@ -43,15 +43,11 @@ require_once JPATH_BASE . '/includes/framework.php';
 // Set profiler start time and memory usage and mark afterLoad in the profiler.
 JDEBUG ? $_PROFILER->setStart($startTime, $startMem)->mark('afterLoad') : null;
 date_default_timezone_set('Europe/Athens');
-//get lang variables
-$lang=@$_REQUEST['lang'];
-if($lang=='en'){
-}else{
-	$lang='el';
-}
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
+$doc   = JFactory::getDocument();
+$lang  = $doc->language;
 
 $db = JFactory::getDbo();
 $query = "SELECT * FROM #__team_activities WHERE published=1 ";
@@ -64,10 +60,10 @@ foreach($activities as $activity){
 
 $date_now=date('Y-m-d').' 00:00:00';
 
-$query = "SELECT t.name AS tname,t.alias AS talias, t.logo AS tlogo, a.*, aa.address AS aaddress, aa.activities AS aactivities, aa.action_date_start AS aaction_date_start,aa.action_date_end AS aaction_date_end, aa.lat AS alat,aa.lng AS alng 
-					FROM #__actions AS a 
-					INNER JOIN #__actions AS aa ON aa.action_id=a.id 
-					INNER JOIN #__teams AS t ON t.id=a.team_id 
+$query = "SELECT t.name AS tname,t.alias AS talias, t.logo AS tlogo, a.*, aa.address AS aaddress, aa.activities AS aactivities, aa.action_date_start AS aaction_date_start,aa.action_date_end AS aaction_date_end, aa.lat AS alat,aa.lng AS alng
+					FROM #__actions AS a
+					INNER JOIN #__actions AS aa ON aa.action_id=a.id
+					INNER JOIN #__teams AS t ON t.id=a.team_id
 					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0 ORDER BY a.id DESC";
 $db->setQuery($query);
 $actions = $db->loadObjectList();
@@ -79,17 +75,17 @@ foreach($actions as $action){
 	$partners=explode(',',$action->partners);
 	$partners_array=array_filter($partners);
 	if(count($partners_array)>0){
-		if($lang=='en'){
+		if($lang=='en-gb'){
 			$members='members';
 		}else{
 			$members='μέλη';
 		}
 	}else{
-		if($lang=='en'){
+		if($lang=='en-gb'){
 			$members='member';
 		}else{
 			$members='μέλος';
-		}		
+		}
 	}
 	$sponsors_array=@explode(',',$action->supporters);
 	$sponsor_id = @reset($sponsors_array);
@@ -121,7 +117,7 @@ foreach($actions as $action){
 	}
 	if($action->alng==''){
 		$action->alng=0;
-	}	
+	}
 	if($i%2==0){
 		$cat=1;
 	}else{
@@ -135,13 +131,18 @@ foreach($actions as $action){
 	$date_array_end=explode(' ',$action->aaction_date_end);
 	$date_array_end1=explode('-',$date_array_end[0]);
 	$time_array_end=explode(':',$date_array_end[1]);
-	$new_end_date=$date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0].', '.$time_array_end[0].':'.$time_array_end[1];	
+	$new_end_date=$date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0].', '.$time_array_end[0].':'.$time_array_end[1];
 	if($date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0] == $date_array_start1[2].'-'.$date_array_start1[1].'-'.$date_array_start1[0]){
 		$dates=$date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0].', '.$time_array_start[0].':'.$time_array_start[1].' - '.$time_array_end[0].':'.$time_array_end[1];
 	}else{
 		$dates=$new_start_date.' - '.$new_end_date;
 	}
-	$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
+
+	if($lang=='en-gb'){
+		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=148');
+	}elseif($lang=='el-gr'){
+		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
+	}
 	$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$action->talias.'&Itemid=140');
 	$data.= '{
             "type": "Point",
@@ -163,6 +164,6 @@ foreach($actions as $action){
       }'.(count($actions)==$i?'':',');
 }
 $data.= ']}';
-			
+
 echo $data;
 //echo str_replace(array("\r\n","\r"),"",$data);

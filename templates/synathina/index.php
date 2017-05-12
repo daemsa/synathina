@@ -51,18 +51,18 @@ $mobile_detect = new Mobile_Detect;
 $this->setGenerator(null);
 
 //newsletter
-$db	= JFactory::getDBO();		
+$db	= JFactory::getDBO();
 if(@$_REQUEST['newsletter_email']!=''){
 	$query="SELECT id FROM #__newsletters WHERE email='".addslashes(@$_REQUEST['newsletter_email'])."' LIMIT 1";
 	$db->setQuery($query);
-	$newsletter_exists = $db->loadResult();		
+	$newsletter_exists = $db->loadResult();
 	if($newsletter_exists>0){
 		echo '<script>alert(\''.($lang_code=='en'?'There was problem with your subscription':'Υπήρξε πρόβλημα κατά την εγγραφή σας στο newsletter').'\')</script>';
 	}else{
 		$query="INSERT INTO #__newsletters VALUES ('','".addslashes(@$_REQUEST['newsletter_email'])."', 1, '".time()."') ";
-		$db->setQuery($query);	
-		$db->execute();	
-		echo '<script>alert(\''.($lang_code=='en'?'Thank you for your subscription':'Το email σας καταχωρίστηκε επιτυχώς').'\')</script>';		
+		$db->setQuery($query);
+		$db->execute();
+		echo '<script>alert(\''.($lang_code=='en'?'Thank you for your subscription':'Το email σας καταχωρίστηκε επιτυχώς').'\')</script>';
 	}
 }
 
@@ -94,18 +94,18 @@ $note = $db->loadResult();
 		<link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/jquery.tokenize.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,700&subset=latin,greek' rel='stylesheet' type='text/css'>
 	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<?php unset($this->_scripts[$this->baseurl.'/templates/'.$this->template.'/js/template.js']); ?>	
+		<?php unset($this->_scripts[$this->baseurl.'/templates/'.$this->template.'/js/template.js']); ?>
 		<?php unset($this->_scripts[$this->baseurl.'/media/jui/js/bootstrap.min.js']); ?>
 		<?php unset($this->_scripts[$this->baseurl.'/media/system/js/caption.js']); ?>
 		<?php unset($this->_scripts[$this->baseurl.'/media/jui/js/jquery-migrate.min.js']); ?>
 		<?php unset($this->_scripts[$this->baseurl.'/media/jui/js/jquery-noconflict.js']); ?>
-		<?php unset($this->_scripts[$this->baseurl.'/media/jui/js/jquery.min.js']); ?>	
-		<?php unset($this->_scripts[$this->baseurl.'/media/com_attachments/js/attachments_refresh.js']); ?>	
-		<?php unset($this->_scripts[$this->baseurl.'/media/system/js/core.js']); ?>	
-		<?php unset($this->_scripts[$this->baseurl.'/media/system/js/mootools-core.js']); ?>	
-		<?php unset($this->_styleSheets[$this->baseurl.'/media/mod_languages/css/template.css']); ?>	
+		<?php unset($this->_scripts[$this->baseurl.'/media/jui/js/jquery.min.js']); ?>
+		<?php unset($this->_scripts[$this->baseurl.'/media/com_attachments/js/attachments_refresh.js']); ?>
+		<?php unset($this->_scripts[$this->baseurl.'/media/system/js/core.js']); ?>
+		<?php unset($this->_scripts[$this->baseurl.'/media/system/js/mootools-core.js']); ?>
+		<?php unset($this->_styleSheets[$this->baseurl.'/media/mod_languages/css/template.css']); ?>
     <?php unset($doc->_scripts[JURI::root(true).'/media/system/js/frontediting.js']);?>
-    <?php unset($doc->_scripts[JURI::root(true).'/media/system/js/html5fallback.js']);?>	
+    <?php unset($doc->_scripts[JURI::root(true).'/media/system/js/html5fallback.js']);?>
 	<?php
 		if($homepage){
 			//meta tags
@@ -118,7 +118,7 @@ $note = $db->loadResult();
 			$doc->setMetaData( 'twitter:description', $menuname );
 			$doc->setMetaData( 'twitter:image', $article_image );
 		}
-	?>	
+	?>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 		<!-- Google Analytics -->
 		<script>
@@ -130,7 +130,7 @@ $note = $db->loadResult();
 		ga('create', 'UA-80529761-1', 'auto');
 		ga('send', 'pageview');
 		</script>
-		<!-- End Google Analytics -->		
+		<!-- End Google Analytics -->
 </head>
 
 <body class="">
@@ -145,7 +145,7 @@ $note = $db->loadResult();
             </div>
         </div>
     </div>
-    
+
     <?php setcookie('video-overlay', '1', time() + (86400 * 365), "/"); ?>
 <?php endif; ?>
 <header class="l-header">
@@ -202,7 +202,7 @@ $note = $db->loadResult();
    <div id="map"></div>
    <div class="bg"></div>
    <div id="coords"></div>
-   <div class="cross" rel="js-cross"> 
+   <div class="cross" rel="js-cross">
       <div class="inner">
          <div class="cross-side cross-side--top">
             <div class="cross-content">
@@ -219,14 +219,14 @@ $note = $db->loadResult();
                <div class="is-tablecell" rel="js-teams">
                      8 <br> ομάδες
                </div>
-            </div>            
+            </div>
          </div>
          <div class="cross-side cross-side--right">
             <div class="cross-content">
                <div class="is-tablecell" rel="js-activities">
                   12 <br> δρασεις
                </div>
-            </div>            
+            </div>
          </div>
          <div class="cross-side cross-side--bottom"></div>
       </div>
@@ -258,7 +258,7 @@ $note = $db->loadResult();
             <li></li>
             <li></li>
             <li></li>
-            <li class="jan"><span>2016</span></li>         
+            <li class="jan"><span>2016</span></li>
             <li></li>
             <li></li>
             <li></li>
@@ -270,39 +270,39 @@ $note = $db->loadResult();
             <li></li>
             <li></li>
             <li></li>
-            <li class="jan"><span>2017</span></li>                  
+            <li class="jan"><span>2017</span></li>
             <div class="time-bar"></div>
          </ul>
 
       </div>
       <div id="slider3" class="d3-slider d3-slider-horizontal time-slider" rel="js-range-slider">
-      </div>      
-   </div>  
+      </div>
+   </div>
    <div class="categories is-open" rel="js-toggle-categories js-create-categories">
       <div class="inner">
 				<div id="filters-closed"><?=($lang_code=='en'?'THEMATICS':'ΘΕΜΑΤΙΚΕΣ')?> <span id="filters-closed-x">X</span></div>
          <form action="">
-                                                                               
+
          </form>
       </div>
    </div>
    <div class="debug-values module-debug">
       <span id="slider3textmin"></span>
-      <span id="slider3textmax"></span>   
-   </div> 
+      <span id="slider3textmax"></span>
+   </div>
 
-</div>	
+</div>
 	<?php } ?>
 	<?php if ($this->countModules('banner')) : ?>
 		<div class="banner">
 			<jdoc:include type="modules" name="banner" style="banner" />
-		</div>	
+		</div>
 	<?php endif; ?>
-	
+
 	<jdoc:include type="component" />
-<?php if(!$homepage) { ?>	
+<?php if(!$homepage) { ?>
 	<br /><br />
-<?php } ?>	
+<?php } ?>
 </main>
 
 <footer></footer>
@@ -369,11 +369,11 @@ $note = $db->loadResult();
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.magnific-popup.min.js"></script>
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jscrollpane.js"></script>
-		
-		
-    
+
+
+
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/main.js"></script>
-    <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>			
+    <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>
 <?php 	} ?>
 		<script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.tokenize.js"></script>
@@ -383,12 +383,12 @@ $note = $db->loadResult();
 $body = $("body");
 $(document).on({
     ajaxStart: function() { $body.addClass("loading");    },
-     ajaxStop: function() { $body.removeClass("loading"); }    
+     ajaxStop: function() { $body.removeClass("loading"); }
 });
-$(document).ready(function(){ 
+$(document).ready(function(){
 	$(function(){
 		$('.more-articles-button').on('click', function(e){
-			
+
 			e.preventDefault();
 			var counter=$('.articles_counter').val();
 			var extralink=$('.article_url_parameter').val();
@@ -404,7 +404,7 @@ $(document).ready(function(){
 						$('.more-articles').before(data);
 						setTimeout(function(){
 							$( ".more--articles" ).removeClass( "more--articles-hidden" )
-						}, 300);						
+						}, 300);
 						$('.articles_counter').val(parseInt(counter)+4);
 						if(parseInt(parseInt(counter)+4)>=parseInt(counter_all)){
 							$('.more-articles-button').css('visibility','hidden');
@@ -416,9 +416,9 @@ $(document).ready(function(){
 			}); // end ajax call
 		});
 	});
-	
+
 });
-	
+
 </script>
 <script>
 $(document).ready(function(){
@@ -430,7 +430,7 @@ $(document).ready(function(){
 					alert(elem);
           $(elem).checkValue;
         });
-});				
+});
 <?php
 	if(@$note=='teams' && !$mobile_detect->isMobile()){
 ?>
