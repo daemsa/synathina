@@ -41,7 +41,7 @@ if($teams_activated!=1 && $isroot!=1){
 							</div>
 						</div>
 					</div>
-				</div>';	
+				</div>';
 }else{
 //activities
 $query="SELECT a.*
@@ -55,7 +55,7 @@ foreach($activities as $activity){
 }
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
-			
+
 
 $app = JFactory::getApplication();
 $templateDir = JURI::base() . 'templates/' . $app->getTemplate();
@@ -109,10 +109,10 @@ $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 function openChild(file,window,id,lat,lng) {
 	file=file+'?address_name='+id+'&lng_name='+lng+'&lat_name='+lat+'&lat='+document.getElementById(lat).value+'&lng='+document.getElementById(lng).value+'&address='+document.getElementById(id).value;
   var left = (screen.width/2)-(750/2);
-  var top = (screen.height/2)-(550/2);	
+  var top = (screen.height/2)-(550/2);
 	childWindow=open(file,window,'resizable=no,width=750,height=550, top='+top+', left='+left);
 	if (childWindow.opener == null) childWindow.opener = self;
-} 
+}
 function show_hide(f,show){
 	var f1=parseInt(f)+1;
 	var f2=parseInt(f)-1;
@@ -174,11 +174,11 @@ function show_hide(f,show){
 							Για να καταχωρίσετε τη δράση σας είναι απαραίτητο να συμπληρώσετε τα στοιχεία τουλάχιστον μίας επιμέρους δράσης.
 							<br />Σε περίπτωση που η πρωτοβουλία σας σας είναι επαναλαμβανόμενη ή περιλαμβάνει επιπλέον δράσεις σε διαφορετικό τόπο ή χρόνο, μπορείτε να πιέσετε το + για να προσθέσετε τα απαραίτητα στοιχεία.
 							<br />Παρακαλούμε βεβαιωθείτε ότι έχετε καταχωρίσει όλα τα σημεία στο χάρτη καθώς και τις διαφορετικές ημέρες και ώρες.<br /><br />
-						</span>	
+						</span>
             <form action="<?php echo JURI::current();?>" class="form" method="post" name="create_action" id="create_action" enctype="multipart/form-data">
 <?php
 	if($isroot){
-?>			
+?>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									<label for="team_root_id" class="is-block">Ομάδα*:</label>
@@ -188,14 +188,14 @@ function show_hide(f,show){
 	foreach($this->teams_users AS $team){
 		echo '<option value="'.$team->team_id.'" data-user_id="'.$team->user_id.'">'.$team->name.'</option>';
 	}
-?>							
-										
+?>
+
 									</select>
 								</div>
 							</div>
 <?php
 	}
-?>							
+?>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									 <label for="name" class="is-block">Τίτλος δράσης*:</label>
@@ -211,7 +211,7 @@ function show_hide(f,show){
 								<label for="short_description" class="is-block">Σύντομη Περιγραφή*:</label>
 								<textarea style="max-height: 100px;" class="form-control max-600" maxlength="250" id="short_description" rows="8" name="short_description" required=""><?php echo @$_REQUEST['short_description']; ?></textarea>
 								<span class="is-block is-italic">(σύντομη περιγραφή της δράσης σας έως 250 χαρακτήρες)</span>
-							</div>							 
+							</div>
 							<div class="form-group form-inline is-block ">
 								<label for="activity_description" class="is-block">Περιγραφή*:</label>
 								<!--<textarea class="form-control max-600" id="activity_description" rows="8" required=""></textarea>-->
@@ -222,11 +222,11 @@ function show_hide(f,show){
 								<label class="is-block">Link δράσης:</label>
 								<input type="text" name="web_link"  class="input--medium" id="web_link" />
 								<span class="is-block is-italic">(https://www.facebook.com/events/123456789/)</span>
-							</div>							 
+							</div>
                <!-- clone start -->
 <?php
 	for($f=0; $f<11; $f++){
-?>							 
+?>
               <div class="form-block" id="form-block-<?php echo $f; ?>" rel="js-form-block" style="display:<?=($f>0?'none':'block')?>">
 								<h2>Επιμέρους Δράση <?php echo ($f+1); ?></h2>
 								<div class="form-group form--padded--16">
@@ -252,7 +252,7 @@ function show_hide(f,show){
 								<div class="form form--padded--16 show_stegi_hours_<?php echo $f; ?>" id="show_stegi_hours">
 									<div class="form-group" >
 										<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=37&Itemid=145');?>">ΔΕΙΤΕ ΤΙΣ ΔΙΑΘΕΣΙΜΕΣ ΩΡΕΣ ΤΗΣ ΣΤΕΓΗΣ ΠΡΙΝ ΕΙΣΑΓΕΤΕ ΗΜΕΡΟΜΗΝΙΑ</a>
-									</div>								
+									</div>
 								</div>
 	              <div class="form form--padded--16">
 	               	<label class="is-block">ΗΜΕΡΟΜΗΝΙΑ*:</label>
@@ -278,14 +278,14 @@ function show_hide(f,show){
 						 <label for="activity_'.$activity->id.'_'.$f.'" class="label-horizontal">'.$activity->name.'</label>
 					</div>';
 	}
-?>							
+?>
 								</div>
 								<button type="button" class="add_button btn btn--black btn--add clone" rel="js-add-new-form-block" id="add_<?php echo $f; ?>" onclick="show_hide(<?php echo $f; ?>,1)"></button>
                 <button type="button" class="remove_button btn btn--black btn--minus remove is-visuallyhidden" rel="js-remove-new-form-block"  onclick="show_hide(<?php echo $f; ?>,0)" id="remove_<?php echo $f; ?>"></button>
 							</div>
 <?php
 	}
-?>	
+?>
 					<!-- clone end -->
 							<div class="form form--bordered">
 								<div class="form-group">
@@ -296,8 +296,8 @@ function show_hide(f,show){
 	foreach($this->teams AS $team){
 		echo '<option value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
-?>							
-										
+?>
+
 										</select>
 										<span id="logos_select">
 										</span>
@@ -315,10 +315,10 @@ function show_hide(f,show){
 								</div>
 								<div class="form-inline filters form--padded" id="service_list" style="display:none">
 									<div style="display:block" class="form-inline">
-										<label class="is-block">Θα επιθυμούσα την χρήση των εξής υπηρεσιών του δήμου:</label>
+										<label class="is-block">Θα επιθυμούσα:</label>
 <?php
 	foreach($this->services AS $service){
-?>		
+?>
 										<div class="form-group">
 											 <input id="<?php echo $service->id; ?>" type="checkbox" name="service_<?php echo $service->id; ?>">
 											 <label  style="" for="<?php echo $service->id; ?>" class="label-horizontal"><?php echo $service->name; ?></label>
@@ -330,7 +330,8 @@ function show_hide(f,show){
 									<div class="form-group is-block form" style="padding-top:12px">
 										<label class="is-block">Μήνυμα προς τις υπηρεσίες του δήμου:</label>
 										<textarea name="services_message" class="form-control max-600" id="services_message" rows="8"></textarea>
-									</div>								
+										<span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί στις αρμόδιες δημοτικές υπηρεσίες)</span>
+									</div>
 								</div>
 
 
@@ -344,20 +345,20 @@ function show_hide(f,show){
 								<label for="activity_description" class="is-block">Θα επιθυμούσα την υποστήριξη σε:</label>
 <?php
 		$query = " SELECT id, name "
-				." FROM #__team_donation_types 
+				." FROM #__team_donation_types
 					WHERE published=1 AND parent_id=0	"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
 		$i=1;
 		$children=array();
 		foreach($rows as $row){
 			$query = " SELECT id, name "
-					." FROM #__team_donation_types 
+					." FROM #__team_donation_types
 						WHERE published=1 AND parent_id=".$row->id."	"
 					." ORDER BY id ASC ";
-					
+
 			$db->setQuery($query);
 			$rows1=$db->loadObjectList();
 			foreach($rows1 as $row1){
@@ -369,7 +370,7 @@ function show_hide(f,show){
 						</div>';
 			$i++;
 		}
-		
+
 		for($i=1; $i<count($children)+1; $i++){
 			for($y=0; $y<count($children[$i]); $y++){
 				if($y==0){
@@ -383,13 +384,13 @@ function show_hide(f,show){
 						echo '<div class="form-group">
 										<label for="donation-'.$children[$i][$y][2].'-other" class="label-horizontal" style="display:inline-block">'.($lang_code=='en'?'Other':'Άλλο').'</label>
 										<input name="donation-'.$children[$i][$y][2].'-other" id="donation-'.$children[$i][$y][2].'-other"  type="text">
-									</div>';					
+									</div>';
 					echo '</div>';
-				}				
+				}
 			}
 
 		}
-?>						
+?>
 							</div>
 
                <div class="form-group form--padded donation-message" style="display:none">
@@ -407,7 +408,7 @@ function show_hide(f,show){
 							<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_save=1');?>" />
 							<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
 							<input type="hidden" name="newform" value="<?php echo $newform_session; ?>" />
-							
+
 							<?php echo JHtml::_('form.token');?>
             </form>
         </div>
