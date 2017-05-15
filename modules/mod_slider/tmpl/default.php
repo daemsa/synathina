@@ -147,7 +147,7 @@ if($current_year_3==2016){
 		$query = "SELECT aa.id AS `count` FROM #__actions AS a
 							INNER JOIN #__actions AS aa ON aa.action_id=a.id
 							WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('".$activity->id."',aa.activities) 
-							AND aa.action_date_start>='".$current_year_3."-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";					
+							AND aa.action_date_start>='".$current_year_3."-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' GROUP BY aa.action_id ";
 		$db->setQuery($query);
 		$db->execute();
 		$actions_count=$db->getNumRows();
