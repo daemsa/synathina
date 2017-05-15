@@ -84,10 +84,10 @@ var Activities = (function(global) {
 
       return state;
    }
-	 
+
    function synathina(url) {
 		$.ajax({
-				type: 'GET', 
+				type: 'GET',
 				url: url,
 				async: false,
 				dataType: 'json',
@@ -95,16 +95,17 @@ var Activities = (function(global) {
 				}
 		}).done(function(data, statusText, resObject) {
 				 synathina_text=stegiText(data);
+         console.log(url);
 		});
 	 return synathina_text;
-   }	
+   }
 	 function stegiText(myArr){
 		 titlesArray = createTitlesArray(myArr);
 		 var synathina_text='<div style="overflow:auto; background-color:#FFF"><div class="info info-stegi-container"><h3>Δράσεις που πραγματοποιούνται στη στέγη του συνΑθηνά</h3><img src="/templates/synathina/images/stegi-pin-image.jpg"/>';
 			for( var i = 0; i < titlesArray.length; i += 1) {
 				var synathina_text=synathina_text+'<div class="info-title-stegi info-title--address"><a href="'+titlesArray[i].url+'">'+titlesArray[i].title+'</a><div class="info-meta"> <span class="info-date">'+titlesArray[i].dates+'</span></div><div class="info-source"><a href="'+titlesArray[i].team_url+'">'+titlesArray[i].team_name+'</a></div></div>';
-			}			
-			var synathina_text=synathina_text+'</div></div>';	
+			}
+			var synathina_text=synathina_text+'</div></div>';
 			return synathina_text;
 	 }
 
@@ -157,7 +158,7 @@ var Activities = (function(global) {
          },
          icon : src
       });
-		
+
      // TEMPLATE  INFO WINDOW
 		 var newurl = '/index.php?option=com_actions&view=action&id='+data.action_id+'&Itemid=138';
 		 if(data.coordinates[0]=='37.980522' && data.coordinates[1]=='23.726839'){
@@ -167,7 +168,7 @@ var Activities = (function(global) {
 			 if(data.logo_sponsor!=''){
 				var contentString = '<div class="info"> <div class="info-title info-title--address"><a href="'+data.url+'">'+data.title+'</a></div> <div class="info-meta"><span class="info-address">'+data.address+'</span>, <span class="info-date">'+data.dates+'</span></div> <div class="info-source">'+data.team_name+'</div> <div class="info-img"><img src="'+data.content_img+'""></div> <div class="info-description">'+data.content+' <a href="'+data.url+'">περισσότερα</a> </div> <div class="info-badge"> <div class="info-badge-item info-badge-item--sponsor-logo"> <i class="fill" style="background-image:url('+data.logo_team+')"></i> </div> <div class="info-badge-item info-badge-item--team-logo" id="sponsor_'+data.action_id+'"> <i class="fill" style="background-image:url('+data.logo_sponsor+')"></i> </div> <div class="info-badge-item info-badge-item--team-power"> <div class="fill1">'+data.team_members+'</div> </div> </div> </div>';
 			 }else{
-				var contentString = '<div class="info"> <div class="info-title info-title--address"><a href="'+data.url+'">'+data.title+'</a></div> <div class="info-meta"><span class="info-address">'+data.address+'</span>, <span class="info-date">'+data.dates+'</span></div> <div class="info-source">'+data.team_name+'</div> <div class="info-img"><img src="'+data.content_img+'""></div> <div class="info-description">'+data.content+' <a href="'+data.url+'">περισσότερα</a> </div> <div class="info-badge"> <div class="info-badge-item info-badge-item--sponsor-logo"> <i class="fill" style="background-image:url('+data.logo_team+')"></i> </div> <div class="info-badge-item info-badge-item--team-power"> <div class="fill1">'+data.team_members+'</div> </div> </div> </div>'; 
+				var contentString = '<div class="info"> <div class="info-title info-title--address"><a href="'+data.url+'">'+data.title+'</a></div> <div class="info-meta"><span class="info-address">'+data.address+'</span>, <span class="info-date">'+data.dates+'</span></div> <div class="info-source">'+data.team_name+'</div> <div class="info-img"><img src="'+data.content_img+'""></div> <div class="info-description">'+data.content+' <a href="'+data.url+'">περισσότερα</a> </div> <div class="info-badge"> <div class="info-badge-item info-badge-item--sponsor-logo"> <i class="fill" style="background-image:url('+data.logo_team+')"></i> </div> <div class="info-badge-item info-badge-item--team-power"> <div class="fill1">'+data.team_members+'</div> </div> </div> </div>';
 			 }
 		 }
 
@@ -197,6 +198,7 @@ var Activities = (function(global) {
    function populateActivities(data) {
       try {
          dat = JSON.parse(data.response);
+          //console.log(data.response);
          //dat = data.response;
       } catch(e) {
           //JSON parse error, this is not json
@@ -209,14 +211,14 @@ var Activities = (function(global) {
 
       collection = JSON.parse(data.response);
       //console.log(collection);
-      
+
       //setTimeout(func, delay)
 
       coordinatesArray = createMarkersArray(collection);
-	  
+
 	  for ( var i = 0; i < 10; i++) {
 		  var currentRow = coordinatesArray[i];
-		  
+
 		  for ( var j = 0; j < coordinatesArray.length; j++) {
 			  if (coordinatesArray[j].lat != '37.980522' && coordinatesArray[j].lng != '23.726839' && currentRow.lat == coordinatesArray[j].lat && currentRow.lng == coordinatesArray[j].lng) {
 				  //console.log(coordinatesArray[j]);
@@ -249,25 +251,25 @@ var Activities = (function(global) {
       //}
       //markerClusterer = new MarkerClusterer(map, markers, {});
    //}
-   
-   function showActivitiesOnInit() { 
+
+   function showActivitiesOnInit() {
 
 		console.log("function->showActivitiesOnInit");
-		
+
 		var markers=[];
-	
+
 		for( var i = 0; i < coordinatesArray.length; i += 1) {
               activities[i].marker.setVisible(true);
 			  markers.push(activities[i].marker);
         }
-		
+
 		window.markerCluster = new MarkerClusterer(map, markers,	{
 			gridSize : 50,
 			maxZoom : 14,
 			imagePath: 'http://www.synathina.gr/images/template/m'
 			}
 		);
-				
+
   	}
 
    function setActivitiesVisibility (){
@@ -277,18 +279,18 @@ var Activities = (function(global) {
       polygon = arguments[0];
       cat_filter = arguments[1];
       //console.log(cat_filter);
-	  
+
 	  //clear all markers from init markerCluster created from the above function
 	  if(window.markerCluster !== undefined){
        	window.markerCluster.clearMarkers();
       }
-      
+
 	  //Clusterer
       if(window.clusterer !== undefined){
         window.category.length=0;
         window.clusterer.clearMarkers();
       }
-	  
+
       window.category = [];
 
       window.clusterer = new MarkerClusterer(map, [], {
@@ -307,7 +309,7 @@ var Activities = (function(global) {
             activities[i].marker.setVisible(false)
           }
           filterActivities(Activities.yearRangeBuffer);
-			
+
       } else {
 				//dennis additions
 				var thematic_check_exists=0;
@@ -317,13 +319,13 @@ var Activities = (function(global) {
 					}
 				});
 				//end of dennis additions
-				
+
         if(cat_filter !== undefined && thematic_check_exists==1){
 			console.log('dennis');
           	Filter.run = true;
             var allMarkers = [];
-            for( var i = 0; i < coordinatesArray.length; i += 1) {			
-				
+            for( var i = 0; i < coordinatesArray.length; i += 1) {
+
                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
                if( polygon.Contains(point) ) {
                   index = findIn(cat_filter, activities[i].marker.db_data.category_id);
@@ -341,13 +343,13 @@ var Activities = (function(global) {
             clusterer.clearMarkers();
             clusterer.addMarkers(category);
             category.length=0;
-			
+
         } else {
-			
+
             for( var i = 0; i < coordinatesArray.length; i += 1) {
-              
+
 			  var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-			 
+
               if( polygon.Contains(point)) {
                  activities[i].marker.setVisible(true);
                  checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
@@ -425,10 +427,10 @@ var Activities = (function(global) {
             lng : InputObj.features[i].coordinates[1],
          });
       }
-	  
+
       return markersArray;
    }
-	 
+
    function createTitlesArray(){
       //console.log(arguments)
       InputObj = arguments[0];
@@ -448,15 +450,16 @@ var Activities = (function(global) {
 				 }
       }
       return titlesArray;
-   }	 
+   }
 
 
 
    function init() {
       //AjaxCall.get('js_collections/activities/array.json', populateActivities);
-      AjaxCall.get('http://www.synathina.gr/actions.php', populateActivities);
-	  window.synathina_var=synathina('http://www.synathina.gr/actions_stegi.php');
-   }
+      var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
+      AjaxCall.get('http://www.synathina.gr/actions.php?lang='+lang, populateActivities);
+	    window.synathina_var=synathina('http://www.synathina.gr/actions_stegi.php?lang='+lang);
+  }
 
 
    var res, collection, activities = [], markersArray = [], titlesArray = [], coordinatesArray, polygon, contentString, saFilter, saSlider, current_polygon, cachedMarkers = [], markerClusterer, categories;
@@ -476,7 +479,7 @@ var Activities = (function(global) {
    // threading with Area
    //global.EVT.on('show-activities', setActivitiesVisibility);
    //global.EVT.on('init', setActivitiesVisibility);
-   
+
    return {
       init : init,
       filterActivities : filterActivities,
@@ -487,5 +490,3 @@ var Activities = (function(global) {
    }
 
 })(window)
-
-

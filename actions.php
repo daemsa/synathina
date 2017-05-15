@@ -46,8 +46,8 @@ date_default_timezone_set('Europe/Athens');
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
-$doc   = JFactory::getDocument();
-$lang  = $doc->language;
+
+$currentlang=@$_REQUEST['lang'];
 
 $db = JFactory::getDbo();
 $query = "SELECT * FROM #__team_activities WHERE published=1 ";
@@ -75,13 +75,13 @@ foreach($actions as $action){
 	$partners=explode(',',$action->partners);
 	$partners_array=array_filter($partners);
 	if(count($partners_array)>0){
-		if($lang=='en-gb'){
+		if($currentlang=='en'){
 			$members='members';
 		}else{
 			$members='μέλη';
 		}
 	}else{
-		if($lang=='en-gb'){
+		if($currentlang=='en'){
 			$members='member';
 		}else{
 			$members='μέλος';
@@ -138,9 +138,9 @@ foreach($actions as $action){
 		$dates=$new_start_date.' - '.$new_end_date;
 	}
 
-	if($lang=='en-gb'){
+	if($currentlang=='en'){
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=148');
-	}elseif($lang=='el-gr'){
+	}else{
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
 	}
 	$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$action->talias.'&Itemid=140');
@@ -166,4 +166,5 @@ foreach($actions as $action){
 $data.= ']}';
 
 echo $data;
+//echo $currentlang;
 //echo str_replace(array("\r\n","\r"),"",$data);
