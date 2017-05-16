@@ -143,30 +143,29 @@ if($current_year_3==2016){
 }else{
 	$activities_actions=array();
 
-	foreach($activities_object as $activity){
-		$query = "SELECT aa.id AS `count` FROM #__actions AS a
+	$total_action_count = 0;
+
+	foreach($activities_object as $activity) {
+      $query = "SELECT aa.id AS `count` FROM #__actions AS a
 							INNER JOIN #__actions AS aa ON aa.action_id=a.id
-							WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('".$activity->id."',aa.activities) 
-							AND aa.action_date_start>='".$current_year_3."-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' GROUP BY aa.action_id ";
-		$db->setQuery($query);
-		$db->execute();
-		$actions_count=$db->getNumRows();
-		$test_array=array(
-			1=> 40,
-			2=> 15,
-			9=> 14,
-			11=> 13,
-			5=> 6,
-			10=> 4,
-			6=> 3,
-			4=> 2, 
-			7=> 2,
-			8=> 1
-		);
-		
+							WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) 
+							AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "' ";
+
+
+      $db->setQuery($query);
+      $db->execute();
+      $actions_count = $db->getNumRows();
+
+      $total_action_count += $actions_count;
+
+      $activity->action_count = $actions_count;
+
+    }
+
+  foreach($activities_object as $activity) {
 		//echo $actions_count.'<br />';
-		if($actions_count>0){
-			$percent=round((100/$slider_3_all)*($actions_count),1);
+		if($activity->action_count>0){
+			$percent=round((100/$total_action_count)*($activity->action_count),1);
 		}else{
 			$percent=0;
 		}
