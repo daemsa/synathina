@@ -11,14 +11,7 @@
 	<version>0.0.1</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Simple component to manage support types provided for actions</description>
- 
-	<!--
-	<update>
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
-	</update> 
-	-->
+
  
 	<administration>
 		<!-- Administration Menu Section -->

@@ -1,0 +1,148 @@
+
+--
+-- Table structure for table `#__actions`
+--
+
+DROP TABLE IF EXISTS `#__actions`;
+CREATE TABLE IF NOT EXISTS `#__actions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `short_title` varchar(255) NOT NULL DEFAULT '',
+  `desc` mediumtext,
+  `image` varchar(255) default NULL,
+  `thumbWidth` int(10) unsigned NOT NULL DEFAULT '0',
+  `thumbHeight` int(10) unsigned NOT NULL DEFAULT '0',
+  `imageWidth` int(10) unsigned NOT NULL DEFAULT '0',
+  `imageHeight` int(10) unsigned NOT NULL DEFAULT '0',
+  `video` varchar(255) default NULL,
+  `year` varchar(255) default NULL,
+  `style` varchar(255) default NULL,
+  `dimensions` varchar(255) default NULL,
+  `donation` varchar(255) default NULL,
+  `paint_number` varchar(255) default NULL,
+  `series` mediumtext,
+  `permanent` int(10) unsigned NOT NULL DEFAULT '0',
+  `highlight` INT NOT NULL,
+  `type` INT NOT NULL,
+  `week` date,
+  `week_position` FLOAT NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `catid` int(11) NOT NULL DEFAULT '0',
+  `painter_id` int(11) NOT NULL DEFAULT '0',
+  `exhibition_id` int(11) NOT NULL DEFAULT '0',
+  `annexe_id` int(11) NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `access` int(10) unsigned NOT NULL DEFAULT '0',
+  `language` char(7) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `metakey` text NOT NULL,
+  `metadesc` text NOT NULL,
+  `metadata` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_access` (`access`),
+  KEY `idx_state` (`published`),
+  KEY `idx_catid` (`catid`),
+  KEY `idx_createdby` (`created_by`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
+DROP TABLE IF EXISTS `#__painters`;
+CREATE TABLE IF NOT EXISTS `#__painters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `firstname` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `original_lastname` varchar(255) NOT NULL DEFAULT '',
+  `original_firstname` varchar(255) NOT NULL DEFAULT '',
+  `desc` mediumtext,
+  `image` varchar(255) default NULL,
+  `year_born` varchar(255) default NULL,
+  `year_died` varchar(255) default NULL,
+  `place_born` varchar(255) default NULL,
+  `place_died` varchar(255) default NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `access` int(10) unsigned NOT NULL DEFAULT '0',
+  `language` char(7) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `metakey` text NOT NULL,
+  `metadesc` text NOT NULL,
+  `metadata` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_access` (`access`),
+  KEY `idx_state` (`published`),
+  KEY `idx_createdby` (`created_by`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
+DROP TABLE IF EXISTS `#__exhibitions`;
+CREATE TABLE IF NOT EXISTS `#__exhibitions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `desc` mediumtext,
+  `ordering` int(11) unsigned NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `access` int(10) unsigned NOT NULL DEFAULT '0',
+  `language` char(7) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `metakey` text NOT NULL,
+  `metadesc` text NOT NULL,
+  `metadata` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_access` (`access`),
+  KEY `idx_state` (`published`),
+  KEY `idx_createdby` (`created_by`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `#__annexes`;
+CREATE TABLE IF NOT EXISTS `#__annexes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `desc` mediumtext,  
+  `orario` varchar(255) default NULL,
+  `address` varchar(255) default NULL,
+  `responsible` varchar(255) default NULL,
+  `tickets` varchar(255) default NULL,
+  `telephone` varchar(255) default NULL,
+  `longtitude` varchar(255) default NULL,
+  `latitude` varchar(255) default NULL,
+  `periodical_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `website` VARCHAR( 255 ) default NULL,
+  `image` varchar(255) default NULL,
+  `ordering` int(11) unsigned NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `access` int(10) unsigned NOT NULL DEFAULT '0',
+  `language` char(7) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
+  `metakey` text NOT NULL,
+  `metadesc` text NOT NULL,
+  `metadata` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_access` (`access`),
+  KEY `idx_state` (`published`),
+  KEY `idx_createdby` (`created_by`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
