@@ -381,7 +381,11 @@ $(document).ready(function (){
 								}
 							});
 							
-						} else if  ( $('#donation-16').is(':checked') ) {
+						}
+
+						if  ( $('#donation-16').is(':checked') && sub_donations==1 ) {
+
+                            sub_donations=0;
 							
 							$('input', $('#subcat2')).each(function () {
 								if($(this).is(':checked')){
@@ -391,8 +395,6 @@ $(document).ready(function (){
 						
 						} 
 						
-					} else if ( !$('#donation-1').is(':checked') && !$('#donation-16').is(':checked') ) {
-						sub_donations=1;
 					}
 				}
 			});
