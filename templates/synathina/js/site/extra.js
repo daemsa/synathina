@@ -365,6 +365,7 @@ $(document).ready(function (){
 		if($('#box2').is(':checked')){
 			var donations=0;
 			var sub_donations=0;
+            $message = 'Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής';
 			$('input', $('.registration-donations')).each(function () {
 				//console.log($(this)); //log every element found to console output
 				if($(this).is(':checked')){
@@ -374,6 +375,8 @@ $(document).ready(function (){
 					if( $('#donation-1').is(':checked') || $('#donation-16').is(':checked') ) {
 						
 						if ( $('#donation-1').is(':checked') ) {
+
+                            $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε είδος';
 							
 							$('input', $('#subcat1')).each(function () {
 								if($(this).is(':checked')){
@@ -386,6 +389,8 @@ $(document).ready(function (){
 						if  ( $('#donation-16').is(':checked') && sub_donations==1 ) {
 
                             sub_donations=0;
+
+                            $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε τεχνογνωσία';
 							
 							$('input', $('#subcat2')).each(function () {
 								if($(this).is(':checked')){
@@ -406,7 +411,7 @@ $(document).ready(function (){
 				}
 				
 				if(sub_donations==0){
-					alert('Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής');
+					alert($message);
 					return false;
 				}
 			}
