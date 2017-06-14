@@ -429,4 +429,12 @@ $document->setMetaData( 'og:title', clean($action->name) );
 $document->setMetaData( 'og:description', clean(strip_tags($desc)) );
 $document->setMetaData( 'og:image', 'http://www.synathina.gr/images/actions/main_images/'.$action->image );
 
+$opengraph = '<meta property="og:url" content="http://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI].'">' ."\n";
+$opengraph .= '<meta property="og:type" content="article">' ."\n";
+$opengraph .= '<meta property="og:title" content="'.clean($action->name).'">' ."\n";
+$opengraph .= '<meta property="og:description" content="'.clean(strip_tags($desc)).'">' ."\n";
+$opengraph .= '<meta property="og:image" content="http://www.synathina.gr/images/actions/main_images/'.$action->image.'">' ."\n";
+
+$document->addCustomTag($opengraph);
+
 ?>		
