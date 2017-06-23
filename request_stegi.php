@@ -209,9 +209,11 @@ function getUrlslug($str, $options = array()) {
 		$s_array=array($team_name,$start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2].' '.$start_array[1],$end_array1[0].'-'.$end_array1[1].'-'.$end_array1[2].' '.$end_array[1]);
 		synathina_email('stegi_created_admin',$s_array,$emails,'Συνάντηση στη Στέγη του συνΑθηνά',$att);
 		//email to user
+    $user = JFactory::getUser();
+    $user_email = [$user->email];
 		//$s_array=array($team_name,$start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2],$start_array[1],$end_array[1]);
-		//$att='stegi_terms_conditions.pdf';
-		//synathina_email('stegi_created_user',$s_array,$emails,'Κλείσατε τη στέγη του συνΑθηνά για τη συνάντησή σας',$att);
+		$att='terms_and_conditions.pdf';
+		synathina_email('stegi_created_user',$s_array,$user_email,'Κλείσατε τη στέγη του συνΑθηνά για τη συνάντησή σας',$att);
 		echo 1;
 	}else{echo 2;}
 }else{
