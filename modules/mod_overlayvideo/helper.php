@@ -101,14 +101,15 @@ abstract class ModOverlayVideoHelper
           if ($item->images) {
 
             $item->images = json_decode($item->images);
-            $item->intro_img = $item->images->image_intro;
 
-            if(is_null($items->intro_img)) {
+            if(is_null($item->images->image_intro)) {
 
               $module_path = JURI::base() . 'modules/' . $module->module;
 
               $item->intro_img = $module_path.'/tmpl/images/no-image.png';
 
+            } else {
+              $item->intro_img = $item->images->image_intro;
             }
 
           }
