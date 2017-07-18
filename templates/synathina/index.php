@@ -53,17 +53,22 @@ $this->setGenerator(null);
 //newsletter
 $db	= JFactory::getDBO();
 if(@$_REQUEST['newsletter_email']!=''){
-	$query="SELECT id FROM #__newsletters WHERE email='".addslashes(@$_REQUEST['newsletter_email'])."' LIMIT 1";
-	$db->setQuery($query);
-	$newsletter_exists = $db->loadResult();
-	if($newsletter_exists>0){
-		echo '<script>alert(\''.($lang_code=='en'?'There was problem with your subscription':'Υπήρξε πρόβλημα κατά την εγγραφή σας στο newsletter').'\')</script>';
-	}else{
-		$query="INSERT INTO #__newsletters VALUES ('','".addslashes(@$_REQUEST['newsletter_email'])."', 1, '".time()."') ";
-		$db->setQuery($query);
-		$db->execute();
-		echo '<script>alert(\''.($lang_code=='en'?'Thank you for your subscription':'Το email σας καταχωρίστηκε επιτυχώς').'\')</script>';
-	}
+    if (@$_REQUEST['g-recaptcha-response']=='') {
+      echo '<script>alert(\''.($lang_code=='en'?'There was problem with the CAPTCHA code':'Υπήρξε πρόβλημα κατά τον έλεγχο του CAPTCHA').'\')</script>';
+    } else {
+      $query = "SELECT id FROM #__newsletters WHERE email='" . addslashes(@$_REQUEST['newsletter_email']) . "' LIMIT 1";
+      $db->setQuery($query);
+      $newsletter_exists = $db->loadResult();
+      if ($newsletter_exists > 0) {
+        echo '<script>alert(\'' . ($lang_code == 'en' ? 'There was problem with your subscription' : 'Υπήρξε πρόβλημα κατά την εγγραφή σας στο newsletter') . '\')</script>';
+      }
+      else {
+        $query = "INSERT INTO #__newsletters VALUES ('','" . addslashes(@$_REQUEST['newsletter_email']) . "', 1, '" . time() . "') ";
+        $db->setQuery($query);
+        $db->execute();
+        echo '<script>alert(\'' . ($lang_code == 'en' ? 'Thank you for your subscription' : 'Το email σας καταχωρίστηκε επιτυχώς') . '\')</script>';
+      }
+    }
 }
 
 //get menu item notes
@@ -129,8 +134,9 @@ $note = $db->loadResult();
 
 		ga('create', 'UA-80529761-1', 'auto');
 		ga('send', 'pageview');
-		</script>
+	</script>
 		<!-- End Google Analytics -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body class="">
@@ -320,6 +326,7 @@ $note = $db->loadResult();
 				<div class="form-group">
 					 <button type="submit" class="btn btn--coral btn--bold"><?php echo JText::_('MOD_NEWSLETTER_SUBMIT'); ?></button>
 				</div>
+                <div class="g-recaptcha" data-sitekey="6Ld4fykUAAAAAHJhqJLKxvf8k0gRWVQIjPtnTcuD"></div>
 			</form>
 		</div>
 	</div>
