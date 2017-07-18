@@ -166,15 +166,15 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 			//$calendar.= '<div class="day-number">'.$list_day.'</div>';
 			$new_time1=$year.'-'.($month<10?0:'').$month.'-'.($list_day<10?0:'').$list_day;
 			$found=array_keys($actions_date_array1,$new_time1);
-			if(!empty($found)){
+			//if(!empty($found)){
 				$s=get_distinct_teams($new_time1);
 				$calendar.='<li href="'.JURI::base().'" rel="'.$new_time1.'" class="stegi_use_exists stegi_'.($s>4?4:$s).'">
 											<a class="active" href="'.JURI::base().'" rel="'.$new_time1.'">'.$list_day.'</a>
 											<a class="stegi_count" href="'.JURI::base().'" rel="'.$new_time1.'"><span>'.$s.'</span></a>
 										</li>';
-			}else{
-				$calendar.= '<li>'.$list_day.'</li>';
-			}
+			//}else{
+				//$calendar.= '<li>'.$list_day.'</li>';
+			//}
 
 			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
 			//$calendar.= str_repeat('<p> </p>',2);
