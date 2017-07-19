@@ -515,10 +515,6 @@ $(document).ready(function (){
 				
 				if($('#stegi_'+f).is(":checked")){
 				}else{
-					if($('#address_'+f).val()==''){
-						alert("Παρακαλώ εισάγετε διεύθυνση");
-						return false;					
-					}
 				}
 			}
 		}	
@@ -567,6 +563,12 @@ $(document).ready(function (){
 		this.submit();
 	//return;
 	});
+
+	$('#create_action').find('#name').change(function() {
+        var curValue = $(this).val();
+
+        $('#ypotitlos_drashs_0').val(curValue);
+    });
   //event.preventDefault();
 });
 
@@ -606,10 +608,6 @@ $(document).ready(function (){
 				
 				if($('#stegi_'+f).is(":checked")){
 				}else{
-					if($('#address_'+f).val()==''){
-						alert("Παρακαλώ εισάγετε διεύθυνση");
-						return false;					
-					}
 				}			
 			}else{
 				//$('#form-block-'+f).remove();

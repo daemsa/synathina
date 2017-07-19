@@ -235,10 +235,10 @@ function show_hide(f,show){
 
 								</div>
 	              <div class="form form--padded--16">
-	               	<label class="is-block">Τοποθεσία*:</label>
+	               	<label class="is-block">Τοποθεσία:</label>
 	               	<div class="form-inline--cells form-inline v-bottom">
 				            <div class="form-group" id="address_fields_<?php echo $f; ?>">
-											<label class="is-block">ΔΙΕΥΘΥΝΣΗ*:</label>
+											<label class="is-block">ΔΙΕΥΘΥΝΣΗ:</label>
 											<input type="text" name="address_<?php echo $f; ?>" id="address_<?php echo $f; ?>" onclick="openChild('<?php echo JURI::base(); ?>gmap_action2.php','win<?php echo $f; ?>',this.id,'lat_<?php echo $f; ?>','lng_<?php echo $f; ?>')" style="width:80%" />
 											<input type="hidden" name="lat_<?php echo $f; ?>" id="lat_<?php echo $f; ?>" value="" />
 											<input type="hidden" name="lng_<?php echo $f; ?>" id="lng_<?php echo $f; ?>" value="" />
