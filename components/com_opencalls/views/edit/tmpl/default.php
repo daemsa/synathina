@@ -133,7 +133,7 @@ $params_editor = array( 'smilies'=> '0' ,
 	}
 ?>
 										</div>										
-										<input type="file" name="files[]" id="upload_edit" placeholder="Παρακαλώ επιλέξτε αρχείο" multiple="multilple" class="file-browser">
+										<input type="file" name="files[]" id="upload_edit" placeholder="Παρακαλώ επιλέξτε αρχείο" multiple="multilple" class="file-browser" multiple>
 										<span class="is-block is-italic">(Μπορείτε να επισυνάψετε το δελτίο τύπου  του  καλέσματός σας ή την αφίσα ή κάποιες σχετικές φωτογραφίες.)</span>
 								 </div>
 							</div>
