@@ -8672,6 +8672,10 @@ img.mfp-img {
   .newsletter-label {
     margin-bottom: 20px; }
 
+  .newsletter .form-group {
+    margin-bottom:20px !important;
+  }
+
 .file-chooser {
   position: relative;
   display: inline-block; }
