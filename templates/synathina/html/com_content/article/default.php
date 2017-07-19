@@ -207,7 +207,7 @@ if($note=='stegi'){
 		$db->setQuery($query);
 		$imgs = $db->loadObjectList();	
 		foreach($imgs as $img){
-			echo '<img src="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" style="max-height:320px;display:block;" alt="'.$this->escape($this->item->title).'" /><br />';
+			echo '<img src="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" style="max-height:320px;display:block;" alt="'.$this->escape($this->item->title).'" /><p>'.$img->caption.'</p><br />';
 		}		
 	}
 	$imgs_tags = $imgs;
