@@ -487,7 +487,19 @@ class ActionsModelEdit extends JModelItem
 			}
 			$municipality_message=addslashes(nl2br(@$_REQUEST['services_message']));
 		}
-		$supporters_message=addslashes(nl2br(@$_REQUEST['support_message']));
+		//$supporters_message=addslashes(nl2br(@$_REQUEST['support_message']));
+
+    $supports_message_array = [];
+    foreach(@$_REQUEST as $key => $requestParam) {
+      if(preg_match('/^support_message-*/',$key)) {
+        $support_request_id = explode('-',$key);
+        $support_request_id = $support_request_id[count($support_request_id)-1];
+
+        $supports_message_array[$support_request_id] = addslashes(nl2br($requestParam));
+      }
+    }
+
+    $supporters_message = serialize($supports_message_array);
 		//donations
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published=1";
 		$db->setQuery($query);
@@ -713,7 +725,7 @@ class ActionsModelEdit extends JModelItem
 		}
 		
 		//create new action emails
-		if($published==1 && $isroot==1){
+		if ($published==1 && $isroot==1){
 			//email to municipalities
 			if($municipality_services!='' && $municipality_send==0){
 				//email to municipalities pending code			
@@ -742,9 +754,10 @@ class ActionsModelEdit extends JModelItem
 			}
 			
 			//email to supporters
-			if($donations_ids!='' && $activities_send==0 && $isroot==1){
+			if ($donations_ids!='' && $activities_send==0 && $isroot==1){
 				$supporters_exist=0;
 				$emails=array();
+				$supporters_emails = [];
 				$donation_text='';
 				$donations_array=explode(',',$donations_ids);
 				array_filter($donations_array);
@@ -760,24 +773,28 @@ class ActionsModelEdit extends JModelItem
 						$emails_results = $db->loadObjectList();
 						foreach($emails_results as $emails_result){
 							$emails[]=$emails_result->email;
+              $supporters_emails[$donations_array[$d]][]=$emails_result->email;
 						}
 						$donation_text[]=$donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 						$supporters_exist=1;
 					}
 				}
 														
-				if(!empty($emails)){
-					$emails1 = array_unique($emails);
+				if(!empty($supporters_emails)){
+					//$emails1 = array_unique($emails);
 					$team_link='http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid=140');
 					$team_info=$this->getTeamInfo($team_id);
 					$team_info=$team_info[0];
 					//print_r($team_info);
 					$drasi_url=$config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138');
-					$s_array=array($team_link,$team_info->name,implode(', ',$donation_text),$supporters_message,$drasi_url,$name,$team_info->contact_1_name,$team_info->contact_1_email,$team_info->contact_1_phone);
+					$supporters_message = unserialize($supporters_message);
 					//test
-					$emails1[]='ddasios@steficon.gr';
-					for($c=0; $c<count($emails1); $c++){					
-						synathina_email('action_created_supporters',$s_array,array($emails1[$c]),'Παράκληση για υποστήριξη','');
+					//$emails1[]='ddasios@steficon.gr';
+					foreach ($supporters_emails as $key => $emails){
+            $s_array=array($team_link,$team_info->name,implode(', ',$donation_text),$supporters_message[$key],$drasi_url,$name,$team_info->contact_1_name,$team_info->contact_1_email,$team_info->contact_1_phone);
+					  foreach ($emails as $email) {
+              synathina_email('action_created_supporters',$s_array,$email,'Παράκληση για υποστήριξη','');
+            }
 					}
 				}
 				$query_activities_update = "UPDATE #__actions SET activities_send=1 WHERE id='".$action_id."' LIMIT 1";	

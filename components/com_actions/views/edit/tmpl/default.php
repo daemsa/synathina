@@ -423,8 +423,11 @@ if($isroot==1){
 					
 			$db->setQuery($query);
 			$rows1=$db->loadObjectList();
+
+            $messageDivArray[$row->id] = ['name'=>$row->name, 'children' =>[]];
 			foreach($rows1 as $row1){
 				$children[$i][]=array($row1->id, $row1->name,$row->id);
+                array_push($messageDivArray[$row->id]['children'], [$row1->name, $row1->id]);
 			}
 			echo '<div class="form-group support_fields">
 							 <input name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').' '.(in_array($row->id,$donations)?'checked="checked"':'').'>
@@ -462,11 +465,30 @@ if($isroot==1){
 ?>						
 							</div>
 
-              <div class="form-group form--padded donation-message" style="display:<?=(count($donations)>0?'block':'none')?>">
+              <?php
+              foreach($messageDivArray as $parentKey => $subArray) {
+                  $messagesToSupporters = unserialize($action->supporters_message);
+                if(count($subArray['children'])){
+                  foreach($subArray['children'] as $child) { ?>
+                      <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
+                          <label for="support_message" class="is-block">Μήνυμα προς <?php echo $child[0] ?>*:</label>
+                          <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$child[1]]; ?></textarea>
+                      </div>
+                  <?php }
+                } else { ?>
+                    <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>"  <?php if($messagesToSupporters[$parentKey] == '') { echo 'style="display:none"'; } ?>>
+                        <label for="support_message" class="is-block">Μήνυμα προς <?php echo $subArray['name']; ?>*:</label>
+                        <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" <?php if($messagesToSupporters[$parentKey] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$parentKey]; ?></textarea>
+                    </div>
+                <?php }
+              }
+              ?>
+
+              <!--<div class="form-group form--padded donation-message" style="display:<?/*=(count($donations)>0?'block':'none')*/?>">
                   <label for="support_message" class="is-block">Μήνυμα προς τους υποστηρικτές*:</label>
-                  <textarea class="form-control max-600" id="support_message" <?=(count($donations)>0?'required':'')?> rows="8" name="support_message" ><?php echo stripslashes(str_replace("<br />","",$action->supporters_message)); ?></textarea>
+                  <textarea class="form-control max-600" id="support_message" <?/*=(count($donations)>0?'required':'')*/?> rows="8" name="support_message" ><?php /*echo stripslashes(str_replace("<br />","",$action->supporters_message)); */?></textarea>
                   <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί σε όλους τους αντίστοιχους υποστηρικτές)</span>
-               </div>
+               </div>-->
                <div class="form-group form-group--tail is-block clearfix">
                   <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
                   <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>

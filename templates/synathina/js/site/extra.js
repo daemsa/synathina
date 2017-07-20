@@ -672,22 +672,27 @@ $('.donation-change').click(function() {
 		//$(".show_stegi_hours_"+tmp).toggle();
 });
 
-$('.filters>div>input:checkbox').change(function(){
-	check_donation=0;
-	$.each( [ "donation-1", "donation-16", "donation-27", "donation-28" ], function( i, l ){
-		if(document.getElementById(l).checked){
-			check_donation=1;
-			//console.log(l)
-		}
-	});
-	if(check_donation==1){
-		//console.log(check_donation);
-		$(".donation-message").css('display','block');
-		$('#support_message').attr('required', 'required');
-	}else{
-		$(".donation-message").css('display','none');
-		$('#support_message').removeAttr('required');
+$('.filters div>input:checkbox').change(function () {
+
+	var currId = $(this).attr('id');
+
+	if (document.getElementById(currId).checked) {
+		$(".textarea-" + currId).css('display', 'block');
+		$(".textarea-" + currId).find('[name^="support_message"]').attr('required', 'required');
+	} else {
+		$("input[id*='"+currId+"']").attr('checked', false);
+		$("div[class*='textarea-" + currId + "']").css('display', 'none');
+		$("div[class*='textarea-" + currId + "']").removeAttr('required');
+        $("div[class*='textarea-" + currId + "']").find('[name^="support_message"]').val('');
 	}
+	/*if(check_donation==1){
+	 //console.log(check_donation);
+	 $(".donation-message").css('display','block');
+	 $('#support_message').attr('required', 'required');
+	 }else{
+	 $(".donation-message").css('display','none');
+	 $('#support_message').removeAttr('required');
+	 }*/
 });
 
 function delete_di_confirmation(opencall_id,di_id,di_filename,image_id,abspath) {

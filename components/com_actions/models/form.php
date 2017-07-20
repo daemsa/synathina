@@ -406,7 +406,20 @@ class ActionsModelForm extends JModelItem
 			//email to municipalities pending code
 			$municipality_message=addslashes(nl2br(@$_REQUEST['services_message']));
 		}
-		$supporters_message=addslashes(nl2br(@$_REQUEST['support_message']));
+		//$supporters_message=addslashes(nl2br(@$_REQUEST['support_message']));
+
+		$supports_message_array = [];
+		foreach(@$_REQUEST as $key => $requestParam) {
+		  if(preg_match('/^support_message-*/',$key)) {
+		    $support_request_id = explode('-',$key);
+        $support_request_id = $support_request_id[count($support_request_id)-1];
+
+        $supports_message_array[$support_request_id] = addslashes(nl2br($requestParam));
+      }
+    }
+
+    $supporters_message = serialize($supports_message_array);
+
 		//donations
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published=1";
 		$db->setQuery($query);

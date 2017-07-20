@@ -1464,3 +1464,15 @@ width:5%;
     background: #000;
 }
 
+.donation-message {
+    width:32%;
+    float: left;
+    margin-right: 15px;
+}
+
+@media all and (max-width: 768px) {
+    .parent-donation-message {
+        width:100%;
+    }
+}
+

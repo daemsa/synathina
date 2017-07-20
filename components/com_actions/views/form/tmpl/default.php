@@ -351,8 +351,10 @@ function show_hide(f,show){
 
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
+		$messageDivArray = [];
 		$i=1;
 		$children=array();
+        $messageDivArray = [];
 		foreach($rows as $row){
 			$query = " SELECT id, name "
 					." FROM #__team_donation_types
@@ -361,8 +363,11 @@ function show_hide(f,show){
 
 			$db->setQuery($query);
 			$rows1=$db->loadObjectList();
+
+			$messageDivArray[$row->id] = ['name'=>$row->name, 'children' =>[]];
 			foreach($rows1 as $row1){
 				$children[$i][]=array($row1->id, $row1->name,$row->id);
+                array_push($messageDivArray[$row->id]['children'], [$row1->name, $row1->id]);
 			}
 			echo '<div class="form-group support_fields">
 							 <input name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').'>
@@ -393,11 +398,24 @@ function show_hide(f,show){
 ?>
 							</div>
 
-               <div class="form-group form--padded donation-message" style="display:none">
-                  <label for="support_message" class="is-block">Μήνυμα προς τους υποστηρικτές*:</label>
-                  <textarea class="form-control max-600" id="support_message" rows="8" name="support_message" ></textarea>
-               </div>
-               <div class="form-group form-group--tail is-block clearfix">
+                <?php
+                foreach($messageDivArray as $parentKey => $subArray) {
+                    if(count($subArray['children'])){
+                        foreach($subArray['children'] as $child) { ?>
+                            <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" style="display:none">
+                                <label for="support_message" class="is-block">Μήνυμα προς <?php echo $child[0] ?>*:</label>
+                                <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" ></textarea>
+                            </div>
+                        <?php }
+                    } else { ?>
+                      <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>" style="display:none">
+                            <label for="support_message" class="is-block">Μήνυμα προς <?php echo $subArray['name']; ?>*:</label>
+                            <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" ></textarea>
+                        </div>
+                    <?php }
+                }
+                ?>
+               <div class="form-group form-group--tail is-block clearfix" style="clear:both">
                   <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
                   <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
                </div>
