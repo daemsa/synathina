@@ -792,7 +792,8 @@ class ActionsModelEdit extends JModelItem
 					//$emails1[]='ddasios@steficon.gr';
 					foreach ($supporters_emails as $key => $emails){
             $s_array=array($team_link,$team_info->name,implode(', ',$donation_text),$supporters_message[$key],$drasi_url,$name,$team_info->contact_1_name,$team_info->contact_1_email,$team_info->contact_1_phone);
-					  foreach ($emails as $email) {
+					  $emails_unique = array_unique($emails);
+            foreach ($emails_unique as $email) {
               synathina_email('action_created_supporters',$s_array,$email,'Παράκληση για υποστήριξη','');
             }
 					}
