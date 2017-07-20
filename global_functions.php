@@ -32,9 +32,9 @@ function synathina_email($type,$parameters,$emails,$title,$attachment){
 		}
 		
 		$mailer->addRecipient($recipients);
-		if($type!='action_created_supporters'){
+		/*if($type!='action_created_supporters'){
 			$mailer->addBcc('ddasios@steficon.gr');
-		}
+		}*/
 		$mailer->setSubject($custom_email->subject);
 		
 
