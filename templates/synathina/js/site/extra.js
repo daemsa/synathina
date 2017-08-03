@@ -362,60 +362,67 @@ $(document).ready(function (){
 			alert('Συμπληρώστε τύπο ομάδας');
 			return false;
 		}
-		if($('#box2').is(':checked')){
-			var donations=0;
-			var sub_donations=0;
-            $message = 'Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής';
-			$('input', $('.registration-donations')).each(function () {
-				//console.log($(this)); //log every element found to console output
-				if($(this).is(':checked')){
-					
-					donations=1;
-					
-					if( $('#donation-1').is(':checked') || $('#donation-16').is(':checked') ) {
-						
-						if ( $('#donation-1').is(':checked') ) {
+        if($('#box2').is(':checked')){
+            var donations=0;
+            var sub_donations=1;
+            $('input', $('.registration-donations')).each(function () {
+                //console.log($(this)); //log every element found to console output
+                if($(this).is(':checked')){
+
+                    donations=1;
+
+                    if( $('#donation-1').is(':checked') || $('#donation-16').is(':checked') ) {
+
+                        sub_donations=0;
+
+                        if ( $('#donation-1').is(':checked') ) {
 
                             $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε είδος';
-							
-							$('input', $('#subcat1')).each(function () {
-								if($(this).is(':checked')){
-									sub_donations=1;
-								}
-							});
-							
-						}
 
-						if  ( $('#donation-16').is(':checked') && sub_donations==1 ) {
+                            $('input', $('#subcat1')).each(function () {
+                                if($(this).is(':checked')){
+                                    sub_donations=1;
+                                }
+                            });
+
+                        }
+
+                        if  ( $('#donation-16').is(':checked') && sub_donations==1 ) {
 
                             sub_donations=0;
 
                             $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε τεχνογνωσία';
-							
-							$('input', $('#subcat2')).each(function () {
-								if($(this).is(':checked')){
-									sub_donations=1;
-								}
-							});
-						
-						} 
-						
-					}
-				}
-			});
 
-			if( donations==0 || sub_donations==0 ){
-				if(donations==0) {
-					alert('Συμπληρώστε τουλαχιστον μία προσφορά');
-					return false;
-				}
-				
-				if(sub_donations==0){
-					alert($message);
-					return false;
-				}
-			}
-		}
+                            $('input', $('#subcat2')).each(function () {
+                                if($(this).is(':checked')){
+                                    sub_donations=1;
+                                }
+                            });
+
+                        }
+
+                    } else {
+                        if(!($('#donation-27').is(':checked') || $('#donation-28').is(':checked') || $('#donation-35').is(':checked'))) {
+                            $message = 'Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής';
+                        } else {
+                            donations = 1;
+                        }
+                    }
+                }
+            });
+
+            if( donations==0 || sub_donations==0 ){
+                if(donations==0) {
+                    alert($message);
+                    return false;
+                }
+
+                if(sub_donations==0){
+                    alert($message);
+                    return false;
+                }
+            }
+        }
 		if($('#box8').is(':checked')||$('#box9').is(':checked')){
 		}else{
 			alert('Συμπληρώστε εάν έχετε νομική μορφή');
