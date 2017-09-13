@@ -53,7 +53,7 @@ $this->setGenerator(null);
 //newsletter
 $db	= JFactory::getDBO();
 if(@$_REQUEST['newsletter_email']!=''){
-    if (@$_REQUEST['g-recaptcha-response']=='') {
+	if (@$_REQUEST['g-recaptcha-response']=='') {
       echo '<script>alert(\''.($lang_code=='en'?'There was problem with the CAPTCHA code':'Υπήρξε πρόβλημα κατά τον έλεγχο του CAPTCHA').'\')</script>';
     } else {
       $query = "SELECT id FROM #__newsletters WHERE email='" . addslashes(@$_REQUEST['newsletter_email']) . "' LIMIT 1";
@@ -134,9 +134,9 @@ $note = $db->loadResult();
 
 		ga('create', 'UA-80529761-1', 'auto');
 		ga('send', 'pageview');
-	</script>
+		</script>
 		<!-- End Google Analytics -->
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body class="">
@@ -326,7 +326,7 @@ $note = $db->loadResult();
 				<div class="form-group">
 					 <button type="submit" class="btn btn--coral btn--bold"><?php echo JText::_('MOD_NEWSLETTER_SUBMIT'); ?></button>
 				</div>
-                <div class="g-recaptcha" data-sitekey="6Ld4fykUAAAAAHJhqJLKxvf8k0gRWVQIjPtnTcuD"></div>
+				<div class="g-recaptcha" data-sitekey="6Ld4fykUAAAAAHJhqJLKxvf8k0gRWVQIjPtnTcuD"></div>
 			</form>
 		</div>
 	</div>
@@ -353,6 +353,8 @@ $note = $db->loadResult();
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/d3.slider.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/markerclusterer.js"></script>
 
+    <script async defer  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
+	
     <!-- Application -->
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/filter.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/ajax.js"></script>
@@ -366,9 +368,6 @@ $note = $db->loadResult();
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/cross<?=$lang_code=='en'?'_en':''?>.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/slider.js"></script>
 
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry">
-    </script>
 <?php } else { ?>
     <!-- ELSE load web site source files and dependecies -->
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dev_menu.js"></script>
@@ -430,6 +429,7 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
         //container = $(args);
+        
         target = $('[rel="js-show-category-types"]');
         inputs = $('#member-registration').find(' > .form-group > input ');
 

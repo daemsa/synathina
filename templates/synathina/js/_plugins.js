@@ -130,8 +130,8 @@ var DEV = (function(global){
       button = document.querySelector('.dev-menu-button');
       menu = document.querySelector('.dev_menu');
       body = document.querySelector('body');
-
-      button.addEventListener('click', toggleDevMenu);
+	if (button>0) {
+      button.addEventListener('click', toggleDevMenu);	}
 
    function toggleDevMenu(e) {
       e.preventDefault();
