@@ -175,6 +175,7 @@ if($note=='stegi'){
 				}else{
 					echo '<a href="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="figure-item magnifying-gallery">
 									<img src="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" alt="" />
+									<p>'.$img->description.'</p><br />
 								</a>';
 				}
 			}	
