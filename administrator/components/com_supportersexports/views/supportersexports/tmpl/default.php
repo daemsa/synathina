@@ -63,12 +63,11 @@ foreach ($donations as $donation) {
 // Add some data
 $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'ΟΝΟΜΑ ΟΜΑΔΑΣ')
-            ->setCellValue('B1', 'ΗΜΕΡΟΜΗΝΙΑ ΕΓΓΡΑΦΗΣ ΟΜΑΔΑΣ')
-            ->setCellValue('C1', 'USER NAME')
-            ->setCellValue('D1', 'USER EMAIL')
-            ->setCellValue('E1', 'ΚΑΤΗΓΟΡΙΕΣ ΥΠΟΣΤΗΡΙΞΗΣ')
-            ->setCellValue('F1', 'ΘΕΜΑΤΙΚΕΣ')
-            ->setCellValue('G1', 'ΑΝΩΝΥΜΟΣ ΥΠΟΣΤΗΡΙΚΤΗΣ');
+            ->setCellValue('B1', 'USER NAME')
+            ->setCellValue('C1', 'USER EMAIL')
+            ->setCellValue('D1', 'ΚΑΤΗΓΟΡΙΕΣ ΥΠΟΣΤΗΡΙΞΗΣ')
+            ->setCellValue('E1', 'ΘΕΜΑΤΙΚΕΣ')
+            ->setCellValue('F1', 'ΑΝΩΝΥΜΟΣ ΥΠΟΣΤΗΡΙΚΤΗΣ');
 
 $alpha_array=array('A','B','C','D','E','F','G');
 for($a=0; $a<count($alpha_array); $a++){
@@ -97,12 +96,11 @@ foreach($teams as $team){
 
 	$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$i, htmlspecialchars_decode($team->name))
-							->setCellValue('B'.$i, $team->created)
-							->setCellValue('C'.$i, $team->uname)
-							->setCellValue('D'.$i, $team->uemail)
-							->setCellValue('E'.$i, implode(', ', $team_donation_names))
-							->setCellValue('F'.$i, implode(', ', $team_activity_names))
-							->setCellValue('G'.$i, $team->hidden? 'ΝΑΙ' : 'ΟΧΙ');
+							->setCellValue('B'.$i, $team->uname)
+							->setCellValue('C'.$i, $team->uemail)
+							->setCellValue('D'.$i, implode(', ', $team_donation_names))
+							->setCellValue('E'.$i, implode(', ', $team_activity_names))
+							->setCellValue('F'.$i, $team->hidden? 'ΝΑΙ' : 'ΟΧΙ');
 	$i++;
 }
 
