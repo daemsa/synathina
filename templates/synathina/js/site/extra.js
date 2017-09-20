@@ -67,8 +67,13 @@ $('.stegi_use input:checkbox').click(function() {
 		$(".show_stegi_hours_"+tmp).toggle();
 });
 
-$('#services_choice input:checkbox').click(function() {
-		$("#service_list").toggle(); // simplifies to this
+$('#services_choice input:checkbox').click(function(e) {
+    $("#service_list").toggle(); // simplifies to this
+    if ($('#services_choice input:checkbox:checked').length > 0) {
+        $('#services_message').attr('required', 'required');
+	} else {
+        $('#services_message').removeAttr('required');
+	}
 });
 
 $('.support_fields input:checkbox').click(function() {
@@ -679,7 +684,12 @@ $('.donation-change').click(function() {
 		//$(".show_stegi_hours_"+tmp).toggle();
 });
 
-$('.filters div>input:checkbox').change(function () {
+$('.filters div>input:checkbox').change(function (e) {
+	if (typeof $(this).attr('data-href') !== 'undefined') {
+		return false;
+	}
+
+	console.log($(this).attr('data-href'));
 
 	var currId = $(this).attr('id');
 
@@ -689,9 +699,10 @@ $('.filters div>input:checkbox').change(function () {
 	} else {
 		$("input[id*='"+currId+"']").attr('checked', false);
 		$("div[class*='textarea-" + currId + "']").css('display', 'none');
-		$("div[class*='textarea-" + currId + "']").removeAttr('required');
+		$("div[class*='textarea-" + currId + "']").find('[name^="support_message"]').removeAttr('required');
         $("div[class*='textarea-" + currId + "']").find('[name^="support_message"]').val('');
 	}
+
 	/*if(check_donation==1){
 	 //console.log(check_donation);
 	 $(".donation-message").css('display','block');

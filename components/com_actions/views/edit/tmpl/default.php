@@ -384,7 +384,7 @@ if($isroot==1){
 ?>
 									</div>
 									<div class="form-group is-block form" style="padding-top:12px">
-										<label class="is-block">Μήνυμα προς τις υπηρεσίες του δήμου:</label>
+										<label class="is-block">Μήνυμα προς τις υπηρεσίες του δήμου*:</label>
 										<textarea name="services_message" class="form-control max-600" id="services_message" rows="8"><?php echo stripslashes(str_replace("<br />","",$action->municipality_message)); ?></textarea>
                                         <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί στις αρμόδιες δημοτικές υπηρεσίες)</span>
 									</div>								
