@@ -44,23 +44,32 @@ $db->setQuery($query);
 $teams = $db->loadObjectList();	
 $data = array();
 
+$get_activities = "SELECT * FROM cemyx_team_activities WHERE published = 1";
+$db->setQuery($get_activities);
+$activities = $db->loadObjectList();
+$activities_data = [];
+foreach ($activities as $activity) {
+	$activities_data[$activity->id] = $activity->name;
+}
+
 // Add some data
 $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'ΟΝΟΜΑ ΟΜΑΔΑΣ')
             ->setCellValue('B1', 'USER EMAIL')
             ->setCellValue('C1', 'ΗΜΕΡΟΜΗΝΙΑ ΕΓΓΡΑΦΗΣ')
             ->setCellValue('D1', 'ΝΟΜΙΚΗ ΜΟΡΦΗ')
-						->setCellValue('E1', 'WEBSITE')
-						->setCellValue('F1', 'FACEBOOK PAGE')
-						->setCellValue('G1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 1')
-						->setCellValue('H1', 'EMAIL 1')
-						->setCellValue('I1', 'ΤΗΛΕΦΩΝΟ 1')
-						->setCellValue('J1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 2')
-						->setCellValue('K1', 'EMAIL 2')
-						->setCellValue('L1', 'ΤΗΛΕΦΩΝΟ 2')
-						->setCellValue('M1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 3')
-						->setCellValue('N1', 'EMAIL 3')
-						->setCellValue('O1', 'ΤΗΛΕΦΩΝΟ 3');
+						->setCellValue('E1', 'ΘΕΜΑΤΙΚΕΣ')
+						->setCellValue('F1', 'WEBSITE')
+						->setCellValue('G1', 'FACEBOOK PAGE')
+						->setCellValue('H1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 1')
+						->setCellValue('I1', 'EMAIL 1')
+						->setCellValue('J1', 'ΤΗΛΕΦΩΝΟ 1')
+						->setCellValue('K1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 2')
+						->setCellValue('L1', 'EMAIL 2')
+						->setCellValue('M1', 'ΤΗΛΕΦΩΝΟ 2')
+						->setCellValue('N1', 'ΥΠΕΥΘΥΝΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ 3')
+						->setCellValue('O1', 'EMAIL 3')
+						->setCellValue('P1', 'ΤΗΛΕΦΩΝΟ 3');
 						
 $alpha_array=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O');						
 for($a=0; $a<count($alpha_array); $a++){
@@ -71,22 +80,32 @@ for($a=0; $a<count($alpha_array); $a++){
 
 $i=2;
 foreach($teams as $team){
+
+	$team_activities = explode(',', $team->activities);
+	$team_activity_names = [];
+	foreach ($team_activities as $activity_id) {
+		if (isset($activities_data[$activity_id])) {
+			$team_activity_names[] = $activities_data[$activity_id];
+		}
+	}
+
 	$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$i, htmlspecialchars_decode($team->name))
 							->setCellValue('B'.$i, $team->uemail)
 							->setCellValue('C'.$i, $team->created)
 							->setCellValue('D'.$i, ($team->legal_form==1?'ΝΑΙ':'ΟΧΙ'))
-							->setCellValue('E'.$i, $team->web_link)
-							->setCellValue('F'.$i, $team->fb_link)
-							->setCellValue('G'.$i, $team->contact_1_name)
-							->setCellValue('H'.$i, $team->contact_1_email)
-							->setCellValue('I'.$i, $team->contact_1_phone)
-							->setCellValue('J'.$i, $team->contact_2_name)
-							->setCellValue('K'.$i, $team->contact_2_email)
-							->setCellValue('L'.$i, $team->contact_2_phone)
-							->setCellValue('M'.$i, $team->contact_3_name)
-							->setCellValue('N'.$i, $team->contact_3_email)
-							->setCellValue('O'.$i, $team->contact_3_phone);	
+							->setCellValue('E'.$i, implode(', ', $team_activity_names))
+							->setCellValue('F'.$i, $team->web_link)
+							->setCellValue('G'.$i, $team->fb_link)
+							->setCellValue('H'.$i, $team->contact_1_name)
+							->setCellValue('I'.$i, $team->contact_1_email)
+							->setCellValue('J'.$i, $team->contact_1_phone)
+							->setCellValue('K'.$i, $team->contact_2_name)
+							->setCellValue('L'.$i, $team->contact_2_email)
+							->setCellValue('M'.$i, $team->contact_2_phone)
+							->setCellValue('N'.$i, $team->contact_3_name)
+							->setCellValue('O'.$i, $team->contact_3_email)
+							->setCellValue('P'.$i, $team->contact_3_phone);
 	$i++;
 }
 
