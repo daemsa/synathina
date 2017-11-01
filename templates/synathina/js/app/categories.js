@@ -1,10 +1,10 @@
 var Categories = (function(global){
-	
+
    function init(){
       //data = arguments[0];
       var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
       categoriesHTMLparent = document.querySelector("[rel*=js-create-categories]");
-      AjaxCall.get('http://www.synathina.gr/categories_filters.php?lang='+lang, func);
+      AjaxCall.get('/categories_filters.php?lang='+lang, func);
    }
    function func(data){
       try {

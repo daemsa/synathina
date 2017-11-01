@@ -275,7 +275,7 @@ var Activities = (function(global) {
         window.markerCluster = new MarkerClusterer(map, markers, {
             gridSize: 50,
             maxZoom: 14,
-            imagePath: 'http://www.synathina.gr/images/template/m'
+            imagePath: '/images/template/m'
         });
 
     }
@@ -303,7 +303,7 @@ var Activities = (function(global) {
         window.clusterer = new MarkerClusterer(map, [], {
             gridSize: 50,
             maxZoom: 14,
-            imagePath: 'http://www.synathina.gr/images/template/m'
+            imagePath: '/images/template/m'
         });
 
         /**
@@ -406,7 +406,7 @@ var Activities = (function(global) {
         window.clusterer = new MarkerClusterer(map, [], {
             gridSize: 50,
             maxZoom: 14,
-            imagePath: 'http://www.synathina.gr/images/template/m'
+            imagePath: '/images/template/m'
         });
 
         for (var i = 0; i < coordinatesArray.length; i += 1) {
@@ -466,8 +466,8 @@ var Activities = (function(global) {
     function init() {
         //AjaxCall.get('js_collections/activities/array.json', populateActivities);
         var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
-        AjaxCall.get('http://www.synathina.gr/actions.php?lang=' + lang, populateActivities);
-        window.synathina_var = synathina('http://www.synathina.gr/actions_stegi.php?lang=' + lang);
+        AjaxCall.get('/actions.php?lang=' + lang, populateActivities);
+        window.synathina_var = synathina('/actions_stegi.php?lang=' + lang);
     }
 
 
@@ -477,7 +477,7 @@ var Activities = (function(global) {
         coordinatesArray, polygon, contentString, saFilter, saSlider, current_polygon, cachedMarkers = [],
         markerClusterer, categories;
 
-    var iconBase = 'http://www.synathina.gr/templates/synathina/img/markers/';
+    var iconBase = '/templates/synathina/img/markers/';
     var icons = {
         past: {
             icon: iconBase + 'marker_grey.png'

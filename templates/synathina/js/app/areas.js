@@ -269,7 +269,7 @@ var Areas = (function(global) {
 
     function initAreas() {
         var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
-        AjaxCall.get('http://www.synathina.gr/areas.php?lang=' + lang, populateAreas);
+        AjaxCall.get('/areas.php?lang=' + lang, populateAreas);
         /**
         for( var i = 0; i < Athens.length; i += 1) {
           initPolygons(Athens[i], Athens[i].styles)
