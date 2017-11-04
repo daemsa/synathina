@@ -9,7 +9,7 @@ var Map = (function(global) {
 
       function initMap() {
 
-          //$(document).ready(function(){			
+          //$(document).ready(function(){
           var bw = window.innerWidth;
           var zoom = 13;
           if (bw > 480) {
@@ -39,8 +39,8 @@ var Map = (function(global) {
           // creating and setting only one infowindow available to the map scope
           infoWindow = Info;
           map.infoWindow = infoWindow.createWindow();
-          //map.panTo({lat: pt.lat(), lng: pt.lng() }); 
-          //});     
+          //map.panTo({lat: pt.lat(), lng: pt.lng() });
+          //});
 
       }
 

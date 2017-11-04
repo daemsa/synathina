@@ -17,7 +17,6 @@ var Categories = (function(global){
       }
 
       collection = JSON.parse(data.response);
-      //console.log(collection);
 
       createCategory(collection);
 
