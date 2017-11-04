@@ -43,7 +43,8 @@ class ActionsModelForm extends JModelItem
 		parent::populateState();
 	}
 
-	public function getUrlslug($str, $options = array()) {
+	public function getUrlslug($str, $options = array())
+	{
 		// Make sure string is in UTF-8 and strip invalid UTF-8 characters
 		$str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
 
@@ -129,7 +130,7 @@ class ActionsModelForm extends JModelItem
 		$str = preg_replace('/[^\p{L}\p{Nd}]+/u', $options['delimiter'], $str);
 
 		// Remove duplicate delimiters
-		$str = preg_replace('/(' . preg_quote($options['delimiter'], '/') . '){2,}/', '$1', $str);
+		$str = preg_replace('/(' . preg_quote($options['delimiter'], '/') . ') {2,}/', '$1', $str);
 
 		// Truncate slug to max. characters
 		$str = mb_substr($str, 0, ($options['limit'] ? $options['limit'] : mb_strlen($str, 'UTF-8')), 'UTF-8');
@@ -141,41 +142,45 @@ class ActionsModelForm extends JModelItem
 	}
 
 
-	public function donations_valid(){
+	public function donations_valid()
+	{
 		$db = JFactory::getDBO();
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published=1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
-		$donations_array=array();
-		foreach($donations as $donation){
+		$donations_array = [];
+		foreach ($donations as $donation) {
 			$query = "SELECT id FROM #__team_donation_types WHERE parent_id='".$donation->id."' LIMIT 1";
 			$db->setQuery($query);
 			$has_children = $db->loadResult();
-			if($has_children){
+			if ($has_children) {
 				//do nothing
-			}else{
-				$donations_array[]=$donation->id;
+			} else {
+				$donations_array[] = $donation->id;
 			}
 		}
+
 		return $donations_array;
 	}
 
-	public function donations_valid_text(){
+	public function donations_valid_text()
+	{
 		$db = JFactory::getDBO();
 		$query = "SELECT id,parent_id,name FROM #__team_donation_types WHERE published=1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
-		$donations_array=array();
-		foreach($donations as $donation){
+		$donations_array = [];
+		foreach ($donations as $donation) {
 			$query = "SELECT id FROM #__team_donation_types WHERE parent_id='".$donation->id."' LIMIT 1";
 			$db->setQuery($query);
 			$has_children = $db->loadResult();
-			if($has_children){
+			if ($has_children) {
 				//do nothing
-			}else{
-				$donations_array[]=$donation->name;
+			} else {
+				$donations_array[] = $donation->name;
 			}
 		}
+
 		return $donations_array;
 	}
 
@@ -213,7 +218,6 @@ class ActionsModelForm extends JModelItem
 	 */
 	public function getItem()
 	{
-		//db connection
 		$db = JFactory::getDBO();
 		$query = "SELECT * FROM #__content WHERE id='".@$_REQUEST['id']."' LIMIT 1 ";
 		$db->setQuery($query);
@@ -230,7 +234,7 @@ class ActionsModelForm extends JModelItem
 			$db = JFactory::getDBO();
 			//get all subcategories
 			$query = 'SELECT hits FROM #__content WHERE id=\''.$_REQUEST['id'].'\'';
-			$db->setQuery( $query );
+			$db->setQuery($query);
 			$hits = $db->loadResult();
 			$pk = (!empty($pk)) ? $pk : $hits+$hitcount;
 			$query = 'UPDATE #__content SET hits=\''.$pk.'\' WHERE id=\''.$_REQUEST['id'].'\'';
@@ -243,116 +247,119 @@ class ActionsModelForm extends JModelItem
 
 	public function getTeam()
 	{
-			$user = JFactory::getUser();
-			//db connection
-			$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
-			$query="SELECT id,user_id,logo FROM #__teams
-							WHERE user_id='".$user->id."' LIMIT 1 ";
-							//echo $query;
-			$db->setQuery( $query );
-			$teams = $db->loadObjectList();
+		$query = "SELECT id,user_id,logo FROM #__teams
+						WHERE user_id='".$user->id."' LIMIT 1 ";
+		$db->setQuery($query);
+		$teams = $db->loadObjectList();
 
-			//$obj = new stdClass();
-			//$actions1 = $obj->various = array('Kalle', 'Ross', 'Felipe');
-			//$actions_all = (object) array_merge((array) $actions[0], (array) $subactions[0]);
-			return $teams;
+		return $teams;
 	}
+
 	public function getTeamInfo($user_id)
 	{
-			//$user = JFactory::getUser();
-			//db connection
-			$db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-			$query="SELECT name,contact_1_name,contact_1_email,contact_1_phone FROM #__teams
-							WHERE user_id='".$user_id."' LIMIT 1 ";
-							//echo $query;
-			$db->setQuery( $query );
-			$team_names = $db->loadObjectList();
-			$team_info=array();
-			foreach($team_names as $key => $value){
-				$team_info[$key]=$value;
-			}
-			return $team_info;
+		$query = "SELECT name,contact_1_name,contact_1_email,contact_1_phone FROM #__teams
+						WHERE user_id='".$user_id."' LIMIT 1 ";
+		$db->setQuery($query);
+		$team_names = $db->loadObjectList();
+		$team_info = [];
+		foreach ($team_names as $key => $value) {
+			$team_info[$key]=$value;
+		}
+
+		return $team_info;
 	}
+
 	public function getSubactions()
 	{
-			//db connection
-			$db = JFactory::getDBO();
-			$config= new JConfig();
-			$app = JFactory::getApplication();
-			$query="SELECT a.*
-							FROM #__actions AS a
-							WHERE a.action_id='".@$_REQUEST['id']."' AND a.published=1 ";
-			$db->setQuery( $query );
-			$subactions = $db->loadObjectList();
-			return $subactions;
+		$db = JFactory::getDBO();
+		$config= new JConfig();
+		$app = JFactory::getApplication();
+		$query = "SELECT a.*
+						FROM #__actions AS a
+						WHERE a.action_id='".@$_REQUEST['id']."' AND a.published=1 ";
+		$db->setQuery($query);
+		$subactions = $db->loadObjectList();
+
+		return $subactions;
 	}
+
 	public function getActivities()
 	{
-			//db connection
-			$db = JFactory::getDBO();
-			$config= new JConfig();
-			$app = JFactory::getApplication();
-			$query="SELECT a.*
-							FROM #__team_activities AS a
-							WHERE a.published=1 ";
-			$db->setQuery( $query );
-			$activities = $db->loadObjectList();
-			return $activities;
+		$db = JFactory::getDBO();
+		$config= new JConfig();
+		$app = JFactory::getApplication();
+
+		$query = "SELECT a.*
+						FROM #__team_activities AS a
+						WHERE a.published=1 ";
+		$db->setQuery($query);
+		$activities = $db->loadObjectList();
+
+		return $activities;
 	}
 	public function getTeams()
 	{
-			//db connection
-			$db = JFactory::getDBO();
-			$config= new JConfig();
-			$app = JFactory::getApplication();
-			$query="SELECT a.id, a.name, a.logo
-							FROM #__teams AS a
-							WHERE a.`hidden`=0 AND a.published=1
-							ORDER BY a.name ASC ";
-			$db->setQuery( $query );
-			$teams = $db->loadObjectList();
-			return $teams;
+
+		$db = JFactory::getDBO();
+		$config= new JConfig();
+		$app = JFactory::getApplication();
+
+		$query = "SELECT a.id, a.name, a.logo
+						FROM #__teams AS a
+						WHERE a.`hidden`=0 AND a.published=1
+						ORDER BY a.name ASC ";
+		$db->setQuery($query);
+		$teams = $db->loadObjectList();
+
+		return $teams;
 	}
+
 	public function getTeams_users()
 	{
-			//db connection
-			$db = JFactory::getDBO();
-			$config= new JConfig();
-			$app = JFactory::getApplication();
-			$query="SELECT t.name,t.id AS team_id, u.id AS user_id
-							FROM #__teams AS t
-							INNER JOIN #__users AS u ON u.id=t.user_id
-							WHERE u.block=0 AND u.activation='' AND t.published=1
-							ORDER BY t.name ASC ";
-			$db->setQuery( $query );
-			$teams_users = $db->loadObjectList();
-			return $teams_users;
+
+		$db = JFactory::getDBO();
+		$config= new JConfig();
+		$app = JFactory::getApplication();
+
+		$query = "SELECT t.name,t.id AS team_id, u.id AS user_id
+						FROM #__teams AS t
+						INNER JOIN #__users AS u ON u.id=t.user_id
+						WHERE u.block=0 AND u.activation='' AND t.published=1
+						ORDER BY t.name ASC ";
+		$db->setQuery($query);
+		$teams_users = $db->loadObjectList();
+
+		return $teams_users;
 	}
+
 	public function getServices()
 	{
-			//db connection
-			$db = JFactory::getDBO();
-			$config= new JConfig();
-			$app = JFactory::getApplication();
-			$query="SELECT a.id, a.name
-							FROM #__municipality_services AS a
-							WHERE a.published=1
-							ORDER BY a.id ASC ";
-			$db->setQuery( $query );
-			$services = $db->loadObjectList();
-			return $services;
+		$db = JFactory::getDBO();
+		$config= new JConfig();
+		$app = JFactory::getApplication();
+
+		$query = "SELECT a.id, a.name
+						FROM #__municipality_services AS a
+						WHERE a.published=1
+						ORDER BY a.id ASC ";
+		$db->setQuery($query);
+		$services = $db->loadObjectList();
+
+		return $services;
 	}
 
 	public function save()
 	{
 		$session = JFactory::getSession();
-		$newform_session=$session->get( 'newform' );
+
 		//validate form integrity
-		if($newform_session==@$_REQUEST['newform']){
-			//ok
-		}else{
+		$newform_session = $session->get( 'newform' );
+		if ($newform_session != @$_REQUEST['newform']) {
 			header('Location:'.@$_REQUEST['return_false']);
 			exit();
 		}
@@ -363,273 +370,349 @@ class ActionsModelForm extends JModelItem
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 		$templateDir = JURI::base() . 'templates/' . $app->getTemplate();
-		// Initialise the table with JUser.
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
 
-		$root_insert=0;
+		$root_insert = 0;
 		//check if root inserts an action and change user credentials
-		if($isroot){
-			$root_insert=1;
-			$user->id=@$_REQUEST['user_id'];
-			$user->email='';
+		if ($isroot) {
+			$root_insert = 1;
+			$user->id = @$_REQUEST['user_id'];
+			$user->email = '';
 		}
 
 		//get request data
-		$team_id=@$_REQUEST['team_id'];
-		$name=addslashes(@$_REQUEST['name']);
-		$alias=$this->getUrlslug(@$_REQUEST['name']);
-		$short_description=addslashes(@$_REQUEST['short_description']);
-		$description=addslashes(@$_REQUEST['activity_description']);
-		$web_link=addslashes(@$_REQUEST['web_link']);
-		$partners_db='';
-		$teams_request=array();
-		if(@$_REQUEST['teams']){
-			//print_r(@$_REQUEST['teams']);
+		$team_id = @$_REQUEST['team_id'];
+		$name = addslashes(@$_REQUEST['name']);
+		$alias = $this->getUrlslug(@$_REQUEST['name']);
+		$short_description = addslashes(@$_REQUEST['short_description']);
+		$description = addslashes(@$_REQUEST['activity_description']);
+		$web_link = addslashes(@$_REQUEST['web_link']);
+		$partners_db = '';
+		$teams_request = [];
+		if (@$_REQUEST['teams']) {
 			$teams_request=@$_REQUEST['teams'];
 		}
-		foreach($teams_request as $p){
-			$partners_db.=$p.',';
+		foreach ($teams_request as $p) {
+			$partners_db .= $p.',';
 		}
-		$municipality_services='';
-		$municipality_message='';
-		$municipality_send=0;
-		if(@$_REQUEST['services']=='on'){
-			for($s=1; $s<20; $s++){
-				if(@$_REQUEST['service_'.$s]=='on'){
-					$municipality_services.=$s.',';
+		$municipality_services = '';
+		$municipality_message = '';
+		$municipality_send = 0;
+		if (@$_REQUEST['services'] == 'on') {
+			for ($s = 1; $s < 20; $s++) {
+				if (@$_REQUEST['service_'.$s] == 'on') {
+					$municipality_services .= $s.',';
 				}
 			}
-			if($municipality_services!=''){
-				//$municipality_send=1;
-			}
-			//email to municipalities pending code
-			$municipality_message=addslashes(nl2br(@$_REQUEST['services_message']));
+			$municipality_message = addslashes(nl2br(@$_REQUEST['services_message']));
 		}
-		//$supporters_message=addslashes(nl2br(@$_REQUEST['support_message']));
 
 		$supports_message_array = [];
-		foreach(@$_REQUEST as $key => $requestParam) {
-		  if(preg_match('/^support_message-*/',$key)) {
-		    $support_request_id = explode('-',$key);
-        $support_request_id = $support_request_id[count($support_request_id)-1];
-
-        $supports_message_array[$support_request_id] = addslashes(nl2br($requestParam));
-      }
-    }
-
-    $supporters_message = serialize($supports_message_array);
+		foreach (@$_REQUEST as $key => $requestParam) {
+			if (preg_match('/^support_message-*/', $key)) {
+		    	$support_request_id = explode('-', $key);
+        		$support_request_id = $support_request_id[count($support_request_id) - 1];
+        		$supports_message_array[$support_request_id] = addslashes(nl2br($requestParam));
+      		}
+    	}
+	    $supporters_message = serialize($supports_message_array);
 
 		//donations
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published=1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
-		$donations_ids='';
-		$activities_send=0;
-		$donation_other_1=addslashes(@$_REQUEST['donation-1-other']);
-		$donation_other_16=addslashes(@$_REQUEST['donation-16-other']);
-		$d=1;
-		foreach($donations as $donation){
-			if($donation->parent_id==0){
-				if(@$_REQUEST['donation-'.$donation->id]=='show'){
-					$donations_ids.=$donation->id.',';
+		$donations_ids = '';
+		$activities_send = 0;
+		$donation_other_1 = addslashes(@$_REQUEST['donation-1-other']);
+		$donation_other_16 = addslashes(@$_REQUEST['donation-16-other']);
+		$d = 1;
+		foreach ($donations as $donation) {
+			if ($donation->parent_id == 0) {
+				if (@$_REQUEST['donation-'.$donation->id] == 'show') {
+					$donations_ids .= $donation->id.',';
 				}
-			}else{
-				if(@$_REQUEST['donation-'.$donation->parent_id.'-'.$donation->id]=='on'){
+			} else {
+				if (@$_REQUEST['donation-'.$donation->parent_id.'-'.$donation->id] == 'on') {
 					$donations_ids.=$donation->id.',';
 				}
 			}
 		}
-		//if($donations_ids!=''){
-			//$activities_send=1;
-			//email to supportes pending code
-		//}
 
 		//insert into actions
+
+		//set timezone
 		date_default_timezone_set('Europe/Athens');
 
 		//insert parent action
-		$actions_query="INSERT INTO #__actions VALUES ('','',0,'".$team_id."',0,0,'".$name."','".$alias."','','','',
-																											'".$donations_ids."','".$donation_other_1."','".$donation_other_16."','".$short_description."','".$description."','','".$web_link."','".$partners_db."','',
-																											'','','','','','','','','','','".$municipality_services."','".$municipality_message."','".$municipality_send."','".$activities_send."','".$supporters_message."','".time()."','".$root_insert."','','',
-																											'*','".date('Y-m-d H:i:s')."','', '".$user->id."', '', '".date('Y-m-d H:i:s')."', '', '') ";
+		$actions_query="INSERT INTO #__actions VALUES (
+			'','',
+			0,
+			'".$team_id."',
+			0,
+			0,
+			'".$name."',
+			'".$alias."',
+			'', '', '',
+			'".$donations_ids."',
+			'".$donation_other_1."',
+			'".$donation_other_16."',
+			'".$short_description."',
+			'".$description."',
+			'',
+			'".$web_link."',
+			'".$partners_db."',
+			'', '', '', '', '', '', '', '', '', '', '',
+			'".$municipality_services."',
+			'".$municipality_message."',
+			'".$municipality_send."',
+			'".$activities_send."',
+			'".$supporters_message."',
+			'".time()."',
+			'".$root_insert."',
+			'', '',
+			'*',
+			'".date('Y-m-d H:i:s')."',
+			'',
+			'".$user->id."','',
+			'".date('Y-m-d H:i:s')."',
+			'',
+			''
+		) ";
+
 		$db->setQuery($actions_query);
 		$db->execute();
-		$parent_id=$db->insertid();
+		$parent_id = $db->insertid();
 
 		require_once JPATH_CONFIGURATION.'/global_functions.php';
 
 		$action_ok = 0;
-		//subactions
-		if($parent_id>0){
+
+		if ($parent_id > 0) {
 			$action_ok = 1;
+
 			//main image
-			$main_image='';
-			if($_FILES['image']['error']==0){
-				$image_array=explode('.',$_FILES['image']['name']);
-				$ext=end($image_array);
-				if(move_uploaded_file($_FILES["image"]["tmp_name"], $config->get( 'abs_path' ).'/images/actions/main_images/'.$parent_id.'.'.$ext)){
-					$main_image=$parent_id.'.'.$ext;
+			$main_image = '';
+			if ($_FILES['image']['error'] == 0) {
+				$image_array = explode('.', $_FILES['image']['name']);
+				$ext = end($image_array);
+				if (move_uploaded_file($_FILES["image"]["tmp_name"], $config->get( 'abs_path' ).'/images/actions/main_images/'.$parent_id.'.'.$ext)) {
+					$main_image = $parent_id.'.'.$ext;
 				}
 			}
+
 			//gallery
-			if(@count($_FILES['photos']['name'])>0){
-				if (!file_exists($config->get( 'abs_path' ).'/images/actions/'.$parent_id)) {
+			if (@count($_FILES['photos']['name']) > 0) {
+				if (!file_exists($config->get('abs_path').'/images/actions/'.$parent_id)) {
 					mkdir($config->get( 'abs_path' ).'/images/actions/'.$parent_id, 0777);
 				}
-				for($p=0; $p<count($_FILES['photos']['name']); $p++){
-					if($_FILES['photos']['error'][$p]==0){
-						$image_array=explode('.',$_FILES['photos']['name'][$p]);
-						$ext=end($image_array);
+				for ($p = 0; $p < count($_FILES['photos']['name']); $p++) {
+					if ($_FILES['photos']['error'][$p] == 0) {
+						$image_array = explode('.',$_FILES['photos']['name'][$p]);
+						$ext = end($image_array);
 						move_uploaded_file($_FILES["photos"]["tmp_name"][$p], $config->get( 'abs_path' ).'/images/actions/'.$parent_id.'/'.$_FILES['photos']['name'][$p]);
 					}
 				}
 			}
-			//asset
-			$query_rgt="SELECT MAX(rgt) FROM #__assets LIMIT 1";
+
+			//assets
+			$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
 			$db->setQuery($query_rgt);
 			$max_rgt = $db->loadResult();
-			$assoc_rgt=$max_rgt+1;
+			$assoc_rgt = $max_rgt+1;
 			$query_lock_asset = "LOCK TABLES #__assets WRITE";
 			$db->setQuery($query_lock_asset);
 			$db->execute();
 			$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$parent_id."','#__actions.".$parent_id."','{}') ";
 			$db->setQuery($query_asset);
 			$db->execute();
-			$asset_parent_id=$db->insertid();
+			$asset_parent_id = $db->insertid();
 			$query_unlock_asset = "UNLOCK TABLES";
 			$db->setQuery($query_unlock_asset);
 			$db->execute();
-			//update parent
-			$query_action_update = "UPDATE #__actions SET asset_id='".$asset_parent_id."',image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
+
+			//update parent activity
+			$query_action_update = "UPDATE #__actions SET asset_id='".$asset_parent_id."', image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
 			$db->setQuery($query_action_update);
 			$db->execute();
 
-			//insert subactions
+			//insert subactivities
 			//get all activities
 			$query = "SELECT id FROM #__team_activities WHERE published=1";
 			$db->setQuery($query);
 			$activities = $db->loadObjectList();
-			$stegi_exists_in_general=0;
-			for($f=0; $f<11; $f++){
-				if(trim(@$_REQUEST['ypotitlos_drashs_'.$f])!='' && @$_REQUEST['date_start_'.$f]!='' && @$_REQUEST['date_end_'.$f]!=''){
-					$subtitle=addslashes(@$_REQUEST['ypotitlos_drashs_'.$f]);
-					$start_array=explode(' ',@$_REQUEST['date_start_'.$f]);
-					$start_array1=explode('/',$start_array[0]);
-					$action_date_start=$start_array1[2].'-'.$start_array1[1].'-'.$start_array1[0].' '.$start_array[1].':00';
-					$end_array=explode(' ',@$_REQUEST['date_end_'.$f]);
-					$end_array1=explode('/',$end_array[0]);
-					$action_date_end=$end_array1[2].'-'.$end_array1[1].'-'.$end_array1[0].' '.$end_array[1].':00';
+			$stegi_exists_in_general = 0;
+			for ($f = 0; $f < 11; $f++) {
+				if ( trim(@$_REQUEST['ypotitlos_drashs_'.$f])!='' && @$_REQUEST['date_start_'.$f]!='' && @$_REQUEST['date_end_'.$f] != '' ) {
+					$subtitle = addslashes(@$_REQUEST['ypotitlos_drashs_'.$f]);
+					$start_array = explode(' ', @$_REQUEST['date_start_'.$f]);
+					$start_array1 = explode('/', $start_array[0]);
+					$action_date_start = $start_array1[2].'-'.$start_array1[1].'-'.$start_array1[0].' '.$start_array[1].':00';
+					$end_array = explode(' ', @$_REQUEST['date_end_'.$f]);
+					$end_array1 = explode('/', $end_array[0]);
+					$action_date_end = $end_array1[2].'-'.$end_array1[1].'-'.$end_array1[0].' '.$end_array[1].':00';
 
-					if(@$_REQUEST['stegi_'.$f]=='on'){
-						$stegi=1;
-						$address='';
-						$lat=37.980522;
-						$lng=23.726839;
-						$area=1;
-						$stegi_exists_in_general=1;
-						//insert into stegi
-						$query_team="SELECT name FROM #__teams WHERE id='".$team_id."' LIMIT 1 ";
-						$db->setQuery( $query_team );
+					//insert into stegi
+					if (@$_REQUEST['stegi_'.$f] == 'on') {
+						$stegi = 1;
+						$address = '';
+						$lat = 37.980522;
+						$lng = 23.726839;
+						$area = 1;
+						$stegi_exists_in_general = 1;
+
+						$query_team = "SELECT name FROM #__teams WHERE id='".$team_id."' LIMIT 1 ";
+						$db->setQuery($query_team);
 						$team_name = $db->loadResult();
-						$query_stegi="INSERT INTO #__stegihours VALUES ('','',0,'".$team_id."','".$subtitle."','".$this->getUrlslug($subtitle)."','','".$subtitle."','".$action_date_start."','".$action_date_end."','".$parent_id."','".$root_insert."',1,1,'*','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$user->id."','".$user->id."','','','') ";
+						$query_stegi = "INSERT INTO #__stegihours VALUES (
+							'','',
+							0,
+							'".$team_id."',
+							'".$subtitle."',
+							'".$this->getUrlslug($subtitle)."',
+							'',
+							'".$subtitle."',
+							'".$action_date_start."',
+							'".$action_date_end."',
+							'".$parent_id."',
+							'".$root_insert."',
+							1,
+							1,
+							'*',
+							'".date('Y-m-d H:i:s')."',
+							'".date('Y-m-d H:i:s')."',
+							'".$user->id."',
+							'".$user->id."',
+							'','',''
+						)";
 						$db->setQuery($query_stegi);
 						$db->execute();
-						$stegihours_id=$db->insertid();
-						$query_rgt="SELECT MAX(rgt) FROM #__assets LIMIT 1";
+						$stegihours_id = $db->insertid();
+
+						//assets
+						$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
 						$db->setQuery($query_rgt);
 						$max_rgt = $db->loadResult();
-						$assoc_rgt=$max_rgt+1;
+						$assoc_rgt = $max_rgt+1;
 						$query_lock_asset = "LOCK TABLES #__assets WRITE";
 						$db->setQuery($query_lock_asset);
 						$db->execute();
 						$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__stegihours.".$stegihours_id."','#__stegihours.".$stegihours_id."','{}') ";
 						$db->setQuery($query_asset);
 						$db->execute();
-						$asset_stegi_id=$db->insertid();
+						$asset_stegi_id = $db->insertid();
 						$query_unlock_asset = "UNLOCK TABLES";
 						$db->setQuery($query_unlock_asset);
 						$db->execute();
+
 						//update subaction
 						$query_action_update = "UPDATE #__stegihours SET asset_id='".$asset_stegi_id."' WHERE id='".$stegihours_id."' LIMIT 1";
 						$db->setQuery($query_action_update);
 						$db->execute();
 
 						//email to admin
-						$emails=array();
-						$att='stegi_terms_conditions.pdf';
-						//$s_array=array($team_name,$subtitle,$start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2].' '.$start_array[1],$end_array1[0].'-'.$end_array1[1].'-'.$end_array1[2].' '.$end_array[1]);
-						$s_array=array($team_name,$subtitle,$start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2],$start_array[1],$end_array[1]);
-						if(!$isroot){
-							synathina_email('stegi_action_created_admin',$s_array,$emails,'Δράση στη στέγη του συνΑθηνά','');
+						$emails = [];
+						$att = 'stegi_terms_conditions.pdf';
+						$s_array = array($team_name, $subtitle, $start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2], $start_array[1], $end_array[1]);
+						if (!$isroot) {
+							synathina_email('stegi_action_created_admin', $s_array, $emails, '');
 						}
-					}else{
-						$stegi=0;
-						$address=addslashes(@$_REQUEST['address_'.$f]);
-						$lat=@$_REQUEST['lat_'.$f];
-						$lng=@$_REQUEST['lng_'.$f];
+					} else {
+						$stegi = 0;
+						$address = addslashes(@$_REQUEST['address_'.$f]);
+						$lat = @$_REQUEST['lat_'.$f];
+						$lng = @$_REQUEST['lng_'.$f];
 						require_once JPATH_CONFIGURATION.'/get_map.php';
 						$pointLocation = new pointLocation();
 						$points = array($lat." ".$lng);
-						for($i=1; $i<8; $i++){
-							${'polygon'.$i}=array();
+						for ($i = 1; $i < 8; $i++) {
+							${'polygon'.$i} = [];
 							$xml = simplexml_load_file($templateDir.'/js_collections/maps/'.$i.'o_Diamerisma.kml');
 							$placemarks = $xml->Document->Placemark;
 							foreach ($placemarks as $placemark)
 							{
-								$array_xy=array();
-								$coordinates='';
-								$coordinates_array=array();
-								$array_xy=$placemark->Point->coordinates;
-								$coordinates=(string)$array_xy;
-								$coordinates_array=explode(',',$coordinates);
-								${'polygon'.$i}[]=$coordinates_array[1].' '.$coordinates_array[0];
+								$array_xy = [];
+								$coordinates = '';
+								$coordinates_array = [];
+								$array_xy = $placemark->Point->coordinates;
+								$coordinates = (string)$array_xy;
+								$coordinates_array = explode(',', $coordinates);
+								${'polygon'.$i}[] = $coordinates_array[1].' '.$coordinates_array[0];
 							}
 						}
-						$area=0;
-						foreach($points as $key => $point) {
-								for($i=1; $i<8; $i++){
-									if($area==0){
+						$area = 0;
+						foreach ($points as $key => $point) {
+								for ($i = 1; $i <8; $i++) {
+									if ($area == 0) {
 										$pointloc=$pointLocation->pointInPolygon($point, ${'polygon'.$i});
-										if($pointloc=='inside'){
-											$area=$i;
+										if ($pointloc == 'inside') {
+											$area = $i;
 										}
 									}
 								}
 						}
-						//$area=$this->get_area($lng, $lat);
 					}
 
 					//activities
-					$activities_ids='';
-					foreach($activities as $activity){
-						if(@$_REQUEST['activity_'.$activity->id.'_'.$f]=='on'){
-							$activities_ids.=$activity->id.',';
+					$activities_ids = '';
+					foreach ($activities as $activity) {
+						if (@$_REQUEST['activity_'.$activity->id.'_'.$f] == 'on') {
+							$activities_ids .= $activity->id.',';
 						}
 					}
+
 					//insert subaction
-					$subactions_query="INSERT INTO #__actions VALUES ('','',0,'".$team_id."','".$parent_id."',0,'','','','".$subtitle."','".$activities_ids."',
-																														'','','','','','','','','',
-																														'".$lat."','".$lng."','".$address."','','".$area."','".$action_date_start."','".$action_date_end."','".$stegi."','','','','','','','','".time()."','".$root_insert."','','',
-																														'*','".date('Y-m-d H:i:s')."','', ".$user->id.", '', '".date('Y-m-d H:i:s')."', '', '') ";
+					$subactions_query="INSERT INTO #__actions VALUES (
+						'','',
+						0,
+						'".$team_id."',
+						'".$parent_id."',
+						0,
+						'','','',
+						'".$subtitle."',
+						'".$activities_ids."',
+						'','','','','','','','','',
+						'".$lat."',
+						'".$lng."',
+						'".$address."',
+						'',
+						'".$area."',
+						'".$action_date_start."',
+						'".$action_date_end."',
+						'".$stegi."',
+						'','','','','','','',
+						'".time()."',
+						'".$root_insert."',
+						'','',
+						'*',
+						'".date('Y-m-d H:i:s')."',
+						'',
+						".$user->id.",
+						'',
+						'".date('Y-m-d H:i:s')."',
+						'',
+						''
+					)";
 					$db->setQuery($subactions_query);
 					$db->execute();
-					$subaction_id=$db->insertid();
-					//asset
-					$query_rgt="SELECT MAX(rgt) FROM #__assets LIMIT 1";
+					$subaction_id = $db->insertid();
+
+					//assets
+					$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
 					$db->setQuery($query_rgt);
 					$max_rgt = $db->loadResult();
-					$assoc_rgt=$max_rgt+1;
+					$assoc_rgt = $max_rgt+1;
 					$query_lock_asset = "LOCK TABLES #__assets WRITE";
 					$db->setQuery($query_lock_asset);
 					$db->execute();
 					$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$subaction_id."','#__actions.".$subaction_id."','{}') ";
 					$db->setQuery($query_asset);
 					$db->execute();
-					$asset_subaction_id=$db->insertid();
+					$asset_subaction_id = $db->insertid();
 					$query_unlock_asset = "UNLOCK TABLES";
 					$db->setQuery($query_unlock_asset);
 					$db->execute();
+
 					//update subaction
 					$query_action_update = "UPDATE #__actions SET asset_id='".$asset_subaction_id."' WHERE id='".$subaction_id."' LIMIT 1";
 					$db->setQuery($query_action_update);
@@ -637,75 +720,67 @@ class ActionsModelForm extends JModelItem
 				}
 			}
 		}
-		if($action_ok == 1){
-			//send new action emails
+
+		//send new action emails
+		if ($action_ok == 1) {
 			//email to user
-			if($user->email!='' && !$isroot){
-				$emails=array($user->email);
-				//test
-				//$emails=array();
-				$att='';
-				$s_array=array();
-				synathina_email('action_created_user_pending',$s_array,$emails,'Υποβολή δράσης στο συνΑθηνά',$att);
+			if ($user->email != '' && !$isroot) {
+				$emails = array($user->email);
+				$att = '';
+				$s_array = [];
+				synathina_email('action_created_user_pending', $s_array, $emails, $att);
 			}
 
 			//email to user if root has added an action on behalf of him
-			if($user->email=='' && $isroot){
-				$query="SELECT u.email
+			if ($user->email == '' && $isroot) {
+				$query = "SELECT u.email
 								FROM #__teams AS t
 								INNER JOIN #__users AS u ON u.id=t.user_id
 								WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.id='".$team_id."'
 								LIMIT 1 ";
-				$db->setQuery( $query );
+				$db->setQuery($query);
 				$team_email = $db->loadResult();
-				$emails=array($team_email);
-				$att='';
-				$s_array=array($config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'),$name);
-				//pending for email content - uncomment
-				synathina_email('action_created_user_from_root',$s_array,$emails,'Ανάρτηση δράσης στο συνΑθηνά',$att);
+				$emails = array($team_email);
+				$att = '';
+				$s_array = array($config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'), $name);
+				synathina_email('action_created_user_from_root', $s_array, $emails, $att);
 			}
 
 			//email to admin
-			if(!$isroot){
-				$team_info=$this->getTeamInfo($user->id);
-				$emails=array();
-				$s_array=array($team_info[0]->name,$config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'),$name,$config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
-				synathina_email('action_created_admin',$s_array,$emails,'Νέα Δράση','');
+			if (!$isroot) {
+				$team_info = $this->getTeamInfo($user->id);
+				$emails = [];
+				$s_array = array($team_info[0]->name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'), $name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
+				synathina_email('action_created_admin', $s_array, $emails, '');
 			}
+
 			//redirect
-			if($isroot){
+			if ($isroot) {
 				header('Location:'.JRoute::_('index.php?option=com_actions&view=actions&Itemid=138'));
-			}else{
-				//$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&Itemid=129', false));
+			} else {
 				header('Location:'.JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_save=1'));
 			}
 			exit();
-		}else{
+		} else {
 			$team_info = $this->getTeamInfo($user->id);
 			$s_array = array( $name, $team_info[0]->name );
-			synathina_email('action_fail_admin',$s_array,$emails,'Πρόβλημα καταχώρισης δράσης','');
+			$emails = [];
+			synathina_email('action_fail_admin', $s_array, $emails, '');
 			header('Location:'.JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1'));
 			exit();
 		}
+
 		return true;
 	}
 
 	public function getData()
 	{
-		if ($this->data === null)
-		{
+		if ($this->data === null) {
 			$this->data = new stdClass;
 			$app = JFactory::getApplication();
-
 		}
-
-		//print_r($this->data);
-		//print_r($_REQUEST);
-		//die;
 
 		return $this->data;
 	}
-
-
 
 }
