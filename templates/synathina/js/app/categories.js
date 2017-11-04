@@ -36,7 +36,6 @@ var Categories = (function(global){
          });
       }
       */
-      //console.log(data);
 
       for (var i = 0; i < data.length; i += 1) {
          categories.push({
