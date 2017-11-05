@@ -39,6 +39,9 @@ function synathina_email($type, $parameters, $emails, $attachment)
 		$mailer->addRecipient($recipients);
 
 		$mailer->setSubject($custom_email->subject);
+		if ($config->get('dev_mode')) {
+			$mailer->setSubject('DEV MODE: ' . $custom_email->subject);
+		}
 
 		$body = '<body style="margin:0px auto; padding:0px; background-color:#FFFFFF; color:#5d5d5d; font-family:Arial; outline:none; font-size:12px;" bgcolor="#FFFFFF">
 							<div style="background-color:#FFFFFF;margin:0px auto; font-family:Arial;color:#5d5d5d;">

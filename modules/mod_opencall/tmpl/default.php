@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 $db = JFactory::getDBO();
 $user = JFactory::getUser();
 $config = JFactory::getConfig();
-$abspath=$config->get( 'abs_path' );
+$abspath = $config->get( 'abs_path' );
 
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
@@ -14,8 +14,8 @@ $teams_activated = $db->loadResult();
 
 //language
 $doc = JFactory::getDocument();
-$lang_code_array=explode('-',$doc->language);
-$lang_code=$lang_code_array[0];
+$lang_code_array = explode('-', $doc->language);
+$lang_code = $lang_code_array[0];
 
 function url_slug1($str, $options = array()) {
 	// Make sure string is in UTF-8 and strip invalid UTF-8 characters
@@ -114,78 +114,72 @@ function url_slug1($str, $options = array()) {
 	return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
 }
 
-if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' && $user->id>0){
+if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != '' && $user->id > 0) {
 	require_once(JPATH_SITE.'/components/com_content/helpers/route.php');
-	$title=addslashes(@$_REQUEST['open_call_title']);
-	$introtext='<p>'.addslashes(nl2br(@$_REQUEST['open_call_description'])).'</p>';
-	$alias=url_slug1($title);
-	$user_id=$user->id;
+	$title = addslashes(@$_REQUEST['open_call_title']);
+	$introtext = '<p>'.addslashes( nl2br(@$_REQUEST['open_call_description']) ).'</p>';
+	$alias = url_slug1($title);
+	$user_id = $user->id;
 	date_default_timezone_set('Europe/Athens');
-	$created=date('Y-m-d');
-	$end_date='';
-	if(@$_REQUEST['opencall_date']!=''){
-		$end_date_array=explode('/',@$_REQUEST['opencall_date']);
-		$end_date=trim(@$end_date_array[2]).'-'.@$end_date_array[1].'-'.@$end_date_array[0];
+	$created = date('Y-m-d');
+	$end_date = '';
+	if (@$_REQUEST['opencall_date'] != '') {
+		$end_date_array = explode('/', @$_REQUEST['opencall_date']);
+		$end_date = trim(@$end_date_array[2]).'-'.@$end_date_array[1].'-'.@$end_date_array[0];
 	}
-	$activities_ids='';
-	$activities_keys=@array_keys(@$_REQUEST['activities']);
-	$activities_ids='[';
-	for($a=0; $a<count($activities_keys); $a++){
-		$activities_ids.='"'.$activities_keys[$a].'",';
+	$activities_ids = '';
+	$activities_keys = @array_keys(@$_REQUEST['activities']);
+	$activities_ids = '[';
+	for ($a = 0; $a < count($activities_keys); $a++) {
+		$activities_ids .= '"'.$activities_keys[$a].'",';
 	}
-	$activities_ids=rtrim($activities_ids,',');
-	$activities_ids.=']';
-	//$activities_ids=implode(',',$activities_keys);
+	$activities_ids = rtrim($activities_ids,',');
+	$activities_ids .= ']';
+
 	//insert to content - assets
 	$query_article = "INSERT INTO #__content VALUES ('','','".$title."','".$alias."','".$introtext."','".$introtext."',1,15,'".$created."','".$user_id."','','".$created."',0,0,'0000-00-00 00:00:00','".$created."','0000-00-00 00:00:00',
 	'{\"image_intro\":\"\",\"float_intro\":\"\",\"image_intro_alt\":\"\",\"image_intro_caption\":\"\",\"image_fulltext\":\"\",\"float_fulltext\":\"\",\"image_fulltext_alt\":\"\",\"image_fulltext_caption\":\"\"}',
 	'{\"urla\":false,\"urlatext\":\"\",\"targeta\":\"\",\"urlb\":false,\"urlbtext\":\"\",\"targetb\":\"\",\"urlc\":false,\"urlctext\":\"\",\"targetc\":\"\"}',
 	'{\"opencall_date\":\"".@$end_date."\",\"opencall_activities\":".$activities_ids.",\"news_subtitle\":\"\",\"article_video\":\"\",\"show_title\":\"\",\"link_titles\":\"\",\"show_tags\":\"\",\"show_intro\":\"\",\"info_block_position\":\"\",\"show_category\":\"\",\"link_category\":\"\",\"show_parent_category\":\"\",\"link_parent_category\":\"\",\"show_author\":\"\",\"link_author\":\"\",\"show_create_date\":\"\",\"show_modify_date\":\"\",\"show_publish_date\":\"\",\"show_item_navigation\":\"\",\"show_icons\":\"\",\"show_print_icon\":\"\",\"show_email_icon\":\"\",\"show_vote\":\"\",\"show_hits\":\"\",\"show_noauth\":\"\",\"urls_position\":\"\",\"alternative_readmore\":\"\",\"article_layout\":\"\",\"show_publishing_options\":\"\",\"show_article_options\":\"\",\"show_urls_images_backend\":\"\",\"show_urls_images_frontend\":\"\"}',
 	1,0,'','',1,0,'{\"robots\":\"\",\"author\":\"\",\"rights\":\"\",\"xreference\":\"\"}',0,'*',''); ";
-	//print_r(@$_REQUEST);
-	//print_r(@$_FILES);
-	//echo $_FILES['files']['tmp_name'][0];
-	//move_uploaded_file($_FILES['files']['tmp_name'][0], JURI::root( true ).'/images/di/test.jpg');
-	//echo count($_FILES['files']);
-	//echo $query_article;
-	//die;
+
 	$db->setQuery($query_article);
 	$db->execute();
-	$article_id=$db->insertid();
-	if($article_id>0){
+	$article_id = $db->insertid();
+	if ($article_id > 0) {
+
 		//assets
 		$query_asset = "SELECT rgt FROM #__assets WHERE name LIKE 'com_content.article.%' ORDER BY id DESC LIMIT 1";
 		$db->setQuery($query_asset);
 		$assoc_rgt = $db->loadResult()+1;
-		//$assoc_rgt = @mysql_result($result_asset,0)+1;
 		$query_asset = "INSERT INTO #__assets VALUES ('',80,'".$assoc_rgt."','".($assoc_rgt+1)."',3,'com_content.article.".$article_id."','".$title."','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":[],\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1},\"core.edit.own\":[]}') ";
 		$db->setQuery($query_asset);
 		$db->execute();
-		//$asset_id=mysql_insert_id();
-		$asset_id=$db->insertid();
+		$asset_id = $db->insertid();
 		$query_article_update = "UPDATE #__content SET asset_id='".$asset_id."' WHERE id='".$article_id."' LIMIT 1";
 		$db->setQuery($query_article_update);
 		$db->execute();
+
 		//files
-		$images_types=array('image/bmp','image/gif','image/jpeg','image/jpeg','image/png');
-		$images_types_mime=array('bmp','gif','jpeg','jpg','png');
-		$file_types=array('application/msword','application/pdf','application/vnd.openxmlformats-officedocument.presentationml.presentation','application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-		$file_types_mime=array('doc','pdf','pptx','docx');
-		if(!empty($_FILES['files'])){
-			$img_ordering=1;
-			for($f=0; $f<count($_FILES['files']['name']); $f++){
-				if($_FILES['files']['error'][$f]==0){
+		$images_types = array('image/bmp','image/gif','image/jpeg','image/jpeg','image/png');
+		$images_types_mime = array('bmp','gif','jpeg','jpg','png');
+		$file_types = array('application/msword', 'application/pdf', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		$file_types_mime = array('doc', 'pdf', 'pptx', 'docx');
+		if (!empty($_FILES['files'])) {
+			$img_ordering = 1;
+			for ($f = 0; $f < count($_FILES['files']['name']); $f++) {
+				if ($_FILES['files']['error'][$f] == 0) {
 					//proceed to upload
-					$ext_array = @explode('.',$_FILES['files']['name'][$f]);
-					$ext=strtolower(end($ext_array));
-					$rand=md5($_FILES['files']['name'][$f]);
+					$ext_array = @explode('.', $_FILES['files']['name'][$f]);
+					$ext = strtolower(end($ext_array));
+					$rand = md5($_FILES['files']['name'][$f]);
 					//image case
-					if(in_array($_FILES['files']['type'][$f],$images_types)){
+					if (in_array($_FILES['files']['type'][$f], $images_types)) {
 						//insert to di images
 						$query_di = "INSERT INTO #__di_images VALUES ('','".$article_id."',1,'".$rand.'.'.$ext."','','',0,'".date('Y-m-d H:i:s')."','".$img_ordering."','','')";
 						$db->setQuery($query_di);
 						$db->execute();
-						$di_id=$db->insertid();
+						$di_id = $db->insertid();
 						$img_ordering++;
 						//move image to images/di
 						move_uploaded_file($_FILES['files']['tmp_name'][$f], 'images/di/'.$article_id.'_'.$di_id.'_'.$rand.'.'.$ext);
@@ -194,7 +188,7 @@ if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' 
 						copy('images/di/'.$article_id.'_'.$di_id.'_'.$rand.'.'.$ext,'images/di/'.$article_id.'_'.$di_id.'_zoomed_'.$rand.'.'.$ext);
 					}
 					//file case
-					if(in_array($_FILES['files']['type'][$f],$file_types)){
+					if (in_array($_FILES['files']['type'][$f],$file_types)) {
 						//insert to attachments
 						$key = array_search($ext, $file_types_mime);
 						$query_att = "INSERT INTO #__attachments VALUES ('','".$rand.".".$ext."','".$abspath."/attachments/article/".$article_id."/".$rand.".".$ext."','".$file_types[$key]."','".$_FILES['files']['size'][$f]."',
@@ -213,19 +207,19 @@ if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' 
 		}
 		//email to admin
 		$config = JFactory::getConfig();
-		$emails=array();
-		$opencall_url=JRoute::_(ContentHelperRoute::getArticleRoute($article_id.':'.$alias, '15'));
-		$s_array=array($config->get( 'main_url' ).$opencall_url,$config->get( 'live_site' ).'/administrator/index.php?core&option=com_content&view=articles');
-		synathina_email('open_call_admin',$s_array,$emails,'');
+		$emails = [];
+		$opencall_url = JRoute::_(ContentHelperRoute::getArticleRoute($article_id.':'.$alias, '15'));
+		$s_array = array($config->get( 'main_url' ).$opencall_url,$config->get( 'live_site' ).'/administrator/index.php?core&option=com_content&view=articles');
+		synathina_email('open_call_admin', $s_array, $emails, '');
 		//email to user
-		$s_array=array($config->get( 'main_url' ).$opencall_url);
-		if($user->email!=''){
-			$emails=array($user->email);
+		$s_array = array($config->get( 'main_url' ).$opencall_url);
+		if ($user->email != '') {
+			$emails = array($user->email);
 		}
-		synathina_email('open_call_user',$s_array,$emails,'');
+		synathina_email('open_call_user', $s_array, $emails, '');
 
 		echo '<script>alert(\''.($lang_code=='en'?'Success':'Επιτυχής καταχώριση').'\')</script>';
-	}else{
+	} else {
 		echo '<script>alert(\''.($lang_code=='en'?'Something went wrong, please try again':'Παρουσιάστηκε πρόβλημα, παρακαλώ προσπαθήστε ξανά').'\')</script>';
 	}
 }
@@ -237,7 +231,7 @@ if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' 
       <div class="open-call">
          <h3 class="popup-title">Open Call</h3>
 <?php
-	if($user->id>0 && $teams_activated==1){
+	if ($user->id > 0 && $teams_activated == 1) {
 ?>
          <form action="<?php echo JURI::current();?>" class="form form-inline" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -253,10 +247,10 @@ if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' 
             <div class="form-inline filters">
 							<label for="" class="is-block">Θεματική ενότητα*:</label>
 <?php
-	$query="SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
+	$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
 	$db->setQuery( $query );
 	$activities = $db->loadObjectList();
-	foreach($activities as $activity){
+	foreach ($activities as $activity) {
     echo '<div class="form-group">
 						<input id="box_activity_'.$activity->id.'" name="activities['.$activity->id.']" type="checkbox" />
 						<label for="box_activity_'.$activity->id.'" class="label-horizontal">'.($lang_code=='en'?$activity->name_en:$activity->name).'</label>
@@ -284,11 +278,11 @@ if(@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description']!='' 
 			</div>
 		 </form>
 <?php
-	}elseif($teams_activated==0 && $user->id>0){
+	} elseif ($teams_activated == 0 && $user->id > 0) {
 ?>
 	Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα από το συνΑθηνά.
 <?php
-	}else{
+	} else {
 ?>
 			Παρακαλώ <a href="<?php echo JRoute::_('index.php?option=com_users&view=login&Itemid=120'); ?>">συνδεθείτε</a> για να καταχωρίσετε open call<br /><br /><br /><br />
 <?php
