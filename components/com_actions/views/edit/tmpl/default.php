@@ -234,12 +234,6 @@ if($isroot==1){
 									</div>
 	              </div>
 <?php
-	//$action_date_start = new DateTime();
-	//$action_date_end = new DateTime();
-	//die;
-	//$action_date_start = new StdClass;
-	//$action_date_start = new StdClass;
-	//echo $subactions[$f]->action_date_start;
 	$action_date_start_new='';
 	$action_date_end_new='';
 	if(@$subactions[$f]->action_date_start!=''){
@@ -485,12 +479,6 @@ if($isroot==1){
                 <?php }
               }
               ?>
-
-              <!--<div class="form-group form--padded donation-message" style="display:<?/*=(count($donations)>0?'block':'none')*/?>">
-                  <label for="support_message" class="is-block">Μήνυμα προς τους υποστηρικτές*:</label>
-                  <textarea class="form-control max-600" id="support_message" <?/*=(count($donations)>0?'required':'')*/?> rows="8" name="support_message" ><?php /*echo stripslashes(str_replace("<br />","",$action->supporters_message)); */?></textarea>
-                  <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί σε όλους τους αντίστοιχους υποστηρικτές)</span>
-               </div>-->
                <div class="form-group form-group--tail is-block clearfix">
                   <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
                   <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
