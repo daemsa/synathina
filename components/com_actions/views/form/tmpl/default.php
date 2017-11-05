@@ -18,18 +18,6 @@ $query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 "
 $db->setQuery($query);
 $teams_activated = $db->loadResult();
 
-
-
-
-
-
-
-
-
-
-
-
-
 if($teams_activated!=1 && $isroot!=1){
 	echo '<div class="l-register">
 				 <div class="module module--synathina">

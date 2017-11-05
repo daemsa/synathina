@@ -62,8 +62,8 @@ class UsersControllerRegistration extends UsersController
 		$email_to='';
 		if($token!=''){
 			$query = "SELECT `email` FROM #__users WHERE `activation`='".$token."' LIMIT 1";
-			$db->setQuery($query);	
-			$email_to=$db->loadResult();		
+			$db->setQuery($query);
+			$email_to=$db->loadResult();
 		}
 
 		// Attempt to activate the user.
@@ -92,19 +92,18 @@ class UsersControllerRegistration extends UsersController
 			//email to user
 			$config = JFactory::getConfig();
 			require_once JPATH_CONFIGURATION.'/global_functions.php';
-			$emails=array();	
-			if($email_to!=''){
-				$emails=array($email_to);
-			}		
-		
-			$s_array=array();
-			synathina_email('team_created_user',$s_array,$emails,'Αίτημα Εγγραφής','');
-			//email to admin
-			$s_array=array($config->get( 'live_site' ).'/administrator/index.php?core&option=com_teams');
-			$emails=array();
-			synathina_email('team_created_admin',$s_array,$emails,'Αίτημα Εγγραφής','');		
+			$emails = [];
+			if($email_to != ''){
+				$emails[] = $email_to;
+			}
+			$s_array = [];
+			synathina_email('team_created_user', $s_array, $emails, '');
 
-		
+			//email to admin
+			$s_array = array($config->get( 'live_site' ).'/administrator/index.php?core&option=com_teams');
+			$emails = [];
+			synathina_email('team_created_admin', $s_array, $emails, '');
+
 			$this->setMessage(JText::_('COM_USERS_REGISTRATION_ACTIVATE_SUCCESS'));
 			$this->setRedirect(JRoute::_('index.php?option=com_users&view=login', false));
 		}

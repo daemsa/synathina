@@ -14,11 +14,9 @@ var Areas = (function(global) {
     }
 
     function initPolygons(areaObj, styles) {
-        //$(document).ready(function() {
-            AjaxCall.kmlToJson(function(jsonData) {
-                createPaths(map, jsonData, styles, areaObj.details)
-            }, areaObj.kmlPath);
-        //});
+        AjaxCall.kmlToJson(function(jsonData) {
+            createPaths(map, jsonData, styles, areaObj.details)
+        }, areaObj.kmlPath);
     }
 
     function createPaths() {
@@ -33,7 +31,7 @@ var Areas = (function(global) {
                 makePolygons = constructPolygon();
                 makePolygons.init(polygonCoords, styles, polygonDetails);
             }
-            // else do somthing else
+            // else do something else
     }
 
     function constructPolygon(polygonCoords, styles, polygonDetails) {
@@ -250,17 +248,14 @@ var Areas = (function(global) {
     function populateAreas(data) {
 
         try {
-            //console.log(data.response)
             dat = JSON.parse(data.response);
         } catch (e) {
             //JSON parse error, this is not json
-            //alert('JSON parse error : '+e);
             console.log(e)
             return false;
         }
 
         collection = JSON.parse(data.response);
-        console.log(collection.length);
 
         for (var i = 0; i < collection.length; i += 1) {
             initPolygons(collection[i], collection[i].styles)
@@ -269,7 +264,7 @@ var Areas = (function(global) {
 
     function initAreas() {
         var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
-        AjaxCall.get('http://www.synathina.gr/areas.php?lang=' + lang, populateAreas);
+        AjaxCall.get('/areas.php?lang=' + lang, populateAreas);
         /**
         for( var i = 0; i < Athens.length; i += 1) {
           initPolygons(Athens[i], Athens[i].styles)

@@ -63,13 +63,13 @@ class ActionsControllerActions extends JControllerAdmin
 	protected function postDeleteHook(JModelLegacy $model, $ids = null)
 	{
 	}
-	
-	
+
+
 	public function unpublish()
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("UPDATE #__actions SET published='0' WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -79,10 +79,10 @@ class ActionsControllerActions extends JControllerAdmin
 			$db->setQuery("UPDATE #__actions SET published='0' WHERE action_id='".intval($cid)."'");
 			$db->query();
 		}
-		$mainframe->enqueueMessage('Item(s) unpublished successfully');	
+		$mainframe->enqueueMessage('Item(s) unpublished successfully');
 		$mainframe->redirect("index.php?option=com_actions&view=actions");
 	}
-	
+
 	public function publish($pks, $value = 1)
 	{
 		if ($_REQUEST['task']=='trash'){
@@ -96,11 +96,11 @@ class ActionsControllerActions extends JControllerAdmin
 			$mainframe = JFactory::getApplication();
 			$db = JFactory::getDBO();
 			$publishvalue=1;
-			
+
 			if ($_REQUEST["task"]=="unpublish"){
 				$publishvalue=0;
 			}
-			
+
 			foreach ($_REQUEST["cid"] as $cid){
 				if($publishvalue==0){
 					$config = JFactory::getConfig();
@@ -112,41 +112,41 @@ class ActionsControllerActions extends JControllerAdmin
 					$emails=array();
 					if($email_to!=''){
 						$emails=array($email_to);
-					}			
+					}
 					$query = "SELECT name FROM #__actions WHERE id='".intval($cid)."' LIMIT 1 ";
 					$db->setQuery($query);
-					$action_name = $db->loadResult();					
+					$action_name = $db->loadResult();
 					//τεσσσσσσσσσσσσσσστ
 					//$emails=array('ddasios@steficon.gr');
 					$s_array=array($action_name);
-					if ( synathina_email('action_cancelled_user',$s_array,$emails,'Ανάκληση δράσης','') ) {
+					if ( synathina_email('action_cancelled_user',$s_array,$emails,'') ) {
 							$mainframe->enqueueMessage(' Email have been sent');
 					} else {
-							$mainframe->enqueueMessage(' Problem sending email');	
-					}					
+							$mainframe->enqueueMessage(' Problem sending email');
+					}
 					//print_r($_REQUEST);
 					//die;
-				}				
+				}
 				$db->setQuery("UPDATE #__actions SET published='".$publishvalue."' WHERE id='".intval($cid)."'");
 				if(!$db->query()){
 					JError::raiseWarning(100, $db->getError());
 					$mainframe->redirect("index.php?option=com_actions&view=actions");
 				}
-				$db->setQuery("UPDATE #__actions SET published='".$publishvalue."' WHERE action_id='".intval($cid)."'");	
-				$db->setQuery("UPDATE #__stegihours SET published='".$publishvalue."' WHERE action_id='".intval($cid)."'");				
+				$db->setQuery("UPDATE #__actions SET published='".$publishvalue."' WHERE action_id='".intval($cid)."'");
+				$db->setQuery("UPDATE #__stegihours SET published='".$publishvalue."' WHERE action_id='".intval($cid)."'");
 				$db->query();
 			}
-			
-			$mainframe->enqueueMessage('Item(s) published successfully and emails has been sent');		
+
+			$mainframe->enqueueMessage('Item(s) published successfully and emails has been sent');
 			$mainframe->redirect("index.php?option=com_actions&view=actions");
 		}
 	}
-	
+
 	public function trash($pks, $value = 1)
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("UPDATE #__actions SET published='-2' WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -154,16 +154,16 @@ class ActionsControllerActions extends JControllerAdmin
 				$mainframe->redirect("index.php?option=com_actions&view=actions");
 			}
 		}
-		$mainframe->enqueueMessage('Item(s) trashed successfully');		
+		$mainframe->enqueueMessage('Item(s) trashed successfully');
 		$mainframe->redirect("index.php?option=com_actions&view=actions");
 	}
-	
-	
+
+
 	public function delete()
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("DELETE FROM #__actions WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -171,7 +171,7 @@ class ActionsControllerActions extends JControllerAdmin
 				$mainframe->redirect("index.php?option=com_actions&view=actions");
 			}
 		}
-		$mainframe->enqueueMessage('Item(s) deleted successfully');		
+		$mainframe->enqueueMessage('Item(s) deleted successfully');
 		$mainframe->redirect("index.php?option=com_actions&view=actions");
 	}
 

@@ -5,7 +5,7 @@
     function initSliderFilter() {
 			var cusid_ele = document.getElementsByClassName('time');
 			for (var i = 0; i < cusid_ele.length; ++i) {
-					var item = cusid_ele[i];  
+					var item = cusid_ele[i];
 					item.style.display='block';
 			}
 
@@ -54,14 +54,14 @@
 
       });
 countFacts();
-	console.log('a');	
+	console.log('a');
       dc.renderAll()
     }
 
     // How many activities are in my app?
     function countFacts() {
       num = facts.groupAll().reduceCount().value();
-	console.log('aaa'+num);	
+	console.log('aaa'+num);
       return num;
     }
 
