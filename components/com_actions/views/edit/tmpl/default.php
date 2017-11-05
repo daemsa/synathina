@@ -26,7 +26,7 @@ foreach($activities as $activity){
 }
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
-			
+
 
 $app = JFactory::getApplication();
 $templateDir = JURI::base() . 'templates/' . $app->getTemplate();
@@ -83,10 +83,10 @@ echo '</pre>';*/
 function openChild(file,window,id,lat,lng) {
 	file=file+'?address_name='+id+'&lng_name='+lng+'&lat_name='+lat+'&lat='+document.getElementById(lat).value+'&lng='+document.getElementById(lng).value+'&address='+document.getElementById(id).value;
   var left = (screen.width/2)-(750/2);
-  var top = (screen.height/2)-(550/2);	
+  var top = (screen.height/2)-(550/2);
 	childWindow=open(file,window,'resizable=no,width=750,height=550, top='+top+', left='+left);
 	if (childWindow.opener == null) childWindow.opener = self;
-} 
+}
 function show_hide(f,show){
 	var f1=parseInt(f)+1;
 	var f2=parseInt(f)-1;
@@ -132,7 +132,7 @@ function delete_confirmation(id,path,abspath) {
 			}else{
 				return false;
 			}
-} 
+}
 
 </script>
 
@@ -151,7 +151,7 @@ function delete_confirmation(id,path,abspath) {
 							Για να καταχωρίσετε τη δράση σας είναι απαραίτητο να συμπληρώσετε τα στοιχεία τουλάχιστον μίας επιμέρους δράσης.
 							<br />Σε περίπτωση που η πρωτοβουλία σας σας είναι επαναλαμβανόμενη ή περιλαμβάνει επιπλέον δράσεις σε διαφορετικό τόπο ή χρόνο, μπορείτε να πιέσετε το + για να προσθέσετε τα απαραίτητα στοιχεία.
 							<br />Παρακαλούμε βεβαιωθείτε ότι έχετε καταχωρίσει όλα τα σημεία στο χάρτη καθώς και τις διαφορετικές ημέρες και ώρες.<br /><br />
-						</span>							
+						</span>
             <form action="<?php echo JURI::current();?>" class="form" method="post" name="create_action" id="edit_action" enctype="multipart/form-data">
 <?php
 if($isroot==1){
@@ -159,15 +159,15 @@ if($isroot==1){
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice==1?'checked="checked"':'')?> />
-									 <label for="best_practice" class="is-block">Best practice:</label>									 
+									 <label for="best_practice" class="is-block">Best practice:</label>
 								</div>
 							</div>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									 <input id="published" name="published" type="checkbox" <?=($action->published==1?'checked="checked"':'')?> />
-									 <label for="published" class="is-block">Published:</label>									 
+									 <label for="published" class="is-block">Published:</label>
 								</div>
-							</div>							
+							</div>
 <?php
 }else{
 ?>
@@ -189,14 +189,14 @@ if($isroot==1){
 	if ($action->image!='' && file_exists('images/actions/main_images/'.$action->image)) {
 		echo '<img src="images/actions/main_images/'.$action->image.'" alt="" style="max-height:120px;" />';
 	}
-?>										 
+?>
 								</div>
 							</div>
 							<div class="form-group form-inline is-block form--bordered" style="border-bottom: none; padding-bottom:0px; margin-bottom:0px;">
 								<label for="short_description" class="is-block">Σύντομη Περιγραφή*:</label>
 								<textarea style="max-height: 100px;" class="form-control max-600" maxlength="250" id="short_description" rows="8" name="short_description" required><?php echo stripslashes(str_replace("<br />","",$action->short_description)); ?></textarea>
 								<span class="is-block is-italic">(σύντομη περιγραφή της δράσης σας έως 250 χαρακτήρες)</span>
-							</div>							 
+							</div>
 							<div class="form-group form-inline is-block ">
 								<label for="activity_description" class="is-block">Περιγραφή*:</label>
 								<!--<textarea class="form-control max-600" id="activity_description" rows="8" required=""></textarea>-->
@@ -207,11 +207,11 @@ if($isroot==1){
 								<label class="is-block">Link δράσης:</label>
 								<input type="text" name="web_link"  class="input--medium" id="web_link" value="<?php echo stripslashes($action->web_link); ?>" />
 								<span class="is-block is-italic">(https://www.facebook.com/events/123456789/)</span>
-							</div>							 
+							</div>
                <!-- clone start -->
 <?php
 	for($f=0; $f<11; $f++){
-?>							 
+?>
               <div class="form-block" id="form-block-<?php echo $f; ?>" rel="js-form-block" style="display:<?=($f>=count($subactions)?'none':'block')?>">
 								<h2>Επιμέρους Δράση <?php echo ($f+1); ?></h2>
 								<div class="form-group form--padded--16">
@@ -244,7 +244,7 @@ if($isroot==1){
 	$action_date_end_new='';
 	if(@$subactions[$f]->action_date_start!=''){
 		$startDate = $subactions[$f]->action_date_start.'.000000';
-		$action_date_start = new DateTime($startDate);	
+		$action_date_start = new DateTime($startDate);
 		$action_date_start_new=$action_date_start->format('d/m/Y H:i');
 	}
 	if(@$subactions[$f]->action_date_end!=''){
@@ -252,7 +252,7 @@ if($isroot==1){
 		$action_date_end = new DateTime($endDate);
 		$action_date_end_new=$action_date_end->format('d/m/Y H:i');
 	}
-?>								
+?>
 	              <div class="form form--padded--16">
 	               	<label class="is-block">ΗΜΕΡΟΜΗΝΙΑ*:</label>
 	               	<div class="form-inline--cells form-inline v-bottom">
@@ -280,14 +280,14 @@ if($isroot==1){
 						 <label for="activity_'.$activity->id.'_'.$f.'" class="label-horizontal">'.$activity->name.'</label>
 					</div>';
 	}
-?>							
+?>
 								</div>
 								<button type="button" class="add_button btn btn--black btn--add clone" <?=(($f+1)==count($subactions)?'style="display:block"':'style="display:none"')?> rel="js-add-new-form-block" id="add_<?php echo $f; ?>" onclick="show_hide(<?php echo $f; ?>,1)"></button>
                 <button type="button" class="remove_button btn btn--black btn--minus remove <?=(($f+1)==count($subactions)&&$f>0?'':'')?>" rel="js-remove-new-form-block"  onclick="show_hide(<?php echo $f; ?>,0)" id="remove_<?php echo $f; ?>"></button>
 							</div>
 <?php
 	}
-?>	
+?>
 					<!-- clone end -->
 							<div class="form form--bordered">
 								<div class="form-group">
@@ -297,13 +297,13 @@ if($isroot==1){
 <?php
 	$partners=array();
 	$partners=explode(',',$action->partners);
-	array_filter($partners);	
+	array_filter($partners);
 	foreach($this->teams AS $team){
 		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$partners)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
-?>							
-										
+?>
+
 										</select>
 										<span id="logos_select">
 <?php
@@ -312,10 +312,10 @@ if($isroot==1){
 			echo '<img id="team_logo_img_'.$team->id.'" src="'.$team->logo.'" width="32" height="32" style="margin-right:5px;" title="'.str_replace('"','\'',$team->name).'" alt="">';
 		}
 	}
-?>	
+?>
 										</span>
 									</div>
-								</div>	
+								</div>
 								<div class="form-group">
 									<label for="date" class="is-block">Υποστηρικτές</label>
 									<div class="form-group form-inline v-center">
@@ -323,14 +323,14 @@ if($isroot==1){
 <?php
 	$supporters=array();
 	$supporters=explode(',',$action->supporters);
-	array_filter($supporters);	
-	
+	array_filter($supporters);
+
 	foreach($this->supporters AS $team){
 		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$supporters)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
-?>							
-										
+?>
+
 										</select>
 										<span id="logos_select1">
 <?php
@@ -339,10 +339,10 @@ if($isroot==1){
 			echo '<img id="team_logo_img1_'.$team->id.'" src="'.$team->logo.'" width="32" height="32" style="margin-right:5px;" title="'.str_replace('"','\'',$team->name).'" alt="">';
 		}
 	}
-?>	
+?>
 										</span>
 									</div>
-								</div>									
+								</div>
 								<div class="margin0 form-group form-group--upload">
 									 <label for="box70" class="is-block">Φωτογραφίες:</label>
 						 <div style="vertical-align:top; margin-bottom:10px;" class="clearfix">
@@ -356,8 +356,8 @@ if($isroot==1){
 		$p++;
 	}
 
-?>						
-					</div>									 
+?>
+					</div>
 									 <input type="file" name="photos[]" id="box70" class="file-browser" multiple>
 									 <span class="is-block is-italic"><small>( μπορείτε να ανεβάσετε την  αφίσα της  δράσης σας, φωτογραφίες
 						της τρέχουσας δράσης σας ή και φωτογραφίες από προηγούμενες δράσεις - μέγιστο επιτρεπόμενο όριο φωτογραφίας: 1MB )</small></span>
@@ -372,9 +372,9 @@ if($isroot==1){
 <?php
 	$municipality_services=array();
 	$municipality_services=explode(',',$action->municipality_services);
-	array_filter($municipality_services);	
+	array_filter($municipality_services);
 	foreach($this->services AS $service){
-?>		
+?>
 										<div class="form-group">
 											 <input id="<?php echo $service->id; ?>" type="checkbox" name="service_<?php echo $service->id; ?>" <?=(in_array($service->id,$municipality_services)?'checked="checked"':'')?>>
 											 <label  style="" for="<?php echo $service->id; ?>" class="label-horizontal"><?php echo $service->name; ?></label>
@@ -387,7 +387,7 @@ if($isroot==1){
 										<label class="is-block">Μήνυμα προς τις υπηρεσίες του δήμου*:</label>
 										<textarea name="services_message" class="form-control max-600" id="services_message" rows="8"><?php echo stripslashes(str_replace("<br />","",$action->municipality_message)); ?></textarea>
                                         <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί στις αρμόδιες δημοτικές υπηρεσίες)</span>
-									</div>								
+									</div>
 								</div>
 								<!--<div class="form-group">
 									<label for="box70" class="is-block">Θέλω να...:</label>
@@ -405,25 +405,25 @@ if($isroot==1){
 		$donations=explode(',',$action->org_donation);
 		array_filter($donations);
 	}
-	
+
 		$query = " SELECT id, name "
-				." FROM #__team_donation_types 
+				." FROM #__team_donation_types
 					WHERE published=1 AND parent_id=0	"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
 		$i=1;
 		$children=array();
 		foreach($rows as $row){
 			$query = " SELECT id, name "
-					." FROM #__team_donation_types 
+					." FROM #__team_donation_types
 						WHERE published=1 AND parent_id=".$row->id."	"
 					." ORDER BY id ASC ";
-					
+
 			$db->setQuery($query);
 			$rows1=$db->loadObjectList();
-			
+
 			$messageDivArray[$row->id] = ['name'=>$row->name, 'children' =>[]];
 			foreach($rows1 as $row1){
 				$children[$i][]=array($row1->id, $row1->name,$row->id);
@@ -435,7 +435,7 @@ if($isroot==1){
 						</div>';
 			$i++;
 		}
-		
+
 		for($i=1; $i<count($children)+1; $i++){
 			for($y=0; $y<count($children[$i]); $y++){
 				if($y==0){
@@ -452,22 +452,24 @@ if($isroot==1){
 						}
 						if($children[$i][$y][2]==16){
 							$other_donation=$action->donation_technology;
-						}						
+						}
 						echo '<div class="form-group">
 										<label for="donation-'.$children[$i][$y][2].'-other" class="label-horizontal" style="display:inline-block">'.($lang_code=='en'?'Other':'Άλλο').'</label>
 										<input name="donation-'.$children[$i][$y][2].'-other" id="donation-'.$children[$i][$y][2].'-other"  type="text" value="'.str_replace('"','\'',$other_donation).'">
-									</div>';					
+									</div>';
 					echo '</div>';
-				}				
+				}
 			}
 
 		}
-?>						
+?>
 							</div>
 
               <?php
-              foreach($messageDivArray as $parentKey => $subArray) {
-                  $messagesToSupporters = unserialize($action->supporters_message);
+            foreach($messageDivArray as $parentKey => $subArray) {
+				if (!$messagesToSupporters = @unserialize($action->supporters_message)) {
+					$messagesToSupporters = unserialize(base64_decode($action->supporters_message));
+				}
                 if(count($subArray['children'])){
                   foreach($subArray['children'] as $child) { ?>
                       <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>

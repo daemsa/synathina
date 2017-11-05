@@ -413,10 +413,10 @@ class ActionsModelForm extends JModelItem
 			if (preg_match('/^support_message-*/', $key)) {
 		    	$support_request_id = explode('-', $key);
         		$support_request_id = $support_request_id[count($support_request_id) - 1];
-        		$supports_message_array[$support_request_id] = addslashes(nl2br($requestParam));
+        		$supports_message_array[$support_request_id] = $requestParam;
       		}
     	}
-	    $supporters_message = serialize($supports_message_array);
+	    $supporters_message = base64_encode(serialize($supports_message_array));
 
 		//donations
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published=1";

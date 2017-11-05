@@ -1,7 +1,7 @@
 <?php
 function synathina_email($type, $parameters, $emails, $attachment)
 {
-	$db = JFactory::getDbo();
+	$db = JFactory::getDBO();
 	$mailer = JFactory::getMailer();
 	$config = JFactory::getConfig();
 
