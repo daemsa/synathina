@@ -742,7 +742,7 @@ class ActionsModelForm extends JModelItem
 				$team_email = $db->loadResult();
 				$emails = array($team_email);
 				$att = '';
-				$s_array = array($config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'), $name);
+				$s_array = array($config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'), $name);
 				synathina_email('action_created_user_from_root', $s_array, $emails, $att);
 			}
 
@@ -750,7 +750,7 @@ class ActionsModelForm extends JModelItem
 			if (!$isroot) {
 				$team_info = $this->getTeamInfo($user->id);
 				$emails = [];
-				$s_array = array($team_info[0]->name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'), $name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
+				$s_array = array($team_info[0]->name, $config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'), $name, $config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
 				synathina_email('action_created_admin', $s_array, $emails, '');
 			}
 
