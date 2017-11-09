@@ -212,6 +212,7 @@ class ActionsModelEdit extends JModelItem
 	public function donations_valid()
 	{
 		$db = JFactory::getDBO();
+
 		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published = 1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
@@ -233,6 +234,7 @@ class ActionsModelEdit extends JModelItem
 	public function donations_valid_text()
 	{
 		$db = JFactory::getDBO();
+
 		$query = "SELECT id,parent_id,name FROM #__team_donation_types WHERE published = 1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
@@ -247,6 +249,7 @@ class ActionsModelEdit extends JModelItem
 				$donations_array[]=$donation->name;
 			}
 		}
+
 		return $donations_array;
 	}
 
@@ -254,7 +257,6 @@ class ActionsModelEdit extends JModelItem
 	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$config = JFactory::getConfig();
 		$db_remote = $this->remote_db();
 
 		if ($isroot == 1) {
@@ -274,8 +276,6 @@ class ActionsModelEdit extends JModelItem
 	public function getTeamInfo($team_id)
 	{
 		$user = JFactory::getUser();
-		$config = JFactory::getConfig();
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT name,contact_1_name,contact_1_email,contact_1_phone FROM #__teams
@@ -293,8 +293,6 @@ class ActionsModelEdit extends JModelItem
 	public function getActivities()
 	{
 		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
 
 		$query = "SELECT a.*
 							FROM #__team_activities AS a
@@ -307,9 +305,6 @@ class ActionsModelEdit extends JModelItem
 
 	public function getTeams()
 	{
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT a.id, a.name, a.logo
@@ -324,9 +319,6 @@ class ActionsModelEdit extends JModelItem
 
 	public function getSupporters()
 	{
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT a.id, a.name, a.logo
@@ -342,8 +334,6 @@ class ActionsModelEdit extends JModelItem
 	public function getServices()
 	{
 		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
 
 		$query = "SELECT a.id, a.name
 							FROM #__municipality_services AS a
@@ -359,8 +349,6 @@ class ActionsModelEdit extends JModelItem
 	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$config = JFactory::getConfig();
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
@@ -394,8 +382,6 @@ class ActionsModelEdit extends JModelItem
 	public function getSubactions() {
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$config = JFactory::getConfig();
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";

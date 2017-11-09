@@ -307,9 +307,9 @@ class ActionsModelForm extends JModelItem
 
 		return $activities;
 	}
+
 	public function getTeams()
 	{
-
 		$db_remote = $this->remote_db();
 
 		$query = "SELECT a.id, a.name, a.logo
@@ -326,15 +326,14 @@ class ActionsModelForm extends JModelItem
 	{
 		$db = JFactory::getDBO();
 		$db_remote = $this->remote_db();
-		$teams_users = [];
 
+		$teams_users = [];
 		$query = "SELECT name, id
 						FROM #__teams
 						WHERE published=1
 						ORDER BY name ASC ";
 		$db_remote->setQuery($query);
 		$teams = $db_remote->loadObjectList();
-
 		foreach ($teams as $team) {
 			$query = "SELECT id
 						FROM #__users
@@ -402,7 +401,7 @@ class ActionsModelForm extends JModelItem
 		$partners_db = '';
 		$teams_request = [];
 		if (@$_REQUEST['teams']) {
-			$teams_request=@$_REQUEST['teams'];
+			$teams_request = @$_REQUEST['teams'];
 		}
 		foreach ($teams_request as $p) {
 			$partners_db .= $p.',';
@@ -445,7 +444,7 @@ class ActionsModelForm extends JModelItem
 				}
 			} else {
 				if (@$_REQUEST['donation-'.$donation->parent_id.'-'.$donation->id] == 'on') {
-					$donations_ids.=$donation->id.',';
+					$donations_ids .= $donation->id.',';
 				}
 			}
 		}
@@ -555,7 +554,7 @@ class ActionsModelForm extends JModelItem
 			$activities = $db->loadObjectList();
 			$stegi_exists_in_general = 0;
 			for ($f = 0; $f < 11; $f++) {
-				if ( trim(@$_REQUEST['ypotitlos_drashs_'.$f])!='' && @$_REQUEST['date_start_'.$f]!='' && @$_REQUEST['date_end_'.$f] != '' ) {
+				if ( trim(@$_REQUEST['ypotitlos_drashs_'.$f]) != '' && @$_REQUEST['date_start_'.$f] != '' && @$_REQUEST['date_end_'.$f] != '' ) {
 					$subtitle = addslashes(@$_REQUEST['ypotitlos_drashs_'.$f]);
 					$start_array = explode(' ', @$_REQUEST['date_start_'.$f]);
 					$start_array1 = explode('/', $start_array[0]);
