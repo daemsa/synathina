@@ -52,7 +52,13 @@ $lang=@$_REQUEST['lang'];
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
+$config = JFactory::getConfig();
+
+//local db
 $db = JFactory::getDbo();
+
+//remote db - use with $db_remote
+require_once JPATH_BASE . '/remote_db.php';
 
 $date_now=date('Y-m-d').' 00:00:00';
 
@@ -61,8 +67,8 @@ $query = "SELECT t.name AS tname,t.alias AS talias, a.*,  aa.address AS aaddress
 					INNER JOIN #__actions AS aa ON aa.action_id=a.id
 					INNER JOIN #__teams AS t ON t.id=a.team_id
 					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0 ORDER BY aa.action_date_end ASC";
-$db->setQuery($query);
-$actions = $db->loadObjectList();
+$db_remote->setQuery($query);
+$actions = $db_remote->loadObjectList();
 $i=0;
 $data= '{
       "type": "FeatureCollection",

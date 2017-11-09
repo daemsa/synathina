@@ -50,8 +50,10 @@ $mobile_detect = new Mobile_Detect;
 //remove joomla generator and cotrol some meta
 $this->setGenerator(null);
 
+//local db
+$db = JFactory::getDbo();
+
 //newsletter
-$db	= JFactory::getDBO();
 if(@$_REQUEST['newsletter_email']!=''){
 	if (@$_REQUEST['g-recaptcha-response']=='') {
       echo '<script>alert(\''.($lang_code=='en'?'There was problem with the CAPTCHA code':'Υπήρξε πρόβλημα κατά τον έλεγχο του CAPTCHA').'\')</script>';

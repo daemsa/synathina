@@ -9,14 +9,18 @@ $newform_session=$session->get( 'newform' );
 
 //db connection
 $db = JFactory::getDBO();
+
 $config = JFactory::getConfig();
+//remote db - use with $db_remote
+require JPATH_BASE . '/remote_db.php';
+
 $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
+$db_remote->setQuery($query);
+$teams_activated = $db_remote->loadResult();
 
 if($teams_activated!=1 && $isroot!=1){
 	echo '<div class="l-register">
@@ -129,24 +133,6 @@ function show_hide(f,show){
 
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="l-register">
 <?php
 		foreach ($breadcumbs_modules as $breadcumbs_module){
@@ -174,7 +160,7 @@ function show_hide(f,show){
 										<option value="">--επιλέξτε ομάδα--</option>
 <?php
 	foreach($this->teams_users AS $team){
-		echo '<option value="'.$team->team_id.'" data-user_id="'.$team->user_id.'">'.$team->name.'</option>';
+		echo '<option value="'.$team['team_id'].'" data-user_id="'.$team['user_id'].'">'.$team['name'].'</option>';
 	}
 ?>
 

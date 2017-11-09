@@ -1,15 +1,20 @@
 <?php
 defined('_JEXEC') or die;
-//connect to db
-$db = JFactory::getDBO();
-$user = JFactory::getUser();
+
 $config = JFactory::getConfig();
+$user = JFactory::getUser();
 $abspath = $config->get( 'abs_path' );
+
+//local db
+$db = JFactory::getDbo();
+
+//remote db - use with $db_remote
+require JPATH_BASE . '/remote_db.php';
 
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
+$db_remote->setQuery($query);
+$teams_activated = $db_remote->loadResult();
 
 
 //language

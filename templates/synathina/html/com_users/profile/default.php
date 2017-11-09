@@ -8,7 +8,8 @@
  */
 
 defined('_JEXEC') or die;
-$db = JFactory::getDbo();
+
+$config = JFactory::getConfig();
 
 $document  = JFactory::getDocument();
 $renderer  = $document->loadRenderer('message');
@@ -20,10 +21,16 @@ $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
+//local db
+$db = JFactory::getDbo();
+
+//remote db - use with $db_remote
+require_once JPATH_BASE . '/remote_db.php';
+
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$this->data->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
+$db_remote->setQuery($query);
+$teams_activated = $db_remote->loadResult();
 if($isroot==1){
 }else{
 ?>
@@ -32,7 +39,7 @@ if($isroot==1){
 		<div class="module-skewed">
 			<div class="register">
 				<h3 class="popup-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h3>-->
-				
+
 <div class="l-register show-profile">
 <?php
 		foreach ($breadcumbs_modules as $breadcumbs_module){
@@ -43,7 +50,7 @@ if($isroot==1){
 		<div class="module-skewed">
 			<!-- Content Module -->
 			<div class="register">
-				<h3 class="popup-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h3>	
+				<h3 class="popup-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h3>
 				<?php if (JFactory::getUser()->id == $this->data->id) : ?>
 				<ul class="btn-toolbar">
 					<li class="btn-group" style="list-style:none;list-style-type:none; display:inline; padding-right:12px">
@@ -52,7 +59,7 @@ if($isroot==1){
 					</li>
 <?php
 	if($teams_activated==1){
-?>					
+?>
 					<li class="btn-group" style="list-style:none;list-style-type:none; display:inline; padding-right:12px">
 						<a class="btn" href="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143');?>">
 							<span class="icon-user"></span> <?php echo JText::_('COM_USERS_SHOW_ACTIONS'); ?></a>
@@ -60,14 +67,14 @@ if($isroot==1){
 					<li class="btn-group" style="list-style:none;list-style-type:none; display:inline; padding-right:12px">
 						<a class="btn" href="<?php echo JRoute::_('index.php?option=com_actions&view=form&Itemid=139&user_id=' . (int) $this->data->id);?>">
 							<span class="icon-user"></span> <?php echo JText::_('COM_USERS_NEW_ACTION'); ?></a>
-					</li>	
+					</li>
 					<li class="btn-group" style="list-style:none;list-style-type:none; display:inline; padding-right:12px">
 						<a class="btn" href="<?php echo JRoute::_('index.php?option=com_opencalls&view=opencalls&Itemid=170&user_id=' . (int) $this->data->id);?>">
 							<span class="icon-user"></span> <?php echo JText::_('COM_OPENCALLS'); ?></a>
 					</li>
 <?php
 	}
-?>										
+?>
 				</ul>
 				<?php endif; ?>
 				<?php echo $this->loadTemplate('core'); ?>
@@ -81,11 +88,11 @@ if($isroot==1){
 						<a class="btn" href="<?php echo JRoute::_('index.php?option=com_users&task=profile.edit&user_id=' . (int) $this->data->id);?>">
 							<span class="icon-user"></span> <?php echo JText::_('COM_USERS_EDIT_PROFILE'); ?></a>
 					</li>
-				</ul>	-->			
+				</ul>	-->
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
 <?php
 }
 ?>

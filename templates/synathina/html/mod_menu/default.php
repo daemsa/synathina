@@ -8,6 +8,10 @@
  */
 
 defined('_JEXEC') or die;
+$config = JFactory::getConfig();
+
+//remote db - use with $db_remote
+require JPATH_BASE . '/remote_db.php';
 
 // Note. It is important to remove spaces between elements.
 ?>

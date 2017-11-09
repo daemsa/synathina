@@ -46,10 +46,16 @@ date_default_timezone_set('Europe/Athens');
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
+$config = JFactory::getConfig();
 
 $currentlang=@$_REQUEST['lang'];
 
+//local db
 $db = JFactory::getDbo();
+
+//remote db - use with $db_remote
+require_once JPATH_BASE . '/remote_db.php';
+
 $query = "SELECT * FROM #__team_activities WHERE published=1 ";
 $db->setQuery($query);
 $activities = $db->loadObjectList();
@@ -65,8 +71,8 @@ $query = "SELECT t.name AS tname,t.alias AS talias, t.logo AS tlogo, a.*, aa.add
 					INNER JOIN #__actions AS aa ON aa.action_id=a.id
 					INNER JOIN #__teams AS t ON t.id=a.team_id
 					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0 ORDER BY aa.lat DESC";
-$db->setQuery($query);
-$actions = $db->loadObjectList();
+$db_remote->setQuery($query);
+$actions = $db_remote->loadObjectList();
 $i=0;
 $data= '{
       "type": "FeatureCollection",

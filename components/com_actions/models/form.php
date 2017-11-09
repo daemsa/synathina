@@ -43,6 +43,14 @@ class ActionsModelForm extends JModelItem
 		parent::populateState();
 	}
 
+	public function remote_db() {
+		$config = JFactory::getConfig();
+		//remote db - use with $db_remote
+		require JPATH_BASE . '/remote_db.php';
+
+		return $db_remote;
+	}
+
 	public function getUrlslug($str, $options = array())
 	{
 		// Make sure string is in UTF-8 and strip invalid UTF-8 characters
@@ -248,24 +256,24 @@ class ActionsModelForm extends JModelItem
 	public function getTeam()
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db_remote = $this->remote_db();
 
 		$query = "SELECT id,user_id,logo FROM #__teams
 						WHERE user_id='".$user->id."' LIMIT 1 ";
-		$db->setQuery($query);
-		$teams = $db->loadObjectList();
+		$db_remote->setQuery($query);
+		$teams = $db_remote->loadObjectList();
 
 		return $teams;
 	}
 
 	public function getTeamInfo($user_id)
 	{
-		$db = JFactory::getDBO();
+		$db_remote = $this->remote_db();
 
 		$query = "SELECT name,contact_1_name,contact_1_email,contact_1_phone FROM #__teams
 						WHERE user_id='".$user_id."' LIMIT 1 ";
-		$db->setQuery($query);
-		$team_names = $db->loadObjectList();
+		$db_remote->setQuery($query);
+		$team_names = $db_remote->loadObjectList();
 		$team_info = [];
 		foreach ($team_names as $key => $value) {
 			$team_info[$key]=$value;
@@ -276,14 +284,13 @@ class ActionsModelForm extends JModelItem
 
 	public function getSubactions()
 	{
-		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
+		$db_remote = $this->remote_db();
+
 		$query = "SELECT a.*
 						FROM #__actions AS a
 						WHERE a.action_id='".@$_REQUEST['id']."' AND a.published=1 ";
-		$db->setQuery($query);
-		$subactions = $db->loadObjectList();
+		$db_remote->setQuery($query);
+		$subactions = $db_remote->loadObjectList();
 
 		return $subactions;
 	}
@@ -291,8 +298,6 @@ class ActionsModelForm extends JModelItem
 	public function getActivities()
 	{
 		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
 
 		$query = "SELECT a.*
 						FROM #__team_activities AS a
@@ -305,34 +310,41 @@ class ActionsModelForm extends JModelItem
 	public function getTeams()
 	{
 
-		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
+		$db_remote = $this->remote_db();
 
 		$query = "SELECT a.id, a.name, a.logo
 						FROM #__teams AS a
 						WHERE a.`hidden`=0 AND a.published=1
 						ORDER BY a.name ASC ";
-		$db->setQuery($query);
-		$teams = $db->loadObjectList();
+		$db_remote->setQuery($query);
+		$teams = $db_remote->loadObjectList();
 
 		return $teams;
 	}
 
 	public function getTeams_users()
 	{
-
 		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
+		$db_remote = $this->remote_db();
+		$teams_users = [];
 
-		$query = "SELECT t.name,t.id AS team_id, u.id AS user_id
-						FROM #__teams AS t
-						INNER JOIN #__users AS u ON u.id=t.user_id
-						WHERE u.block=0 AND u.activation='' AND t.published=1
-						ORDER BY t.name ASC ";
-		$db->setQuery($query);
-		$teams_users = $db->loadObjectList();
+		$query = "SELECT name, id
+						FROM #__teams
+						WHERE published=1
+						ORDER BY name ASC ";
+		$db_remote->setQuery($query);
+		$teams = $db_remote->loadObjectList();
+
+		foreach ($teams as $team) {
+			$query = "SELECT id
+						FROM #__users
+						WHERE block=0 AND activation='' AND id='".$team->id."' ";
+			$db->setQuery($query);
+			$row = $db->loadAssoc();
+			if (isset($row->id)) {
+				$teams_users[] = array('name' => $team->name, 'team_id' => $team->id, 'user_id' => $row->id);
+			}
+		}
 
 		return $teams_users;
 	}
@@ -340,8 +352,6 @@ class ActionsModelForm extends JModelItem
 	public function getServices()
 	{
 		$db = JFactory::getDBO();
-		$config= new JConfig();
-		$app = JFactory::getApplication();
 
 		$query = "SELECT a.id, a.name
 						FROM #__municipality_services AS a
@@ -366,6 +376,7 @@ class ActionsModelForm extends JModelItem
 
 		//requirements
 		$db = JFactory::getDBO();
+		$db_remote = $this->remote_db();
 		$params = JComponentHelper::getParams('com_users');
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
@@ -480,9 +491,9 @@ class ActionsModelForm extends JModelItem
 			''
 		) ";
 
-		$db->setQuery($actions_query);
-		$db->execute();
-		$parent_id = $db->insertid();
+		$db_remote->setQuery($actions_query);
+		$db_remote->execute();
+		$parent_id = $db_remote->insertid();
 
 		require_once JPATH_CONFIGURATION.'/global_functions.php';
 
@@ -516,25 +527,26 @@ class ActionsModelForm extends JModelItem
 			}
 
 			//assets
-			$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
-			$db->setQuery($query_rgt);
-			$max_rgt = $db->loadResult();
-			$assoc_rgt = $max_rgt+1;
-			$query_lock_asset = "LOCK TABLES #__assets WRITE";
-			$db->setQuery($query_lock_asset);
-			$db->execute();
-			$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$parent_id."','#__actions.".$parent_id."','{}') ";
-			$db->setQuery($query_asset);
-			$db->execute();
-			$asset_parent_id = $db->insertid();
-			$query_unlock_asset = "UNLOCK TABLES";
-			$db->setQuery($query_unlock_asset);
-			$db->execute();
+			// $query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
+			// $db->setQuery($query_rgt);
+			// $max_rgt = $db->loadResult();
+			// $assoc_rgt = $max_rgt+1;
+			// $query_lock_asset = "LOCK TABLES #__assets WRITE";
+			// $db->setQuery($query_lock_asset);
+			// $db->execute();
+			// $query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$parent_id."','#__actions.".$parent_id."','{}') ";
+			// $db->setQuery($query_asset);
+			// $db->execute();
+			// $asset_parent_id = $db->insertid();
+			// $query_unlock_asset = "UNLOCK TABLES";
+			// $db->setQuery($query_unlock_asset);
+			// $db->execute();
+			$asset_parent_id = 0;
 
 			//update parent activity
 			$query_action_update = "UPDATE #__actions SET asset_id='".$asset_parent_id."', image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
-			$db->setQuery($query_action_update);
-			$db->execute();
+			$db_remote->setQuery($query_action_update);
+			$db_remote->execute();
 
 			//insert subactivities
 			//get all activities
@@ -562,8 +574,8 @@ class ActionsModelForm extends JModelItem
 						$stegi_exists_in_general = 1;
 
 						$query_team = "SELECT name FROM #__teams WHERE id='".$team_id."' LIMIT 1 ";
-						$db->setQuery($query_team);
-						$team_name = $db->loadResult();
+						$db_remote->setQuery($query_team);
+						$team_name = $db_remote->loadResult();
 						$query_stegi = "INSERT INTO #__stegihours VALUES (
 							'','',
 							0,
@@ -590,25 +602,25 @@ class ActionsModelForm extends JModelItem
 						$stegihours_id = $db->insertid();
 
 						//assets
-						$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
-						$db->setQuery($query_rgt);
-						$max_rgt = $db->loadResult();
-						$assoc_rgt = $max_rgt+1;
-						$query_lock_asset = "LOCK TABLES #__assets WRITE";
-						$db->setQuery($query_lock_asset);
-						$db->execute();
-						$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__stegihours.".$stegihours_id."','#__stegihours.".$stegihours_id."','{}') ";
-						$db->setQuery($query_asset);
-						$db->execute();
-						$asset_stegi_id = $db->insertid();
-						$query_unlock_asset = "UNLOCK TABLES";
-						$db->setQuery($query_unlock_asset);
-						$db->execute();
+						// $query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
+						// $db->setQuery($query_rgt);
+						// $max_rgt = $db->loadResult();
+						// $assoc_rgt = $max_rgt+1;
+						// $query_lock_asset = "LOCK TABLES #__assets WRITE";
+						// $db->setQuery($query_lock_asset);
+						// $db->execute();
+						// $query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__stegihours.".$stegihours_id."','#__stegihours.".$stegihours_id."','{}') ";
+						// $db->setQuery($query_asset);
+						// $db->execute();
+						// $asset_stegi_id = $db->insertid();
+						// $query_unlock_asset = "UNLOCK TABLES";
+						// $db->setQuery($query_unlock_asset);
+						// $db->execute();
 
 						//update subaction
-						$query_action_update = "UPDATE #__stegihours SET asset_id='".$asset_stegi_id."' WHERE id='".$stegihours_id."' LIMIT 1";
-						$db->setQuery($query_action_update);
-						$db->execute();
+						// $query_action_update = "UPDATE #__stegihours SET asset_id='".$asset_stegi_id."' WHERE id='".$stegihours_id."' LIMIT 1";
+						// $db->setQuery($query_action_update);
+						// $db->execute();
 
 						//email to admin
 						$emails = [];
@@ -693,30 +705,29 @@ class ActionsModelForm extends JModelItem
 						'',
 						''
 					)";
-					$db->setQuery($subactions_query);
-					$db->execute();
-					$subaction_id = $db->insertid();
+					$db_remote->setQuery($subactions_query);
+					$db_remote->execute();
 
 					//assets
-					$query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
-					$db->setQuery($query_rgt);
-					$max_rgt = $db->loadResult();
-					$assoc_rgt = $max_rgt+1;
-					$query_lock_asset = "LOCK TABLES #__assets WRITE";
-					$db->setQuery($query_lock_asset);
-					$db->execute();
-					$query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$subaction_id."','#__actions.".$subaction_id."','{}') ";
-					$db->setQuery($query_asset);
-					$db->execute();
-					$asset_subaction_id = $db->insertid();
-					$query_unlock_asset = "UNLOCK TABLES";
-					$db->setQuery($query_unlock_asset);
-					$db->execute();
+					// $query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
+					// $db->setQuery($query_rgt);
+					// $max_rgt = $db->loadResult();
+					// $assoc_rgt = $max_rgt+1;
+					// $query_lock_asset = "LOCK TABLES #__assets WRITE";
+					// $db->setQuery($query_lock_asset);
+					// $db->execute();
+					// $query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__actions.".$subaction_id."','#__actions.".$subaction_id."','{}') ";
+					// $db->setQuery($query_asset);
+					// $db->execute();
+					// $asset_subaction_id = $db->insertid();
+					// $query_unlock_asset = "UNLOCK TABLES";
+					// $db->setQuery($query_unlock_asset);
+					// $db->execute();
 
 					//update subaction
-					$query_action_update = "UPDATE #__actions SET asset_id='".$asset_subaction_id."' WHERE id='".$subaction_id."' LIMIT 1";
-					$db->setQuery($query_action_update);
-					$db->execute();
+					// $query_action_update = "UPDATE #__actions SET asset_id='".$asset_subaction_id."' WHERE id='".$subaction_id."' LIMIT 1";
+					// $db->setQuery($query_action_update);
+					// $db->execute();
 				}
 			}
 		}
@@ -733,16 +744,15 @@ class ActionsModelForm extends JModelItem
 
 			//email to user if root has added an action on behalf of him
 			if ($user->email == '' && $isroot) {
-				$query = "SELECT u.email
-								FROM #__teams AS t
-								INNER JOIN #__users AS u ON u.id=t.user_id
-								WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.id='".$team_id."'
+				$query = "SELECT email
+								FROM #__users
+								WHERE block=0 AND activation='' id='".$user->id."'
 								LIMIT 1 ";
 				$db->setQuery($query);
 				$team_email = $db->loadResult();
 				$emails = array($team_email);
 				$att = '';
-				$s_array = array($config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'), $name);
+				$s_array = array($config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138'), $name);
 				synathina_email('action_created_user_from_root', $s_array, $emails, $att);
 			}
 
@@ -750,7 +760,7 @@ class ActionsModelForm extends JModelItem
 			if (!$isroot) {
 				$team_info = $this->getTeamInfo($user->id);
 				$emails = [];
-				$s_array = array($team_info[0]->name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'), $name, $config->get( 'main_url' ).'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
+				$s_array = array($team_info[0]->name, $config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'), $name, $config->get('live_site').'/'.JRoute::_('index.php?option=com_actions&view=edit&id='.$parent_id.'&Itemid=144'));
 				synathina_email('action_created_admin', $s_array, $emails, '');
 			}
 
