@@ -3,3 +3,4 @@ configuration.php
 logs/
 images/
 attachments/
+.DS_Store
