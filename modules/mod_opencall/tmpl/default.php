@@ -209,10 +209,10 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
 		$config = JFactory::getConfig();
 		$emails = [];
 		$opencall_url = JRoute::_(ContentHelperRoute::getArticleRoute($article_id.':'.$alias, '15'));
-		$s_array = array($config->get( 'main_url' ).$opencall_url,$config->get( 'live_site' ).'/administrator/index.php?core&option=com_content&view=articles');
+		$s_array = array($config->get('live_site').$opencall_url,$config->get( 'live_site' ).'/administrator/index.php?core&option=com_content&view=articles');
 		synathina_email('open_call_admin', $s_array, $emails, '');
 		//email to user
-		$s_array = array($config->get( 'main_url' ).$opencall_url);
+		$s_array = array($config->get('live_site').$opencall_url);
 		if ($user->email != '') {
 			$emails = array($user->email);
 		}

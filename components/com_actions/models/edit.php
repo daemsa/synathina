@@ -790,7 +790,7 @@ class ActionsModelEdit extends JModelItem
 				$team_info = $this->getTeamInfo($team_id);
 				$team_info = $team_info[0];
 				$team_municipality_text = $team_info->contact_1_name.'<br />'.$team_info->contact_1_email.'<br />'.$team_info->contact_1_phone;
-				$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
+				$drasi_url = $config->get('live_site').JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
 				$s_array = array($team_link, $team_info->name, str_replace('- <br />', '', $municipality_services_text), $municipality_message, $drasi_url, $team_municipality_text);
 				synathina_email('action_created_municipality', $s_array, $emails, '');
 
@@ -830,7 +830,7 @@ class ActionsModelEdit extends JModelItem
 					$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid = 140');
 					$team_info = $this->getTeamInfo($team_id);
 					$team_info = $team_info[0];
-					$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
+					$drasi_url = $config->get('live_site').JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
 					if (!$supporters_message = @unserialize($supporters_message)) {
 						$supporters_message = unserialize(base64_decode($supporters_message));
 					}
