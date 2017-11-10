@@ -53,6 +53,11 @@ $this->setGenerator(null);
 //local db
 $db = JFactory::getDbo();
 
+//remote db
+JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
+$db_remote_class = new RemotedbConnection();
+$db_remote = $db_remote_class->connect();
+
 //newsletter
 if(@$_REQUEST['newsletter_email']!=''){
 	if (@$_REQUEST['g-recaptcha-response']=='') {
