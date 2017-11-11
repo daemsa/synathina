@@ -831,7 +831,9 @@ class ActionsModelEdit extends JModelItem
 					$team_info = $this->getTeamInfo($team_id);
 					$team_info = $team_info[0];
 					$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
-					if (!$supporters_message = @unserialize($supporters_message)) {
+					if (@unserialize($supporters_message)) {
+						$supporters_message = unserialize($supporters_message);
+					} else {
 						$supporters_message = unserialize(base64_decode($supporters_message));
 					}
 					foreach ($supporters_emails as $key => $emails) {
