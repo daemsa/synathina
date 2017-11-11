@@ -28,20 +28,20 @@ function sortBy($field, &$array, $direction = 'desc')
 
 //NEW SLIDER
 //1st slider
-function count_actions($year){
-	$db = JFactory::getDBO();
-	$where='';
-	if($year==date('Y')){
-		$where=" AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
-	}else{
-		$where=" AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
+function count_actions($year)
+{
+	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
+	if ($year == date('Y')) {
+		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
+	} else {
+		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
 	}
-	$query = "SELECT aa.id AS `count` FROM #__actions AS a
-						INNER JOIN #__actions AS aa ON aa.action_id=a.id
-						WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00' ".$where." ";
-	$db->setQuery($query);
-	$db->execute();
-	return $db->getNumRows();
+
+	//remote db
+	$activityClass = new RemotedbActivity();
+	$activities_count = $activityClass->getActivitiesCount($where);
+
+	return $activities_count;
 }
 
 //get action by year
@@ -68,17 +68,21 @@ for($y=2014; $y<=date('Y'); $y++){
 }
 
 //get 2nd slider
-function teams_count($year){
+function teams_count($year)
+{
+	//remote db
+	$teamClass = new RemotedbTeam();
+	$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND created>='".$year."-01-01 00:00:00' AND created<='".$year."-31-21 23:59:59'");
+
 	$db = JFactory::getDBO();
-	$query = "SELECT t.id , t.name
-				FROM #__teams AS t
-				INNER JOIN #__users AS u ON u.id=t.user_id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'";
+	$query = "SELECT id	FROM #__users
+				WHERE block=0 AND activation='' AND id IN (".$team_user_ids_text.") ";
 	$db->setQuery($query);
 	$db->execute();
-	$num_rows = $db->getNumRows();
-	return $num_rows;
+
+	return $db->getNumRows();
 }
+
 $slider_2_2013 = 42;
 $slider_2_2014 = 119;
 $slider_2_2015 = 194;
@@ -91,7 +95,7 @@ $slider_2_unique_2016 = 87;
 for($i=2017; $i<=date('Y'); $i++){
 	${'slider_2_unique_'.$i} = teams_count($i);
 	${'slider_2_'.$i} = ${'slider_2_unique_'.$i}+${'slider_2_'.($i-1)};
-}	
+}
 //total teams
 $slider_2_all=0;
 for($y=2013; $y<=date('Y'); $y++){
@@ -129,7 +133,7 @@ foreach($activities_object as $activity){
 	$activities_name[$activity->id]=$activity_name;
 }
 if($current_year_3==2016){
-	//$activities_actions[$activity->id] = array('percent'=>$percent,'activity_id'=>$activity->id,'activity_color'=>$activity->color,'activity_name'=>$activity_name);	
+	//$activities_actions[$activity->id] = array('percent'=>$percent,'activity_id'=>$activity->id,'activity_color'=>$activity->color,'activity_name'=>$activity_name);
 	$activities_actions[1]=array('percent'=>44.6,'activity_id'=>1,'activity_color'=>'6da9a4','activity_name'=>$activities_name[1]);
 	$activities_actions[2]=array('percent'=>15.3,'activity_id'=>2,'activity_color'=>'be5d33','activity_name'=>$activities_name[2]);
 	$activities_actions[4]=array('percent'=>2.1,'activity_id'=>4,'activity_color'=>'ab6ad1','activity_name'=>$activities_name[4]);
@@ -146,20 +150,12 @@ if($current_year_3==2016){
 	$total_action_count = 0;
 
 	foreach($activities_object as $activity) {
-      $query = "SELECT aa.id AS `count` FROM #__actions AS a
-							INNER JOIN #__actions AS aa ON aa.action_id=a.id
-							WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) 
-							AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "' ";
-
-
-      $db->setQuery($query);
-      $db->execute();
-      $actions_count = $db->getNumRows();
-
-      $total_action_count += $actions_count;
-
-      $activity->action_count = $actions_count;
-
+		//remote db
+		$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "'";
+		$activityClass = new RemotedbActivity();
+		$activities_count = $activityClass->getActivitiesCount($where);
+	    $total_action_count += $activities_count;
+	    $activity->action_count = $activities_count;
     }
 
   foreach($activities_object as $activity) {
@@ -177,7 +173,7 @@ if($current_year_3==2016){
 		}else{
 			$activity_name=$activity->name;
 		}
-		$activities_actions[$activity->id] = array('percent'=>$percent,'activity_id'=>$activity->id,'activity_color'=>$activity->color,'activity_name'=>$activity_name);	
+		$activities_actions[$activity->id] = array('percent'=>$percent,'activity_id'=>$activity->id,'activity_color'=>$activity->color,'activity_name'=>$activity_name);
 	}
 }
 sortBy('percent',$activities_actions);
@@ -203,7 +199,7 @@ $lang_code=$lang_code_array[0];
 									<div class="chart-title">
 										 <div class="module-cells module-cells--halfs text-right container">
 												<h3><?php echo JText::_('MOD_SLIDER_1_TITLE');?>:</h3>
-												<span class="label chart-overview-value"><?php echo $slider_1_all; ?> <?php echo JText::_('MOD_SLIDER_1_ACTIVITIES');?></span>         
+												<span class="label chart-overview-value"><?php echo $slider_1_all; ?> <?php echo JText::_('MOD_SLIDER_1_ACTIVITIES');?></span>
 										 </div>
 									</div>
 									<div class="chart-com">
@@ -226,29 +222,29 @@ $lang_code=$lang_code_array[0];
 		$f++;
 		$f++;
 	}
-?>											 
+?>
 
 									</div>
 									<div class="slider_index_container">
 									<div class="slider_index">
 										<div class="slider_index_row">
 											<div class="slider_index_col red-box">
-											</div>											
+											</div>
 											<div class="slider_index_col">
 											<?php echo JText::_('MOD_SLIDER_1_ACTIVITIES_1');?>
-											</div>											
+											</div>
 										</div>
 										<div class="slider_index_row">
 											<div class="slider_index_col trans-box">
-											</div>											
+											</div>
 											<div class="slider_index_col">
 											<?php echo JText::_('MOD_SLIDER_1_ACTIVITIES_2');?>
-											</div>											
-										</div>										
+											</div>
+										</div>
 									</div>
-									</div>    
+									</div>
 							 </div>
-						</div>						
+						</div>
             <div class="chart chart--2">
 							<div class="container-fluid chart-2" style="background-color: #FFF;">
 								<div class="row chart-title">
@@ -268,7 +264,7 @@ $lang_code=$lang_code_array[0];
 			$f=0;
 		}
 	}
-?>								
+?>
 								</graph>
 								<svg id="output" width="100" height="100" style="overflow:visible">
 								</svg>
@@ -369,29 +365,29 @@ $lang_code=$lang_code_array[0];
 										}
 									});
 
-									})();								
-									var element = document.getElementById("teams"); 
+									})();
+									var element = document.getElementById("teams");
 									var browser_width = window.innerWidth;
 									if(browser_width<360){
-										element.setAttribute("width", "200");		
-										element.setAttribute("height", "350");							
+										element.setAttribute("width", "200");
+										element.setAttribute("height", "350");
 										offsetx=24;
 									}else if(browser_width<420){
-										element.setAttribute("width", "240");		
-										element.setAttribute("height", "350");							
+										element.setAttribute("width", "240");
+										element.setAttribute("height", "350");
 										offsetx=28;
 									}else if(browser_width<520){
-										element.setAttribute("width", "320");		
-										element.setAttribute("height", "350");							
+										element.setAttribute("width", "320");
+										element.setAttribute("height", "350");
 										offsetx=24;
 									}else if(browser_width<768){
-										element.setAttribute("width", "420");		
-										element.setAttribute("height", "400");							
-										offsetx=34;										
+										element.setAttribute("width", "420");
+										element.setAttribute("height", "400");
+										offsetx=34;
 									}else{
-										element.setAttribute("width", "600");		
-										element.setAttribute("height", "400");							
-										offsetx=40;											
+										element.setAttribute("width", "600");
+										element.setAttribute("height", "400");
+										offsetx=40;
 									}
 									offsetx2=0;
 									gr=document.getElementById('teams');
@@ -440,41 +436,41 @@ $lang_code=$lang_code_array[0];
 										x1=offsetx+(gr.children[i].getAttribute('valuex')*ystep);
 										c1=gr.children[i].getAttribute('color1');
 										c2=gr.children[i].getAttribute('color2');
-										
+
 										t1=gr.children[i].getAttribute('name')
 										t2=gr.children[i].getAttribute('notey')
 										t3=gr.children[i].getAttribute('notex')
-										
+
 
 										l1='';
 										if(i>0){
 											l1='<line x1="'+px+'" y1="'+py+'" x2="'+x1+'" y2="'+y1+'" style="stroke:rgb(0,0,0);stroke-width:1" />'
 										}
-										
+
 											l2='<line x1="'+x1+'" y1="'+(h+25)+'" x2="'+x1+'" y2="'+(h+45)+'" style="stroke:rgb(0,0,0);stroke-width:1" />'
-										
+
 										px=x1;
 										py=y1;
 										dot1="<circle cx=\""+x1+"\" cy=\""+y1+"\" r=\"7\" fill=\""+c1+"\" />";
 										dot2="<circle cx=\""+x1+"\" cy=\""+(h+offsety)+"\" r=\"7\" fill=\""+c2+"\" />";
 										lines+=l1+l2;
 										dots+=dot1+dot2;
-										
+
 										text1= '<text x="'+x1+'" y="'+(h+80)+'" fill="#666" text-anchor="middle" class="slider_2_middle_text" >'+t1+'</text>';
 										text2='<text x="'+(x1-10)+'" y="'+(y1-10)+'" fill="#666" text-anchor="end" class="slider_2_end_text" >'+t2+'</text>';
 										text3= '<text x="'+x1+'" y="'+(h+100)+'" fill="#666" text-anchor="start" style="font-size:12px">'+t3+'</text>';
-										
+
 										texts+=text1+text2+text3;
-											
+
 										i++;
 									}
 									ou.innerHTML+=grid;
 									ou.innerHTML+=lines;
 									ou.innerHTML+=dots;
 									ou.innerHTML+=texts;
-								</script>	
+								</script>
 							</div>
-            </div>						
+            </div>
             <div class="chart chart--3">
                <!--<img src="images/template/slide-3.jpg" alt="" />-->
 							<div class="container-fluid chart-3">
@@ -492,12 +488,12 @@ $lang_code=$lang_code_array[0];
 							<div class="graph-cont">
 									<div class="graph">
 											<div style="background-color: #'.$activities_actions[$i]['activity_color'].';width:'.$activities_actions[$i]['percent'].'%"></div>
-									</div> 
-							</div>     	 	
+									</div>
+							</div>
 					</div>';
 	}
 ?>
-							</div>							 
-            </div> 
+							</div>
+            </div>
          </div>
    </div>

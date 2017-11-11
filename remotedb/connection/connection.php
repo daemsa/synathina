@@ -1,10 +1,12 @@
 <?php
 
-class RemotedbConnection {
+class RemotedbConnection
+{
 
 	protected $options;
 
-	public function __construct() {
+	public function __construct()
+	{
 		$config = JFactory::getConfig();
 		$this->options = [];
 		$this->options['driver']   = $config->get('dbtype');
@@ -15,7 +17,8 @@ class RemotedbConnection {
 		$this->options['prefix']   = $config->get('remote_dbprefix');
 	}
 
-	public function connect() {
+	public function connect()
+	{
 		if ($db_remote = JDatabase::getInstance($this->options)) {
 			return $db_remote;
 		} else {
@@ -23,4 +26,5 @@ class RemotedbConnection {
 			die;
 		}
 	}
+
 }

@@ -39,7 +39,7 @@ else :
 	$itemId = $active->id;
 	$link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
 	$link->setVar('return', base64_encode(JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language), false)));
-endif; 
+endif;
 if($note=='synathina'){
 /*---------SYNATHINA TEMPLATE--------*/
 ?>
@@ -60,36 +60,36 @@ if($note=='synathina'){
 	$slider_1_all=0;
 	for($y=2013; $y<=date('Y'); $y++){
 		$slider_1_all+=${'slider_1_'.$y};
-	}	
+	}
 	$slider_2_2013 = 42;
 	$slider_2_2014 = 77;
 	$slider_2_2015 = 75;
-	$slider_2_2016 = 87;	
+	$slider_2_2016 = 87;
 	for($i=2017; $i<=date('Y'); $i++){
 		${'slider_2_'.$i} = teams_count2($i);
-	}	
+	}
 	//total teams
 	$slider_2_all_teams=0;
 	for($y=2013; $y<=date('Y'); $y++){
 		$slider_2_all_teams+=${'slider_2_'.$y};
 	}
-	
+
 	$total_donators = donators_count();
-	
+
 	$replace_array=array($slider_1_all,$slider_2_all_teams,$total_donators);
 	$replace_array1=array('{total_actions}','{total_teams}','{total_donators}');
-?>				
+?>
 	<?php echo str_replace($replace_array1,$replace_array,$this->item->introtext); ?>
 		 </div>
 <?php
 	if($this->item->counter==$this->item->total){
-		if (count($slider_modules)>0) : 
+		if (count($slider_modules)>0) :
 			foreach ($slider_modules as $slider_module){
 				echo JModuleHelper::renderModule($slider_module);
 			}
 		endif;
 	}
-?>	
+?>
 	</div>
 </div>
 
@@ -101,8 +101,8 @@ if($note=='synathina'){
 					<h3 class="module-title">'.$this->item->title.'</h3>
 					'.$this->item->introtext.'
         </div>	';
-/*-----END OF TEAMS TEMPLATE-----*/	
-/*-----START OF EU TEMPLATE-----*/	
+/*-----END OF TEAMS TEMPLATE-----*/
+/*-----START OF EU TEMPLATE-----*/
 }elseif($note=='eu'){
 ?>
 	<div class="module module--synathina">
@@ -114,8 +114,8 @@ if($note=='synathina'){
 			</div>
 	 </div>
 <?php
-/*-----END OF EU TEMPLATE-----*/	
-/*-----START OF OPEN CALLS TEMPLATE-----*/	
+/*-----END OF EU TEMPLATE-----*/
+/*-----START OF OPEN CALLS TEMPLATE-----*/
 }elseif($note=='opencalls'){
 		$attribs1  = json_decode($this->item->attribs);
 ?>
@@ -140,11 +140,11 @@ if($note=='synathina'){
 			}
 			if(count($imgs)==0){
 				echo '<a href="'.$link.'"><img src="http://placehold.it/511x310" class="img-responsive" style="height:310px" /></a>';
-			}			
+			}
 			$i++;
 		}
 	}
-?>		 
+?>
 				<div class="caption">
 					 <h3><a style="color:#5d5d5d" href="<?php echo $link; ?>"><?php echo $this->item->title; ?></a><?=($isroot==1&&$this->item->state==0?' <span style="color:red;">ανενεργό</span>':'')?></h3>
 					 <time>Deadline: <?php echo @JHTML::_('date', $attribs1->opencall_date, 'd/m/Y');?></time>
@@ -156,12 +156,12 @@ if($note=='synathina'){
 		 </article>
 	</div>
 <?php
-/*-----END OF OPEN CALLS TEMPLATE-----*/	
+/*-----END OF OPEN CALLS TEMPLATE-----*/
 }else{
 	//get di images
 	$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC LIMIT 1";
 	$db->setQuery($query);
-	$imgs = $db->loadObjectList();		
+	$imgs = $db->loadObjectList();
 ?>
 
 <article>
@@ -170,7 +170,7 @@ if($note=='synathina'){
 	foreach($imgs as $img){
 		echo '<a href="'. $link .'"><i class="fill" style="padding-bottom: 33.666667%; background-position: '.(@$attribs->news_image==''?'center':@$attribs->news_image).' center; background-image:url('.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.')"></i></a>';
 	}
-?>								
+?>
 			<!--<i class="fill" style="background-image:url(<?php echo $images->image_intro; ?>)"></i>-->
 	 </figure>
 	 <div class="media">
@@ -185,7 +185,7 @@ if($note=='synathina'){
 	}else{
 		$newtext=strip_tags($this->item->introtext,'<strong><a>');
 	}
-?>	
+?>
 				 <p>
 						<?php echo str_replace('<a ','<a target="_blank" ',$newtext); ?>
 						<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>

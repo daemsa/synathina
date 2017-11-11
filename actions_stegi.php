@@ -43,12 +43,9 @@ require_once JPATH_BASE . '/includes/framework.php';
 // Set profiler start time and memory usage and mark afterLoad in the profiler.
 JDEBUG ? $_PROFILER->setStart($startTime, $startMem)->mark('afterLoad') : null;
 date_default_timezone_set('Europe/Athens');
+
 //get lang variables
 $lang=@$_REQUEST['lang'];
-//if($lang=='en'){
-//}else{
-	//$lang='el';
-//}
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
@@ -57,18 +54,18 @@ $config = JFactory::getConfig();
 //local db
 $db = JFactory::getDbo();
 
-//remote db - use with $db_remote
-require_once JPATH_BASE . '/remote_db.php';
+//remote db
+JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
 
 $date_now=date('Y-m-d').' 00:00:00';
 
-$query = "SELECT t.name AS tname,t.alias AS talias, a.*,  aa.address AS aaddress, aa.lat AS alat,aa.lng AS alng, aa.action_date_start AS aaction_date_start,aa.action_date_end AS aaction_date_end
-					FROM #__actions AS a
-					INNER JOIN #__actions AS aa ON aa.action_id=a.id
-					INNER JOIN #__teams AS t ON t.id=a.team_id
-					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0 ORDER BY aa.action_date_end ASC";
-$db_remote->setQuery($query);
-$actions = $db_remote->loadObjectList();
+//remote db
+$fields = ['t.name AS tname', 't.alias AS talias', 'a.*', 'aa.address AS aaddress', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+$where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
+$order_by = "ORDER BY aa.action_date_end ASC";
+$activityClass = new RemotedbActivity();
+$actions = $activityClass->getActivitiesTeams($fields, $where, $order_by);
+
 $i=0;
 $data= '{
       "type": "FeatureCollection",

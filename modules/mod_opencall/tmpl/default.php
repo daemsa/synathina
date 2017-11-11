@@ -8,8 +8,9 @@ $abspath = $config->get( 'abs_path' );
 //local db
 $db = JFactory::getDbo();
 
-//remote db - use with $db_remote
-require JPATH_BASE . '/remote_db.php';
+//remote db
+$db_remote_class = new RemotedbConnection();
+$db_remote = $db_remote_class->connect();
 
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
