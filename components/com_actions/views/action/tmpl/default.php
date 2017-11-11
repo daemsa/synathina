@@ -2,7 +2,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-$action=$this->action[0];
+$action = $this->action;
 
 $document = JFactory::getDocument();
 $document->setTitle($action->name);
@@ -25,19 +25,15 @@ $db = JFactory::getDBO();
 
 $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
-//activities
-$query="SELECT a.*
-				FROM #__team_activities AS a
-				WHERE a.published=1 ";
-$db->setQuery( $query );
-$activities = $db->loadObjectList();
+
+$activities = $this->team_activities;
 $activities_array_info=array();
 foreach($activities as $activity){
 	$activities_array_info[$activity->id]=array($activity->name, $activity->image);
 }
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
-			
+
 $config= new JConfig();
 $app = JFactory::getApplication();
 $templateDir = JURI::base() . 'templates/' . $app->getTemplate();
@@ -54,7 +50,7 @@ $menu_link = $app->getMenu()->getActive()->link;
 
 
 $subactions=$this->subactions;
-//print_r($subactions);
+
 ?>
 
 <div class="l-draseis l-draseis--article">
@@ -65,7 +61,7 @@ $subactions=$this->subactions;
 	}
 ?>
    <div class="clearfix">
-	 
+
       <aside class="l-draseis__col-left">
 <?php
 	if($action->image!=''){
@@ -73,7 +69,7 @@ $subactions=$this->subactions;
     <img src="images/actions/main_images/<?php echo $action->image; ?>" alt="<?php echo $action->name; ?>" style="width:100%; " />
 <?php
 	}
-?>			
+?>
          <div class="module module--synathina">
             <div class="module-skewed module-skewed gray">
                <div class="list-group list-group--draseis">
@@ -82,138 +78,49 @@ $subactions=$this->subactions;
 			if(@$action->best_practice==1){
 				echo '	<img style="max-width:56px" src="images/template/best.png" alt="" />';
 			}
-?>									
+?>
                      <h3 class="list-group-item-title" style="<?=(@$action->best_practice==1?'padding-top:0px;':'')?>"><?php echo $action->name; ?></h3>
                      <ul class="inline-list inline-list--separated">
                         <li><a href="<?php echo JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.'&Itemid=137');  ?>"><?php echo $action->team_name; ?></a></li>
                      </ul>
 <?php
-	$partners1=explode(',',$action->partners);
-	$partners=array();
-	for($p=0; $p<count($partners1); $p++){
-		if($partners1[$p]!=''){
-			$partners[]=$partners1[$p];
+	$teamClass = new RemotedbTeam();
+
+	if ($action->partners) {
+		$where = "id IN (".rtrim($action->partners, ',').") AND published=1";
+		$partners = $teamClass->getTeams(['name', 'id'], $where);
+
+		echo '<br />Συνεργαζόμενες ομάδες:<br /><ul class="inline-list inline-list--separated">';
+		foreach ($partners as $partner) {
+			echo '<li><a href="'.JRoute::_('index.php?option=com_teams&view=team&id='.$partner->id.'&Itemid=137').'">'.$partner->name.'</a></li>';
 		}
+		echo '</ul>';
 	}
-	for($p=0; $p<count($partners); $p++){
-		if($p==0){
-			echo '<br />Συνεργαζόμενες ομάδες:<br /><ul class="inline-list inline-list--separated">';
+
+	if ($action->partners) {
+		$where = "id IN (".rtrim($action->supporters, ',').") AND published=1";
+		$supporters = $teamClass->getTeams(['name', 'id'], $where);
+
+		echo '<br />Υποστηρικτές:<br /><ul class="inline-list inline-list--separated">';
+		foreach ($supporters as $supporter) {
+			echo '<li><a href="'.JRoute::_('index.php?option=com_teams&view=team&id='.$supporter->id.'&Itemid=137').'">'.$supporter->name.'</a></li>';
 		}
-		$query = "SELECT name, id FROM #__teams WHERE id='".$partners[$p]."' LIMIT 1";
-		$db->setQuery( $query );
-		$partners_result = $db->loadObjectList();	
-		foreach($partners_result as $partner_result){
-			echo '<li><a href="'.JRoute::_('index.php?option=com_teams&view=team&id='.@$partner_result->id.'&Itemid=137').'">'.@$partner_result->name.'</a></li>';
-		}
-		if(($p+1)==count($partners)){
-			echo '</ul>';
-		}
+		echo '</ul>';
 	}
-	$supporters1=explode(',',$action->supporters);
-	$supporters=array();
-	for($p=0; $p<count($supporters1); $p++){
-		if($supporters1[$p]!=''){
-			$supporters[]=$supporters1[$p];
-		}
-	}
-	for($p=0; $p<count($supporters); $p++){
-		if($p==0){
-			echo '<br />Υποστηρικτές:<br /><ul class="inline-list inline-list--separated">';
-		}
-		$query = "SELECT name, id FROM #__teams WHERE id='".$supporters[$p]."' LIMIT 1";
-		//echo $query;
-		$db->setQuery( $query );
-		$partners_result = $db->loadObjectList();	
-		foreach($partners_result as $partner_result){
-			echo '<li><a href="'.JRoute::_('index.php?option=com_teams&view=team&id='.@$partner_result->id.'&Itemid=137').'">'.@$partner_result->name.'</a></li>';
-		}
-		if(($p+1)==count($supporters)){
-			echo '</ul>';
-		}
-	}	
-	
-?>										 
-<!--fix when supporters exist-->
-<!--
-                     <ul class="inline-list inline-list--separated">
-                        <li><a href="">Atenistas</a></li>
-                     </ul>
--->										 
-<!--end fix-->										 
-<?php
+
 	if($action->web_link!=''){
 		$web_link1=$action->web_link;
 		$prefix=substr($action->web_link,0,4);
 		if($prefix!='http'){
 			$web_link1='http://'.$action->web_link;
-		}			
+		}
 ?>
                      <a class="list-group-link" href="<?php echo $web_link1; ?>" target="_blank" style="text-decoration:underline">
                         Web Link / Facebook Event
                      </a>
 <?php
 	}
-?>										 
- <!--                    <ul class="inline-list inline-list--separated thematiki--list">
-<?php
-	if(@$action->team_fb_link!=''){
-		$team_fb_link1=$action->team_fb_link;
-		$prefix=substr($action->team_fb_link,0,4);
-		if($prefix!='http'){
-			$team_fb_link1='http://'.$action->team_fb_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_fb_link1.'"><i class="fa fa-facebook"></i></a></li>';
-	}
-	if(@$action->team_tw_link!=''){
-		$team_tw_link1=$action->team_tw_link;
-		$prefix=substr($action->team_tw_link,0,4);
-		if($prefix!='http'){
-			$team_tw_link1='http://'.$action->team_tw_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_tw_link1.'"><i class="fa fa-twitter"></i></a></li>';
-	}
-	if(@$action->team_in_link!=''){
-		$team_in_link1=$action->team_in_link;
-		$prefix=substr($action->team_in_link,0,4);
-		if($prefix!='http'){
-			$team_in_link1='http://'.$action->team_in_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_in_link1.'"><i class="fa fa-instagram"></i></a></li>';
-	}
-	if(@$action->team_li_link!=''){
-		$team_li_link1=$action->team_li_link;
-		$prefix=substr($action->team_li_link,0,4);
-		if($prefix!='http'){
-			$team_li_link1='http://'.$action->team_li_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_li_link1.'"><i class="fa fa-linkedin"></i></a></li>';
-	}
-	if(@$action->team_yt_link!=''){
-		$team_yt_link1=$action->team_yt_link;
-		$prefix=substr($action->team_yt_link,0,4);
-		if($prefix!='http'){
-			$team_yt_link1='http://'.$action->team_yt_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_yt_link1.'"><i class="fa fa-youtube"></i></a></li>';
-	}
-	if(@$action->team_go_link!=''){
-		$team_go_link1=$action->team_go_link;
-		$prefix=substr($action->team_go_link,0,4);
-		if($prefix!='http'){
-			$team_go_link1='http://'.$action->team_go_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_go_link1.'"><i class="fa fa-google"></i></a></li>';
-	}
-	if(@$action->team_pn_link!=''){
-		$team_pn_link1=$action->team_pn_link;
-		$prefix=substr($action->team_pn_link,0,4);
-		if($prefix!='http'){
-			$team_pn_link1='http://'.$action->team_pn_link;
-		}			
-		echo '<li><a target="_blank" href="'.$team_pn_link1.'"><i class="fa fa-pinterest"></i></a></li>';
-	}	
-?>										 
-                     </ul>-->
+?>
                   </div>
 <?php
 	foreach($subactions as $subaction){
@@ -240,7 +147,7 @@ $subactions=$this->subactions;
 	}else{
 		echo '<a style="color:#5d5d5d" href="http://www.google.com/maps/place/'.$subaction->lat.','.$subaction->lng.'/@'.$subaction->lat.','.$subaction->lng.',15z" target="_blank">'.$subaction->address.'</a>';
 	}
-?>										 
+?>
                      <br>
                      <ul class="inline-list inline-list--separated thematiki--list">
 <?php
@@ -251,9 +158,9 @@ $subactions=$this->subactions;
 						<img src="'.$activities_array_info[$activities_array[$i]][1].'" width="45" height="35" alt="'.$activities_array_info[$activities_array[$i]][0].'" title="'.$activities_array_info[$activities_array[$i]][0].'" />
 					</div>';
 	}
-	 
+
  }
-?>										 
+?>
                      </ul>
                      <br>
                      <span><strong><?php echo $subaction->area; ?><sup>η</sup> Δημοτική Κοινότητα</strong></span>
@@ -275,7 +182,7 @@ $subactions=$this->subactions;
 	$desc = preg_replace('#(<[a-z ]*)(style=("|\')(.*?)("|\'))([a-z ]*>)#', '\\1\\6', $desc);
 	$replace_array=array('<div>','</div>','<a ');
 	$replace_array1=array('<p>','</p>','<a target="_blank" ');
-	echo str_replace($replace_array,$replace_array1,strip_tags($desc,'<a><p><br><strong><h3>')); 
+	echo str_replace($replace_array,$replace_array1,strip_tags($desc,'<a><p><br><strong><h3>'));
 ?>
 			</article>
 			<div class="pull-right share-icons">
@@ -284,8 +191,8 @@ $subactions=$this->subactions;
 				</a>&nbsp;
 				<a href="http://twitter.com/home?status=<?php echo clean($action->name); ?> <?php echo urlencode(JUri::current());?>"  onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;">
 					<img src="<?php echo JURI::base(); ?>images/template/tweet.png" alt="twitter" />
-				</a>			
-			</div>		 
+				</a>
+			</div>
       </div>
 
    </div>
@@ -314,45 +221,51 @@ $subactions=$this->subactions;
 						</div>';
 			if($c%6==0 || $c==$i){
 				echo '</div>';
-			}		
+			}
 		}
 		echo '	</div>
 					</div>';
 	}
-	
+
 	//get 9 similar actions
 	date_default_timezone_set('Europe/Athens');
-	$area_where='';
-	if($action->area>0){
-		$area_where=" AND aa.area='".$action->area."' ";	
-	}
-	$query = "SELECT a.id,a.alias,a.image,a.best_practice, a.name, aa.address, aa.action_date_start, aa.action_date_end, t.name AS tname 
-						FROM #__actions AS a 
-						INNER JOIN #__actions AS aa ON aa.action_id=a.id 
-						INNER JOIN #__teams AS t ON t.id=a.team_id 
-						WHERE a.action_id=0 AND a.id!='".$action->id."' AND a.published=1 AND aa.action_date_end>='".date('Y-m-d H:i:s')."' ".$area_where." GROUP BY a.id ORDER BY aa.action_date_end DESC LIMIT 9";
-	$db->setQuery( $query );
-	$other_actions = $db->loadObjectList();
-	$actions_left=9-count($other_actions);
-	$all_actions=$other_actions;
-	if($actions_left>0){
-		$query = "SELECT a.id, a.alias, a.image, a.name, aa.action_date_start,aa.action_date_end, aa.address, t.name AS tname 
-							FROM #__actions AS a 
-							INNER JOIN #__actions AS aa ON aa.action_id=a.id 
-							INNER JOIN #__teams AS tON t.id=a.team_id 
-							WHERE a.action_id=0 AND a.id!='".$action->id."'  AND a.published=1  AND aa.action_date_end>='".date('Y-m-d H:i:s')."' GROUP BY a.id ORDER BY aa.action_date_end DESC LIMIT ".$actions_left." ";		
-		$other_actions1 = $db->loadObjectList();
-		$all_actions1=array_merge((array) $other_actions, (array) $other_actions1);
-		shuffle($all_actions1);
-		$all_actions = (object)$all_actions1 ;
-	}else{
-		$all_actions1=(array)$all_actions;
-		shuffle($all_actions1);
-		$all_actions = (object)$all_actions1 ;
-	}
-	//($all_actions);
-		
-?>			
+
+	$activityClass = new RemotedbActivity();
+
+	$fields = ['a.id', 'a.alias', 'a.image', 'a.best_practice', 'a.name', 'aa.address', 'aa.action_date_start', 'aa.action_date_end', 't.name AS tname'];
+	$where = "a.action_id=0 AND a.id!='".$action->id."' AND a.published=1 AND aa.action_date_end>='".date('Y-m-d H:i:s')."'";
+
+	// if ($action->area > 0) {
+	// 	$where = $where_initial . " AND aa.area='".$action->area."' ";
+	// }
+	$group_by = "a.id";
+	$order_by = "aa.action_date_end DESC";
+	$limit = 9;
+	$all_actions = $activityClass->getActivitiesTeams($fields, $where, $group_by, $order_by, $limit);
+
+	$all_actions1 = (array)$all_actions;
+	shuffle($all_actions1);
+	$all_actions = (object)$all_actions1;
+
+	// NOTE: supposed to look for area and bring first the first 9 or less action in this area....but we do not know the action area, only the subactions one...
+	// TODO: get subactions areas and make a query for all of them
+	//$actions_left = 9 - count($other_actions);
+
+	//$all_actions = $other_actions;
+
+	// if ($actions_left > 0) {
+	// 	$limit = $actions_left;
+	// 	$other_actions1 = $activityClass->getActivitiesTeams($fields, $where_initial, $group_by, $order_by, $limit);
+
+	// 	$all_actions1 = array_merge((array) $other_actions, (array) $other_actions1);
+	// 	shuffle($all_actions1);
+	// 	$all_actions = (object)$all_actions1;
+	// } else {
+	// 	$all_actions1 = (array)$all_actions;
+	// 	shuffle($all_actions1);
+	// 	$all_actions = (object)$all_actions1;
+	// }
+?>
    <h3 class="gallery-title"><?php echo JText::_('COM_ACTIONS_SEE_MORE'); ?></h3>
    <div class="module module--synathina more_actions">
       <div class="gallery gallery--singlerow gallery--filter" rel="js-start-gallery">
@@ -360,10 +273,6 @@ $subactions=$this->subactions;
 	$a=1;
 	$f=1;
 	foreach($all_actions as $all_action){
-		if(($a-1)%3==0){
-			//echo '<div class="gallery-frame" data-id="'.$f.'">';
-			$f++;
-		}			
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$all_action->id.'&Itemid='.@$_REQUEST['Itemid']);
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$all_action->id.':'.$all_action->alias.'&Itemid='.@$_REQUEST['Itemid']);
 		if($all_action->image!=''){
@@ -374,34 +283,31 @@ $subactions=$this->subactions;
 				//$max_width='width:192px;';
 				$max_height='max-height:310px;';
 				$bg_height='auto';
-				$bg_width='100%';					
+				$bg_width='100%';
 			}else{
 				$max_height='max-height:155px;';
 				$max_width='max-width:392px;';
 				$bg_width='auto';
-				$bg_height='100%';			
+				$bg_height='100%';
 			}
 		}else{
 			$image_path='images/template/no-team.jpg';
 		}
-		echo '<div class="gallery-item-2" style="position:relative">
+		echo '	<div class="gallery-item-2" style="position:relative">
 						'.(@$all_action->best_practice==1?'<div class="badge-icon"><a href="'.$link.'"><img style="max-width:56px" src="images/template/best.png" alt="" /></a></div>':'').'
 						<a href="'.$link.'" class="fill" style="background-color:#FFF; background-size: '.@$bg_width.' '.@$bg_height.'; background-position: center center;'.@$max_width.@$max_height.';background-image:url(\''.$image_path.'\')"></a>';
 		$start_date=JHTML::_('date', $all_action->action_date_start, 'd-m-Y');
 		$end_date=JHTML::_('date', $all_action->action_date_end, 'd-m-Y');
-    echo '  <div class="caption">
-							<a href="'.$link.'"><span class="caption-title">'.stripslashes($all_action->name).'</span></a>
+    	echo '  	<div class="caption">
+						<a href="'.$link.'"><span class="caption-title">'.stripslashes($all_action->name).'</span></a>
 							<span class="caption-details">'.$all_action->address.'</span>
 							<span class="caption-details">'.($start_date!=$end_date?$start_date.' – '.$end_date:$start_date).'</span>
 							<em class="caption-italic">'.JText::_('COM_ACTIONS_BY').' '.stripslashes($all_action->tname).'</em>
-						 </div>
-					</div>';						
-		if(($a%3==0) || $a==count($all_actions)){
-			//echo '</div>';
-		}				 
+					</div>
+				</div>';
 		$a++;
-	}	
-?>	
+	}
+?>
       </div>
    </div>
 </div>
@@ -423,13 +329,13 @@ $document->setMetaData( 'twitter:title', 'συνΑθηνά' );
 $document->setMetaData( 'twitter:description', clean($action->name) );
 $document->setMetaData( 'twitter:image', 'http://www.synathina.gr/images/actions/main_images/'.$action->image );
 
-$document->setMetaData( 'og:url', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
+$document->setMetaData( 'og:url', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 $document->setMetaData( 'og:type', 'article' );
 $document->setMetaData( 'og:title', clean($action->name) );
 $document->setMetaData( 'og:description', clean(strip_tags($desc)) );
 $document->setMetaData( 'og:image', 'http://www.synathina.gr/images/actions/main_images/'.$action->image );
 
-$opengraph = '<meta property="og:url" content="http://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI].'">' ."\n";
+$opengraph = '<meta property="og:url" content="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">' ."\n";
 $opengraph .= '<meta property="og:type" content="article">' ."\n";
 $opengraph .= '<meta property="og:title" content="'.clean($action->name).'">' ."\n";
 $opengraph .= '<meta property="og:description" content="'.clean(strip_tags($desc)).'">' ."\n";
@@ -437,4 +343,4 @@ $opengraph .= '<meta property="og:image" content="http://www.synathina.gr/images
 
 $document->addCustomTag($opengraph);
 
-?>		
+?>

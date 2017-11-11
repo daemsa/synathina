@@ -538,16 +538,15 @@ function createFromMysql(mysql_string)
 
 //actions form validations
 $(document).ready(function (){
-    if($('#team_root_id')){
+    if($('#team_root_id').length > 0){
         $('#team_root_id').change(function(){
-            $('#team_id').val($('#team_root_id').val());
-            $('#user_id').val($('#team_root_id option:selected').attr('data-user_id'));
+            $('#user_id').val($('#team_root_id').val());
         });
     }
     $( "#create_action" ).on('submit', function(e) {
         e.preventDefault();
-        if($('#team_root_id')){
-            if($('#team_id').val()=='' || $('#user_id').val()==''){
+        if($('#team_root_id').length > 0){
+            if($('#user_id').val()==''){
                 alert("Παρακαλώ εισάγετε ομάδα");
                 return false;
             }

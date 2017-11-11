@@ -43,14 +43,6 @@ class ActionsModelEdit extends JModelItem
 		parent::populateState();
 	}
 
-	public function remote_db() {
-		$config = JFactory::getConfig();
-		//remote db - use with $db_remote
-		require JPATH_BASE . '/remote_db.php';
-
-		return $db_remote;
-	}
-
 	public function getUrlslug($str, $options = array()) {
 		// Make sure string is in UTF-8 and strip invalid UTF-8 characters
 		$str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
@@ -175,45 +167,31 @@ class ActionsModelEdit extends JModelItem
 		return $this->loadString($data, 'JSON');
 	}
 
-	/**
-	 * Get the message
-	 * @return object The message to be displayed to the user
-	 */
-	public function getItem()
+	public function lockRemoteTable ($table)
 	{
-		$db = JFactory::getDBO();
-		$query = "SELECT * FROM #__content WHERE id='".@$_REQUEST['id']."' LIMIT 1 ";
-		$db->setQuery($query);
-		$form = $db->loadObjectList();
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->connect();
 
-		return $form;
+		$query = "LOCK TABLES #__".$table." WRITE";
+		$db_remote->setQuery($query);
+		$db_remote->execute();
 	}
 
-	public function hit($pk = 0)
+	public function unlockRemoteTable ($table)
 	{
-		$input = JFactory::getApplication()->input;
-		$hitcount = $input->getInt('hitcount', 1);
-		if ($hitcount)
-		{
-			$db = JFactory::getDBO();
-			//get all subcategories
-			$query = 'SELECT hits FROM #__content WHERE id=\''.$_REQUEST['id'].'\'';
-			$db->setQuery( $query );
-			$hits = $db->loadResult();
-			$pk = (!empty($pk)) ? $pk : $hits+$hitcount;
-			$query = 'UPDATE #__content SET hits=\''.$pk.'\' WHERE id=\''.$_REQUEST['id'].'\'';
-			$db->setQuery($query);
-			$db->execute();
-		}
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->connect();
 
-		return true;
+		$query = "UNLOCK TABLES";
+		$db_remote->setQuery($query);
+		$db_remote->execute();
 	}
 
-	public function donations_valid()
+	public function donations_valid($text = false)
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT id,parent_id FROM #__team_donation_types WHERE published = 1";
+		$query = "SELECT id, name FROM #__team_donation_types WHERE published = 1";
 		$db->setQuery($query);
 		$donations = $db->loadObjectList();
 		$donations_array = [];
@@ -221,32 +199,12 @@ class ActionsModelEdit extends JModelItem
 			$query = "SELECT id FROM #__team_donation_types WHERE parent_id='".$donation->id."' LIMIT 1";
 			$db->setQuery($query);
 			$has_children = $db->loadResult();
-			if ($has_children) {
-				//do nothing
-			} else {
-				$donations_array[] = $donation->id;
-			}
-		}
-
-		return $donations_array;
-	}
-
-	public function donations_valid_text()
-	{
-		$db = JFactory::getDBO();
-
-		$query = "SELECT id,parent_id,name FROM #__team_donation_types WHERE published = 1";
-		$db->setQuery($query);
-		$donations = $db->loadObjectList();
-		$donations_array = [];
-		foreach ($donations as $donation) {
-			$query = "SELECT id FROM #__team_donation_types WHERE parent_id='".$donation->id."' LIMIT 1";
-			$db->setQuery($query);
-			$has_children = $db->loadResult();
-			if ($has_children) {
-				//do nothing
-			} else {
-				$donations_array[]=$donation->name;
+			if (!$has_children) {
+				if ($text) {
+					$donations_array[] = $donation->name;
+				} else {
+					$donations_array[] = $donation->id;
+				}
 			}
 		}
 
@@ -257,78 +215,76 @@ class ActionsModelEdit extends JModelItem
 	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$db_remote = $this->remote_db();
+
+		$teamClass = new RemotedbTeam();
 
 		if ($isroot == 1) {
-			$query = "SELECT t.id,t.user_id,t.logo FROM #__teams AS t
-				INNER JOIN #__actions AS a ON a.team_id=t.id
-								WHERE a.id='".@$_REQUEST['id']."' LIMIT 1 ";
+			$fields = ['t.id','t.user_id','t.logo'];
+			$where = "a.id='".@$_REQUEST['id']."'";
+			$limit = 1;
+			$team = $teamClass->getTeamActivity($fields, $where, $limit);
 		} else {
-			$query = "SELECT id,user_id,logo FROM #__teams
-								WHERE user_id='".$user->id."' LIMIT 1 ";
+			$fields = ['id','user_id','logo'];
+			$where = "user_id='".$user->id."'";
+			$limit = 1;
+			$team = $teamClass->getTeam($fields, $where, $limit);
 		}
-		$db_remote->setQuery( $query );
-		$teams = $db_remote->loadObjectList();
 
-		return $teams;
+		return $team;
 	}
 
 	public function getTeamInfo($team_id)
 	{
-		$user = JFactory::getUser();
-		$db_remote = $this->remote_db();
+		$teamClass = new RemotedbTeam();
 
-		$query = "SELECT name,contact_1_name,contact_1_email,contact_1_phone FROM #__teams
-							WHERE id='".$team_id."' LIMIT 1 ";
-		$db_remote->setQuery( $query );
-		$team_names = $db_remote->loadObjectList();
-		$team_info = [];
-		foreach ($team_names as $key => $value) {
-			$team_info[$key] = $value;
-		}
+		$fields = ['name', 'user_id', 'contact_1_name', 'contact_1_email', 'contact_1_phone'];
+		$where = "id='".$team_id."'";
+		$limit = 1;
+		$team = $teamClass->getTeam($fields, $where, $limit);
 
-		return $team_info;
+		return $team;
 	}
 
 	public function getActivities()
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT a.*
-							FROM #__team_activities AS a
-							WHERE a.published = 1 ";
+		$query = "SELECT * FROM #__team_activities AS a
+					WHERE a.published = 1 ";
 		$db->setQuery( $query );
-		$activities = $db->loadObjectList();
 
-		return $activities;
+		return $db->loadObjectList();
 	}
 
 	public function getTeams()
 	{
-		$db_remote = $this->remote_db();
+		$teamClass = new RemotedbTeam();
 
-		$query = "SELECT a.id, a.name, a.logo
-							FROM #__teams AS a
-							WHERE a.create_actions = 1 AND a.published = 1 AND a.`hidden` = 0
-							ORDER BY a.name ASC ";
-		$db_remote->setQuery( $query );
-		$teams = $db_remote->loadObjectList();
+		$fields = ['id', 'name', 'logo'];
+		$where = "create_actions = 1 AND published = 1 AND `hidden` = 0";
+		$order_by = "name ASC";
 
-		return $teams;
+		return $teamClass->getTeams($fields, $where, $order_by);
 	}
 
 	public function getSupporters()
 	{
-		$db_remote = $this->remote_db();
+		$teamClass = new RemotedbTeam();
 
-		$query = "SELECT a.id, a.name, a.logo
-							FROM #__teams AS a
-							WHERE a.support_actions = 1 AND a.published = 1 AND a.`hidden` = 0
-							ORDER BY a.name ASC ";
-		$db_remote->setQuery( $query );
-		$supporters = $db_remote->loadObjectList();
+		$fields = ['id', 'name', 'logo'];
+		$where = "support_actions = 1 AND published = 1 AND `hidden` = 0";
+		$order_by = "name ASC";
 
-		return $supporters;
+		return $teamClass->getTeams($fields, $where, $order_by);
+	}
+
+	public function getSupportTeams($where)
+	{
+		$teamClass = new RemotedbTeam();
+
+		$fields = ['user_id'];
+
+		return $teamClass->getTeams($fields, $where);
 	}
 
 	public function getServices()
@@ -349,63 +305,54 @@ class ActionsModelEdit extends JModelItem
 	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$db_remote = $this->remote_db();
+		$activityClass = new RemotedbActivity();
 
-		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-		$db_remote->setQuery( $query );
-		$team_id = $db_remote->loadResult();
-
-		//requests
-		if (@$_REQUEST['action_limit'] > 0) {
-			$action_limit = $_REQUEST['action_limit'];
-		} else {
-			$action_limit = 11;
-		}
-
+		$fields = [];
+		$limit = 1;
 		if ($isroot == 1) {
-			$query = "SELECT a.* FROM #__actions AS a WHERE a.id='".@$_REQUEST['id']."' ";
+			$where = "a.id='".@$_REQUEST['id']."'";
 		} else {
-			$query = "SELECT a.* FROM #__actions AS a WHERE a.team_id='".$team_id."' AND a.id='".@$_REQUEST['id']."' ";
+			$where = "a.id='".@$_REQUEST['id']."' AND t.user_id='".$user->id."'";
 		}
-		$db_remote->setQuery( $query );
-		$actions = $db_remote->loadObjectList();
-		$this->_total = count($actions);
-		$this->items = array_splice($actions, $this->getState('limitstart'), $action_limit);
-		if ($this->items) {
-			return $this->items;
+		$activity = $activityClass->getActivityTeam($fields, $where, 1);
+
+		if ($activity) {
+			return $activity;
 		} else {
 			header('Location:'.JURI::root());
 			exit();
 		}
 	}
 
-	public function getSubactions() {
+	public function getSubactions()
+	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$db_remote = $this->remote_db();
+		$activityClass = new RemotedbActivity();
 
-		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-		$db_remote->setQuery( $query );
-		$team_id = $db_remote->loadResult();
-
-		//requests
-		if (@$_REQUEST['action_limit'] > 0) {
-			$action_limit = $_REQUEST['action_limit'];
-		} else {
-			$action_limit = 11;
-		}
-
+		$fields = [];
+		$order_by = "a.id ASC";
 		if ($isroot == 1) {
-			$query = "SELECT a.* FROM #__actions AS a WHERE a.action_id='".@$_REQUEST['id']."' ORDER BY a.id ASC ";
+			$where = "a.action_id='".@$_REQUEST['id']."'";
 		} else {
-			$query = "SELECT a.* FROM #__actions AS a WHERE a.team_id='".$team_id."' AND a.action_id='".@$_REQUEST['id']."' ORDER BY a.id ASC  ";
+			$where = "a.action_id='".@$_REQUEST['id']."' AND t.user_id='".$user->id."'";
 		}
-		$db_remote->setQuery( $query );
-		$actions = $db_remote->loadObjectList();
-		$this->_total = count($actions);
-		$this->items = array_splice($actions, $this->getState('limitstart'), $action_limit);
 
-		return $this->items;
+		return $activityClass->getActivitiesTeam($fields, $where, $order_by);
+	}
+
+	public function getTeamDonationTypes($only_parents = true) {
+		$db = JFactory::getDBO();
+
+		$where = " AND parent_id=0";
+		if (!$only_parents) {
+			$where = "";
+		}
+		$query = "SELECT id, parent_id, name FROM #__team_donation_types
+					WHERE published = 1 ".$where." ORDER BY id ASC";
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
 	}
 
 	public function save()
@@ -423,21 +370,28 @@ class ActionsModelEdit extends JModelItem
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
 
-		$db_remote = $this->remote_db();
-
 		$db = JFactory::getDBO();
+
+		//remote db
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->connect();
 
 		//get request data
 		$action_id = @$_REQUEST['action_id'];
-		$query = "SELECT * FROM #__actions WHERE id='".$action_id."' ";
-		$db_remote->setQuery($query);
-		$row = $db_remote->loadAssoc();
-		$activities_send = $row->activities_send;
-		$municipality_send = $row->municipality_send;
-		$published = $row->published;
+
+		$activityClass = new RemotedbActivity();
+		$where = "id='".$action_id."'";
+		$limit = 1;
+		$action = $activityClass->getActivity([], $where, $limit);
+
+		$activities_send = $action->activities_send;
+		$municipality_send = $action->municipality_send;
+		$published = $action->published;
 		$published_old = $published;
 
 		$team_id = @$_REQUEST['team_id'];
+		$team_info = $this->getTeamInfo($team_id);
+
 		$best_practice = 0;
 
 		if ($isroot == 1) {
@@ -491,9 +445,7 @@ class ActionsModelEdit extends JModelItem
 		$supporters_message = base64_encode(serialize($supports_message_array));
 
 		//donations
-		$query = "SELECT id, parent_id FROM #__team_donation_types WHERE published = 1";
-		$db->setQuery($query);
-		$donations = $db->loadObjectList();
+		$donations = $this->getTeamDonationTypes(false);
 		$donations_ids = '';
 		$donation_other_1 = addslashes(@$_REQUEST['donation-1-other']);
 		$donation_other_16 = addslashes(@$_REQUEST['donation-16-other']);
@@ -513,6 +465,7 @@ class ActionsModelEdit extends JModelItem
 		date_default_timezone_set('Europe/Athens');
 
 		//update parent action
+		$this->lockRemoteTable('actions');
 		$actions_query = "UPDATE #__actions SET
 			published='".$published."',
 			best_practice='".$best_practice."',
@@ -537,6 +490,8 @@ class ActionsModelEdit extends JModelItem
 		$db_remote->setQuery($actions_query);
 		$db_remote->execute();
 		$parent_id = $action_id;
+		$this->unlockRemoteTable('actions');
+
 		if ($parent_id > 0) {
 
 			//main image
@@ -546,9 +501,11 @@ class ActionsModelEdit extends JModelItem
 				if (move_uploaded_file($_FILES["image"]["tmp_name"], $config->get( 'abs_path' ).'/images/actions/main_images/'.$parent_id.'.'.$ext)) {
 					$main_image = $parent_id.'.'.$ext;
 					//update parent
+					$this->lockRemoteTable('actions');
 					$query_action_update = "UPDATE #__actions SET image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
 					$db_remote->setQuery($query_action_update);
 					$db_remote->execute();
+					$this->unlockRemoteTable('actions');
 				}
 			}
 
@@ -569,37 +526,21 @@ class ActionsModelEdit extends JModelItem
 			require_once JPATH_CONFIGURATION.'/global_functions.php';
 
 			//delete all subactions
-			// $query = "SELECT id FROM #__actions WHERE action_id='".$parent_id."' ";
-			// $db->setQuery($query);
-			// $sub_ids = $db->loadObjectList();
-
-			// //assets
-			// foreach ($sub_ids as $sub_id) {
-			// 	$query = "DELETE FROM #__assets WHERE name='#__actions.".$sub_id->id."' AND title='#__actions.".$sub_id->id."' AND parent_id = 1 AND level = 1";
-			// 	$db->setQuery($query);
-			// 	$db->execute();
-			// }
+			$this->lockRemoteTable('actions');
 			$query = "DELETE FROM #__actions WHERE action_id='".$parent_id."' ";
 			$db_remote->setQuery($query);
 			$db_remote->execute();
+			$this->unlockRemoteTable('actions');
 
 			//stegi
-			// $query = "SELECT id FROM #__stegihours WHERE action_id='".$parent_id."' ";
-			// $db->setQuery($query);
-			// $sub_stegi_ids = $db->loadObjectList();
-			// foreach ($sub_stegi_ids as $sub_stegi_id) {
-			// 	$query = "DELETE FROM #__assets WHERE name='#__stegihours.".$sub_stegi_id->id."' AND title='#__stegihours.".$sub_stegi_id->id."' AND parent_id = 1 AND level = 1";
-			// 	$db->setQuery($query);
-			// 	$db->execute();
-			// }
+			$this->lockRemoteTable('stegihours');
 			$query = "DELETE FROM #__stegihours WHERE action_id='".$parent_id."' ";
-			$db->setQuery($query);
-			$db->execute();
+			$db_remote->setQuery($query);
+			$db_remote->execute();
+			$this->unlockRemoteTable('actions');
 
 			//get all activities
-			$query = "SELECT id FROM #__team_activities WHERE published = 1";
-			$db->setQuery($query);
-			$activities = $db->loadObjectList();
+			$activities = $this->getActivities();
 			$stegi_exists_in_general = 0;
 
 			//insert subactions
@@ -621,10 +562,7 @@ class ActionsModelEdit extends JModelItem
 						$stegi_exists_in_general = 1;
 
 						//insert into stegi
-						$query_team = "SELECT name FROM #__teams
-										WHERE id = '".$team_id."' LIMIT 1 ";
-						$db_remote->setQuery($query_team);
-						$team_name = $db_remote->loadResult();
+						$this->lockRemoteTable('stegihours');
 						$query_stegi = "INSERT INTO #__stegihours VALUES (
 							'','',
 							0,
@@ -646,37 +584,17 @@ class ActionsModelEdit extends JModelItem
 							'".$user->id."',
 							'','',''
 						)";
-						$db->setQuery($query_stegi);
-						$db->execute();
-						//$stegihours_id = $db->insertid();
-
-						//assets
-						// $query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
-						// $db->setQuery($query_rgt);
-						// $max_rgt = $db->loadResult();
-						// $assoc_rgt = $max_rgt+1;
-						// $query_lock_asset = "LOCK TABLES #__assets WRITE";
-						// $db->setQuery($query_lock_asset);
-						// $db->execute();
-						// $query_asset = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__stegihours.".$stegihours_id."','#__stegihours.".$stegihours_id."','{}') ";
-						// $db->setQuery($query_asset);
-						// $db->execute();
-						// $asset_stegi_id = $db->insertid();
-						// $query_unlock_asset = "UNLOCK TABLES";
-						// $db->setQuery($query_unlock_asset);
-						// $db->execute();
-
-						//update subactions
-						// $query_action_update = "UPDATE #__stegihours SET asset_id='".$asset_stegi_id."' WHERE id='".$stegihours_id."' LIMIT 1";
-						// $db->setQuery($query_action_update);
-						// $db->execute();
+						$db_remote->setQuery($query_stegi);
+						$db_remote->execute();
+						$this->unlockRemoteTable('stegihours');
 
 						if ($published_old == 0) {
 							//email to admin
 							$emails = [];
-							$s_array = array($team_name, $subtitle, $start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2], $start_array[1], $end_array[1]);
+							$s_array = array($team_info->name, $subtitle, $start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2], $start_array[1], $end_array[1]);
 							synathina_email('stegi_action_created_admin', $s_array, $emails, '');
 						}
+
 					} else {
 						$stegi = 0;
 						$address = addslashes(@$_REQUEST['address_'.$f]);
@@ -722,6 +640,7 @@ class ActionsModelEdit extends JModelItem
 					}
 
 					//insert subaction
+					$this->lockRemoteTable('actions');
 					$subactions_query = "INSERT INTO #__actions VALUES (
 						'','',
 						0,
@@ -754,28 +673,7 @@ class ActionsModelEdit extends JModelItem
 					)";
 					$db_remote->setQuery($subactions_query);
 					$db_remote->execute();
-					//$subaction_id = $db_remote->insertid();
-
-					//assets
-					// $query_rgt = "SELECT MAX(rgt) FROM #__assets LIMIT 1";
-					// $db->setQuery($query_rgt);
-					// $max_rgt = $db->loadResult();
-					// $assoc_rgt = $max_rgt+1;
-					// $query_lock_asset = "LOCK TABLES #__assets WRITE";
-					// $db->setQuery($query_lock_asset);
-					// $db->execute();
-					// $query_asset = "INSERT INTO #__assets VALUES ('', 1, '".$assoc_rgt."', '".($assoc_rgt + 1)."', 1, '#__actions.".$subaction_id."', '#__actions.".$subaction_id."', '{}') ";
-					// $db->setQuery($query_asset);
-					// $db->execute();
-					// $asset_subaction_id = $db->insertid();
-					// $query_unlock_asset = "UNLOCK TABLES";
-					// $db->setQuery($query_unlock_asset);
-					// $db->execute();
-
-					//update subaction
-					// $query_action_update = "UPDATE #__actions SET asset_id='".$asset_subaction_id."' WHERE id='".$subaction_id."' LIMIT 1";
-					// $db->setQuery($query_action_update);
-					// $db->execute();
+					$this->unlockRemoteTable('actions');
 				}
 			}
 		}
@@ -795,11 +693,9 @@ class ActionsModelEdit extends JModelItem
 					$db->setQuery($query);
 					$municipality_services_text .= '- '.$db->loadResult().'<br />';
 				}
-				$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid = 140');
-				$team_info = $this->getTeamInfo($team_id);
-				$team_info = $team_info[0];
+				$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid=140');
 				$team_municipality_text = $team_info->contact_1_name.'<br />'.$team_info->contact_1_email.'<br />'.$team_info->contact_1_phone;
-				$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
+				$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138');
 				$s_array = array($team_link, $team_info->name, str_replace('- <br />', '', $municipality_services_text), $municipality_message, $drasi_url, $team_municipality_text);
 				synathina_email('action_created_municipality', $s_array, $emails, '');
 
@@ -818,41 +714,35 @@ class ActionsModelEdit extends JModelItem
 				$donations_array = explode(',',$donations_ids);
 				array_filter($donations_array);
 				$donations_valid = $this->donations_valid();
-				$donations_valid_text = $this->donations_valid_text();
+				$donations_valid_text = $this->donations_valid(true);
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
-						$query = "SELECT user_id FROM #__teams
-									WHERE published=1 AND support_actions = 1 AND t.id!='".$team_id."' AND FIND_IN_SET(".$donations_array[$d].",`org_donation`)";
-						$db_remote->setQuery($query);
-						$team_user_ids = $db_remote->loadObjectList();
-						$team_user_ids_array = [];
-						foreach ($team_user_ids as $team_user_id) {
-							$team_user_ids_array[] = $team_user_id->user_id;
+						$teamClass = new RemotedbTeam();
+						$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND support_actions = 1 AND id!='".$team_id."' AND FIND_IN_SET(".$donations_array[$d].",`org_donation`)");
+						if ($team_user_ids_text) {
+							$query = "SELECT email FROM #__users
+											WHERE id IN (".$team_user_ids_text.") ";
+							$db->setQuery($query);
+							$emails_results = $db->loadObjectList();
+							foreach ($emails_results as $emails_result) {
+								$emails[] = $emails_result->email;
+								$supporters_emails[$donations_array[$d]][] = $emails_result->email;
+							}
+							$donation_text[] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
+							$supporters_exist = 1;
 						}
-
-						$query = "SELECT email FROM #__users
-										WHERE id IN (".implode(',', $team_user_ids_array).") ";
-						$db->setQuery($query);
-						$emails_results = $db->loadObjectList();
-						foreach ($emails_results as $emails_result) {
-							$emails[] = $emails_result->email;
-							$supporters_emails[$donations_array[$d]][] = $emails_result->email;
-						}
-						$donation_text[] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
-						$supporters_exist = 1;
 					}
 				}
-
 				if (!empty($supporters_emails)) {
-					$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid = 140');
-					$team_info = $this->getTeamInfo($team_id);
-					$team_info = $team_info[0];
-					$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid = 138');
-					if (!$supporters_message = @unserialize($supporters_message)) {
+					$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid=140');
+					$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138');
+					if (@unserialize($supporters_message)) {
+						$supporters_message = unserialize($supporters_message);
+					} else {
 						$supporters_message = unserialize(base64_decode($supporters_message));
 					}
 					foreach ($supporters_emails as $key => $emails) {
-						$s_array = array($team_link, $team_info->name, implode(', ',$donation_text), $supporters_message[$key], $drasi_url, $name, $team_info->contact_1_name, $team_info->contact_1_email, $team_info->contact_1_phone);
+						$s_array = array($team_link, $team_info->name, implode(', ', $donation_text), '"'.$supporters_message[$key].'"', $drasi_url, $name, $team_info->contact_1_name, $team_info->contact_1_email, $team_info->contact_1_phone);
 						$emails_unique = array_unique($emails);
 						foreach ($emails_unique as $email) {
 							synathina_email('action_created_supporters', $s_array, [$email], '');
@@ -866,13 +756,8 @@ class ActionsModelEdit extends JModelItem
 
 			//email to user
 			if ($published_old == 0) {
-				$query_team = "SELECT user_id FROM #__teams
-								WHERE id='".$team_id."' LIMIT 1 ";
-				$db_remote->setQuery( $query_team );
-				$team_user_id = $db_remote->loadResult();
-
 				$query_team = "SELECT email FROM #__users
-								WHERE id='".$team_user_id."' LIMIT 1 ";
+								WHERE id='".$team_info->user_id."' LIMIT 1 ";
 				$db->setQuery( $query_team );
 				$team_email = $db->loadResult();
 				if ($team_email != '') {
@@ -896,11 +781,9 @@ class ActionsModelEdit extends JModelItem
 
 		//email to user if activity is cancelled by the admin
 		if ($published == 0 && $published_old == 1 && $isroot == 1) {
-			$query = "SELECT user_id FROM #__teams AS t INNER JOIN #__actions AS a ON a.team_id=t.id WHERE a.id='".$action_id."' LIMIT 1";
-			$db_remote->setQuery( $query );
-			$team_user_id = $db_remote->loadResult();
+			$team = $this->getTeam();
 
-			$query = "SELECT email FROM #__users WHERE id='".$team_user_id."' LIMIT 1";
+			$query = "SELECT email FROM #__users WHERE id='".$team->user_id."' LIMIT 1";
 			$db->setQuery($query);
 			$email_to = $db->loadResult();
 			$emails = [];
@@ -912,9 +795,9 @@ class ActionsModelEdit extends JModelItem
 		}
 
 		if ($isroot == 1) {
-			header('Location:'.JRoute::_('index.php?option=com_actions&view=action&id='.$action_id.'&Itemid = 138'));
+			header('Location:'.JRoute::_('index.php?option=com_actions&view=action&id='.$action_id.'&Itemid=138'));
 		} else {
-			header('Location:'.JRoute::_('index.php?option=com_actions&view=myactions&Itemid = 143'));
+			header('Location:'.JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143'));
 		}
 		exit();
 

@@ -56,11 +56,8 @@ class ActionsModelActions extends JModelLegacy
 
 
 
-	public function getMsg(){
-		//echo '<pre>';
-		//print_r(@$_REQUEST);
-		//echo '</pre>';
-		//db connection
+	public function getMsg()
+	{
 		$db = JFactory::getDBO();
 		$config= new JConfig();
 		$app = JFactory::getApplication();
@@ -126,50 +123,65 @@ class ActionsModelActions extends JModelLegacy
 			}
 			$or_sql1=rtrim($or_sql1,'OR ').")";
 		}
-		$query="SELECT aa.*, a.alias, a.short_description AS short, a.best_practice, a.id AS aid, a.image AS aimage, a.published as apublished FROM #__actions AS aa INNER JOIN #__teams AS t ON aa.team_id=t.id INNER JOIN #__actions AS a ON aa.action_id=a.id WHERE a.id>0 ".$where." ".$or_sql." ".$or_sql1." AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')." AND t.published=1 ORDER BY aa.action_date_start ASC ";
-		//echo $query;
-		//die;
-		$db->setQuery( $query );
-		$actions = $db->loadObjectList();
+		$activityClass = new RemotedbActivity();
+
+		$fields = ['aa.*', 'a.alias', 'a.short_description AS short', 'a.best_practice', 'a.id AS aid', 'a.image AS aimage', 'a.published as apublished'];
+		$query_where = "aa.action_id>0 ". $where ." ". $or_sql ." ". $or_sql1 ." AND ".($isroot==1?'a.published>=0':'a.published=1')." AND t.published=1";
+		$order_by = "aa.action_date_start ASC";
+
+		$actions = $activityClass->getActivitiesTeams($fields, $query_where, false, $order_by);
+
 		$this->_total = count($actions);
 		$this->items = array_splice($actions, $this->getState('limitstart'), $action_limit);
 
 		return $this->items;
 	}
 
-	public function getActivities(){
+	public function getActivities()
+	{
 		//db connection
 		$db = JFactory::getDBO();
+
 		$query="SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
 		$db->setQuery( $query );
 		$activities = $db->loadObjectList();
+
 		return $activities;
 	}
 
-	public function getBestpractices(){
+	public function getBestpractices()
+	{
 		$lang = JFactory::getLanguage();
 		$this->language = $lang->getTag();//$doc->language;
 		$lang_code_array=explode('-',$this->language);
 		$lang_code=$lang_code_array[0];
+
 		//db connection
 		$db = JFactory::getDBO();
-		$query="SELECT c.*,t.name AS tname FROM #__content AS c
+
+		$teamClass = new RemotedbTeam();
+
+		$where = "published=1";
+		$team_ids = $teamClass->getUserIdsCommaDel($where);
+
+		$query="SELECT c.*, u.name AS tname FROM #__content AS c
 				INNER JOIN #__users AS u ON u.id=c.created_by
-				INNER JOIN #__teams AS t ON t.user_id=u.id
-				WHERE c.catid=".($lang_code=='el'?'20':'21')." AND state=1 ORDER BY c.ordering ASC";
+				WHERE c.catid=".($lang_code=='el'?'20':'21')." AND c.state=1 AND u.id IN (".$team_ids.") ORDER BY c.ordering ASC";
 		$db->setQuery( $query );
 		$bestpractices = $db->loadObjectList();
+
 		return $bestpractices;
 	}
+
 	public function getPagination()
-			 {
-				if(@$_REQUEST['action_limit']>0){
-					$action_limit=$_REQUEST['action_limit'];
-				}else{
-					$action_limit=6;
-				}
-			$app    = JFactory::getApplication();
-			$router = $app->getRouter();
+	{
+		if(@$_REQUEST['action_limit']>0){
+			$action_limit=$_REQUEST['action_limit'];
+		}else{
+			$action_limit=6;
+		}
+		$app    = JFactory::getApplication();
+		$router = $app->getRouter();
 		if(@$_REQUEST['from']!=''){
 			$router->setVar( 'from', @$_REQUEST['from'] );
 		}

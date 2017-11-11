@@ -15,11 +15,7 @@ $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
 //activities
-$query="SELECT a.*
-				FROM #__team_activities AS a
-				WHERE a.published=1 ";
-$db->setQuery( $query );
-$activities = $db->loadObjectList();
+$activities = $this->activities;
 $activities_array_info=array();
 foreach($activities as $activity){
 	$activities_array_info[$activity->id]=array($activity->name, $activity->image);
@@ -70,13 +66,9 @@ $params_editor = array( 'smilies'=> '0' ,
     'clear_entities'=>'0'
 );
 
-$user_team=$this->team[0];
-$action=$this->action[0];
-$subactions=$this->subactions;
-/*echo '<pre>';
-print_r($action);
-print_r($subactions);
-echo '</pre>';*/
+$user_team = $this->team;
+$action = $this->action;
+$subactions = $this->subactions;
 
 ?>
 <script>
@@ -256,10 +248,6 @@ if($isroot==1){
 											<label for="from_date_<?php echo $f; ?>" class="is-block">Έως</label>
 		               		<input value="<?php echo $action_date_end_new; ?>" type="text" class="to_date_edit" id="to_date_<?php echo $f; ?>" name="date_end_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
 		               	</div>
-										<!--<div class="form-group">
-											<input id="box22" type="checkbox">
-											<label for="box22" class="label-horizontal"><small>ΕΠΑΝΑΛΑΜΒΑΝΟΜΕΝΗ ΣΤΕΓΗ</small></label>
-										</div>-->
 	               	</div>
 	               </div>
 								<div class="form-inline filters form--padded form--bordered">
@@ -293,7 +281,6 @@ if($isroot==1){
 	$partners=explode(',',$action->partners);
 	array_filter($partners);
 	foreach($this->teams AS $team){
-		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$partners)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
 ?>
@@ -320,7 +307,6 @@ if($isroot==1){
 	array_filter($supporters);
 
 	foreach($this->supporters AS $team){
-		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$supporters)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
 ?>
@@ -383,13 +369,6 @@ if($isroot==1){
                                         <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί στις αρμόδιες δημοτικές υπηρεσίες)</span>
 									</div>
 								</div>
-								<!--<div class="form-group">
-									<label for="box70" class="is-block">Θέλω να...:</label>
-									<select name="" id="">
-										<option value=""></option>
-										<option value=""></option>
-									</select>
-								</div>-->
 							</div>
 							<div class="form-inline form--bordered filters " rel="">
 								<label for="activity_description" class="is-block">Θα επιθυμούσα την υποστήριξη σε:</label>
@@ -400,13 +379,7 @@ if($isroot==1){
 		array_filter($donations);
 	}
 
-		$query = " SELECT id, name "
-				." FROM #__team_donation_types
-					WHERE published=1 AND parent_id=0	"
-				." ORDER BY id ASC ";
-
-		$db->setQuery($query);
-		$rows=$db->loadObjectList();
+		$rows=$this->team_donation_types;
 		$i=1;
 		$children=array();
 		foreach($rows as $row){

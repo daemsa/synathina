@@ -1,33 +1,37 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+
 // import Joomla view library
 jimport('joomla.application.component.view');
- 
+
 /**
  * Actions class for the Actions Component
  */
 class ActionsViewForm extends JViewLegacy
 {
 	// Overwriting JView display method
-	function display($tpl = null) 
+	function display($tpl = null)
 	{
 		// Assign data to the view
 		$this->item = $this->get('Item');
- 
+
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+		$user = JFactory::getUser();
+		$isroot = $user->authorise('core.admin');
 		$model = $this->getModel();
-		$model->hit();		
+		$model->hit();
 		$this->team = $this->get('Team');
-		$this->activities = $this->get('Activities');
+		$this->team_activities = $this->get('TeamActivities');
 		$this->teams = $this->get('Teams');
-		$this->teams_users = $this->get('Teams_users');
+		if ($isroot) {
+			$this->teams_users = $this->get('TeamsUsers');
+		}
 		$this->services = $this->get('Services');
 		// Display the view
 		parent::display($tpl);

@@ -415,6 +415,7 @@ class UsersModelProfile extends JModelForm
 		//requests
 		$team_id=@$_REQUEST['team_id'];
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));
+		$user->name = $team_name;
 		//$alias=JApplication::stringURLSafe($_REQUEST['jform']['name']);
 		$alias=JFilterOutput::stringURLSafe($team_name);
 		$query = "SELECT id FROM #__teams WHERE alias='".$alias."' LIMIT 1";
