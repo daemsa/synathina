@@ -15,7 +15,8 @@ $config = JFactory::getConfig();
 $db = JFactory::getDbo();
 
 //remote db - use with $db_remote
-require JPATH_BASE . '/remote_db.php';
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->connect();
 
 jimport('joomla.filesystem.folder');
 

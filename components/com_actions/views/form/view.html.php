@@ -13,9 +13,6 @@ class ActionsViewForm extends JViewLegacy
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
-		// Assign data to the view
-		$this->item = $this->get('Item');
-
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -24,8 +21,6 @@ class ActionsViewForm extends JViewLegacy
 		}
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-		$model = $this->getModel();
-		$model->hit();
 		$this->team = $this->get('Team');
 		$this->team_activities = $this->get('TeamActivities');
 		$this->teams = $this->get('Teams');

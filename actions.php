@@ -69,9 +69,9 @@ $date_now=date('Y-m-d').' 00:00:00';
 //remote db
 $fields = ['t.name AS tname', 't.alias AS talias', 't.logo AS tlogo', 'a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0";
-$order_by = "ORDER BY aa.lat DESC";
+$order_by = "aa.lat DESC";
 $activityClass = new RemotedbActivity();
-$actions = $activityClass->getActivitiesTeams($fields, $where, $order_by);
+$actions = $activityClass->getActivitiesTeams($fields, $where, false, $order_by);
 
 $i=0;
 $data= '{

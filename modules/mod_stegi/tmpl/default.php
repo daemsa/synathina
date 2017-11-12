@@ -1,8 +1,5 @@
 <?php
 defined('_JEXEC') or die;
-//connect to db
-$db = JFactory::getDBO();
-
 
 //language
 $doc = JFactory::getDocument();
@@ -29,18 +26,13 @@ function nb_mois($date1, $date2){
 }
 
 
-function get_distinct_teams($date){
-	$db = JFactory::getDBO();
-	$teams_array=array();
-	$query = "SELECT team_id FROM #__stegihours WHERE published=1 AND (date_start LIKE '".$date."%' OR date_end LIKE '".$date."%' OR (date_start<'".$date." 23:59:59' AND date_end>'".$date." 00:00:00') ) GROUP BY team_id ";
-	$db->setQuery($query);
-	$teams_distinct = $db->loadObjectList();
-	foreach($teams_distinct as $team_distinct){
-		$teams_array[]=$team_distinct->team_id;
-	}
-	$teams=array_unique($teams_array);
-	$count=count($teams);
-	return $count;
+function get_distinct_teams($date, $stegiClass){
+	$fields = ['team_id'];
+	$where = "published=1 AND (date_start LIKE '".$date."%' OR date_end LIKE '".$date."%' OR (date_start<'".$date." 23:59:59' AND date_end>'".$date." 00:00:00') )";
+	$group_by = "team_id";
+	$teams = $stegiClass->getStegiHours($fields, $where, $group_by);
+
+	return count($teams);
 }
 
 //get activities
@@ -70,10 +62,13 @@ foreach($actions as $action){
 	}
 }*/
 //get stegi teams
-$query = "SELECT t.name AS tname, a.id, a.name, a.date_start, a.date_end FROM #__stegihours AS a INNER JOIN #__teams AS t ON t.id=a.team_id WHERE a.published=1 ORDER BY a.date_start ASC ";
-//echo $query;
-$db->setQuery($query);
-$actions = $db->loadObjectList();
+$stegiClass = new RemotedbStegi();
+
+$fields = ['t.name AS tname', 'a.id', 'a.name', 'a.date_start', 'a.date_end'];
+$where = "a.published=1";
+$order_by = "a.date_start ASC";
+$actions = $stegiClass->getStegiHoursTeams($fields, $where, $order_by);
+
 //$actions_array=array();
 //$actions_date_array=array();
 foreach($actions as $action){
@@ -118,14 +113,15 @@ foreach($actions as $action){
 //print_r($actions_date_array1);
 $user = JFactory::getUser();
 
-//get team state
-$query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
-//print_r($actions_array);
-//print_r($actions_date_array);
-function draw_calendar($month,$year,$actions_date_array1,$lang){
+//get team
+$teamClass = new RemotedbTeam();
 
+$fields = ['published'];
+$where = "user_id='".$user->id."'";
+$limit = 1;
+$team = $teamClass->getTeam($fields, $where, $limit);
+
+function draw_calendar($month,$year,$actions_date_array1,$lang, $stegiClass){
 	/* draw table */
 	//$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
 	$calendar='';
@@ -133,12 +129,12 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 	if($lang=='en'){
 		$headings = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 	}else{
-		$headings = array('Κυριακή','Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο');	
+		$headings = array('Κυριακή','Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο');
 	}
-	
+
 	//$calendar.= '<tr class="calendar-row"><td class="calendar-day-head">'.implode('</td><td class="calendar-day-head">',$headings).'</td></tr>';
 	$calendar.= '<ul class="weekdays"><li>'.implode('</li><li>',$headings).'</li></ul>';
-	
+
 
 	/* days and weeks vars now ... */
 	$running_day = date('w',mktime(0,0,0,$month,1,$year));
@@ -167,7 +163,7 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 			$new_time1=$year.'-'.($month<10?0:'').$month.'-'.($list_day<10?0:'').$list_day;
 			$found=array_keys($actions_date_array1,$new_time1);
 			//if(!empty($found)){
-				$s=get_distinct_teams($new_time1);
+				$s=get_distinct_teams($new_time1, $stegiClass);
 				$calendar.='<li href="'.JURI::base().'" rel="'.$new_time1.'" class="stegi_use_exists stegi_'.($s>4?4:$s).'">
 											<a class="active" href="'.JURI::base().'" rel="'.$new_time1.'">'.$list_day.'</a>
 											<a class="stegi_count" href="'.JURI::base().'" rel="'.$new_time1.'"><span>'.$s.'</span></a>
@@ -178,7 +174,7 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 
 			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
 			//$calendar.= str_repeat('<p> </p>',2);
-			
+
 		//$calendar.= '</td>';
 		$calendar.= '';
 		if($running_day == 6):
@@ -206,7 +202,7 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 
 	/* end the table */
 	//$calendar.= '</table>';
-	
+
 	/* all done, return result */
 	return $calendar;
 }
@@ -244,12 +240,12 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 
             <div class="form-group">
                <label for="from_date">Από</label>
-               <input type="text" class="from_date" id="from_date" name="date_from" required="">            
+               <input type="text" class="from_date" id="from_date" name="date_from" required="">
             </div>
 
             <div class="form-group">
                <label for="to_date">Έως</label>
-               <input type="text" class="to_date" name="date_to" id="to_date" required="">      
+               <input type="text" class="to_date" name="date_to" id="to_date" required="">
             </div>
             <div class="form-group is-block">
                <label for="activity_title">Τίτλος δραστηριότητας*:</label>
@@ -278,9 +274,9 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 	if($lang_code=='en'){
 		setlocale(LC_TIME, "en_GB.UTF8");
 	}else{
-		setlocale(LC_TIME, "el_GR.UTF8");	
+		setlocale(LC_TIME, "el_GR.UTF8");
 	}
-	
+
 	$time_diff=3600*3;
 	$next_month=mktime(0, 0, 0, (date('n')+1), 1, date('Y'));
 	if(date('n')==12){
@@ -293,11 +289,11 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 	//echo strftime("%B %Y",(time()+$time_diff));
 	$start=mktime(0, 0, 0, 06, 01, 2016);
 	$end=mktime(0, 0, 0, (date('n')+12), 01, date('Y'));
-	$months=nb_mois(date('Y-m-d H:i:s',$start), date('Y-m-d H:i:s',$end));	
+	$months=nb_mois(date('Y-m-d H:i:s',$start), date('Y-m-d H:i:s',$end));
 ?>
 	<a href="SinathinaSTEGH.pdf" target="_blank" class="btn btn--skewed btn--coral btn--bold" download="SinathinaSTEGH.pdf"><strong><?php echo JText::_('COM_STEGI_FLOORPLAN'); ?></strong></a>
 	<div class="c-diary">
-		<h2><?php echo JText::_('COM_STEGI_CALENDAR'); ?></h2>	
+		<h2><?php echo JText::_('COM_STEGI_CALENDAR'); ?></h2>
 		<div class="diary-switcher">
 				<button rel="js-left"><i class="fa fa-angle-left"></i></button>
 				<div class="is-inline-block diary-labels">
@@ -307,40 +303,41 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 		$next_month=mktime(0, 0, 0, (6+$m), 1, 2016);
 		echo '<span '.($next_month==$current_month?'class="active"':'').'>'.strftime("%B %Y",($next_month+$time_diff)).'</span>';
 	}
-?>				
+?>
 				</div>
 				<button rel="js-right" class="fa fa-angle-right"></button>
 		</div>
 		<div class="module module--synathina">
       <div class="module-skewed module-skewed--gray" rel="js-container">
 <?php
+	$stegiClass = new RemotedbStegi();
 	$current=0;
 	$current_month=mktime(0, 0, 0, (date('n')), 1, date('Y'));
 	for($m=0; $m<$months; $m++){
 		$next_month=mktime(0, 0, 0, (6+$m), 1, 2016);
 		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">
 						<div class="diary diary--month">
-						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code).'
+						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code, $stegiClass).'
 						</div>
 					</div>';
 		if($current_month==$next_month){
 			$current=$m;
 		}
 	}
-?>			
+?>
 			</div>
 		</div>
-		
+
 	<div id="tab-counter" style="visibility:hidden"><?=$current?></div>
-	</div>		
-	
-	
+	</div>
+
+
 
 	<div class="btn-group">
 			<a href="<?php echo JRoute::_('index.php?option=com_actions&view=form&Itemid=139');?>" class="btn btn--skewed btn--skewed--bottom btn--coral btn--bold">
 					<strong><?php echo JText::_('MOD_STEGI_BOOK_ACTIVITY');?></strong>
 			</a>
-			<a href="<?=($user->id>0?($teams_activated==1?'#book_stegi':'#activate_to_book'):'#login_to_book')?>" class="btn btn--skewed btn--skewed--bottom btn--coral btn--bold book-stegi">
+			<a href="<?=($user->id>0?($team->published==1?'#book_stegi':'#activate_to_book'):'#login_to_book')?>" class="btn btn--skewed btn--skewed--bottom btn--coral btn--bold book-stegi">
 					<strong><?php echo JText::_('MOD_STEGI_BOOK_TEAM');?></strong>
-			</a>        
+			</a>
 	</div>

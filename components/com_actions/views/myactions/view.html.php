@@ -20,9 +20,9 @@ class ActionsViewMyactions extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items = $this->get('Msg');
-		$this->activities = $this->get('Activities');
-		$this->pagination = $this->get('Pagination');					
+		$this->items = $this->get('Activities');
+		$this->activities = $this->get('TeamActivities');
+		$this->pagination = $this->get('Pagination');
 		parent::display($tpl);
 	}
 }

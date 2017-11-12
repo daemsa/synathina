@@ -410,7 +410,8 @@ class UsersModelProfile extends JModelForm
 		$db = JFactory::getDbo();
 
 		//remote db - use with $db_remote
-		require JPATH_BASE . '/remote_db.php';
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->connect();
 
 		//requests
 		$team_id=@$_REQUEST['team_id'];
@@ -500,11 +501,6 @@ class UsersModelProfile extends JModelForm
 		}else{
 			$newsletter=0;
 		}
-		//test before insertion
-		//echo $alias;
-		//print_r($_FILES);
-		//print_r($_REQUEST);
-		//die;
 
 		// Store the data.
 		if (!$user->save())

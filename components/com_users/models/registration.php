@@ -413,7 +413,8 @@ class UsersModelRegistration extends JModelForm
 		$db = JFactory::getDbo();
 
 		//remote db - use with $db_remote
-		require_once JPATH_BASE . '/remote_db.php';
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->connect();
 
 		//requests
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));

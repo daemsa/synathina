@@ -75,7 +75,7 @@ if($note=='stegi'){
 		foreach ($stegi_modules as $stegi_module){
 			echo JModuleHelper::renderModule($stegi_module);
 		}
-?>	
+?>
 <?php
 	if(count($imgs)>0){
 ?>
@@ -92,13 +92,13 @@ if($note=='stegi'){
 					</div>';
 		$c++;
 	}
-?>	
+?>
 	</div>
 </div>
 <?php
 	}
 ?>
-</div>	
+</div>
 <?php
 }else{
 ?>
@@ -124,26 +124,17 @@ if($note=='stegi'){
 			$activities_array_info=array();
 			foreach($activities as $activity){
 				$activities_array_info[$activity->id]=array($activity->name, $activity->image);
-			}			
-			//team name
-			$query="SELECT t.name
-							FROM #__teams  AS t
-							WHERE  t.user_id=".$this->item->created_by." ";
-							//t.published=1 AND
-							//print_r($this->item);
-			$db->setQuery( $query );
-			$team_name = $db->loadResult();
-			//team name
-			$query="SELECT t.id
-							FROM #__teams  AS t
-							WHERE  t.user_id=".$this->item->created_by." ";
-							//t.published=1 AND
-							//print_r($this->item);
-			$db->setQuery( $query );
-			$team_id = $db->loadResult();			
-			//print_r($attribs);
-			if($team_name!=''){
-				echo '<h2 style="margin:0px; padding:0px"><a style="color:#05c0de" href="'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid=140').'">'.$team_name.'</a></h2>';
+			}
+			//team info
+			$teamClass = new RemotedbTeam();
+
+			$fields = ['id', 'name'];
+			$where = "user_id=".$this->item->created_by."";
+			$limit = 1;
+			$team = $teamClass->getTeam($fields, $where, $limit);
+
+			if ($team) {
+				echo '<h2 style="margin:0px; padding:0px"><a style="color:#05c0de" href="'.JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.'&Itemid=140').'">'.$team->name.'</a></h2>';
 			}
 			echo '<time class="opencall_time">Deadline: '.(trim(@$attribs->opencall_date)!=''?' '.@JHTML::_('date', @$attribs->opencall_date, 'd/m/Y'):'').'</time>';
 			$activities_array=@$attribs->opencall_activities;
@@ -156,16 +147,16 @@ if($note=='stegi'){
 					echo '<div class="thematiki thematiki--perivallon">
 									<img src="'.$activities_array_info[$activities_array[$i]][1].'" width="45" height="35" alt="'.$activities_array_info[$activities_array[$i]][0].'" title="'.$activities_array_info[$activities_array[$i]][0].'" />
 								</div>';
-				} 
-			}		
-			if(count($activities_array)>0){			
+				}
+			}
+			if(count($activities_array)>0){
 				echo '</ul></div>';
 			}
 		}
 		//get di images
 		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC";
 		$db->setQuery($query);
-		$imgs = $db->loadObjectList();	
+		$imgs = $db->loadObjectList();
 		if(count($imgs)>0){
 			foreach($imgs as $img){
 				if($img->link!=''){
@@ -178,9 +169,9 @@ if($note=='stegi'){
 									<p>'.$img->description.'</p><br />
 								</a>';
 				}
-			}	
-			
-		}	
+			}
+
+		}
 		echo '<br /></figure>';
 	}
 	if($note=='press'){
@@ -192,34 +183,34 @@ if($note=='stegi'){
 			}else{
 				$new_text=strip_tags($this->item->fulltext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
 			}
-			//$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $text);	
+			//$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $text);
 		}elseif($note!=''){
-			$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);		
+			$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);
 		}else{
 			$new_text=$this->item->introtext;
 		}
 	}
-?>		
+?>
 		<div role="main" class="c-article__content <?=($new==1?'c-article__content--wrapp':'')?>">
 <?php
 	if($new==1){
 		//get di images
 		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC LIMIT 1";
 		$db->setQuery($query);
-		$imgs = $db->loadObjectList();	
+		$imgs = $db->loadObjectList();
 		foreach($imgs as $img){
-			echo '<img src="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" style="max-height:320px;display:block;" alt="'.$this->escape($this->item->title).'" /><p>'.$img->caption.'</p><br />';
-		}		
+			echo '<img src="'.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" style="max-height:320px;display:block;" alt="'.$this->escape($this->item->title).'" /><p>'.@$img->caption.'</p><br />';
+		}
 	}
 	$imgs_tags = $imgs;
-?>		
+?>
 <?php echo $new_text; ?>
-		
+
 <?php
 	//attachments
 	$query = "SELECT * FROM #__attachments WHERE state=1 AND parent_type='com_content' AND parent_entity='article' AND parent_id='".$this->item->id."' ORDER BY id DESC";
 	$db->setQuery($query);
-	$atts = $db->loadObjectList();	
+	$atts = $db->loadObjectList();
 	if(count($atts)>0){
 	echo '<div class="document-download">
 					<h3 class="text-center">'.($lang_code=='en'?'Downloads':'Αρχεία').'</h3>
@@ -252,8 +243,8 @@ if($note=='stegi'){
 			</a>&nbsp;
 			<a href="http://twitter.com/home?status=<?php echo $this->item->title; ?> <?php echo urlencode(JUri::current());?>"  onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;">
 				<img src="<?php echo JURI::base(); ?>images/template/tweet.png" alt="twitter" />
-			</a>			
-		</div>	
+			</a>
+		</div>
 		<div class="clearfix"></div>
 <?php
 	if($new==1){
@@ -262,7 +253,7 @@ if($note=='stegi'){
 		$c=1;
 		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC";
 		$db->setQuery($query);
-		$imgs = $db->loadObjectList();			
+		$imgs = $db->loadObjectList();
 		if(count($imgs)>1){
 			echo '<div class="module module--synathina">
 							<h3 class="gallery-title">Gallery</h3>
@@ -278,18 +269,18 @@ if($note=='stegi'){
 							</div>';
 				if($c%6==0 || $c==count($imgs)){
 					echo '</div>';
-				}	
+				}
 				$c++;
 			}
 			echo '	</div>
 						</div>';
 		}
 	}
-	
-?>		
-		
-		</div>		   
-		
+
+?>
+
+		</div>
+
 	</article>
 </div>
 <?php

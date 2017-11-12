@@ -650,6 +650,10 @@ $(document).ready(function (){
                     alert('Παρακαλώ συμπληρώστε τίτλο στην επιμέρους δράση');
                     return false;
                 }
+                if($('#from_date_'+f).val()=='' || $('#to_date_'+f).val()==''){
+                    alert('Παρακαλώ συμπληρώστε ημερομηνία στην επιμέρους δράση');
+                    return false;
+                }
                 var start = $('#from_date_'+f).val();
                 var start_array = start.split("/");
                 var year_start_array = start_array[2].split(" ");

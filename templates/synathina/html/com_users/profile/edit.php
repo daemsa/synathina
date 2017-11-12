@@ -31,7 +31,8 @@ $config = JFactory::getConfig();
 $db = JFactory::getDbo();
 
 //remote db - use with $db_remote
-require JPATH_BASE . '/remote_db.php';
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->connect();
 
 // IMPORT EDITOR CLASS
 jimport( 'joomla.html.editor' );
@@ -185,11 +186,11 @@ function delete_confirmation(id,path,abspath) {
 					<div class="l-fg6">
 						 <div class="form-group">
 								<label for="" class="is-block">ΚΩΔΙΚΟΣ*</label>
-								<input type="password" name="jform[password1]" id="jform_password1" value="" autocomplete="off" class="validate-password required" maxlength="99" />
+								<input type="password" name="jform[password1]" id="jform_password1" value="" autocomplete="off" class="validate-password" maxlength="99" />
 						 </div>
 						 <div class="form-group">
 								<label for="" class="is-block">ΕΠΑΝΑΛΗΨΗ ΚΩΔΙΚΟΥ*</label>
-								<input type="password" name="jform[password2]" id="jform_password2" value="" autocomplete="off" class="validate-password required" maxlength="99" />
+								<input type="password" name="jform[password2]" id="jform_password2" value="" autocomplete="off" class="validate-password" maxlength="99" />
 						 </div>
 					</div>
 				</div>

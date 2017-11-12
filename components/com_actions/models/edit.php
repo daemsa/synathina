@@ -177,7 +177,7 @@ class ActionsModelEdit extends JModelItem
 		$db_remote->execute();
 	}
 
-	public function unlockRemoteTable ($table)
+	public function unlockRemoteTable ()
 	{
 		$dbRemoteClass = new RemotedbConnection();
 		$db_remote = $dbRemoteClass->connect();
@@ -294,7 +294,7 @@ class ActionsModelEdit extends JModelItem
 		$query = "SELECT a.id, a.name
 							FROM #__municipality_services AS a
 							WHERE a.published = 1
-							ORDER BY a.name ASC ";
+							ORDER BY a.id ASC ";
 		$db->setQuery( $query );
 		$services = $db->loadObjectList();
 
@@ -490,7 +490,7 @@ class ActionsModelEdit extends JModelItem
 		$db_remote->setQuery($actions_query);
 		$db_remote->execute();
 		$parent_id = $action_id;
-		$this->unlockRemoteTable('actions');
+		$this->unlockRemoteTable();
 
 		if ($parent_id > 0) {
 
@@ -505,7 +505,7 @@ class ActionsModelEdit extends JModelItem
 					$query_action_update = "UPDATE #__actions SET image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
 					$db_remote->setQuery($query_action_update);
 					$db_remote->execute();
-					$this->unlockRemoteTable('actions');
+					$this->unlockRemoteTable();
 				}
 			}
 
@@ -530,14 +530,14 @@ class ActionsModelEdit extends JModelItem
 			$query = "DELETE FROM #__actions WHERE action_id='".$parent_id."' ";
 			$db_remote->setQuery($query);
 			$db_remote->execute();
-			$this->unlockRemoteTable('actions');
+			$this->unlockRemoteTable();
 
 			//stegi
 			$this->lockRemoteTable('stegihours');
 			$query = "DELETE FROM #__stegihours WHERE action_id='".$parent_id."' ";
 			$db_remote->setQuery($query);
 			$db_remote->execute();
-			$this->unlockRemoteTable('actions');
+			$this->unlockRemoteTable();
 
 			//get all activities
 			$activities = $this->getActivities();
@@ -567,6 +567,7 @@ class ActionsModelEdit extends JModelItem
 							'','',
 							0,
 							'".$team_id."',
+							1,
 							'".$subtitle."',
 							'".$this->getUrlslug($subtitle)."',
 							'',
@@ -586,7 +587,7 @@ class ActionsModelEdit extends JModelItem
 						)";
 						$db_remote->setQuery($query_stegi);
 						$db_remote->execute();
-						$this->unlockRemoteTable('stegihours');
+						$this->unlockRemoteTable();
 
 						if ($published_old == 0) {
 							//email to admin
@@ -646,6 +647,7 @@ class ActionsModelEdit extends JModelItem
 						0,
 						'".$team_id."',
 						'".$parent_id."',
+						1,
 						0,
 						'','','',
 						'".$subtitle."',
@@ -673,7 +675,7 @@ class ActionsModelEdit extends JModelItem
 					)";
 					$db_remote->setQuery($subactions_query);
 					$db_remote->execute();
-					$this->unlockRemoteTable('actions');
+					$this->unlockRemoteTable();
 				}
 			}
 		}

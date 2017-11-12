@@ -44,6 +44,9 @@ $app = JFactory::getApplication('site');
 //connect to db
 $db = JFactory::getDBO();
 
+//remote db
+JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
+
 $lang = JFactory::getLanguage();
 
 $user = JFactory::getUser();
@@ -54,7 +57,7 @@ $time_diff=0;
 $half_hour=3600/2;
 
 if(@$_REQUEST['stegi_date']!=''){
-	
+
 	//$date = new DateTime("2016-06-20 09:00:00");
 	// false
 	//echo $date->getTimestamp()+60*60*3;
@@ -62,8 +65,8 @@ if(@$_REQUEST['stegi_date']!=''){
 	/*$query = "SELECT t.name AS tname, a.id, a.subtitle, a.action_date_start, a.action_date_end FROM #__actions AS a INNER JOIN #__teams AS t ON t.id=a.team_id WHERE a.published=1 AND a.stegi_use=1 AND a.action_id>0 ORDER BY a.action_date_start ASC ";
 	$db->setQuery($query);
 	$actions = $db->loadObjectList();
-	
-	
+
+
 	foreach($actions as $action){
 		$start=$action->action_date_start;
 		$start_array=explode(':',$start);
@@ -86,15 +89,15 @@ if(@$_REQUEST['stegi_date']!=''){
 	//get stegihours
 	$actions_date_array=array();
 	$actions_array=array();
-	$query = "SELECT t.name AS tname,t.id AS tid,t.alias AS talias, a.id, a.name, a.alias, a.action_id, a.date_start, a.date_end FROM #__stegihours AS a 
-						INNER JOIN #__teams AS t ON t.id=a.team_id 
-						WHERE  a.published=1 ORDER BY a.date_start ASC ";
-	//echo $query;
-	$db->setQuery($query);
-	$actions = $db->loadObjectList();
-	//$actions1 = $db->loadObjectList();
-	//$actions_array=array();
-	//$actions_date_array=array();
+	$stegiClass = new RemotedbStegi();
+	$activityClass = new RemotedbActivity();
+
+	$fields = ['t.name AS tname', 't.id AS tid', 't.alias AS talias', 'a.id', 'a.name', 'a.alias', 'a.action_id', 'a.date_start', 'a.date_end'];
+	$where = "a.published=1";
+	$order_by = "a.date_start ASC";
+	$actions = $stegiClass->getStegiHoursTeams($fields, $where, $order_by);
+	$start1 = time();
+	//echo $start1."<br />";
 	foreach($actions as $action){
 		$start=$action->date_start;
 		$date_start=new DateTime($action->date_start);
@@ -115,19 +118,21 @@ if(@$_REQUEST['stegi_date']!=''){
 		$new_end_time=intval($new_end_array[1]); //12
 		//echo $action->id.' '.$time_end.'<br />';
 		for($i=$time_start; $i<$time_end; $i+=3600){
-			if($action->action_id>0){
-				$query = "SELECT subtitle FROM #__actions WHERE action_id='".$action->action_id."' ";
-				$db->setQuery($query);
-				$action_name = $db->loadResult();				
-				if($action_name!=''){
-					$action->name=$action_name;
-				}
-			}
+			// if($action->action_id>0){
+			// 	$fields = ['subtitle'];
+			// 	$where = "action_id='".$action->action_id."'";
+			// 	$limit = 1;
+			// 	$subaction = $activityClass->getActivity($fields, $where, $limit);
+
+			// 	if ($subaction->subtitle) {
+			// 		$action->name = $subaction->subtitle;
+			// 	}
+			// }
 			$actions_array[]=array($action->id, $action->name, date('Y-m-d H',$i), $action->tname, $action->action_id, $action->tid, $action->alias, $action->talias);
-			$actions_date_array[]=date('Y-m-d H',$i);			
+			$actions_date_array[]=date('Y-m-d H',$i);
 			//echo $action->id.' '.$i.' '.date('Y-m-d H',$i).'<br />';
 		}
-		
+
 		if($new_end_array[0]>@$_REQUEST['stegi_date'] && $new_end_array[0]>$new_start_array[0]  ){
 			$new_end_time=24;
 		}
@@ -139,7 +144,6 @@ if(@$_REQUEST['stegi_date']!=''){
 			//}
 		//}
 	}
-	//print_r($actions_array);
 ?>
 <div class="c-diary">
 		<h2 style="padding-left:20px">Ημερολόγιο στέγης</h2>
@@ -149,18 +153,18 @@ if(@$_REQUEST['stegi_date']!=''){
 		<div class="diary-switcher">
 				<div class="is-block diary-labels">
 <?php
-	
+
 	$req_date_array=explode('-',@$_REQUEST['stegi_date']);
 	$req_timestamp=mktime('0','0','0',$req_date_array[1],$req_date_array[2],$req_date_array[0])+$time_diff;
 	$days=array(1=>'Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο','Κυριακή');
 	$months=array(1=>'Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου');
-	
+
 	//$one_day=3600*24;
 	//$new_time=time()+$time_diff+$i*$one_day;
 	echo '<span '.($i==0?'class="active"':'').'>'.$days[date('N',$req_timestamp)].' '.date('d',$req_timestamp).' '.$months[date('n',$req_timestamp)].' '.date('Y',$req_timestamp).'</span>';
-?>				
+?>
 				</div>
-		</div>	
+		</div>
 		<div class="module module--synathina">
 			<div class="module-skewed module-skewed--gray" rel="js-container">
 <?php
@@ -172,7 +176,7 @@ if(@$_REQUEST['stegi_date']!=''){
 							<table class="diary-table">
 								<colgroup>
 									<col style="width: 50px;">
-									<col style="width: calc(100% - 50px);">            
+									<col style="width: calc(100% - 50px);">
 								</colgroup>
 								<tbody>';
 		for($t=0; $t<13; $t++){
@@ -197,7 +201,7 @@ if(@$_REQUEST['stegi_date']!=''){
 				}
 			}
 			echo '				</td>
-									</tr>';	
+									</tr>';
 		}
 		for($t=1; $t<12; $t++){
 			$new_time1=$new_date.($t+12);
@@ -210,7 +214,7 @@ if(@$_REQUEST['stegi_date']!=''){
 			if(!empty($found)){
 				for($k=0; $k<count($found); $k++){
 					$link=JRoute::_('index.php?option=com_actions&view=action&id='.$actions_array[$found[$k]][4].':'.$actions_array[$found[$k]][6].'&Itemid=138');
-					$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$actions_array[$found[$k]][5].':'.$actions_array[$found[$k]][7].'&Itemid=140');					
+					$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$actions_array[$found[$k]][5].':'.$actions_array[$found[$k]][7].'&Itemid=140');
 					echo '<div class="is-inline-block">
 									<ul class="inline-list inline-list--separated inline-list--orange">
 											<li>'.($actions_array[$found[$k]][4]>0?'<a href="'.$link.'" target="_blank">':'').$actions_array[$found[$k]][1].($actions_array[$found[$k]][4]>0?'</a>':'').'</li>
@@ -218,20 +222,20 @@ if(@$_REQUEST['stegi_date']!=''){
 									</ul>
 								</div>';
 				}
-			}										
+			}
 			echo '				</td>
-									</tr>';	
-		}		
+									</tr>';
+		}
 		echo '			</tbody>
 							</table>
 						</div>';
 		echo '</div>';
-?>	
+?>
 			</div>
-		</div>				
-		
+		</div>
+
 	</div>
-<?php	
+<?php
 }else{
 	//header('Location:index.php');
 	//exit;

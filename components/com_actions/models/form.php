@@ -222,7 +222,7 @@ class ActionsModelForm extends JModelItem
 		$db_remote->execute();
 	}
 
-	public function unlockRemoteTable ($table)
+	public function unlockRemoteTable ()
 	{
 		$dbRemoteClass = new RemotedbConnection();
 		$db_remote = $dbRemoteClass->connect();
@@ -415,6 +415,7 @@ class ActionsModelForm extends JModelItem
 			0,
 			'".$team_id."',
 			0,
+			1,
 			0,
 			'".$name."',
 			'".$alias."',
@@ -449,7 +450,7 @@ class ActionsModelForm extends JModelItem
 		$db_remote->execute();
 		$parent_id = $db_remote->insertid();
 
-		$this->unlockRemoteTable('actions');
+		$this->unlockRemoteTable();
 
 		require_once JPATH_CONFIGURATION.'/global_functions.php';
 
@@ -487,7 +488,7 @@ class ActionsModelForm extends JModelItem
 			$query_action_update = "UPDATE #__actions SET image='".$main_image."' WHERE id='".$parent_id."' LIMIT 1";
 			$db_remote->setQuery($query_action_update);
 			$db_remote->execute();
-			$this->unlockRemoteTable('actions');
+			$this->unlockRemoteTable();
 
 			//insert subactivities
 
@@ -519,6 +520,7 @@ class ActionsModelForm extends JModelItem
 							'','',
 							0,
 							'".$team_id."',
+							1,
 							'".$subtitle."',
 							'".$this->getUrlslug($subtitle)."',
 							'',
@@ -538,7 +540,7 @@ class ActionsModelForm extends JModelItem
 						)";
 						$db_remote->setQuery($query_stegi);
 						$db_remote->execute();
-						$this->unlockRemoteTable('stegihours');
+						$this->unlockRemoteTable();
 
 						//email to admin
 						$emails = [];
@@ -598,6 +600,7 @@ class ActionsModelForm extends JModelItem
 						0,
 						'".$team_id."',
 						'".$parent_id."',
+						1,
 						0,
 						'','','',
 						'".$subtitle."',
@@ -626,7 +629,7 @@ class ActionsModelForm extends JModelItem
 					)";
 					$db_remote->setQuery($subactions_query);
 					$db_remote->execute();
-					$this->unlockRemoteTable('actions');
+					$this->unlockRemoteTable();
 				}
 			}
 		}

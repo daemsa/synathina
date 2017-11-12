@@ -8,14 +8,14 @@ $abspath = $config->get( 'abs_path' );
 //local db
 $db = JFactory::getDbo();
 
-//remote db
-$db_remote_class = new RemotedbConnection();
-$db_remote = $db_remote_class->connect();
+//get team
+$teamClass = new RemotedbTeam();
 
-//get team state
-$query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db_remote->setQuery($query);
-$teams_activated = $db_remote->loadResult();
+$fields = ['published'];
+$where = "";
+$limit = 1;
+$team = $teamClass->getTeam($fields, $where, $limit);
+$teams_activated = $team->published;
 
 
 //language
@@ -237,7 +237,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
       <div class="open-call">
          <h3 class="popup-title">Open Call</h3>
 <?php
-	if ($user->id > 0 && $teams_activated == 1) {
+	if ($user->id > 0 && $team->published == 1) {
 ?>
          <form action="<?php echo JURI::current();?>" class="form form-inline" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -253,7 +253,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
             <div class="form-inline filters">
 							<label for="" class="is-block">Θεματική ενότητα*:</label>
 <?php
-	$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
+	$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY id ASC";
 	$db->setQuery( $query );
 	$activities = $db->loadObjectList();
 	foreach ($activities as $activity) {
@@ -284,7 +284,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
 			</div>
 		 </form>
 <?php
-	} elseif ($teams_activated == 0 && $user->id > 0) {
+	} elseif ($team->published == 0 && $user->id > 0) {
 ?>
 	Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα από το συνΑθηνά.
 <?php

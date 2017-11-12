@@ -54,80 +54,58 @@ class ActionsModelMyactions extends JModelLegacy
 	//echo JRequest::getVar('limitstart');
 	}
 
-
-
-	public function getMsg(){
-
+	public function getActivities()
+	{
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
-
-		//remote db - use with $db_remote
-		require_once JPATH_BASE . '/remote_db.php';
-
 		$user = JFactory::getUser();
-		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-		$db_remote->setQuery( $query );
-		$team_id = $db_remote->loadResult();
+
+		$activityClass = new RemotedbActivity();
+
+		$where = "t.user_id='".$user->id."' AND a.action_id=0 AND (a.published=1 OR a.published=0)";
+		$order_by = "a.id DESC";
+
+		$actions = $activityClass->getActivitiesTeam([], $where, $order_by);
 
 		//requests
-		if(@$_REQUEST['action_limit']>0){
+		if (@$_REQUEST['action_limit'] > 0) {
 			$action_limit=$_REQUEST['action_limit'];
 		}else{
 			$action_limit=6;
 		}
 
-		$query="SELECT a.* FROM #__actions AS a WHERE a.id>0 AND a.team_id='".$team_id."' AND a.action_id=0 AND (a.published=1 OR a.published=0) ORDER BY a.id DESC ";
-		$db_remote->setQuery( $query );
-		$actions = $db_remote->loadObjectList();
 		$this->_total = count($actions);
 		$this->items = array_splice($actions, $this->getState('limitstart'), $action_limit);
 
 		return $this->items;
 	}
 
-	public function getActivities(){
+	public function getTeamActivities(){
 		//db connection
 		$db = JFactory::getDBO();
-		$query="SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
+
+		$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
 		$db->setQuery( $query );
 		$activities = $db->loadObjectList();
+
 		return $activities;
 	}
 
 	public function getPagination()
-			 {
-				if(@$_REQUEST['action_limit']>0){
-					$action_limit=$_REQUEST['action_limit'];
-				}else{
-					$action_limit=6;
-				}
-			$app    = JFactory::getApplication();
-			$router = $app->getRouter();
-		if(@$_REQUEST['from']!=''){
-			$router->setVar( 'from', @$_REQUEST['from'] );
+	{
+		$app    = JFactory::getApplication();
+		$router = $app->getRouter();
+
+		if (@$_REQUEST['action_limit']>0) {
+			$action_limit = $_REQUEST['action_limit'];
+		} else {
+			$action_limit = 6;
 		}
-		if(@$_REQUEST['to']!=''){
-			$router->setVar( 'to', @$_REQUEST['from'] );
-		}
-		if(@$_REQUEST['search_name']!=''){
-			$router->setVar( 'search_name', @$_REQUEST['search_name'] );
-		}
-		if(@$_REQUEST['best']=='on'){
-			$router->setVar( 'best', @$_REQUEST['best'] );
-		}
-		for($i=1; $i<8; $i++){
-			if(@$_REQUEST['area'.$i]=='on'){
-				$router->setVar( 'area'.$i, @$_REQUEST['area'.$i] );
-			}
-		}
-		for($i=1; $i<20; $i++){
-			if(@$_REQUEST['activity'.$i]=='on'){
-				$router->setVar( 'activity'.$i, @$_REQUEST['activity'.$i] );
-			}
-		}
-			 jimport('joomla.html.pagination');
-			 $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $action_limit );
-			 return $this->_pagination;
+
+		jimport('joomla.html.pagination');
+		$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $action_limit );
+
+		return $this->_pagination;
 	}
 	/**
 	 * Method to set the search parameters

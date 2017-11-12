@@ -25,7 +25,8 @@ $isroot = $user->authorise('core.admin');
 $db = JFactory::getDbo();
 
 //remote db - use with $db_remote
-require_once JPATH_BASE . '/remote_db.php';
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->connect();
 
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$this->data->id."' LIMIT 1 ";
