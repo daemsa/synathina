@@ -183,8 +183,16 @@ if (@$_REQUEST['activity_description']!='' && @$_REQUEST['activity_title']!='' &
 	$end_array1=explode('/',$end_array[0]);
 	$action_date_end=$end_array1[2].'-'.$end_array1[1].'-'.$end_array1[0].' '.$end_array[1].':00';
 
+	$query = "LOCK TABLES #__stegihours WRITE";
+	$db_remote->setQuery($query);
+	$db_remote->execute();
+
 	$query_stegi="INSERT INTO #__stegihours VALUES ('','',0,'".$team->id."',1,'".addslashes(@$_REQUEST['activity_title'])."','".getUrlslug(@$_REQUEST['activity_title'])."','','".addslashes(@$_REQUEST['activity_description'])."','".$action_date_start."','".$action_date_end."','0',1,1,1,'*','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$user->id."','".$user->id."','','','') ";
 	$db_remote->setQuery($query_stegi);
+	$db_remote->execute();
+
+	$query = "UNLOCK TABLES";
+	$db_remote->setQuery($query);
 	$db_remote->execute();
 
 	//email to admin

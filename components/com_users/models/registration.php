@@ -520,7 +520,12 @@ class UsersModelRegistration extends JModelForm
 		//team management
 		$query = "SELECT MAX(ordering) FROM #__teams ";
 		$db_remote->setQuery($query);
-		$max_ordering = $db_remote->loadResult()+1;
+		$max_ordering = $db_remote->loadResult() + 1;
+
+		$query = "LOCK TABLES #__teams WRITE";
+		$db_remote->setQuery($query);
+		$db_remote->execute();
+
 		$query = "INSERT INTO #__teams VALUES
 							('', '', 0, ".$userid.", '".$team_name."', '".$alias."', '', '".$create_actions."', '".$support_actions."', '".$legal_form."', '".$profit."', '".$profit_id."' , '".$profit_custom."', '".$team_or_org."', '".$activities_ids."',
 							'".$donations_ids."', '".$donation_other_1."','".$donation_other_16."', '".$team_description."', '', '".$web_link."', '".$fb_link."', '".$tw_link."', '', '".$in_link."', '', '".$li_link."', '".$yt_link."',
@@ -528,7 +533,11 @@ class UsersModelRegistration extends JModelForm
 							'".$newsletter."','".$hidden_team."','".time()."', 0, 1, '".$max_ordering."', '*', '".date('Y-m-d H:i:s',time())."', '', ".$userid.", '', '', '', '')";
 		$db_remote->setQuery($query);
 		$db_remote->execute();
-		$teamid=$db_remote->insertid();
+		$teamid = $db_remote->insertid();
+
+		$query = "UNLOCK TABLES";
+		$db_remote->setQuery($query);
+		$db_remote->execute();
 
 		//assets
 		// $query = "SELECT rgt FROM #__assets WHERE name LIKE '#__teams.%' ORDER BY id DESC LIMIT 1";
