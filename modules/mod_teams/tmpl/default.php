@@ -7,8 +7,6 @@ $db = JFactory::getDBO();
 $query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC ";
 $db->setQuery($query);
 $activities = $db->loadObjectList();
-//echo '<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />';
-//print_r(@$_REQUEST);
 
 //language
 $doc = JFactory::getDocument();
@@ -17,90 +15,81 @@ $lang_code=$lang_code_array[0];
 
 
 
+$teamClass = new RemotedbTeam();
 //get teams teams
-$order=0;
-$where='';
-$where.=' AND published=1  ';
-$where.=' AND create_actions=1 ';
-if(count(@$_REQUEST['activities'])>0){
-	$where.=' AND (';
+$order = 0;
+$where = ' published=1 AND create_actions=1 ';
+if (count(@$_REQUEST['activities']) > 0) {
+	$where .= ' AND (';
 	foreach (@$_REQUEST['activities'] as $act) {
-		//echo $act.'<br />';
-		$where.=' find_in_set(\''.$act.'\',activities) OR ';
+		$where .= ' find_in_set(\''.$act.'\',activities) OR ';
 	}
-	$where=substr($where,0,-3);
-	$where.=') ';
-	$order=1;	
+	$where = substr($where, 0, -3);
+	$where .= ') ';
+	$order = 1;
 }
-if(@$_REQUEST['search_teams']!=''){
-	$where.=" AND name LIKE '%".trim(@$_REQUEST['search_teams'])."%' ";
-	$order=1;
+if (@$_REQUEST['search_teams'] != '') {
+	$where .= " AND name LIKE '%".trim(@$_REQUEST['search_teams'])."%' ";
+	$order = 1;
 }
-$query = "SELECT * FROM #__teams WHERE id>0 ".$where." AND id!='261' ORDER BY ".($order==1?'name ASC':'RAND()')."  ";
-$db->setQuery($query);
-$teams_teams = $db->loadObjectList();
-$count_teams_teams=count($teams_teams);
+$order_by = ($order == 1?'name ASC':'RAND()');
+$teams_teams = $teamClass->getTeams([], $where, $order_by);
+$count_teams_teams = count($teams_teams);
 
 //get teams supporters
-$order=0;
-$where='';
-$where.=' AND published=1  ';
-$where.=' AND support_actions=1 ';
-if(count(@$_REQUEST['activities_s'])>0){
-	$where.=' AND (';
+$order = 0;
+$where = ' hidden=0 AND published=1 AND support_actions=1 ';
+if (count(@$_REQUEST['activities_s']) > 0) {
+	$where .= ' AND (';
 	foreach (@$_REQUEST['activities_s'] as $act) {
-		//echo $act.'<br />';
-		$where.=' find_in_set(\''.$act.'\',activities) OR ';
+		$where .= ' find_in_set(\''.$act.'\',activities) OR ';
 	}
-	$where=substr($where,0,-3);
-	$where.=') ';
-	$order=1;	
+	$where = substr($where, 0, -3);
+	$where .= ') ';
+	$order = 1;
 }
-if(@$_REQUEST['search_supporters']!=''){
-	$where.=" AND name LIKE '%".trim(@$_REQUEST['search_supporters'])."%' ";
-	$order=1;
+if (@$_REQUEST['search_supporters'] != '') {
+	$where .= " AND name LIKE '%".trim(@$_REQUEST['search_supporters'])."%' ";
+	$order = 1;
 }
-$query = "SELECT * FROM #__teams WHERE id>0 ".$where." AND id!='261' AND hidden=0 ORDER BY ".($order==1?'name ASC':'RAND()')." ";
-$db->setQuery($query);
-$teams_supporters = $db->loadObjectList();
-$count_teams_supporters=count($teams_supporters);
+$order_by = ($order == 1?'name ASC':'RAND()');
+$teams_supporters = $teamClass->getTeams([], $where, $order_by);
+$count_teams_supporters = count($teams_supporters);
 
 //test
 $anchor='#teams-results';
-$where='';
-if(count(@$_REQUEST['activities'])>0){
-	$where.=' AND (';
-	foreach (@$_REQUEST['activities'] as $act) {
-		//echo $act.'<br />';
-		$where.=' find_in_set(\''.$act.'\',activities) OR ';
-	}
-	$where=substr($where,0,-3);
-	$where.=') ';	
+//$where='';
+if (count(@$_REQUEST['activities']) > 0) {
+	// $where.=' AND (';
+	// foreach (@$_REQUEST['activities'] as $act) {
+	// 	//echo $act.'<br />';
+	// 	$where.=' find_in_set(\''.$act.'\',activities) OR ';
+	// }
+	// $where=substr($where,0,-3);
+	//$where.=') ';
 	$anchor='#teams-results';
 }
-if(@$_REQUEST['search_teams']!=''){
-	$where.=" AND name LIKE '%".@$_REQUEST['search_teams']."%' ";
-	$anchor='#teams-results';	
+if (@$_REQUEST['search_teams'] != '') {
+	//$where.=" AND name LIKE '%".@$_REQUEST['search_teams']."%' ";
+	$anchor='#teams-results';
 }
-if(count(@$_REQUEST['activities_s'])>0){
-	$where.=' AND (';
-	foreach (@$_REQUEST['activities_s'] as $act) {
-		//echo $act.'<br />';
-		$where.=' find_in_set(\''.$act.'\',activities) OR ';
-	}
-	$where=substr($where,0,-3);
-	$where.=') ';	
+if (count(@$_REQUEST['activities_s']) > 0) {
+	// $where.=' AND (';
+	// foreach (@$_REQUEST['activities_s'] as $act) {
+	// 	//echo $act.'<br />';
+	// 	$where.=' find_in_set(\''.$act.'\',activities) OR ';
+	// }
+	// $where=substr($where,0,-3);
+	// $where.=') ';
 	$anchor='#supporters-results';
 }
-if(@$_REQUEST['search_supporters']!=''){
-	$where.=" AND name LIKE '%".@$_REQUEST['search_supporters']."%' ";
+if (@$_REQUEST['search_supporters'] != '') {
+	//$where.=" AND name LIKE '%".@$_REQUEST['search_supporters']."%' ";
 	$anchor='#supporters-results';
 }
-$query = "SELECT * FROM #__teams WHERE id>0 ".$where." ORDER BY RAND() ";
-$db->setQuery($query);
-$teams_tests = $db->loadObjectList();
-$count_teams_tests=count($teams_tests);
-
+// $order_by = "RAND()";
+// $teams_tests = $teamClass->getTeams([], $where, $order_by);
+// $count_teams_tests = count($teams_tests);
 
 ?>
 <script>
@@ -121,7 +110,7 @@ function clear_form(counter, id1, id2){
 							<button class="btn btn-search" type="submit"><i class="fa fa-search"></i></button>
 						</span>-->
 					</div><!-- /input-group -->
-		 
+
 	</div>
 	<div class="filter-checkbox">
 <?php
@@ -133,13 +122,13 @@ function clear_form(counter, id1, id2){
 					 </div>';
 		$i++;
 	}
-?>	
-		
+?>
+
 	</div>
 	<div class="block"></div>
 	<button type="submit" style="padding: 5px 10px;" class="pull-right btn btn--coral btn--bold btn btn-primary validate"><?=($lang_code=='en'?'SEARCH':'ΑΝΑΖΗΤΗΣΗ')?></button>
-	<button type="reset" onclick="clear_form(<?=$i?>,'box','search_teams');" style="padding: 5px 10px; margin-right:10px;" class="pull-right btn btn--grey btn--bold btn btn-primary validate"><?=($lang_code=='en'?'RESET':'ΚΑΘΑΡΙΣΜΟΣ')?></button>		
-	<div class="block" style="clear:both"></div>	
+	<button type="reset" onclick="clear_form(<?=$i?>,'box','search_teams');" style="padding: 5px 10px; margin-right:10px;" class="pull-right btn btn--grey btn--bold btn btn-primary validate"><?=($lang_code=='en'?'RESET':'ΚΑΘΑΡΙΣΜΟΣ')?></button>
+	<div class="block" style="clear:both"></div>
 </div>
 <div class="module module--synathina">
 
@@ -158,7 +147,7 @@ function clear_form(counter, id1, id2){
 		if($c==1 || ($c-1)%18==0){
 			echo '<div class="gallery-frame" data-id="'.$f.'">';
 			$f++;
-		}		
+		}
 		if($teams_test->logo!=''){
 			list($width, $height) = @getimagesize($teams_test->logo);
 			//192 155
@@ -167,12 +156,12 @@ function clear_form(counter, id1, id2){
 				//$max_width='width:192px;';
 				$max_height='max-height:155px;';
 				$bg_height='auto';
-				$bg_width='100%';					
+				$bg_width='100%';
 			}else{
 				$max_height='max-height:155px;';
 				$max_width='max-width:192px;';
 				$bg_width='auto';
-				$bg_height='100%';			
+				$bg_height='100%';
 			}
 		}else{
 			$image_path='images/template/no-team.jpg';
@@ -183,14 +172,14 @@ function clear_form(counter, id1, id2){
 					</div>';
 		if(($c>0 && $c%6==0) || $c==$count_teams_teams){
 			echo '<div style="clear:both; height:0px; line-height:0px;"></div>';
-		}			
+		}
 		if(($c>0 && $c%18==0) || $c==$count_teams_teams){
 			echo '</div>';
-		}	
-		$c++;					
+		}
+		$c++;
 	}
 
-?>	
+?>
 	</div>
 </div>
 
@@ -204,7 +193,7 @@ function clear_form(counter, id1, id2){
 								 <button class="btn btn-search" type="button"><i class="fa fa-search"></i></button>
 						</span>-->
 					</div><!-- /input-group -->
-		 
+
 	</div>
 	<div class="filter-checkbox">
 <?php
@@ -216,13 +205,13 @@ function clear_form(counter, id1, id2){
 					 </div>';
 		$i++;
 	}
-?>	
+?>
 		</form>
 	</div>
 	<div class="block"></div>
 	<button type="submit" style="padding: 5px 10px;" class="pull-right btn btn--coral btn--bold btn btn-primary validate" onclick="document.getElementById('search_teams_form').submit();"><?=($lang_code=='en'?'SEARCH':'ΑΝΑΖΗΤΗΣΗ')?></button>
-	<button type="reset" onclick="clear_form(<?=$i?>,'box_s_','search_supporters');" style="padding: 5px 10px; margin-right:10px;" class="pull-right btn btn--grey btn--bold btn btn-primary validate"><?=($lang_code=='en'?'RESET':'ΚΑΘΑΡΙΣΜΟΣ')?></button>		
-	<div class="block" style="clear:both"></div>		
+	<button type="reset" onclick="clear_form(<?=$i?>,'box_s_','search_supporters');" style="padding: 5px 10px; margin-right:10px;" class="pull-right btn btn--grey btn--bold btn btn-primary validate"><?=($lang_code=='en'?'RESET':'ΚΑΘΑΡΙΣΜΟΣ')?></button>
+	<div class="block" style="clear:both"></div>
 </div>
 <div class="module module--synathina">
 
@@ -241,7 +230,7 @@ function clear_form(counter, id1, id2){
 		if($c==1 || ($c-1)%18==0){
 			echo '<div class="gallery-frame" data-id="'.$f.'">';
 			$f++;
-		}	
+		}
 		if($teams_test->logo!=''){
 			list($width, $height) = @getimagesize($teams_test->logo);
 			//192 155
@@ -250,12 +239,12 @@ function clear_form(counter, id1, id2){
 				//$max_width='width:192px;';
 				$max_height='max-height:155px;';
 				$bg_height='auto';
-				$bg_width='100%';					
+				$bg_width='100%';
 			}else{
 				$max_height='max-height:155px;';
 				$max_width='max-width:192px;';
 				$bg_width='auto';
-				$bg_height='100%';			
+				$bg_height='100%';
 			}
 		}else{
 			$image_path='images/template/no-team.jpg';
@@ -266,14 +255,14 @@ function clear_form(counter, id1, id2){
 					</div>';
 		if(($c>0 && $c%6==0) || $c==$count_teams_supporters){
 			echo '<div style="clear:both; height:0px; line-height:0px;"></div>';
-		}			
+		}
 		if(($c>0 && $c%18==0) || $c==$count_teams_supporters){
 			echo '</div>';
-		}	
-		$c++;				
+		}
+		$c++;
 	}
 
-?>	
+?>
 	</div>
 	<br />	<br />	<br />
 </div>
