@@ -180,7 +180,7 @@ td,
 th {
   padding: 0; }
 
-.container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register {
+.container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register, .l-contact {
   margin-right: auto;
   margin-left: auto;
   padding-left: 20px;
@@ -191,13 +191,13 @@ th {
   .container:after, .l-news--list:after, .l-news--article:after, .l-article--news:after, .l-synathina:after, .l-teams--article:after, .l-teams--listing:after, .l-press:after, .l-register:after {
     clear: both; }
   @media (min-width: 768px) {
-    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register {
+    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register, .l-contact {
       width: 760px; } }
   @media (min-width: 992px) {
-    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register {
+    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register, .l-contact {
       width: 980px; } }
   @media (min-width: 1240px) {
-    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register {
+    .container, .l-news--list, .l-news--article, .l-article--news, .l-synathina, .l-teams--article, .l-teams--listing, .l-press, .l-register, .l-contact {
       width: 1240px; } }
 
 .container-fluid, .l-draseis, .l-draseis--article, .l-stegh, .l-contact {
