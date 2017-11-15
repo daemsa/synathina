@@ -63,13 +63,13 @@ class TeamsControllerTeams extends JControllerAdmin
 	protected function postDeleteHook(JModelLegacy $model, $ids = null)
 	{
 	}
-	
-	
+
+
 	public function unpublish()
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("UPDATE #__teams SET published='0' WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -77,10 +77,10 @@ class TeamsControllerTeams extends JControllerAdmin
 				$mainframe->redirect("index.php?option=com_teams&view=teams");
 			}
 		}
-		$mainframe->enqueueMessage('Item(s) unpublished successfully');	
+		$mainframe->enqueueMessage('Item(s) unpublished successfully');
 		$mainframe->redirect("index.php?option=com_teams&view=teams");
 	}
-	
+
 	public function publish($pks, $value = 1)
 	{
 		if ($_REQUEST['task']=='trash'){
@@ -94,11 +94,11 @@ class TeamsControllerTeams extends JControllerAdmin
 			$mainframe = JFactory::getApplication();
 			$db = JFactory::getDBO();
 			$publishvalue=1;
-			
+
 			if ($_REQUEST["task"]=="unpublish"){
 				$publishvalue=0;
 			}
-			
+
 			foreach ($_REQUEST["cid"] as $cid){
 				if($publishvalue==1){
 					$config = JFactory::getConfig();
@@ -110,15 +110,15 @@ class TeamsControllerTeams extends JControllerAdmin
 					$emails=array();
 					if($email_to!=''){
 						$emails=array($email_to);
-					}						
+					}
 					//τεσσσσσσσσσσσσσσστ
 					//$emails=array('ddasios@steficon.gr');
 					$s_array=array();
-					if ( synathina_email('team_activated_user',$s_array,$emails,'Ο Λογαριασμός σας ενεργοποιήθηκε','') ) {
+					if ( synathina_email('team_activated_user',$s_array,$emails,'') ) {
 							$mainframe->enqueueMessage(' Email have been sent');
 					} else {
-							$mainframe->enqueueMessage(' Problem sending email');	
-					}					
+							$mainframe->enqueueMessage(' Problem sending email');
+					}
 					//print_r($_REQUEST);
 					//die;
 				}
@@ -128,17 +128,17 @@ class TeamsControllerTeams extends JControllerAdmin
 					$mainframe->redirect("index.php?option=com_teams&view=teams");
 				}
 			}
-			
-			$mainframe->enqueueMessage('Item(s) published successfully and emails has been sent');		
+
+			$mainframe->enqueueMessage('Item(s) published successfully and emails has been sent');
 			$mainframe->redirect("index.php?option=com_teams&view=teams");
 		}
 	}
-	
+
 	public function trash($pks, $value = 1)
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("UPDATE #__teams SET published='-2' WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -146,16 +146,16 @@ class TeamsControllerTeams extends JControllerAdmin
 				$mainframe->redirect("index.php?option=com_teams&view=teams");
 			}
 		}
-		$mainframe->enqueueMessage('Item(s) trashed successfully');		
+		$mainframe->enqueueMessage('Item(s) trashed successfully');
 		$mainframe->redirect("index.php?option=com_teams&view=teams");
 	}
-	
-	
+
+
 	public function delete()
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
+
 		foreach ($_REQUEST["cid"] as $cid){
 			$db->setQuery("DELETE FROM #__teams WHERE id='".intval($cid)."'");
 			if(!$db->query()){
@@ -163,7 +163,7 @@ class TeamsControllerTeams extends JControllerAdmin
 				$mainframe->redirect("index.php?option=com_teams&view=teams");
 			}
 		}
-		$mainframe->enqueueMessage('Item(s) deleted successfully');		
+		$mainframe->enqueueMessage('Item(s) deleted successfully');
 		$mainframe->redirect("index.php?option=com_teams&view=teams");
 	}
 

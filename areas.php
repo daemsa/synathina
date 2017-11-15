@@ -70,7 +70,7 @@ function ordinal_suffix($num){
     return 'th';
 }
 $up_to_2016=array(				1=>1400,				2=>136,				3=>348,				4=>58,				5=>34,				6=>252,				7=>84);$up_to_2016_teams=array(				1=>148,				2=>16,				3=>59,				4=>9,				5=>5,				6=>40,				7=>10);echo '[';for($i=1; $i<8; $i++){	$query = "SELECT aa.id FROM #__actions AS a				INNER JOIN #__actions AS aa ON aa.action_id=a.id				WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";	$db->setQuery($query);	$db->execute();	$count = $db->getNumRows()+$up_to_2016[$i];
-	$query = "SELECT aa.team_id FROM #__actions AS a INNER JOIN #__actions AS aa ON aa.action_id=a.id WHERE aa.published='1' AND aa.area='".$i."' AND aa.action_id>0 AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' GROUP BY a.team_id ";	$db->setQuery($query);	$db->execute();	$count_teams = $db->getNumRows()+$up_to_2016_teams[$i];	
+	$query = "SELECT aa.team_id FROM #__actions AS a INNER JOIN #__actions AS aa ON aa.action_id=a.id WHERE aa.published='1' AND aa.area='".$i."' AND aa.action_id>0 AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' GROUP BY a.team_id ";	$db->setQuery($query);	$db->execute();	$count_teams = $db->getNumRows()+$up_to_2016_teams[$i];
 	if($areas_colors[$i]!=''){
 		echo '{
       "details" : {
@@ -81,7 +81,7 @@ $up_to_2016=array(				1=>1400,				2=>136,				3=>348,				4=>58,				5=>34,				6=>2
         "teams" : "'.$count_teams.' '.($lang=='en'?'Team'.($count_teams==1?'':'s'):'Oμάδ'.($count_teams==1?'α':'ες')).'",
         "activities": "'.$count.' '.($lang=='en'?'Activit'.($count_teams==1?'y':'ies'):'Δράσ'.($count_teams==1?'η':'εις')).'"
       },
-      "kmlPath"  : "http://www.synathina.gr/templates/synathina/js_collections/maps/'.$i.'o_Diamerisma.kml",
+      "kmlPath"  : "/templates/synathina/js_collections/maps/'.$i.'o_Diamerisma.kml",
       "styles" : {
          "strokeColor": "#'.$areas_colors[$i].'",
          "strokeOpacity": "1",
@@ -94,5 +94,5 @@ $up_to_2016=array(				1=>1400,				2=>136,				3=>348,				4=>58,				5=>34,				6=>2
 
 }
 echo ']';
-	
+
 ?>

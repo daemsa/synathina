@@ -64,7 +64,7 @@ $query = "SELECT t.name AS tname,t.alias AS talias, t.logo AS tlogo, a.*, aa.add
 					FROM #__actions AS a
 					INNER JOIN #__actions AS aa ON aa.action_id=a.id
 					INNER JOIN #__teams AS t ON t.id=a.team_id
-					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0 ORDER BY a.id DESC";
+					WHERE aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0 ORDER BY aa.lat DESC";
 $db->setQuery($query);
 $actions = $db->loadObjectList();
 $i=0;

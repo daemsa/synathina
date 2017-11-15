@@ -354,7 +354,7 @@ $note = $db->loadResult();
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/markerclusterer.js"></script>
 
     <script async defer  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
-	
+
     <!-- Application -->
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/filter.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/ajax.js"></script>
@@ -429,7 +429,7 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
         //container = $(args);
-        
+
         target = $('[rel="js-show-category-types"]');
         inputs = $('#member-registration').find(' > .form-group > input ');
 
