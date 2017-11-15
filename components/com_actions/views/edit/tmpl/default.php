@@ -433,10 +433,12 @@ if($isroot==1){
 							</div>
 
               <?php
+			if (@unserialize($action->supporters_message)) {
+				$messagesToSupporters = unserialize($action->supporters_message);
+			} else {
+				$messagesToSupporters = unserialize(base64_decode($action->supporters_message));
+			}
             foreach($messageDivArray as $parentKey => $subArray) {
-				if (!$messagesToSupporters = @unserialize($action->supporters_message)) {
-					$messagesToSupporters = unserialize(base64_decode($action->supporters_message));
-				}
                 if(count($subArray['children'])){
                   foreach($subArray['children'] as $child) { ?>
                       <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
