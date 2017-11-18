@@ -54,23 +54,51 @@ $config = JFactory::getConfig();
 //local db
 $db = JFactory::getDbo();
 
-//remote db
+//remote dbs
 JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
+
+//remote db
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->remoteConnect();
 
 $date_now=date('Y-m-d').' 00:00:00';
 
-//remote db
-$fields = ['t.name AS tname', 't.alias AS talias', 'a.*', 'aa.address AS aaddress', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+//common db
+
+//local actions
+$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
-$order_by = "aa.action_date_end ASC";
+$order_by = "aa.lat DESC";
 $activityClass = new RemotedbActivity();
-$actions = $activityClass->getActivitiesTeams($fields, $where, false, $order_by);
+$actions_local = $activityClass->getActivitiesSubactivitiesLocal($fields, $where, $order_by);
+
+//remote actions
+$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+$where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
+$order_by = "aa.lat DESC";
+$activityClass = new RemotedbActivity();
+$actions_remote = $activityClass->getActivitiesSubactivitiesRemote($fields, $where, $order_by);
+
+$actions = (object) array_merge((array) $actions_local, (array) $actions_remote);
 
 $i=0;
 $data= '{
       "type": "FeatureCollection",
       "features": [';
 foreach($actions as $action){
+	//get team
+	if ($action->origin == 1) {
+		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+					WHERE t.id='".$action->team_id."' LIMIT 1";
+		$db->setQuery($query);
+		$team = $db->loadObject();
+	} else {
+		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+					WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
+		$db_remote->setQuery($query);
+		$team = $db_remote->loadObject();
+	}
+
 	if($action->alat==''){
 		$action->alat=0;
 	}
@@ -97,7 +125,11 @@ foreach($actions as $action){
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
 	}
 
-	$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$action->talias.'&Itemid=140');
+	if ($action->origin == 1) {
+		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+	} else {
+		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+	}
 
 	if($date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0] == $date_array_start1[2].'-'.$date_array_start1[1].'-'.$date_array_start1[0]){
 		$dates=$date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0].', '.$time_array_start[0].':'.$time_array_start[1].' - '.$time_array_end[0].':'.$time_array_end[1];
@@ -105,7 +137,7 @@ foreach($actions as $action){
 		$dates=$new_start_date.' - '.$new_end_date;
 	}
 	$data.= '{
-            "url":"'.htmlspecialchars($link).'","team_url":"'.htmlspecialchars($link_team).'","dates": "'.$dates.'","address": "'.trim(htmlspecialchars($action->aaddress)).'","team_id": "'.$action->team_id.'","team_name": "'.htmlspecialchars($action->tname).'","title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'","coordinates": ['.$action->alat.', '.$action->alng.'],"action_id": '.$action->id.'
+            "url":"'.htmlspecialchars($link).'","team_url":"'.htmlspecialchars($link_team).'","dates": "'.$dates.'","address": "'.trim(htmlspecialchars($action->aaddress)).'","team_id": "'.$action->team_id.'","team_name": "'.htmlspecialchars($team->tname).'","title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'","coordinates": ['.$action->alat.', '.$action->alng.'],"action_id": '.$action->id.'
       }'.(count($actions)==$i?'':',');
 }
 $data.= ']}';

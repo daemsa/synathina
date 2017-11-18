@@ -53,8 +53,12 @@ $currentlang=@$_REQUEST['lang'];
 //local db
 $db = JFactory::getDbo();
 
-//remote db
+//remote dbs
 JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
+
+//remote db
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->remoteConnect();
 
 $query = "SELECT * FROM #__team_activities WHERE published=1 ";
 $db->setQuery($query);
@@ -66,18 +70,42 @@ foreach($activities as $activity){
 
 $date_now=date('Y-m-d').' 00:00:00';
 
-//remote db
-$fields = ['t.name AS tname', 't.alias AS talias', 't.logo AS tlogo', 'a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+//common db
+
+//local actions
+$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0";
 $order_by = "aa.lat DESC";
 $activityClass = new RemotedbActivity();
-$actions = $activityClass->getActivitiesTeams($fields, $where, false, $order_by);
+$actions_local = $activityClass->getActivitiesSubactivitiesLocal($fields, $where, $order_by);
+
+//remote actions
+$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+$where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0";
+$order_by = "aa.lat DESC";
+$activityClass = new RemotedbActivity();
+$actions_remote = $activityClass->getActivitiesSubactivitiesRemote($fields, $where, $order_by);
+
+$actions = (object) array_merge((array) $actions_local, (array) $actions_remote);
 
 $i=0;
 $data= '{
       "type": "FeatureCollection",
       "features": [';
 foreach($actions as $action){
+	//get team
+	if ($action->origin == 1) {
+		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+					WHERE t.id='".$action->team_id."' LIMIT 1";
+		$db->setQuery($query);
+		$team = $db->loadObject();
+	} else {
+		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+					WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
+		$db_remote->setQuery($query);
+		$team = $db_remote->loadObject();
+	}
+
 	$partners=explode(',',$action->partners);
 	$partners_array=array_filter($partners);
 	if(count($partners_array)>0){
@@ -96,10 +124,15 @@ foreach($actions as $action){
 	$sponsors_array=@explode(',',$action->supporters);
 	$sponsor_id = @reset($sponsors_array);
 	if($sponsor_id>0){
-		$query = "SELECT logo FROM #__teams WHERE id='".$sponsor_id."' ";
-		$db->setQuery($query);
-		$sponsor_logo = $db->loadResult();
-		$sponsor_logo='http://www.synathina.gr/'.$sponsor_logo;
+		if ($action->origin == 1) {
+			$query = "SELECT logo FROM #__teams WHERE id='".$sponsor_id."' ";
+			$db->setQuery($query);
+			$sponsor_logo = $config->get('live_site') . '/' . $db->loadResult();
+		} else {
+			$query = "SELECT logo FROM #__teams WHERE id='".$sponsor_id."' ";
+			$db_remote->setQuery($query);
+			$sponsor_logo = $config->get('remote_site') . '/' . $db_remote->loadResult();
+		}
 	}else{
 		$sponsor_logo='';
 	}
@@ -111,13 +144,7 @@ foreach($actions as $action){
 		}
 	}
 	$activities_ids=rtrim($activities_ids,',').']';
-	//category_id : ["1", "2", "3"],
-	//test
-	/*$activities_array[0]=rand(1,11);
-	if($activities_array[0]==3){
-		$activities_array[0]=2;
-	}*/
-	//end test
+
 	if($action->alat==''){
 		$action->alat=0;
 	}
@@ -149,7 +176,11 @@ foreach($actions as $action){
 	}else{
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
 	}
-	$link_team=JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$action->talias.'&Itemid=140');
+	if ($action->origin == 1) {
+		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+	} else {
+		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+	}
 	$data.= '{
             "type": "Point",
             "object_constructor": "Activity",
@@ -160,13 +191,13 @@ foreach($actions as $action){
             "category_id": '.$activities_ids.',
             "category_name" : "'.str_replace(array("\r\n","\r"),"",@$activities_array_text[$activities_array[0]]).'",
             "team_id": "'.$action->team_id.'",
-            "team_name": "'.htmlspecialchars($action->tname).'",
+            "team_name": "'.htmlspecialchars($team->tname).'",
             "team_members": "<span style=\'font-size:28px\'>'.(count($partners_array)+1).'</span><br />'.$members.'","address": "'.trim(htmlspecialchars($action->aaddress)).'",
             "sponsor_title": "","date": "'.$action->aaction_date_start.'","date_end": "'.$action->aaction_date_end.'","dates": "'.$dates.'",
             "title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'",
             "content": "'.str_replace(array("\r\n","\r"),"",htmlspecialchars($action->short_description)).'",
             "content_img": "http://www.synathina.gr/images/actions/main_images/'.$action->image.'",
-            "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "http://www.synathina.gr/'.$action->tlogo.'"
+            "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "http://www.synathina.gr/'.$team->tlogo.'"
       }'.(count($actions)==$i?'':',');
 }
 $data.= ']}';

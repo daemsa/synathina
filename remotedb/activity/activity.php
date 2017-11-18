@@ -40,30 +40,58 @@ class RemotedbActivity {
 		}
 	}
 
-	// GET Activities
-	public function getActivities($fields = [], $where = '', $order = '', $limit = '', $as_array = false)
+	// GET Local Activities
+	public function getActivitiesSubactivitiesLocal($fields = [], $where = '', $order = '', $limit = '', $as_array = false)
 	{
 		$query_fields = '*';
 		if ($fields) {
 			$query_fields = implode(',', $fields);
 		}
 
-		$query_where = '';
 		if ($where) {
-			$query_where = ' WHERE ' . $where;
+			$where = ' AND ' . $where;
 		}
 
-		$query_order = '';
 		if ($order) {
-			$query_order = ' ORDER BY ' . $order;
+			$order = ' ORDER BY ' . $order;
 		}
 
-		$query_limit = '';
 		if ($limit) {
-			$query_limit = ' LIMIT ' . $limit;
+			$limit = ' LIMIT ' . $limit;
 		}
 
-		$query = "SELECT ".$query_fields." FROM #__actions ".$query_where." ".$query_order." ".$query_limit;
+		$query = "SELECT ".$query_fields." FROM #__actions AS a INNER JOIN #__actions AS aa ON a.id=aa.action_id WHERE a.origin=1 ".$where." ".$order." ".$limit;
+		//echo str_replace('#__', 'cemyx_', $query);
+		$this->db_remote->setQuery($query);
+
+		if ($as_array) {
+			return $this->db_remote->loadAssocList();
+		} else {
+			return $this->db_remote->loadObjectList();
+		}
+	}
+
+	// GET Remote Activities
+	public function getActivitiesSubactivitiesRemote($fields = [], $where = '', $order = '', $limit = '', $as_array = false)
+	{
+		$query_fields = '*';
+		if ($fields) {
+			$query_fields = implode(',', $fields);
+		}
+
+		if ($where) {
+			$where = ' AND ' . $where;
+		}
+
+		if ($order) {
+			$order = ' ORDER BY ' . $order;
+		}
+
+		if ($limit) {
+			$limit = ' LIMIT ' . $limit;
+		}
+
+		$query = "SELECT ".$query_fields." FROM #__actions AS a INNER JOIN #__actions AS aa ON a.id=aa.action_id WHERE a.origin=2 AND a.remote=1 ".$where." ".$order." ".$limit;
 		//echo str_replace('#__', 'cemyx_', $query);
 		$this->db_remote->setQuery($query);
 
@@ -165,11 +193,11 @@ class RemotedbActivity {
 	public function getActivitiesCount($where = '', $group_by = '') {
 
 		if ($where) {
-			$where = ' WHERE ' . $where;
+			$where = ' AND ' . $where;
 		}
 		$query = "SELECT COUNT(aa.id) FROM #__actions AS a
 					INNER JOIN #__actions AS aa ON aa.action_id=a.id
-					".$where." ".$group_by." ";
+					WHERE (a.origin=1 OR (a.origin=2 && a.remote=1)) ".$where." ".$group_by." ";
 		$this->db_remote->setQuery($query);
 
 		return $this->db_remote->loadResult();
