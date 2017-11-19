@@ -236,9 +236,10 @@ class ActionsModelEdit extends JModelItem
 		$db = JFactory::getDBO();
 
 		if ($isroot == 1) {
+			$action = $this->getAction();
 			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
 				INNER JOIN #__users AS u
-				WHERE t.id='".@$_REQUEST['team_id']."' LIMIT 1";
+				WHERE t.id='".$action->team_id."' LIMIT 1";
 		} else {
 			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
 				INNER JOIN #__users AS u
@@ -262,24 +263,24 @@ class ActionsModelEdit extends JModelItem
 
 	public function getTeams()
 	{
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
-		$fields = ['id', 'name', 'logo'];
-		$where = "create_actions = 1 AND published = 1 AND `hidden` = 0";
-		$order_by = "name ASC";
+		$query = "SELECT id, name, logo FROM #__teams
+					WHERE create_actions = 1 AND published = 1 AND `hidden` = 0 ORDER BY name ASC";
+		$db->setQuery($query);
 
-		return $teamClass->getTeams($fields, $where, $order_by);
+		return $db->loadObjectList();
 	}
 
 	public function getSupporters()
 	{
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
-		$fields = ['id', 'name', 'logo'];
-		$where = "support_actions = 1 AND published = 1 AND `hidden` = 0";
-		$order_by = "name ASC";
+		$query = "SELECT id, name, logo FROM #__teams
+					WHERE support_actions = 1 AND published = 1 AND `hidden` = 0 ORDER BY name ASC";
+		$db->setQuery($query);
 
-		return $teamClass->getTeams($fields, $where, $order_by);
+		return $db->loadObjectList();
 	}
 
 	public function getSupportTeams($where)
@@ -297,7 +298,7 @@ class ActionsModelEdit extends JModelItem
 		$db = JFactory::getDBO();
 
 		$query = "SELECT user_id FROM #__teams
-					WHERE published=1 AND support_actions = 1 AND id!='"., $team_id."' AND FIND_IN_SET(".$donation_id.",`org_donation`) ";
+					WHERE published=1 AND support_actions = 1 AND id!='".$team_id."' AND FIND_IN_SET(".$donations_id.",`org_donation`) ";
 		$db->setQuery($query);
 		$team_user_ids = $db->loadAssocList();
 
@@ -329,11 +330,11 @@ class ActionsModelEdit extends JModelItem
 		$fields = [];
 		$limit = 1;
 		if ($isroot == 1) {
-			$where = "a.id='".@$_REQUEST['id']."'";
+			$where = "id='".@$_REQUEST['id']."'";
 		} else {
-			$where = "a.id='".@$_REQUEST['id']."' AND t.user_id='".$user->id."'";
+			$where = "id='".@$_REQUEST['id']."'";
 		}
-		$activity = $activityClass->getActivityTeam($fields, $where, 1);
+		$activity = $activityClass->getActivity($fields, $where, 1);
 
 		if ($activity) {
 			return $activity;
@@ -350,14 +351,14 @@ class ActionsModelEdit extends JModelItem
 		$activityClass = new RemotedbActivity();
 
 		$fields = [];
-		$order_by = "a.id ASC";
+		$order_by = "id ASC";
 		if ($isroot == 1) {
-			$where = "a.action_id='".@$_REQUEST['id']."'";
+			$where = "action_id='".@$_REQUEST['id']."'";
 		} else {
-			$where = "a.action_id='".@$_REQUEST['id']."' AND t.user_id='".$user->id."'";
+			$where = "action_id='".@$_REQUEST['id']."'";
 		}
 
-		return $activityClass->getActivitiesTeam($fields, $where, $order_by);
+		return $activityClass->getActivities($fields, $where, $order_by);
 	}
 
 	public function getTeamDonationTypes($only_parents = true) {
@@ -554,8 +555,8 @@ class ActionsModelEdit extends JModelItem
 			//stegi
 			$this->lockTable('stegihours');
 			$query = "DELETE FROM #__stegihours WHERE action_id='".$parent_id."' ";
-			$db_remote->setQuery($query);
-			$db_remote->execute();
+			$db->setQuery($query);
+			$db->execute();
 			$this->unlockTable();
 
 			//get all activities
@@ -586,7 +587,6 @@ class ActionsModelEdit extends JModelItem
 							'','',
 							0,
 							'".$team_id."',
-							1,
 							'".$subtitle."',
 							'".$this->getUrlslug($subtitle)."',
 							'',
@@ -604,8 +604,8 @@ class ActionsModelEdit extends JModelItem
 							'".$user->id."',
 							'','',''
 						)";
-						$db_remote->setQuery($query_stegi);
-						$db_remote->execute();
+						$db->setQuery($query_stegi);
+						$db->execute();
 						$this->unlockTable();
 
 						if ($published_old == 0) {
@@ -665,8 +665,10 @@ class ActionsModelEdit extends JModelItem
 						'','',
 						0,
 						'".$team_id."',
+						0,
 						'".$parent_id."',
 						1,
+						0,
 						0,
 						'','','',
 						'".$subtitle."',

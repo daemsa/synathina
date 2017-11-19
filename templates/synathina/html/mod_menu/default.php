@@ -11,8 +11,7 @@ defined('_JEXEC') or die;
 $config = JFactory::getConfig();
 
 //remote db
-$db_common_class = new RemotedbConnection();
-$db_common = $db_common_class->connect();
+$activityClass = new RemotedbActivity();
 
 // Note. It is important to remove spaces between elements.
 ?>

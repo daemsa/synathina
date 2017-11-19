@@ -435,15 +435,15 @@ if($isroot==1){
             foreach($messageDivArray as $parentKey => $subArray) {
                 if(count($subArray['children'])){
                   foreach($subArray['children'] as $child) { ?>
-                      <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
+                      <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if(@$messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
                           <label for="support_message" class="is-block">Μήνυμα προς <?php echo $child[0] ?>*:</label>
-                          <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$child[1]]; ?></textarea>
+                          <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" <?php if(@$messagesToSupporters[$child[1]] != ''){ echo 'required="required"'; } ?>><?php echo @$messagesToSupporters[$child[1]]; ?></textarea>
                       </div>
                   <?php }
                 } else { ?>
-                    <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>"  <?php if($messagesToSupporters[$parentKey] == '') { echo 'style="display:none"'; } ?>>
+                    <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>"  <?php if(@$messagesToSupporters[$parentKey] == '') { echo 'style="display:none"'; } ?>>
                         <label for="support_message" class="is-block">Μήνυμα προς <?php echo $subArray['name']; ?>*:</label>
-                        <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" <?php if($messagesToSupporters[$parentKey] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$parentKey]; ?></textarea>
+                        <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" <?php if(@$messagesToSupporters[$parentKey] != ''){ echo 'required="required"'; } ?>><?php echo @$messagesToSupporters[$parentKey]; ?></textarea>
                     </div>
                 <?php }
               }

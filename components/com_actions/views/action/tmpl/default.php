@@ -23,6 +23,10 @@ function strip_single_tag($str,$tag){
 //db connection
 $db = JFactory::getDBO();
 
+//remote db
+$dbRemoteClass = new RemotedbConnection();
+$db_remote = $dbRemoteClass->remoteConnect();
+
 $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
@@ -30,6 +34,18 @@ $activities = $this->team_activities;
 $activities_array_info=array();
 foreach($activities as $activity){
 	$activities_array_info[$activity->id]=array($activity->name, $activity->image);
+}
+
+if ($action->origin == 1) {
+	$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+				WHERE t.id='".$action->team_id."' LIMIT 1";
+	$db->setQuery($query);
+	$team = $db->loadObject();
+} else {
+	$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+				WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
+	$db_remote->setQuery($query);
+	$team = $db_remote->loadObject();
 }
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
@@ -56,7 +72,7 @@ $subactions=$this->subactions;
 <div class="l-draseis l-draseis--article">
 
 <?php
-	if($isroot==1){
+	if($isroot==1 && $action->origin==1){
 		echo '<a href="index.php?option=com_actions&view=edit&id='.$action->id.'&Itemid=144" style="font-weight:bold; font-size:20px; color:#05c1df">edit</a>';
 	}
 ?>
@@ -81,14 +97,16 @@ $subactions=$this->subactions;
 ?>
                      <h3 class="list-group-item-title" style="<?=(@$action->best_practice==1?'padding-top:0px;':'')?>"><?php echo $action->name; ?></h3>
                      <ul class="inline-list inline-list--separated">
-                        <li><a href="<?php echo JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.'&Itemid=137');  ?>"><?php echo $action->team_name; ?></a></li>
+                        <li><a href="<?php echo JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.'&Itemid=137');  ?>"><?php echo $team->tname; ?></a></li>
                      </ul>
 <?php
 	$teamClass = new RemotedbTeam();
 
-	if ($action->partners) {
-		$where = "id IN (".rtrim($action->partners, ',').") AND published=1";
-		$partners = $teamClass->getTeams(['name', 'id'], $where);
+	if ($action->partners && $action->origin == 1) {
+		$query = "SELECT name, id FROM #__teams
+					WHERE id IN (".rtrim($action->partners, ',').") AND published=1";
+		$db->setQuery($query);
+		$partners = $db->loadObjectList();
 
 		echo '<br />Συνεργαζόμενες ομάδες:<br /><ul class="inline-list inline-list--separated">';
 		foreach ($partners as $partner) {
@@ -97,9 +115,11 @@ $subactions=$this->subactions;
 		echo '</ul>';
 	}
 
-	if ($action->partners) {
-		$where = "id IN (".rtrim($action->supporters, ',').") AND published=1";
-		$supporters = $teamClass->getTeams(['name', 'id'], $where);
+	if ($action->supporters && $action->origin == 1) {
+		$query = "SELECT name, id FROM #__teams
+					WHERE id IN (".rtrim($action->supporters, ',').") AND published=1";
+		$db->setQuery($query);
+		$supporters = $db->loadObjectList();
 
 		echo '<br />Υποστηρικτές:<br /><ul class="inline-list inline-list--separated">';
 		foreach ($supporters as $supporter) {
@@ -232,7 +252,7 @@ $subactions=$this->subactions;
 
 	$activityClass = new RemotedbActivity();
 
-	$fields = ['a.id', 'a.alias', 'a.image', 'a.best_practice', 'a.name', 'aa.address', 'aa.action_date_start', 'aa.action_date_end', 't.name AS tname'];
+	$fields = ['a.id', 'a.origin', 'a.alias', 'a.image', 'a.best_practice', 'a.name', 'aa.address', 'aa.action_date_start', 'aa.action_date_end', 'a.team_id', 'a.accmr_team_id'];
 	$where = "a.action_id=0 AND a.id!='".$action->id."' AND a.published=1 AND aa.action_date_end>='".date('Y-m-d H:i:s')."'";
 
 	// if ($action->area > 0) {
@@ -241,7 +261,7 @@ $subactions=$this->subactions;
 	$group_by = "a.id";
 	$order_by = "aa.action_date_end DESC";
 	$limit = 9;
-	$all_actions = $activityClass->getActivitiesTeams($fields, $where, $group_by, $order_by, $limit);
+	$all_actions = $activityClass->getActivitiesSubactivities($fields, $where, $order_by, $limit, $group_by);
 
 	$all_actions1 = (array)$all_actions;
 	shuffle($all_actions1);
@@ -273,10 +293,20 @@ $subactions=$this->subactions;
 	$a=1;
 	$f=1;
 	foreach($all_actions as $all_action){
-		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$all_action->id.'&Itemid='.@$_REQUEST['Itemid']);
+		if ($all_action->origin == 1) {
+			$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+						WHERE t.id='".$all_action->team_id."' LIMIT 1";
+			$db->setQuery($query);
+			$team = $db->loadObject();
+		} else {
+			$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+						WHERE t.id='".$all_action->accmr_team_id."' LIMIT 1";
+			$db_remote->setQuery($query);
+			$team = $db_remote->loadObject();
+		}
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$all_action->id.':'.$all_action->alias.'&Itemid='.@$_REQUEST['Itemid']);
 		if($all_action->image!=''){
-			list($width, $height) = getimagesize('images/actions/main_images/'.$all_action->image);
+			list($width, $height) = @getimagesize('images/actions/main_images/'.$all_action->image);
 			//192 155
 			$image_path='images/actions/main_images/'.$all_action->image;
 			if($width>$height){
@@ -302,7 +332,7 @@ $subactions=$this->subactions;
 						<a href="'.$link.'"><span class="caption-title">'.stripslashes($all_action->name).'</span></a>
 							<span class="caption-details">'.$all_action->address.'</span>
 							<span class="caption-details">'.($start_date!=$end_date?$start_date.' – '.$end_date:$start_date).'</span>
-							<em class="caption-italic">'.JText::_('COM_ACTIONS_BY').' '.stripslashes($all_action->tname).'</em>
+							<em class="caption-italic">'.JText::_('COM_ACTIONS_BY').' '.stripslashes($team->tname).'</em>
 					</div>
 				</div>';
 		$a++;

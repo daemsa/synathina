@@ -70,16 +70,7 @@ $fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
 $order_by = "aa.lat DESC";
 $activityClass = new RemotedbActivity();
-$actions_local = $activityClass->getActivitiesSubactivitiesLocal($fields, $where, $order_by);
-
-//remote actions
-$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
-$where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
-$order_by = "aa.lat DESC";
-$activityClass = new RemotedbActivity();
-$actions_remote = $activityClass->getActivitiesSubactivitiesRemote($fields, $where, $order_by);
-
-$actions = (object) array_merge((array) $actions_local, (array) $actions_remote);
+$actions = $activityClass->getActivitiesSubactivities($fields, $where, $order_by);
 
 $i=0;
 $data= '{

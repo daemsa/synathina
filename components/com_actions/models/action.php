@@ -77,9 +77,9 @@ class ActionsModelAction extends JModelItem
 
 		$activityClass = new RemotedbActivity();
 
-		$fields = ['a.*', 't.name AS team_name', 't.id AS team_id'];
-		$where = "a.id='".@$_REQUEST['id']."' ".($isroot==1?'':'AND a.published=1')."";
-		$action = $activityClass->getActivityTeam($fields, $where, 1);
+		$fields = ['*'];
+		$where = "id='".@$_REQUEST['id']."' ".($isroot==1?'':'AND published=1')."";
+		$action = $activityClass->getActivity($fields, $where, 1);
 
 		if ($action) {
 			return $action;

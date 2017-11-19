@@ -13,7 +13,6 @@ $query = "SELECT * FROM #__teams
 			WHERE user_id='".$user->id."' LIMIT 1 ";
 $db->setQuery($query);
 $team = $db->loadObject();
-$teams_activated = $team->published;
 
 //language
 $doc = JFactory::getDocument();

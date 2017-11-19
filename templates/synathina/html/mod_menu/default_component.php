@@ -28,17 +28,15 @@ if($item->component=='com_actions'){
 	$user = JFactory::getUser();
 	$isroot = $user->authorise('core.admin');
 
-	//local db
-	$db = JFactory::getDbo();
+	$activityClass = new RemotedbActivity();
 
-	$query="SELECT aa.id,aa.action_date_start FROM #__actions AS aa
-			INNER JOIN #__actions AS a ON aa.action_id=a.id
-			WHERE a.id>0 AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')."
-			ORDER BY aa.action_date_start ASC ";
-	$db_common->setQuery( $query );
-	$db_common->execute();
-	$total = $db_common->getNumRows();
-	$actions = $db_common->loadObjectList();
+	$fields = ['aa.id', 'aa.action_date_start'];
+	$query_where = "a.id>0  AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')." ";
+	$order_by = "aa.action_date_start ASC";
+
+	$actions = $activityClass->getActivitiesSubactivities($fields, $query_where, $order_by);
+
+	$total = count($actions);
 	$end=1;
 	$counter=0;
 	foreach($actions as $action){

@@ -107,10 +107,10 @@ function ordinal_suffix($num){
 			</div>
       <div class="block"></div>
 <?php
-	foreach($this->activities as $activity){
+	foreach($this->team_activities as $team_activity){
     echo '<div class="form-group">
-						<input id="box_activity_'.$activity->id.'" name="activity'.$activity->id.'" '.(@$_REQUEST['activity'.$activity->id]=='on'?'checked="checked"':'').' type="checkbox" />
-						 <label for="box_activity_'.$activity->id.'" class="label-horizontal">'.($lang_code=='en'?$activity->name_en:$activity->name).'</label>
+						<input id="box_activity_'.$team_activity->id.'" name="activity'.$team_activity->id.'" '.(@$_REQUEST['activity'.$team_activity->id]=='on'?'checked="checked"':'').' type="checkbox" />
+						 <label for="box_activity_'.$team_activity->id.'" class="label-horizontal">'.($lang_code=='en'?$team_activity->name_en:$team_activity->name).'</label>
 					</div>';
 	}
 ?>
@@ -193,7 +193,7 @@ function ordinal_suffix($num){
 		foreach($imgs as $img){
 			$image='images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename;
 			if($a==1){
-				list($width, $height) = getimagesize($image);
+				list($width, $height) = @getimagesize($image);
 				//192 155
 				if($width>$height){
 					$max_height='max-height:310px;';

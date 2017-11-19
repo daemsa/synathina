@@ -54,9 +54,7 @@ class ActionsModelActions extends JModelLegacy
 	//echo JRequest::getVar('limitstart');
 	}
 
-
-
-	public function getMsg()
+	public function getActivities()
 	{
 		$db = JFactory::getDBO();
 		$config= new JConfig();
@@ -85,7 +83,14 @@ class ActionsModelActions extends JModelLegacy
 			$where.=" AND aa.action_date_end<='".$new_to."' ";
 		}
 		if(@$_REQUEST['search_name']!=''){
-			$where.=" AND (a.name LIKE '%".trim(@$_REQUEST['search_name'])."%' OR aa.subtitle LIKE '%".trim(@$_REQUEST['search_name'])."%' OR t.name LIKE '%".trim(@$_REQUEST['search_name'])."%') ";
+			$query = "SELECT id FROM #__teams WHERE name LIKE '%".trim(@$_REQUEST['search_name'])."%'";
+			$db->setQuery( $query );
+			$teams = $db->loadObjectList();
+			$teams_ids = '0,';
+			foreach ($teams as $team) {
+				$teams_ids .= $team->id.',';
+			}
+			$where.=" AND (a.name LIKE '%".trim(@$_REQUEST['search_name'])."%' OR aa.subtitle LIKE '%".trim(@$_REQUEST['search_name'])."%' OR a.team_id IN (".rtrim($teams_ids, ',').") ) ";
 		}
 		if(@$_REQUEST['best']=='on'){
 			$where.=" AND a.best_practice=1 ";
@@ -126,10 +131,10 @@ class ActionsModelActions extends JModelLegacy
 		$activityClass = new RemotedbActivity();
 
 		$fields = ['aa.*', 'a.alias', 'a.short_description AS short', 'a.best_practice', 'a.id AS aid', 'a.image AS aimage', 'a.published as apublished'];
-		$query_where = "aa.action_id>0 ". $where ." ". $or_sql ." ". $or_sql1 ." AND ".($isroot==1?'a.published>=0':'a.published=1')." AND t.published=1";
+		$query_where = "aa.action_id>0 ". $where ." ". $or_sql ." ". $or_sql1 ." AND ".($isroot==1?'a.published>=0':'a.published=1')." ";
 		$order_by = "aa.action_date_start ASC";
 
-		$actions = $activityClass->getActivitiesTeams($fields, $query_where, false, $order_by);
+		$actions = $activityClass->getActivitiesSubactivities($fields, $query_where, $order_by);
 
 		$this->_total = count($actions);
 		$this->items = array_splice($actions, $this->getState('limitstart'), $action_limit);
@@ -137,19 +142,19 @@ class ActionsModelActions extends JModelLegacy
 		return $this->items;
 	}
 
-	public function getActivities()
+	public function getTeamActivities()
 	{
 		//db connection
 		$db = JFactory::getDBO();
 
 		$query="SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
 		$db->setQuery( $query );
-		$activities = $db->loadObjectList();
+		$team_activities = $db->loadObjectList();
 
-		return $activities;
+		return $team_activities;
 	}
 
-	public function getBestpractices()
+	public function getBestPractices()
 	{
 		$lang = JFactory::getLanguage();
 		$this->language = $lang->getTag();//$doc->language;
@@ -159,14 +164,18 @@ class ActionsModelActions extends JModelLegacy
 		//db connection
 		$db = JFactory::getDBO();
 
-		$teamClass = new RemotedbTeam();
+		$query = "SELECT user_id FROM #__teams
+					WHERE published=1 ";
+		$db->setQuery($query);
+		$team_user_ids = $db->loadAssocList();
 
-		$where = "published=1";
-		$team_ids = $teamClass->getUserIdsCommaDel($where);
+		$user_team_ids = implode(', ', array_map(function ($entry) {
+		  return $entry['user_id'];
+		}, $team_user_ids));
 
 		$query="SELECT c.*, u.name AS tname FROM #__content AS c
 				INNER JOIN #__users AS u ON u.id=c.created_by
-				WHERE c.catid=".($lang_code=='el'?'20':'21')." AND c.state=1 AND u.id IN (".$team_ids.") ORDER BY c.ordering ASC";
+				WHERE c.catid=".($lang_code=='el'?'20':'21')." AND c.state=1 AND u.id IN (".$user_team_ids.") ORDER BY c.ordering ASC";
 		$db->setQuery( $query );
 		$bestpractices = $db->loadObjectList();
 
