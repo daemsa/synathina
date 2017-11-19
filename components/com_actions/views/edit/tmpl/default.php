@@ -33,12 +33,6 @@ $this->language = $lang->getTag();//$doc->language;
 $lang_code_array=explode('-',$this->language);
 $lang_code=$lang_code_array[0];
 $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
-//get menu clues
-//$menu_params = $app->getMenu()->getActive()->params;
-//$menu_link = $app->getMenu()->getActive()->link;
-
-//$action=$this->action[0];
-//$subactions=$this->subactions;
 
 // IMPORT EDITOR CLASS
 jimport( 'joomla.html.editor' );

@@ -32,14 +32,13 @@ if($item->component=='com_actions'){
 	$db = JFactory::getDbo();
 
 	$query="SELECT aa.id,aa.action_date_start FROM #__actions AS aa
-			INNER JOIN #__teams AS t ON aa.team_id=t.id
 			INNER JOIN #__actions AS a ON aa.action_id=a.id
-			WHERE a.id>0 AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')." AND t.published=1
+			WHERE a.id>0 AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')."
 			ORDER BY aa.action_date_start ASC ";
-	$db_remote->setQuery( $query );
-	$db_remote->execute();
-	$total = $db_remote->getNumRows();
-	$actions = $db_remote->loadObjectList();
+	$db_common->setQuery( $query );
+	$db_common->execute();
+	$total = $db_common->getNumRows();
+	$actions = $db_common->loadObjectList();
 	$end=1;
 	$counter=0;
 	foreach($actions as $action){

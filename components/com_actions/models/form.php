@@ -232,25 +232,37 @@ class ActionsModelForm extends JModelItem
 		$db_remote->execute();
 	}
 
-	public function getTeam($fields = [], $where = '', $limit = '')
+	public function lockTable ($table)
 	{
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
-		if (!$where) {
-			$user = JFactory::getUser();
-			$where = "user_id='".$user->id."'";
-		}
-
-		return $teamClass->getTeam($fields, $where, 1);
+		$query = "LOCK TABLES #__".$table." WRITE";
+		$db->setQuery($query);
+		$db->execute();
 	}
 
-	public function getSubactions()
+	public function unlockTable ()
 	{
-		$activityClass = new RemotedbActivity();
+		$db = JFactory::getDBO();
 
-		$where = "action_id='".@$_REQUEST['id']."' AND published=1";
+		$query = "UNLOCK TABLES";
+		$db->setQuery($query);
+		$db->execute();
+	}
 
-		return $activityClass->getActivities([], $where);
+	public function getTeam($user_id = false)
+	{
+		$db = JFactory::getDBO();
+
+		if (!$user_id) {
+			$user = JFactory::getUser();
+			$user_id = $user->id;
+		}
+		$query = "SELECT * FROM #__teams WHERE user_id='".$user_id."' ";
+		$db->setQuery($query);
+		$db->lodObject();
+
+		return $db->loadObject();
 	}
 
 	public function getTeamActivities()
@@ -268,24 +280,22 @@ class ActionsModelForm extends JModelItem
 
 	public function getTeams()
 	{
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
-		$where = "`hidden`=0 AND published=1";
+		$query = "SELECT id, name, logo FROM #__teams WHERE `hidden`=0 AND published=1 ORDER BY name ASC ";
+		$db->setQuery($query);
 
-		return $teamClass->getTeams(['id', 'name', 'logo'], $where, "name ASC");
+		return $db->loadObjectList();
 	}
 
 	public function getTeamsUsers()
 	{
 		$db = JFactory::getDBO();
-		$teamClass = new RemotedbTeam();
 
-		$where = "published=1";
-		$team_ids = $teamClass->getUserIdsCommaDel($where);
-
-		$query = "SELECT id, name
-					FROM #__users
-					WHERE block=0 AND activation='' AND id IN (".$team_ids.")";
+		$query = "SELECT u.id, u.name
+					FROM #__users AS u
+					INNER JOIN #__teams AS t ON t.user_Id=u.id
+					WHERE u.block=0 AND u.activation='' AND t.published=1 ";
 		$db->setQuery($query);
 
 		return  $db->loadObjectList();
@@ -342,7 +352,7 @@ class ActionsModelForm extends JModelItem
 		}
 
 		//get team info
-		$team_info = $this->getTeam(['name'], "user_id='".$user->id."'", 1);
+		$team_info = $this->getTeam($user->id);
 
 		//get request data
 		$team_id = $team_info->id;
@@ -415,7 +425,9 @@ class ActionsModelForm extends JModelItem
 			0,
 			'".$team_id."',
 			0,
+			0,
 			1,
+			0,
 			0,
 			'".$name."',
 			'".$alias."',
@@ -515,12 +527,11 @@ class ActionsModelForm extends JModelItem
 						$area = 1;
 						$stegi_exists_in_general = 1;
 
-						$this->lockRemoteTable('stegihours');
+						$this->lockTable('stegihours');
 						$query_stegi = "INSERT INTO #__stegihours VALUES (
 							'','',
 							0,
 							'".$team_id."',
-							1,
 							'".$subtitle."',
 							'".$this->getUrlslug($subtitle)."',
 							'',
@@ -538,9 +549,9 @@ class ActionsModelForm extends JModelItem
 							'".$user->id."',
 							'','',''
 						)";
-						$db_remote->setQuery($query_stegi);
-						$db_remote->execute();
-						$this->unlockRemoteTable();
+						$db->setQuery($query_stegi);
+						$db->execute();
+						$this->unlockTable();
 
 						//email to admin
 						$emails = [];
@@ -599,8 +610,10 @@ class ActionsModelForm extends JModelItem
 						'','',
 						0,
 						'".$team_id."',
+						0,
 						'".$parent_id."',
 						1,
+						0,
 						0,
 						'','','',
 						'".$subtitle."',

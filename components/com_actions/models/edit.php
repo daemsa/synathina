@@ -187,6 +187,24 @@ class ActionsModelEdit extends JModelItem
 		$db_remote->execute();
 	}
 
+	public function lockTable ($table)
+	{
+		$db = JFactory::getDBO();
+
+		$query = "LOCK TABLES #__".$table." WRITE";
+		$db->setQuery($query);
+		$db->execute();
+	}
+
+	public function unlockTable ()
+	{
+		$db = JFactory::getDBO();
+
+		$query = "UNLOCK TABLES";
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 	public function donations_valid($text = false)
 	{
 		$db = JFactory::getDBO();
@@ -215,34 +233,20 @@ class ActionsModelEdit extends JModelItem
 	{
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
-
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
 		if ($isroot == 1) {
-			$fields = ['t.id','t.user_id','t.logo'];
-			$where = "a.id='".@$_REQUEST['id']."'";
-			$limit = 1;
-			$team = $teamClass->getTeamActivity($fields, $where, $limit);
+			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
+				INNER JOIN #__users AS u
+				WHERE t.id='".@$_REQUEST['team_id']."' LIMIT 1";
 		} else {
-			$fields = ['id','user_id','logo'];
-			$where = "user_id='".$user->id."'";
-			$limit = 1;
-			$team = $teamClass->getTeam($fields, $where, $limit);
+			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
+				INNER JOIN #__users AS u
+				WHERE t.user_id='".$user->id."' LIMIT 1";
 		}
+		$db->setQuery( $query );
 
-		return $team;
-	}
-
-	public function getTeamInfo($team_id)
-	{
-		$teamClass = new RemotedbTeam();
-
-		$fields = ['name', 'user_id', 'contact_1_name', 'contact_1_email', 'contact_1_phone'];
-		$where = "id='".$team_id."'";
-		$limit = 1;
-		$team = $teamClass->getTeam($fields, $where, $limit);
-
-		return $team;
+		return $db->loadObject();
 	}
 
 	public function getActivities()
@@ -285,6 +289,21 @@ class ActionsModelEdit extends JModelItem
 		$fields = ['user_id'];
 
 		return $teamClass->getTeams($fields, $where);
+	}
+
+	//GET Teams Ids with Comma Delimiter
+	public function getUserIdsCommaDel($donations_id, $team_id)
+	{
+		$db = JFactory::getDBO();
+
+		$query = "SELECT user_id FROM #__teams
+					WHERE published=1 AND support_actions = 1 AND id!='"., $team_id."' AND FIND_IN_SET(".$donation_id.",`org_donation`) ";
+		$db->setQuery($query);
+		$team_user_ids = $db->loadAssocList();
+
+		return implode(', ', array_map(function ($entry) {
+		  return $entry['user_id'];
+		}, $team_user_ids));
 	}
 
 	public function getServices()
@@ -389,8 +408,8 @@ class ActionsModelEdit extends JModelItem
 		$published = $action->published;
 		$published_old = $published;
 
-		$team_id = @$_REQUEST['team_id'];
-		$team_info = $this->getTeamInfo($team_id);
+		$team_info = $this->getTeam();
+		$team_id = $team_info->id;
 
 		$best_practice = 0;
 
@@ -533,11 +552,11 @@ class ActionsModelEdit extends JModelItem
 			$this->unlockRemoteTable();
 
 			//stegi
-			$this->lockRemoteTable('stegihours');
+			$this->lockTable('stegihours');
 			$query = "DELETE FROM #__stegihours WHERE action_id='".$parent_id."' ";
 			$db_remote->setQuery($query);
 			$db_remote->execute();
-			$this->unlockRemoteTable();
+			$this->unlockTable();
 
 			//get all activities
 			$activities = $this->getActivities();
@@ -562,7 +581,7 @@ class ActionsModelEdit extends JModelItem
 						$stegi_exists_in_general = 1;
 
 						//insert into stegi
-						$this->lockRemoteTable('stegihours');
+						$this->lockTable('stegihours');
 						$query_stegi = "INSERT INTO #__stegihours VALUES (
 							'','',
 							0,
@@ -587,7 +606,7 @@ class ActionsModelEdit extends JModelItem
 						)";
 						$db_remote->setQuery($query_stegi);
 						$db_remote->execute();
-						$this->unlockRemoteTable();
+						$this->unlockTable();
 
 						if ($published_old == 0) {
 							//email to admin
@@ -719,8 +738,7 @@ class ActionsModelEdit extends JModelItem
 				$donations_valid_text = $this->donations_valid(true);
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
-						$teamClass = new RemotedbTeam();
-						$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND support_actions = 1 AND id!='".$team_id."' AND FIND_IN_SET(".$donations_array[$d].",`org_donation`)");
+						$team_user_ids_text = $this->getUserIdsCommaDel($donations_array[$d], $team_id);
 						if ($team_user_ids_text) {
 							$query = "SELECT email FROM #__users
 											WHERE id IN (".$team_user_ids_text.") ";
@@ -758,12 +776,8 @@ class ActionsModelEdit extends JModelItem
 
 			//email to user
 			if ($published_old == 0) {
-				$query_team = "SELECT email FROM #__users
-								WHERE id='".$team_info->user_id."' LIMIT 1 ";
-				$db->setQuery( $query_team );
-				$team_email = $db->loadResult();
-				if ($team_email != '') {
-					$emails = array($team_email);
+				if ($team_info->user_email != '') {
+					$emails = [$team_info->user_email];
 					$att = '';
 					$s_array = array(0 => ' ', ' ', ' ');
 					if ($stegi_exists_in_general == 1) {
@@ -783,17 +797,11 @@ class ActionsModelEdit extends JModelItem
 
 		//email to user if activity is cancelled by the admin
 		if ($published == 0 && $published_old == 1 && $isroot == 1) {
-			$team = $this->getTeam();
-
-			$query = "SELECT email FROM #__users WHERE id='".$team->user_id."' LIMIT 1";
-			$db->setQuery($query);
-			$email_to = $db->loadResult();
-			$emails = [];
-			if ($email_to != '') {
-				$emails[] = $email_to;
+			if ($team_info->user_email != '') {
+				$emails[] = $team_info->user_email;
+				$s_array = array($name);
+				synathina_email('action_cancelled_user', $s_array, $emails, '');
 			}
-			$s_array = array($name);
-			synathina_email('action_cancelled_user', $s_array, $emails, '');
 		}
 
 		if ($isroot == 1) {

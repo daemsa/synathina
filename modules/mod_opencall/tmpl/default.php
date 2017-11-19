@@ -8,15 +8,12 @@ $abspath = $config->get( 'abs_path' );
 //local db
 $db = JFactory::getDbo();
 
-//get team
-$teamClass = new RemotedbTeam();
-
-$fields = ['published'];
-$where = "";
-$limit = 1;
-$team = $teamClass->getTeam($fields, $where, $limit);
+//get team state
+$query = "SELECT * FROM #__teams
+			WHERE user_id='".$user->id."' LIMIT 1 ";
+$db->setQuery($query);
+$team = $db->loadObject();
 $teams_activated = $team->published;
-
 
 //language
 $doc = JFactory::getDocument();

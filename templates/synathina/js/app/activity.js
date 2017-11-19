@@ -85,6 +85,7 @@ var Activities = (function(global) {
     }
 
     function synathina(url) {
+        synathina_text = [];
         $.ajax({
             type: 'GET',
             url: url,

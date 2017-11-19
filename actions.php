@@ -198,8 +198,9 @@ foreach($actions as $action){
             "content": "'.str_replace(array("\r\n","\r"),"",htmlspecialchars($action->short_description)).'",
             "content_img": "http://www.synathina.gr/images/actions/main_images/'.$action->image.'",
             "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "http://www.synathina.gr/'.$team->tlogo.'"
-      }'.(count($actions)==$i?'':',');
+      },';
 }
+$data = rtrim($data, ',');
 $data.= ']}';
 
 echo $data;
