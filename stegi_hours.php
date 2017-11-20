@@ -44,9 +44,6 @@ $app = JFactory::getApplication('site');
 //connect to db
 $db = JFactory::getDBO();
 
-//remote db
-JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
-
 $lang = JFactory::getLanguage();
 
 $user = JFactory::getUser();
@@ -89,13 +86,15 @@ if(@$_REQUEST['stegi_date']!=''){
 	//get stegihours
 	$actions_date_array=array();
 	$actions_array=array();
-	$stegiClass = new RemotedbStegi();
-	$activityClass = new RemotedbActivity();
 
-	$fields = ['t.name AS tname', 't.id AS tid', 't.alias AS talias', 'a.id', 'a.name', 'a.alias', 'a.action_id', 'a.date_start', 'a.date_end'];
-	$where = "a.published=1";
-	$order_by = "a.date_start ASC";
-	$actions = $stegiClass->getStegiHoursTeams($fields, $where, $order_by);
+	$query = "SELECT t.name AS tname, t.id AS tid, t.alias AS talias, a.id, a.name, a.alias, a.action_id, a.date_start, a.date_end FROM #__stegihours AS a
+				INNER JOIN #__teams AS t
+				ON t.id=a.team_id
+				WHERE a.published=1
+				ORDER BY a.date_start ASC";
+	$db->setQuery($query);
+	$actions = $db->loadObjectList();
+
 	$start1 = time();
 	//echo $start1."<br />";
 	foreach($actions as $action){

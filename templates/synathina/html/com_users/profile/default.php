@@ -24,22 +24,13 @@ $isroot = $user->authorise('core.admin');
 //local db
 $db = JFactory::getDbo();
 
-//remote db - use with $db_remote
-$dbRemoteClass = new RemotedbConnection();
-$db_remote = $dbRemoteClass->connect();
-
 //get team state
 $query = "SELECT published FROM #__teams WHERE user_id='".$this->data->id."' LIMIT 1 ";
-$db_remote->setQuery($query);
-$teams_activated = $db_remote->loadResult();
+$db->setQuery($query);
+$teams_activated = $db->loadResult();
 if($isroot==1){
 }else{
 ?>
-<!--<div class="l-register">
-	<div class="module module--synathina">
-		<div class="module-skewed">
-			<div class="register">
-				<h3 class="popup-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h3>-->
 
 <div class="l-register show-profile">
 <?php
@@ -79,17 +70,7 @@ if($isroot==1){
 				</ul>
 				<?php endif; ?>
 				<?php echo $this->loadTemplate('core'); ?>
-
-				<?php //echo $this->loadTemplate('params'); ?>
-
-				<?php //echo $this->loadTemplate('custom'); ?>
 				<br />
-				<!--<ul class="btn-toolbar">
-					<li class="btn-group" style="list-style:none;list-style-type:none">
-						<a class="btn" href="<?php echo JRoute::_('index.php?option=com_users&task=profile.edit&user_id=' . (int) $this->data->id);?>">
-							<span class="icon-user"></span> <?php echo JText::_('COM_USERS_EDIT_PROFILE'); ?></a>
-					</li>
-				</ul>	-->
 			</div>
 		</div>
 	</div>

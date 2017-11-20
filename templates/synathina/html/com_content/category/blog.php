@@ -32,32 +32,28 @@ $menuname = $menu->getActive()->title;
 
 function teams_count2($year)
 {
-	//remote db
-	$teamClass = new RemotedbTeam();
-	$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND created>='".$year."-01-01 00:00:00' AND created<='".$year."-31-21 23:59:59'");
-
 	$db = JFactory::getDBO();
-	$query = "SELECT id	FROM #__users
-				WHERE block=0 AND activation='' AND id IN (".$team_user_ids_text.") ";
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
 	$db->setQuery($query);
 	$db->execute();
 
-	return $db->getNumRows();
+	return $db->loadResult();
 }
 
 function donators_count()
 {
-	//remote db
-	$teamClass = new RemotedbTeam();
-	$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND support_actions=1");
-
 	$db = JFactory::getDBO();
-	$query = "SELECT id	FROM #__users
-				WHERE block=0 AND activation='' AND id IN (".$team_user_ids_text.") ";
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1 ";
 	$db->setQuery($query);
 	$db->execute();
 
-	return $db->getNumRows();
+	return $db->loadResult();
 }
 
 function count_actions_1($year)

@@ -412,9 +412,13 @@ class ActionsModelEdit extends JModelItem
 		$team_info = $this->getTeam();
 		$team_id = $team_info->id;
 
+		$remote_send = 0;
 		$best_practice = 0;
 
 		if ($isroot == 1) {
+			if (@$_REQUEST['remote_send'] == 'on') {
+				$remote_send = 1;
+			}
 			if (@$_REQUEST['best_practice'] == 'on') {
 				$best_practice = 1;
 			}
@@ -488,6 +492,7 @@ class ActionsModelEdit extends JModelItem
 		$this->lockRemoteTable('actions');
 		$actions_query = "UPDATE #__actions SET
 			published='".$published."',
+			remote = '".$remote_send."',
 			best_practice='".$best_practice."',
 			team_id='".$team_id."',
 			name='".$name."',
@@ -668,7 +673,7 @@ class ActionsModelEdit extends JModelItem
 						0,
 						'".$parent_id."',
 						1,
-						0,
+						'".$remote_send."',
 						0,
 						'','','',
 						'".$subtitle."',
@@ -729,7 +734,7 @@ class ActionsModelEdit extends JModelItem
 			}
 
 			//email to supporters
-			if ($donations_ids != '' && $isroot == 1) {
+			if ($donations_ids != '' && $activities_send == 0) {
 				$supporters_exist = 0;
 				$emails = [];
 				$supporters_emails = [];

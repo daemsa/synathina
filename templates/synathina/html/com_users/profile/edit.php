@@ -30,10 +30,6 @@ $config = JFactory::getConfig();
 //local db
 $db = JFactory::getDbo();
 
-//remote db - use with $db_remote
-$dbRemoteClass = new RemotedbConnection();
-$db_remote = $dbRemoteClass->connect();
-
 // IMPORT EDITOR CLASS
 jimport( 'joomla.html.editor' );
 
@@ -70,8 +66,8 @@ $renderer->render('message');
 $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 
 $query = "SELECT * FROM #__teams WHERE user_id='".$this->data->id."' LIMIT 1 ";
-$db_remote->setQuery($query);
-$teams_data = $db_remote->loadObjectList();
+$db->setQuery($query);
+$teams_data = $db->loadObjectList();
 foreach($teams_data as $team_data){
 	if($team_data->create_actions==1){
 		$create_actions=1;

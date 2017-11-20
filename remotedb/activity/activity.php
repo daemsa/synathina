@@ -269,6 +269,19 @@ class RemotedbActivity {
 		return $this->db_remote->loadResult();
 	}
 
+	public function getActivitiesCountLimited($where = '', $group_by = '') {
+
+		if ($where) {
+			$where = ' WHERE ' . $where;
+		}
+		$query = "SELECT COUNT(aa.id) FROM #__actions AS a
+					INNER JOIN #__actions AS aa ON aa.action_id=a.id
+					".$where." ".$group_by." ";
+		$this->db_remote->setQuery($query);
+
+		return $this->db_remote->loadResult();
+	}
+
 	public function getActivitiesTeams($fields, $where = '', $group_by = '', $order_by = '', $limit = '') {
 
 		$query_fields = 'a.ID';

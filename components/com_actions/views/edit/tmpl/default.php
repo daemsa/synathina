@@ -144,14 +144,20 @@ if($isroot==1){
 ?>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
-									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice==1?'checked="checked"':'')?> />
-									 <label for="best_practice" class="is-block">Best practice:</label>
+									 <input id="remote_send" name="remote_send" type="checkbox" <?=($action->remote == 1 ? 'checked="checked"' : '') ?> />
+									 <label for="remote_send" class="is-block">Προβολή στο ACCMR</label>
+								</div>
+							</div>
+							<div class="form-inline l-fg6 max-600">
+								<div class="form-group">
+									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice == 1 ? 'checked = "checked"' : '') ?> />
+									 <label for="best_practice" class="is-block">Best practice</label>
 								</div>
 							</div>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									 <input id="published" name="published" type="checkbox" <?=($action->published==1?'checked="checked"':'')?> />
-									 <label for="published" class="is-block">Published:</label>
+									 <label for="published" class="is-block">Published</label>
 								</div>
 							</div>
 <?php

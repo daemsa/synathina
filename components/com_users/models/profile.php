@@ -409,10 +409,6 @@ class UsersModelProfile extends JModelForm
 		//local db
 		$db = JFactory::getDbo();
 
-		//remote db - use with $db_remote
-		$dbRemoteClass = new RemotedbConnection();
-		$db_remote = $dbRemoteClass->connect();
-
 		//requests
 		$team_id=@$_REQUEST['team_id'];
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));
@@ -420,8 +416,8 @@ class UsersModelProfile extends JModelForm
 		//$alias=JApplication::stringURLSafe($_REQUEST['jform']['name']);
 		$alias=JFilterOutput::stringURLSafe($team_name);
 		$query = "SELECT id FROM #__teams WHERE alias='".$alias."' LIMIT 1";
-		$db_remote->setQuery($query);
-		$same_alias = $db_remote->loadResult();
+		$db->setQuery($query);
+		$same_alias = $db->loadResult();
 		if(@$_REQUEST['jform']['create_actions']=='organizer'){
 			$create_actions=1;
 		}else{
@@ -518,24 +514,24 @@ class UsersModelProfile extends JModelForm
 
 		//team management
 		$query = "SELECT MAX(ordering) FROM #__teams ";
-		$db_remote->setQuery($query);
-		$max_ordering = $db_remote->loadResult() + 1;
+		$db->setQuery($query);
+		$max_ordering = $db->loadResult() + 1;
 
 		$query = "LOCK TABLES #__teams WRITE";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
+		$db->setQuery($query);
+		$db->execute();
 
 		$query = "UPDATE #__teams SET  hidden='".$hidden_team."',name='".$team_name."', alias='".$alias."', create_actions='".$create_actions."', support_actions='".$support_actions."', legal_form='".$legal_form."', profit='".$profit."', profit_id='".$profit_id."' , profit_custom='".$profit_custom."',
 							team_or_org='".$team_or_org."', activities='".$activities_ids."', org_donation='".$donations_ids."',donation_eidos='".$donation_other_1."',donation_technology='".$donation_other_16."', description='".$team_description."', web_link='".$web_link."', fb_link='".$fb_link."', tw_link='".$tw_link."', in_link='".$in_link."',
 							li_link='".$li_link."', yt_link='".$yt_link."',
 							contact_1_name='".$contact_1_name."',contact_1_email='".$contact_1_email."',contact_1_phone='".$contact_1_phone."',contact_2_name='".$contact_2_name."',contact_2_email='".$contact_2_email."',contact_2_phone='".$contact_2_phone."',
 							contact_3_name='".$contact_3_name."',contact_3_email='".$contact_3_email."',contact_3_phone='".$contact_3_phone."',	newsletter='".$newsletter."', modified='".date('Y-m-d H:i:s',time())."'  WHERE id='".$team_id."' LIMIT 1 ";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
+		$db->setQuery($query);
+		$db->execute();
 
 		$query = "UNLOCK TABLES";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
+		$db->setQuery($query);
+		$db->execute();
 
 		//logo management
 		$logo_path='';
@@ -545,15 +541,15 @@ class UsersModelProfile extends JModelForm
 				$ext = $path_parts['extension'];
 				if(move_uploaded_file($_FILES["jform"]["tmp_name"]['logo'], $config->get( 'abs_path' ).'/images/team_logos/'.$team_id.'.'.$ext)){
 					$query = "SELECT logo FROM #__teams WHERE id='".$team_id."' LIMIT 1 ";
-					$db_remote->setQuery($query);
-					$logo_path = $db_remote->loadResult();
+					$db->setQuery($query);
+					$logo_path = $db->loadResult();
 					if($logo_path!=''){
 						unlink($config->get( 'abs_path' ).'/'.$logo_path);
 					}
 					$new_logo_path='images/team_logos/'.$team_id.'.'.$ext;
 					$query = "UPDATE #__teams SET logo='".$new_logo_path."' WHERE id='".$team_id."' LIMIT 1";
-					$db_remote->setQuery($query);
-					$db_remote->execute();
+					$db->setQuery($query);
+					$db->execute();
 
 				}
 			}else{

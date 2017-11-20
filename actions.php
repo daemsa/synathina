@@ -85,12 +85,12 @@ $data= '{
 foreach($actions as $action){
 	//get team
 	if ($action->origin == 1) {
-		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+		$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 					WHERE t.id='".$action->team_id."' LIMIT 1";
 		$db->setQuery($query);
 		$team = $db->loadObject();
 	} else {
-		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+		$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 					WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
 		$db_remote->setQuery($query);
 		$team = $db_remote->loadObject();
@@ -180,7 +180,7 @@ foreach($actions as $action){
             "slug": "'.htmlspecialchars($action->alias).'","url": "'.htmlspecialchars($link).'","team_url": "'.htmlspecialchars($link_team).'",
             "category_id": '.$activities_ids.',
             "category_name" : "'.str_replace(array("\r\n","\r"),"",@$activities_array_text[$activities_array[0]]).'",
-            "team_id": "'.$action->team_id.'",
+            "team_id": "'.$team->id.'",
             "team_name": "'.htmlspecialchars($team->tname).'",
             "team_members": "<span style=\'font-size:28px\'>'.(count($partners_array)+1).'</span><br />'.$members.'","address": "'.trim(htmlspecialchars($action->aaddress)).'",
             "sponsor_title": "","date": "'.$action->aaction_date_start.'","date_end": "'.$action->aaction_date_end.'","dates": "'.$dates.'",

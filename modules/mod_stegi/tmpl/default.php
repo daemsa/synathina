@@ -6,6 +6,9 @@ $doc = JFactory::getDocument();
 $lang_code_array=explode('-',$doc->language);
 $lang_code=$lang_code_array[0];
 
+//connect to db
+$db = JFactory::getDBO();
+
 $actions_date_array1=array();
 
 date_default_timezone_set('Europe/Athens');
@@ -26,13 +29,18 @@ function nb_mois($date1, $date2){
 }
 
 
-function get_distinct_teams($date, $stegiClass){
-	$fields = ['team_id'];
-	$where = "published=1 AND (date_start LIKE '".$date."%' OR date_end LIKE '".$date."%' OR (date_start<'".$date." 23:59:59' AND date_end>'".$date." 00:00:00') )";
-	$group_by = "team_id";
-	$teams = $stegiClass->getStegiHours($fields, $where, $group_by);
+function get_distinct_teams($date)
+{
+	//connect to db
+	$db = JFactory::getDBO();
 
-	return count($teams);
+	$query = "SELECT id FROM #__stegihours
+				WHERE published=1 AND (date_start LIKE '".$date."%' OR date_end LIKE '".$date."%' OR (date_start<'".$date." 23:59:59' AND date_end>'".$date." 00:00:00') ) GROUP BY team_id";
+	$db->setQuery($query);
+	$db->execute();
+// echo $db->getNumRows();
+// die;
+	return $db->getNumRows();
 }
 
 //get activities
@@ -62,15 +70,13 @@ foreach($actions as $action){
 	}
 }*/
 //get stegi teams
-$stegiClass = new RemotedbStegi();
+$query = "SELECT t.name AS tname, a.id, a.name, a.date_start, a.date_end FROM #__stegihours AS a
+			INNER JOIN #__teams AS t
+			ON t.id=a.team_id
+			WHERE a.published=1 ORDER BY a.date_start ASC";
+$db->setQuery($query);
+$actions = $db->loadObjectList();
 
-$fields = ['t.name AS tname', 'a.id', 'a.name', 'a.date_start', 'a.date_end'];
-$where = "a.published=1";
-$order_by = "a.date_start ASC";
-$actions = $stegiClass->getStegiHoursTeams($fields, $where, $order_by);
-
-//$actions_array=array();
-//$actions_date_array=array();
 foreach($actions as $action){
 	$start=$action->date_start;
 	$start_array=explode(':',$start);
@@ -110,18 +116,16 @@ foreach($actions as $action){
 		//}
 	//}
 }
-//print_r($actions_date_array1);
+
 $user = JFactory::getUser();
 
 //get team
-$teamClass = new RemotedbTeam();
+$query = "SELECT published FROM #__teams
+			WHERE user_id='".$user->id."' LIMIT 1";
+$db->setQuery($query);
+$team = $db->loadObject();
 
-$fields = ['published'];
-$where = "user_id='".$user->id."'";
-$limit = 1;
-$team = $teamClass->getTeam($fields, $where, $limit);
-
-function draw_calendar($month,$year,$actions_date_array1,$lang, $stegiClass){
+function draw_calendar($month,$year,$actions_date_array1,$lang){
 	/* draw table */
 	//$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
 	$calendar='';
@@ -162,15 +166,19 @@ function draw_calendar($month,$year,$actions_date_array1,$lang, $stegiClass){
 			//$calendar.= '<div class="day-number">'.$list_day.'</div>';
 			$new_time1=$year.'-'.($month<10?0:'').$month.'-'.($list_day<10?0:'').$list_day;
 			$found=array_keys($actions_date_array1,$new_time1);
-			//if(!empty($found)){
-				$s=get_distinct_teams($new_time1, $stegiClass);
+			if(!empty($found)){
+				if ($list_day % 2 == 0) {
+					$s=get_distinct_teams($new_time1);
+				} else {
+					$s=1;
+				}
 				$calendar.='<li href="'.JURI::base().'" rel="'.$new_time1.'" class="stegi_use_exists stegi_'.($s>4?4:$s).'">
 											<a class="active" href="'.JURI::base().'" rel="'.$new_time1.'">'.$list_day.'</a>
 											<a class="stegi_count" href="'.JURI::base().'" rel="'.$new_time1.'"><span>'.$s.'</span></a>
 										</li>';
-			//}else{
-				//$calendar.= '<li>'.$list_day.'</li>';
-			//}
+			}else{
+				$calendar.= '<li>'.$list_day.'</li>';
+			}
 
 			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
 			//$calendar.= str_repeat('<p> </p>',2);
@@ -310,14 +318,13 @@ function draw_calendar($month,$year,$actions_date_array1,$lang, $stegiClass){
 		<div class="module module--synathina">
       <div class="module-skewed module-skewed--gray" rel="js-container">
 <?php
-	$stegiClass = new RemotedbStegi();
 	$current=0;
 	$current_month=mktime(0, 0, 0, (date('n')), 1, date('Y'));
 	for($m=0; $m<$months; $m++){
 		$next_month=mktime(0, 0, 0, (6+$m), 1, 2016);
 		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">
 						<div class="diary diary--month">
-						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code, $stegiClass).'
+						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code).'
 						</div>
 					</div>';
 		if($current_month==$next_month){

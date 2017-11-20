@@ -28,8 +28,6 @@ if($item->component=='com_actions'){
 	$user = JFactory::getUser();
 	$isroot = $user->authorise('core.admin');
 
-	$activityClass = new RemotedbActivity();
-
 	$fields = ['aa.id', 'aa.action_date_start'];
 	$query_where = "a.id>0  AND aa.action_id>0 ".($isroot==1?'AND a.published>=0':'AND a.published=1')." ";
 	$order_by = "aa.action_date_start ASC";

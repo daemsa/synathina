@@ -50,10 +50,10 @@ $user = JFactory::getUser();
 //user_id,file_id,file_path,abspath
 if($user->id>0 && $user->id==@$_REQUEST['user_id']){
 	//remove file
-	unlink(@$_REQUEST['file_path']);	
+	@unlink(@$_REQUEST['file_path']);
 	$query="DELETE FROM #__attachments WHERE id='".@$_REQUEST['file_id']."' AND created_by='".@$_REQUEST['user_id']."' LIMIT 1";
 	$db->setQuery($query);
-	$db->execute();		
+	$db->execute();
 	echo 1;
 }else{
 	//header('Location:index.php');

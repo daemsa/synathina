@@ -79,12 +79,12 @@ $data= '{
 foreach($actions as $action){
 	//get team
 	if ($action->origin == 1) {
-		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+		$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 					WHERE t.id='".$action->team_id."' LIMIT 1";
 		$db->setQuery($query);
 		$team = $db->loadObject();
 	} else {
-		$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+		$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 					WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
 		$db_remote->setQuery($query);
 		$team = $db_remote->loadObject();
@@ -117,9 +117,9 @@ foreach($actions as $action){
 	}
 
 	if ($action->origin == 1) {
-		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
 	} else {
-		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
 	}
 
 	if($date_array_end1[2].'-'.$date_array_end1[1].'-'.$date_array_end1[0] == $date_array_start1[2].'-'.$date_array_start1[1].'-'.$date_array_start1[0]){

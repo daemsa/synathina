@@ -30,7 +30,7 @@ function sortBy($field, &$array, $direction = 'desc')
 //1st slider
 function count_actions($year)
 {
-	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
+	$where = "a.team_id>0 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
 	if ($year == date('Y')) {
 		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
 	} else {
@@ -39,7 +39,7 @@ function count_actions($year)
 
 	//remote db
 	$activityClass = new RemotedbActivity();
-	$activities_count = $activityClass->getActivitiesCount($where);
+	$activities_count = $activityClass->getActivitiesCountLimited($where);
 
 	return $activities_count;
 }
@@ -70,17 +70,15 @@ for($y=2014; $y<=date('Y'); $y++){
 //get 2nd slider
 function teams_count($year)
 {
-	//remote db
-	$teamClass = new RemotedbTeam();
-	$team_user_ids_text = $teamClass->getUserIdsCommaDel("published=1 AND created>='".$year."-01-01 00:00:00' AND created<='".$year."-31-21 23:59:59'");
-
 	$db = JFactory::getDBO();
-	$query = "SELECT id	FROM #__users
-				WHERE block=0 AND activation='' AND id IN (".$team_user_ids_text.") ";
+	$query = "SELECT COUNT(u.id) FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59' ";
 	$db->setQuery($query);
 	$db->execute();
 
-	return $db->getNumRows();
+	return $db->loadResult();
 }
 
 $slider_2_2013 = 42;
@@ -151,9 +149,9 @@ if($current_year_3==2016){
 
 	foreach($activities_object as $activity) {
 		//remote db
-		$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "'";
+		$where = "a.team_id>0 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "'";
 		$activityClass = new RemotedbActivity();
-		$activities_count = $activityClass->getActivitiesCount($where);
+		$activities_count = $activityClass->getActivitiesCountLimited($where);
 	    $total_action_count += $activities_count;
 	    $activity->action_count = $activities_count;
     }

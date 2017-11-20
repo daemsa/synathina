@@ -93,17 +93,23 @@ $up_to_2016_teams=array(
 	7=>10
 );
 
+$activityClass = new RemotedbActivity();
+
 echo '[';
 for($i=1; $i<8; $i++){
     //remote db
     $where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
-    $activityClass = new RemotedbActivity();
     $count = $activityClass->getActivitiesCount($where) + $up_to_2016[$i];
 
-    $where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $where = "a.accmr_team_id=0 AND a.origin=1 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
     $group_by = "GROUP BY a.team_id";
-    $activityClass = new RemotedbActivity();
-    $count_teams = $activityClass->getActivitiesCount($where, $group_by) + $up_to_2016_teams[$i];
+    $count_teams_local = $activityClass->getActivitiesCountLimited($where, $group_by);
+
+    $where = "a.team_id=0 AND a.origin=2 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $group_by = "GROUP BY a.accmr_team_id";
+    $count_teams_remote = $activityClass->getActivitiesCountLimited($where, $group_by);
+
+    $count_teams = $count_teams_local + $count_teams_remote + $up_to_2016_teams[$i];
 
 	if($areas_colors[$i]!=''){
 		echo '{

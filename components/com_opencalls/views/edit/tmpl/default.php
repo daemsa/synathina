@@ -89,9 +89,9 @@ $params_editor = array( 'smilies'=> '0' ,
     echo '<div class="form-group">
 						<input id="box_activity_edit_'.$activity->id.'" name="activities['.$activity->id.']" '.(in_array($activity->id,$opencall_activities)?'checked="checked"':'').' type="checkbox" />
 						<label for="box_activity_edit_'.$activity->id.'" class="label-horizontal">'.($lang_code=='en'?$activity->name_en:$activity->name).'</label>
-					</div>';		
+					</div>';
 	}
-?>						
+?>
 							</div>
 							<div class="form-inline" style="vertical-align: top">
 								 <div class="form-group" style="vertical-align: top">
@@ -100,7 +100,7 @@ $params_editor = array( 'smilies'=> '0' ,
 								 </div>
 								</div>
 								<div class="form-inline" style="vertical-align: top">
-								 <div class="form-group" style="vertical-align: top">							 
+								 <div class="form-group" style="vertical-align: top">
 										<label for="upload" class="is-block">Σχετικά αρχεία:</label>
 										<div style="vertical-align:top; margin-bottom:10px;" class="clearfix">
 <?php
@@ -117,10 +117,10 @@ $params_editor = array( 'smilies'=> '0' ,
 	if(count($this->files)>0){
 ?>
 											<div class="document-download"><ul class="inline-list">
-<?php 
+<?php
 		foreach($this->files as $file){
 			$icon_filename=substr($file->icon_filename,0,3);
-?>	
+?>
 												<li id="attachment_<?php echo $file->id;?>">
 													<a target="blank" href="<?php echo $file->url;?>"><i class="doc-icon doc-icon--<?php echo $icon_filename; ?>"></i><div><?=($file->display_name!=''?stripslashes($file->display_name):$file->filename);?></div></a>
 													<a title="διαγραφή" onclick="delete_file_confirmation('<?php echo $user->id;?>','<?php echo $file->id;?>','<?php echo $file->url;?>','<?php echo JUri::base();?>')" href="javascript:void(null)" style="color:red">x</a>
@@ -132,7 +132,7 @@ $params_editor = array( 'smilies'=> '0' ,
 <?php
 	}
 ?>
-										</div>										
+										</div>
 										<input type="file" name="files[]" id="upload_edit" placeholder="Παρακαλώ επιλέξτε αρχείο" multiple="multilple" class="file-browser" multiple>
 										<span class="is-block is-italic">(Μπορείτε να επισυνάψετε το δελτίο τύπου  του  καλέσματός σας ή την αφίσα ή κάποιες σχετικές φωτογραφίες.)</span>
 								 </div>
@@ -153,5 +153,5 @@ $params_editor = array( 'smilies'=> '0' ,
     </div>
 <?php
 	}
-?>	
+?>
 </div>

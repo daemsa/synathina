@@ -44,12 +44,6 @@ $app = JFactory::getApplication('site');
 //connect to db
 $db = JFactory::getDBO();
 
-//remote db
-JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
-
-$dbRemoteClass = new RemotedbConnection();
-$db_remote = $dbRemoteClass->connect();
-
 $lang = JFactory::getLanguage();
 
 $user = JFactory::getUser();
@@ -169,12 +163,10 @@ if ($action_date_start_comp >= $action_date_end_comp) {
 
 if (@$_REQUEST['activity_description']!='' && @$_REQUEST['activity_title']!='' && DateTime::createFromFormat('d/m/Y H:i', $startDate) && DateTime::createFromFormat('d/m/Y H:i', $endDate)) {
 	//get team
-	$teamClass = new RemotedbTeam();
-
-	$fields = ['id', 'name'];
-	$where = "user_id='".$user->id."'";
-	$limit = 1;
-	$team = $teamClass->getTeam($fields, $where, $limit);
+	$query = "SELECT id, name FROM #__teams
+				WHERE user_id='".$user->id."' LIMIT 1";
+	$db->setQuery($query);
+	$team = $db->loadObject();
 
 	$start_array=explode(' ',@$_REQUEST['date_from']);
 	$start_array1=explode('/',$start_array[0]);
@@ -184,16 +176,16 @@ if (@$_REQUEST['activity_description']!='' && @$_REQUEST['activity_title']!='' &
 	$action_date_end=$end_array1[2].'-'.$end_array1[1].'-'.$end_array1[0].' '.$end_array[1].':00';
 
 	$query = "LOCK TABLES #__stegihours WRITE";
-	$db_remote->setQuery($query);
-	$db_remote->execute();
+	$db->setQuery($query);
+	$db->execute();
 
 	$query_stegi="INSERT INTO #__stegihours VALUES ('','',0,'".$team->id."',1,'".addslashes(@$_REQUEST['activity_title'])."','".getUrlslug(@$_REQUEST['activity_title'])."','','".addslashes(@$_REQUEST['activity_description'])."','".$action_date_start."','".$action_date_end."','0',1,1,1,'*','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$user->id."','".$user->id."','','','') ";
-	$db_remote->setQuery($query_stegi);
-	$db_remote->execute();
+	$db->setQuery($query_stegi);
+	$db->execute();
 
 	$query = "UNLOCK TABLES";
-	$db_remote->setQuery($query);
-	$db_remote->execute();
+	$db->setQuery($query);
+	$db->execute();
 
 	//email to admin
 	$config = JFactory::getConfig();

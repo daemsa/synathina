@@ -50,13 +50,13 @@ $user = JFactory::getUser();
 
 if($user->id>0){
 	//remove photo
-	unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_'.@$_REQUEST['di_filename']);	
-	unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_zoomed_'.@$_REQUEST['di_filename']);	
-	unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_regular_'.@$_REQUEST['di_filename']);	
-	unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_thumb_'.@$_REQUEST['di_filename']);	
+	@unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_'.@$_REQUEST['di_filename']);
+	@unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_zoomed_'.@$_REQUEST['di_filename']);
+	@unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_regular_'.@$_REQUEST['di_filename']);
+	@unlink('images/di/'.@$_REQUEST['opencall_id'].'_'.@$_REQUEST['di_id'].'_thumb_'.@$_REQUEST['di_filename']);
 	$query="DELETE FROM #__di_images WHERE object_image_id='".@$_REQUEST['di_id']."' AND filename='".@$_REQUEST['di_filename']."' AND object_id='".@$_REQUEST['opencall_id']."' LIMIT 1";
 	$db->setQuery($query);
-	$db->execute();		
+	$db->execute();
 	echo 1;
 }else{
 	//header('Location:index.php');

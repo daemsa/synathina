@@ -50,8 +50,6 @@ class ActionsModelMyactions extends JModelLegacy
 	// Set the pagination request variables
 	$this->setState('limit', JRequest::getVar('limit', 5, '', 'int'));
 	$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
-	//$this->setState('dennis', 1);
-	//echo JRequest::getVar('limitstart');
 	}
 
 	public function getActivities()
@@ -62,10 +60,17 @@ class ActionsModelMyactions extends JModelLegacy
 
 		$activityClass = new RemotedbActivity();
 
-		$where = "t.user_id='".$user->id."' AND a.action_id=0 AND (a.published=1 OR a.published=0)";
-		$order_by = "a.id DESC";
+		//db connection
+		$db = JFactory::getDBO();
 
-		$actions = $activityClass->getActivitiesTeam([], $where, $order_by);
+		$query = "SELECT id FROM #__teams WHERE user_id='".$user->id."' LIMIT 1";
+		$db->setQuery( $query );
+		$team_id = $db->loadResult();
+
+		$where = "team_id='".$team_id."' AND action_id=0 AND (published=1 OR published=0)";
+		$order_by = "id DESC";
+
+		$actions = $activityClass->getActivities([], $where, $order_by);
 
 		//requests
 		if (@$_REQUEST['action_limit'] > 0) {

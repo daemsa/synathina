@@ -412,17 +412,13 @@ class UsersModelRegistration extends JModelForm
 		//local db
 		$db = JFactory::getDbo();
 
-		//remote db - use with $db_remote
-		$dbRemoteClass = new RemotedbConnection();
-		$db_remote = $dbRemoteClass->connect();
-
 		//requests
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));
 		//$alias=JApplication::stringURLSafe($_REQUEST['jform']['name']);
 		$alias=JFilterOutput::stringURLSafe($team_name);
 		$query = "SELECT id FROM #__teams WHERE alias='".$alias."' LIMIT 1";
-		$db_remote->setQuery($query);
-		$same_alias = $db_remote->loadResult();
+		$db->setQuery($query);
+		$same_alias = $db->loadResult();
 		if(@$_REQUEST['jform']['create_actions']=='organizer'){
 			$create_actions=1;
 		}else{
@@ -519,25 +515,25 @@ class UsersModelRegistration extends JModelForm
 
 		//team management
 		$query = "SELECT MAX(ordering) FROM #__teams ";
-		$db_remote->setQuery($query);
-		$max_ordering = $db_remote->loadResult() + 1;
+		$db->setQuery($query);
+		$max_ordering = $db->loadResult() + 1;
 
 		$query = "LOCK TABLES #__teams WRITE";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
+		$db->setQuery($query);
+		$db->execute();
 
 		$query = "INSERT INTO #__teams VALUES
 							('', '', 0, ".$userid.", '".$team_name."', '".$alias."', '', '".$create_actions."', '".$support_actions."', '".$legal_form."', '".$profit."', '".$profit_id."' , '".$profit_custom."', '".$team_or_org."', '".$activities_ids."',
 							'".$donations_ids."', '".$donation_other_1."','".$donation_other_16."', '".$team_description."', '', '".$web_link."', '".$fb_link."', '".$tw_link."', '', '".$in_link."', '', '".$li_link."', '".$yt_link."',
 							'".$contact_1_name."','".$contact_1_email."','".$contact_1_phone."','".$contact_2_name."','".$contact_2_email."','".$contact_2_phone."','".$contact_3_name."','".$contact_3_email."','".$contact_3_phone."',
 							'".$newsletter."','".$hidden_team."','".time()."', 0, 1, '".$max_ordering."', '*', '".date('Y-m-d H:i:s',time())."', '', ".$userid.", '', '', '', '')";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
-		$teamid = $db_remote->insertid();
+		$db->setQuery($query);
+		$db->execute();
+		$teamid = $db->insertid();
 
 		$query = "UNLOCK TABLES";
-		$db_remote->setQuery($query);
-		$db_remote->execute();
+		$db->setQuery($query);
+		$db->execute();
 
 		//assets
 		// $query = "SELECT rgt FROM #__assets WHERE name LIKE '#__teams.%' ORDER BY id DESC LIMIT 1";
