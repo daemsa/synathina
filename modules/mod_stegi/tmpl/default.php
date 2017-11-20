@@ -29,12 +29,9 @@ function nb_mois($date1, $date2){
 }
 
 
-function get_distinct_teams($date)
+function get_distinct_teams($date, $db)
 {
-	//connect to db
-	$db = JFactory::getDBO();
-
-	$query = "SELECT id FROM #__stegihours
+	$query = "SELECT team_id FROM #__stegihours
 				WHERE published=1 AND (date_start LIKE '".$date."%' OR date_end LIKE '".$date."%' OR (date_start<'".$date." 23:59:59' AND date_end>'".$date." 00:00:00') ) GROUP BY team_id";
 	$db->setQuery($query);
 	$db->execute();
@@ -125,7 +122,7 @@ $query = "SELECT published FROM #__teams
 $db->setQuery($query);
 $team = $db->loadObject();
 
-function draw_calendar($month,$year,$actions_date_array1,$lang){
+function draw_calendar($month,$year,$actions_date_array1,$lang, $db){
 	/* draw table */
 	//$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
 	$calendar='';
@@ -167,17 +164,13 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 			$new_time1=$year.'-'.($month<10?0:'').$month.'-'.($list_day<10?0:'').$list_day;
 			$found=array_keys($actions_date_array1,$new_time1);
 			if(!empty($found)){
-				if ($list_day % 2 == 0) {
-					$s=get_distinct_teams($new_time1);
-				} else {
-					$s=1;
-				}
+				$s=@get_distinct_teams($new_time1, $db);
 				$calendar.='<li href="'.JURI::base().'" rel="'.$new_time1.'" class="stegi_use_exists stegi_'.($s>4?4:$s).'">
 											<a class="active" href="'.JURI::base().'" rel="'.$new_time1.'">'.$list_day.'</a>
 											<a class="stegi_count" href="'.JURI::base().'" rel="'.$new_time1.'"><span>'.$s.'</span></a>
 										</li>';
 			}else{
-				$calendar.= '<li>'.$list_day.'</li>';
+			 	$calendar.= '<li>'.$list_day.'</li>';
 			}
 
 			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
@@ -316,15 +309,15 @@ function draw_calendar($month,$year,$actions_date_array1,$lang){
 				<button rel="js-right" class="fa fa-angle-right"></button>
 		</div>
 		<div class="module module--synathina">
-      <div class="module-skewed module-skewed--gray" rel="js-container">
+      		<div class="module-skewed module-skewed--gray" rel="js-container">
 <?php
 	$current=0;
-	$current_month=mktime(0, 0, 0, (date('n')), 1, date('Y'));
+	$current_month=gmmktime(0, 0, 0, (date('n')), 1, date('Y'));
 	for($m=0; $m<$months; $m++){
-		$next_month=mktime(0, 0, 0, (6+$m), 1, 2016);
-		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">
+		$next_month=gmmktime(0, 0, 0, (6+$m), 1, 2016);
+		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">'.$current_month.' == '.$next_month.'
 						<div class="diary diary--month">
-						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code).'
+						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code, $db).'
 						</div>
 					</div>';
 		if($current_month==$next_month){

@@ -134,7 +134,7 @@ if($note=='synathina'){
 		$i=0;
 		foreach($imgs as $img){
 			if($i==0){
-				list($width, $height) = getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
+				list($width, $height) = @getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
 				//style="height:'.($height<310?$height.'px; margin-bottom:'.ceil(310-$height).'px':'310px').'"
 				echo '<a href="'.$link.'"><img src="images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive" style="max-height:310px;"  /></a>';
 			}

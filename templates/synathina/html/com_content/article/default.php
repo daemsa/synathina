@@ -126,12 +126,10 @@ if($note=='stegi'){
 				$activities_array_info[$activity->id]=array($activity->name, $activity->image);
 			}
 			//team info
-			$teamClass = new RemotedbTeam();
-
-			$fields = ['id', 'name'];
-			$where = "user_id=".$this->item->created_by."";
-			$limit = 1;
-			$team = $teamClass->getTeam($fields, $where, $limit);
+			$query = "SELECT id, name FROM #__teams
+						WHERE user_id='".$this->item->created_by."' LIMIT 1";
+			$db->setQuery($query);
+			$team = $db->loadObject();
 
 			if ($team) {
 				echo '<h2 style="margin:0px; padding:0px"><a style="color:#05c0de" href="'.JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.'&Itemid=140').'">'.$team->name.'</a></h2>';

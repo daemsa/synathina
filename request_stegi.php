@@ -179,7 +179,7 @@ if (@$_REQUEST['activity_description']!='' && @$_REQUEST['activity_title']!='' &
 	$db->setQuery($query);
 	$db->execute();
 
-	$query_stegi="INSERT INTO #__stegihours VALUES ('','',0,'".$team->id."',1,'".addslashes(@$_REQUEST['activity_title'])."','".getUrlslug(@$_REQUEST['activity_title'])."','','".addslashes(@$_REQUEST['activity_description'])."','".$action_date_start."','".$action_date_end."','0',1,1,1,'*','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$user->id."','".$user->id."','','','') ";
+	$query_stegi="INSERT INTO #__stegihours VALUES ('','',0,'".$team->id."','".addslashes(@$_REQUEST['activity_title'])."','".getUrlslug(@$_REQUEST['activity_title'])."','','".addslashes(@$_REQUEST['activity_description'])."','".$action_date_start."','".$action_date_end."','0',1,1,1,'*','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$user->id."','".$user->id."','','','') ";
 	$db->setQuery($query_stegi);
 	$db->execute();
 
@@ -188,7 +188,6 @@ if (@$_REQUEST['activity_description']!='' && @$_REQUEST['activity_title']!='' &
 	$db->execute();
 
 	//email to admin
-	$config = JFactory::getConfig();
 	$emails=array();
 	$att='';
 	$s_array=array($team->name,$start_array1[0].'-'.$start_array1[1].'-'.$start_array1[2].' '.$start_array[1],$end_array1[0].'-'.$end_array1[1].'-'.$end_array1[2].' '.$end_array[1]);
