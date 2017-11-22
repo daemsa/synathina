@@ -334,8 +334,6 @@ class ActionsModelForm extends JModelItem
 		$dbRemoteClass = new RemotedbConnection();
 		$db_remote = $dbRemoteClass->connect();
 
-		$activityClass = new RemotedbActivity();
-		$teamClass = new RemotedbTeam();
 		$params = JComponentHelper::getParams('com_users');
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
@@ -356,6 +354,11 @@ class ActionsModelForm extends JModelItem
 
 		//get request data
 		$team_id = $team_info->id;
+
+		$remote = 0;
+		if (@$_REQUEST['remote'] == 'on') {
+			$remote = 1;
+		}
 		$name = addslashes(@$_REQUEST['name']);
 		$alias = $this->getUrlslug(@$_REQUEST['name']);
 		$short_description = addslashes(@$_REQUEST['short_description']);
@@ -427,7 +430,7 @@ class ActionsModelForm extends JModelItem
 			0,
 			0,
 			1,
-			0,
+			'".$remote."',
 			0,
 			'".$name."',
 			'".$alias."',
@@ -598,9 +601,14 @@ class ActionsModelForm extends JModelItem
 
 					//activities
 					$activities_ids = '';
+					$sub_remote = 0;
 					foreach ($activities as $activity) {
 						if (@$_REQUEST['activity_'.$activity->id.'_'.$f] == 'on') {
 							$activities_ids .= $activity->id.',';
+							//check if refugees is selected
+							if ($activity->id == 12 && $remote == 1 && $isroot) {
+								$sub_remote = 1;
+							}
 						}
 					}
 
@@ -613,7 +621,7 @@ class ActionsModelForm extends JModelItem
 						0,
 						'".$parent_id."',
 						1,
-						0,
+						'".$sub_remote."',
 						0,
 						'','','',
 						'".$subtitle."',

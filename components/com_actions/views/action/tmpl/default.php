@@ -100,8 +100,6 @@ $subactions=$this->subactions;
                         <li><a href="<?php echo JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.'&Itemid=137');  ?>"><?php echo $team->tname; ?></a></li>
                      </ul>
 <?php
-	$teamClass = new RemotedbTeam();
-
 	if ($action->partners && $action->origin == 1) {
 		$query = "SELECT name, id FROM #__teams
 					WHERE id IN (".rtrim($action->partners, ',').") AND published=1";

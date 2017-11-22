@@ -174,7 +174,7 @@ function show_hide(f,show){
 								<?php echo $editor->display('activity_description', @$_REQUEST['activity_description'], '', '200', '20', '20', true, null, null, null, $params_editor); ?>
 								<span class="is-block is-italic">(το δελτίο τύπου της δράσης σας)</span>
 							</div>
-	            <div class="form-group form--bordered">
+	            			<div class="form-group form--bordered">
 								<label class="is-block">Link δράσης:</label>
 								<input type="text" name="web_link"  class="input--medium" id="web_link" />
 								<span class="is-block is-italic">(https://www.facebook.com/events/123456789/)</span>
@@ -230,7 +230,7 @@ function show_hide(f,show){
 <?php
 	foreach($this->team_activities AS $activity){
 		echo '<div class="form-group">
-						 <input id="activity_'.$activity->id.'_'.$f.'" name="activity_'.$activity->id.'_'.$f.'" type="checkbox">
+						 <input id="activity_'.$activity->id.'_'.$f.'" name="activity_'.$activity->id.'_'.$f.'" type="checkbox" '.($activity->id == 12 ? 'class="remote-option" onclick="showRemote();"' : '').' />
 						 <label for="activity_'.$activity->id.'_'.$f.'" class="label-horizontal">'.$activity->name.'</label>
 					</div>';
 	}
@@ -371,6 +371,10 @@ function show_hide(f,show){
                     <?php }
                 }
                 ?>
+				<div class="form-group form--padded hidden" id="remote-checkbox">
+					<input id="remote" type="checkbox" name="remote">
+					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>
+				</div>
                <div class="form-group form-group--tail is-block clearfix" style="clear:both">
                   <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
                   <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>

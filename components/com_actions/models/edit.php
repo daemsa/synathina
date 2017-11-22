@@ -283,15 +283,6 @@ class ActionsModelEdit extends JModelItem
 		return $db->loadObjectList();
 	}
 
-	public function getSupportTeams($where)
-	{
-		$teamClass = new RemotedbTeam();
-
-		$fields = ['user_id'];
-
-		return $teamClass->getTeams($fields, $where);
-	}
-
 	//GET Teams Ids with Comma Delimiter
 	public function getUserIdsCommaDel($donations_id, $team_id)
 	{
@@ -412,13 +403,15 @@ class ActionsModelEdit extends JModelItem
 		$team_info = $this->getTeam();
 		$team_id = $team_info->id;
 
-		$remote_send = 0;
+		$remote = 0;
+		$remote_pre = $action->remote;
+		if (@$_REQUEST['remote'] == 'on') {
+			$remote = 1;
+		}
+
 		$best_practice = 0;
 
 		if ($isroot == 1) {
-			if (@$_REQUEST['remote_send'] == 'on') {
-				$remote_send = 1;
-			}
 			if (@$_REQUEST['best_practice'] == 'on') {
 				$best_practice = 1;
 			}
@@ -492,7 +485,7 @@ class ActionsModelEdit extends JModelItem
 		$this->lockRemoteTable('actions');
 		$actions_query = "UPDATE #__actions SET
 			published='".$published."',
-			remote = '".$remote_send."',
+			".($isroot ? "remote = '".$remote."'," : "")."
 			best_practice='".$best_practice."',
 			team_id='".$team_id."',
 			name='".$name."',
@@ -658,9 +651,20 @@ class ActionsModelEdit extends JModelItem
 
 					//activities
 					$activities_ids = '';
+					$sub_remote = 0;
 					foreach ($activities as $activity) {
 						if (@$_REQUEST['activity_'.$activity->id.'_'.$f] == 'on') {
 							$activities_ids .= $activity->id.',';
+							//check if refugees is selected and update only if root
+							if ($isroot) {
+								if ($activity->id == 12 && $remote == 1) {
+									$sub_remote = 1;
+								}
+							} else {
+								if ($activity->id == 12 && $remote_pre == 1) {
+									$sub_remote = 1;
+								}
+							}
 						}
 					}
 
@@ -673,7 +677,7 @@ class ActionsModelEdit extends JModelItem
 						0,
 						'".$parent_id."',
 						1,
-						'".$remote_send."',
+						'".$sub_remote."',
 						0,
 						'','','',
 						'".$subtitle."',

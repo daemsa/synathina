@@ -536,6 +536,27 @@ function createFromMysql(mysql_string)
     return result;
 }
 
+//check if refugees checkbox is on and display the remote checkbox
+function showRemote()
+{
+    remote = 0;
+    $('#create_action .remote-option').each(function () {
+        if ($(this).is(":checked")) {
+            remote = 1;
+        }
+    });
+
+    if (remote) {
+        console.log(remote)
+        $('#remote-checkbox input')[0].checked = true;
+        $('#remote-checkbox').removeClass('hidden');
+    } else {
+        console.log(remote)
+        $('#remote-checkbox input')[0].checked = false;
+        $('#remote-checkbox').addClass('hidden');
+    }
+}
+
 //actions form validations
 $(document).ready(function (){
     if($('#team_root_id').length > 0){

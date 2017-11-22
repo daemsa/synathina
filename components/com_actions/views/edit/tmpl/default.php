@@ -144,12 +144,6 @@ if($isroot==1){
 ?>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
-									 <input id="remote_send" name="remote_send" type="checkbox" <?=($action->remote == 1 ? 'checked="checked"' : '') ?> />
-									 <label for="remote_send" class="is-block">Προβολή στο ACCMR</label>
-								</div>
-							</div>
-							<div class="form-inline l-fg6 max-600">
-								<div class="form-group">
 									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice == 1 ? 'checked = "checked"' : '') ?> />
 									 <label for="best_practice" class="is-block">Best practice</label>
 								</div>
@@ -454,19 +448,25 @@ if($isroot==1){
                 <?php }
               }
               ?>
-               <div class="form-group form-group--tail is-block clearfix">
-                  <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
-                  <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
-               </div>
-							<input type="hidden" name="option" value="com_actions" />
-							<input type="hidden" name="task" value="edit.save" />
-							<input type="hidden" name="team_id" value="<?php echo $user_team->id; ?>" />
-							<input type="hidden" name="action_id" value="<?php echo $action->id; ?>" />
-							<input type="hidden" name="user_id" value="<?php echo $user_team->user_id; ?>" />
-							<input type="hidden" name="editform" value="<?php echo $editform_session; ?>" />
-							<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143');?>" />
-							<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
-							<?php echo JHtml::_('form.token');?>
+            <?php if ($isroot) { ?>
+				<div class="form-group form--padded">
+					<input id="remote" type="checkbox" name="remote" <?=($action->remote == 1 ? 'checked="checked"' : '')?> />
+					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>
+				</div>
+			<?php } ?>
+               	<div class="form-group form-group--tail is-block clearfix">
+                	<span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
+                  	<button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
+               	</div>
+				<input type="hidden" name="option" value="com_actions" />
+				<input type="hidden" name="task" value="edit.save" />
+				<input type="hidden" name="team_id" value="<?php echo $user_team->id; ?>" />
+				<input type="hidden" name="action_id" value="<?php echo $action->id; ?>" />
+				<input type="hidden" name="user_id" value="<?php echo $user_team->user_id; ?>" />
+				<input type="hidden" name="editform" value="<?php echo $editform_session; ?>" />
+				<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143');?>" />
+				<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
+				<?php echo JHtml::_('form.token');?>
             </form>
         </div>
       </div>
