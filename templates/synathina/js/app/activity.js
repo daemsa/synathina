@@ -335,7 +335,7 @@ var Activities = (function(global) {
                         }
                     }
                 }
-                console.log(category.length);
+                //console.log(category.length);
                 // pushing markers to cluster
                 clusterer.clearMarkers();
                 clusterer.addMarkers(category);
@@ -363,7 +363,7 @@ var Activities = (function(global) {
 
             // threading with Filter
             saFilter = Filter(activities);
-            saFilter.initSliderFilter();
+            //saFilter.initSliderFilter();
             saFilter.initCategoryFilters();
 
 
