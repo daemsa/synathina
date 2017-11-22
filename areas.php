@@ -98,7 +98,7 @@ $activityClass = new RemotedbActivity();
 echo '[';
 for($i=1; $i<8; $i++){
     //remote db
-    $where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
     $count = $activityClass->getActivitiesCount($where) + $up_to_2016[$i];
 
     $where = "a.accmr_team_id=0 AND a.origin=1 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";

@@ -40,7 +40,7 @@ class RemotedbActivity {
 		}
 	}
 
-	// GET Activities/Subactivities
+	// GET Activities or Subactivities
 	public function getActivities($fields = [], $where = '', $order = '', $limit = '', $as_array = false)
 	{
 		$query_fields = '*';

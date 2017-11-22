@@ -39,7 +39,7 @@ function count_actions($year)
 
 	//remote db
 	$activityClass = new RemotedbActivity();
-	$activities_count = $activityClass->getActivitiesCountLimited($where);
+	$activities_count = $activityClass->getActivitiesCount($where);
 
 	return $activities_count;
 }
@@ -151,7 +151,7 @@ if($current_year_3==2016){
 		//remote db
 		$where = "a.team_id>0 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "'";
 		$activityClass = new RemotedbActivity();
-		$activities_count = $activityClass->getActivitiesCountLimited($where);
+		$activities_count = $activityClass->getActivitiesCount($where);
 	    $total_action_count += $activities_count;
 	    $activity->action_count = $activities_count;
     }

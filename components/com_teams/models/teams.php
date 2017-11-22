@@ -42,8 +42,8 @@ class TeamsModelTeams extends JModelLegacy
 	 *
 	 * @since 1.5
 	 */
-	 
-	
+
+
 	public function __construct()
 	{
 	parent::__construct();
@@ -52,10 +52,10 @@ class TeamsModelTeams extends JModelLegacy
 	$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
 	//$this->setState('dennis', 1);
 	//echo JRequest::getVar('limitstart');
-	}	 
-	
+	}
 
-	 
+
+
 	public function getMsg(){
 		//echo '<pre>';
 		//print_r(@$_REQUEST);
@@ -63,7 +63,7 @@ class TeamsModelTeams extends JModelLegacy
 		//db connection
 		$db = JFactory::getDBO();
 		$config= new JConfig();
-		$app = JFactory::getApplication();					 
+		$app = JFactory::getApplication();
 		//requests
 		if(@$_REQUEST['team_limit']>0){
 			$team_limit=$_REQUEST['team_limit'];
@@ -84,13 +84,13 @@ class TeamsModelTeams extends JModelLegacy
 			$to_array=explode('/',@$_REQUEST['to']);
 			$new_to=$to_array[2].'-'.$to_array[1].'-'.$to_array[0].' 23:59:59';
 			$where.=" AND aa.team_date_end<='".$new_to."' ";
-		}			
+		}
 		if(@$_REQUEST['search_name']!=''){
 			$where.=" AND aa.subtitle LIKE '%".@$_REQUEST['search_name']."%' ";
 		}
 		if(@$_REQUEST['best']=='on'){
 			$where.=" AND a.best_practice=1 ";
-		}		
+		}
 		//areas
 		$or=0;
 		for($i=1; $i<8; $i++){
@@ -104,7 +104,7 @@ class TeamsModelTeams extends JModelLegacy
 				if(@$_REQUEST['area'.$i]=='on'){
 					$or_sql.="aa.area='".$i."' OR ";
 				}
-			}	
+			}
 			$or_sql=rtrim($or_sql,'OR ').")";
 		}
 		//activities
@@ -121,36 +121,36 @@ class TeamsModelTeams extends JModelLegacy
 					//$or_sql1.="aa.activity='".$i."' OR ";
 					$or_sql1.=" find_in_set('".$i."',aa.activities) OR ";
 				}
-			}	
+			}
 			$or_sql1=rtrim($or_sql1,'OR ').")";
-		}			
+		}
 		$query="SELECT aa.*, a.short_description AS short, a.id AS aid, a.image AS aimage FROM #__teams AS aa INNER JOIN #__teams AS a ON aa.team_id=a.id WHERE a.id>0 ".$where." ".$or_sql." ".$or_sql1." AND aa.team_id>0 AND aa.published=1 ";
 		//echo $query;
 		//die;
 		$db->setQuery( $query );
-		$teams = $db->loadObjectList();					 
+		$teams = $db->loadObjectList();
 		$this->_total = count($teams);
 		$this->items = array_splice($teams, $this->getState('limitstart'), $team_limit);
-		
+
 		return $this->items;
 	}
-	
+
 	public function getActivities(){
 		//db connection
-		$db = JFactory::getDBO();		
+		$db = JFactory::getDBO();
 		$query="SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
 		$db->setQuery( $query );
-		$activities = $db->loadObjectList();	
+		$activities = $db->loadObjectList();
 		return $activities;
 	}
-	
+
 	public function getPagination()
 			 {
 				if(@$_REQUEST['team_limit']>0){
 					$team_limit=$_REQUEST['team_limit'];
 				}else{
 					$team_limit=6;
-				}			 
+				}
 			$app    = JFactory::getApplication();
 			$router = $app->getRouter();
 		if(@$_REQUEST['from']!=''){
@@ -158,23 +158,23 @@ class TeamsModelTeams extends JModelLegacy
 		}
 		if(@$_REQUEST['to']!=''){
 			$router->setVar( 'to', @$_REQUEST['from'] );
-		}			
+		}
 		if(@$_REQUEST['search_name']!=''){
 			$router->setVar( 'search_name', @$_REQUEST['search_name'] );
 		}
 		if(@$_REQUEST['best']=='on'){
 			$router->setVar( 'best', @$_REQUEST['best'] );
-		}		
+		}
 		for($i=1; $i<8; $i++){
 			if(@$_REQUEST['area'.$i]=='on'){
 				$router->setVar( 'area'.$i, @$_REQUEST['area'.$i] );
 			}
-		}		
+		}
 		for($i=1; $i<20; $i++){
 			if(@$_REQUEST['activity'.$i]=='on'){
 				$router->setVar( 'activity'.$i, @$_REQUEST['activity'.$i] );
 			}
-		}						
+		}
 			 jimport('joomla.html.pagination');
 			 $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $team_limit );
 			 return $this->_pagination;

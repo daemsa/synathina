@@ -280,7 +280,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
 			</div>
 		 </form>
 <?php
-	} elseif ($team->published == 0 && $user->id > 0) {
+	} elseif (isset($team) && $team->published == 0 && $user->id > 0) {
 ?>
 	Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα από το συνΑθηνά.
 <?php

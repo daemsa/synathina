@@ -13,9 +13,6 @@ $doc = JFactory::getDocument();
 $lang_code_array=explode('-',$doc->language);
 $lang_code=$lang_code_array[0];
 
-
-
-$teamClass = new RemotedbTeam();
 //get teams teams
 $order = 0;
 $where = ' published=1 AND create_actions=1 ';
@@ -33,7 +30,13 @@ if (@$_REQUEST['search_teams'] != '') {
 	$order = 1;
 }
 $order_by = ($order == 1?'name ASC':'RAND()');
-$teams_teams = $teamClass->getTeams([], $where, $order_by);
+
+$query = "SELECT * FROM #__teams
+			WHERE ".$where."
+			ORDER BY ".$order_by;
+$db->setQuery( $query );
+
+$teams_teams = $db->loadObjectList();
 $count_teams_teams = count($teams_teams);
 
 //get teams supporters
@@ -53,7 +56,13 @@ if (@$_REQUEST['search_supporters'] != '') {
 	$order = 1;
 }
 $order_by = ($order == 1?'name ASC':'RAND()');
-$teams_supporters = $teamClass->getTeams([], $where, $order_by);
+
+$query = "SELECT * FROM #__teams
+			WHERE ".$where."
+			ORDER BY ".$order_by;
+$db->setQuery( $query );
+
+$teams_supporters = $db->loadObjectList();
 $count_teams_supporters = count($teams_supporters);
 
 //test

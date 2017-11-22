@@ -167,9 +167,9 @@ foreach($actions as $action){
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.':'.$action->alias.'&Itemid=138');
 	}
 	if ($action->origin == 1) {
-		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
 	} else {
-		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.':'.$team->talias.'&Itemid=140');
+		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
 	}
 	$data.= '{
             "type": "Point",

@@ -44,6 +44,7 @@ $( ".stegi_use_exists" ).click(function( event ) {
                 $( '#stegi_hours_popup' ).html(data);
                 //$('#stegi_hours').magnificPopup({
                 $.magnificPopup.open({
+                    tClose: '',
                     items: {
                         src: '#stegi_hours_popup'
                     },
@@ -227,30 +228,35 @@ $('.form-tooltip-jquery').click(function(e){
 
 $('.book-stegi').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 })
 
 $('.form-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.newsletter-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.opencall-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.magnifying').magnificPopup({
-    type: 'image'
-    // other options
+    type: 'image',
+    tClose: ''
 });
 $('.magnifying-gallery').magnificPopup({
     type: 'image',
+    tClose: '',
     gallery: {
         enabled: true,
         navigateByImgClick: true,
@@ -263,6 +269,7 @@ $('.magnifying-gallery').magnificPopup({
 });
 $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
     disableOn: 700,
+    tClose: '',
     type: 'iframe',
     mainClass: 'mfp-fade',
     removalDelay: 160,

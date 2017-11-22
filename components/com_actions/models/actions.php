@@ -131,7 +131,7 @@ class ActionsModelActions extends JModelLegacy
 		$activityClass = new RemotedbActivity();
 
 		$fields = ['aa.*', 'a.alias', 'a.short_description AS short', 'a.best_practice', 'a.id AS aid', 'a.image AS aimage', 'a.published as apublished'];
-		$query_where = "aa.action_id>0 ". $where ." ". $or_sql ." ". $or_sql1 ." AND ".($isroot==1?'a.published>=0':'a.published=1')." ";
+		$query_where = "aa.action_id>0 AND (a.origin=1 OR (a.origin=2 AND a.remote=1)) ". $where ." ". $or_sql ." ". $or_sql1 ." AND ".($isroot==1?'a.published>=0':'a.published=1')." ";
 		$order_by = "aa.action_date_start ASC";
 
 		$actions = $activityClass->getActivitiesSubactivities($fields, $query_where, $order_by);

@@ -72,12 +72,14 @@ class TeamsModelTeam extends JModelItem
 
 	public function getTeam()
 	{
-		$teamClass = new RemotedbTeam();
+		$db = JFactory::getDBO();
 
-		$where = "id='".@$_REQUEST['id']."' AND published=1";
-		$limit = 1;
+		$query = "SELECT *
+					FROM #__teams
+					WHERE id='".@$_REQUEST['id']."' AND published=1 LIMIT 1";
+		$db->setQuery( $query );
 
-		return $teamClass->getTeam([], $where, $limit);
+		return $db->loadObject();
 	}
 
 	public function getTeamFiles()
@@ -96,22 +98,22 @@ class TeamsModelTeam extends JModelItem
 	{
 		$activityClass = new RemotedbActivity();
 
-		$fields = ['a.name', 'a.alias', 'a.image', 'a.id'];
-		$where = "a.published=1 AND a.action_id=0 AND find_in_set('".@$_REQUEST['id']."',a.supporters) AND a.team_id!='".@$_REQUEST['id']."'";
-		$order_by = "a.id DESC";
+		$fields = ['name', 'alias', 'image', 'id'];
+		$where = "published=1 AND action_id=0 AND find_in_set('".@$_REQUEST['id']."',supporters) AND team_id!='".@$_REQUEST['id']."'";
+		$order_by = "id DESC";
 
-		return $activityClass->getActivitiesTeam($fields, $where, $order_by);
+		return $activityClass->getActivities($fields, $where, $order_by);
 	}
 
 	public function getActivitiesTeam()
 	{
 		$activityClass = new RemotedbActivity();
 
-		$fields = ['a.name', 'a.alias', 'a.image', 'a.id'];
-		$where = "a.published=1 AND a.action_id=0 AND a.team_id='".@$_REQUEST['id']."'";
-		$order_by = "a.id DESC";
+		$fields = ['name', 'alias', 'image', 'id'];
+		$where = "published=1 AND action_id=0 AND team_id='".@$_REQUEST['id']."'";
+		$order_by = "id DESC";
 
-		return $activityClass->getActivitiesTeam($fields, $where, $order_by);
+		return $activityClass->getActivities($fields, $where, $order_by);
 	}
 
 }

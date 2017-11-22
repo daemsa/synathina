@@ -37,12 +37,12 @@ foreach($activities as $activity){
 }
 
 if ($action->origin == 1) {
-	$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+	$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 				WHERE t.id='".$action->team_id."' LIMIT 1";
 	$db->setQuery($query);
 	$team = $db->loadObject();
 } else {
-	$query = "SELECT t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
+	$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
 				WHERE t.id='".$action->accmr_team_id."' LIMIT 1";
 	$db_remote->setQuery($query);
 	$team = $db_remote->loadObject();
@@ -50,7 +50,7 @@ if ($action->origin == 1) {
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
 
-$config= new JConfig();
+$config = JFactory::getConfig();
 $app = JFactory::getApplication();
 $templateDir = JURI::base() . 'templates/' . $app->getTemplate();
 
@@ -97,7 +97,11 @@ $subactions=$this->subactions;
 ?>
                      <h3 class="list-group-item-title" style="<?=(@$action->best_practice==1?'padding-top:0px;':'')?>"><?php echo $action->name; ?></h3>
                      <ul class="inline-list inline-list--separated">
-                        <li><a href="<?php echo JRoute::_('index.php?option=com_teams&view=team&id='.$action->team_id.'&Itemid=137');  ?>"><?php echo $team->tname; ?></a></li>
+                        <li>
+                        	<a href="<?php echo ($action->origin == 2 ? $config->get('remote_site') : '').JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.'&Itemid=137');  ?>" <?php echo ($action->origin == 2 ? 'target="_blank"' : ''); ?>>
+                        		<?php echo $team->tname; ?>
+                        	</a>
+                        </li>
                      </ul>
 <?php
 	if ($action->partners && $action->origin == 1) {

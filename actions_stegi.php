@@ -128,7 +128,7 @@ foreach($actions as $action){
 		$dates=$new_start_date.' - '.$new_end_date;
 	}
 	$data.= '{
-            "url":"'.htmlspecialchars($link).'","team_url":"'.htmlspecialchars($link_team).'","dates": "'.$dates.'","address": "'.trim(htmlspecialchars($action->aaddress)).'","team_id": "'.$action->team_id.'","team_name": "'.htmlspecialchars($team->tname).'","title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'","coordinates": ['.$action->alat.', '.$action->alng.'],"action_id": '.$action->id.'
+            "url":"'.htmlspecialchars($link).'","team_url":"'.htmlspecialchars($link_team).'","dates": "'.$dates.'","address": "'.trim(htmlspecialchars($action->aaddress)).'","team_id": "'.$team->id.'","team_name": "'.htmlspecialchars($team->tname).'","title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'","coordinates": ['.$action->alat.', '.$action->alng.'],"action_id": '.$action->id.'
       },';
 }
 $data = rtrim($data, ',');
