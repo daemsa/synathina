@@ -280,9 +280,12 @@ class ActionsModelForm extends JModelItem
 
 	public function getTeams()
 	{
+		$user = JFactory::getUser();
+		$user_id = $user->id;
 		$db = JFactory::getDBO();
 
-		$query = "SELECT id, name, logo FROM #__teams WHERE `hidden`=0 AND published=1 ORDER BY name ASC ";
+		$query = "SELECT id, name, logo FROM #__teams
+					WHERE user_id!='".$user_id."' AND `hidden`=0 AND published=1 ORDER BY name ASC ";
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
