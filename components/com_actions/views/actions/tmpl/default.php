@@ -7,7 +7,7 @@ $db = JFactory::getDBO();
 
 $document = JFactory::getDocument();
 
-$config= new JConfig();
+$config = JFactory::getConfig();
 $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $menuname = $menu->getActive()->title;
@@ -147,7 +147,7 @@ function ordinal_suffix($num){
 		echo '<div class="media">
 						<div class="media-left badge-item" >';
 		if($action->aimage!=''){
-			echo '	<div class="badge-image"><a href="'.$link.'"><img class="results-img-width" src="images/actions/main_images/'.$action->aimage.'" alt="" /></a></div>';
+			echo '	<div class="badge-image"><a href="'.$link.'"><img class="results-img-width" src="'.($action->origin == 2 ? $config->get('remote_site') : '').'/images/actions/main_images/'.$action->aimage.'" alt="" /></a></div>';
 			if(@$action->best_practice==1){
 				echo '	<div class="badge-icon"><a href="'.$link.'"><img class="results-img-height" src="images/template/best.png" alt="" /></a></div>';
 			}
