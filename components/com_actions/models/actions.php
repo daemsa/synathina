@@ -75,12 +75,12 @@ class ActionsModelActions extends JModelLegacy
 			$from_array=explode('/',@$_REQUEST['from']);
 			//print_r($from_array);
 			$new_from=$from_array[2].'-'.$from_array[1].'-'.$from_array[0].' 00:00:00';
-			$where.=" AND aa.action_date_start>='".$new_from."' ";
+			$where.=" AND aa.action_date_end>='".$new_from."' ";
 		}
 		if(@$_REQUEST['to']!=''){
 			$to_array=explode('/',@$_REQUEST['to']);
 			$new_to=$to_array[2].'-'.$to_array[1].'-'.$to_array[0].' 23:59:59';
-			$where.=" AND aa.action_date_end<='".$new_to."' ";
+			$where.=" AND aa.action_date_start<='".$new_to."' ";
 		}
 		if(@$_REQUEST['search_name']!=''){
 			$query = "SELECT id FROM #__teams WHERE name LIKE '%".trim(@$_REQUEST['search_name'])."%'";
