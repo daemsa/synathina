@@ -83,6 +83,11 @@ $data= '{
       "type": "FeatureCollection",
       "features": [';
 foreach($actions as $action){
+	//get live site url
+	$live_site = $config->get('live_site');
+	if ($action->origin == 2) {
+		$live_site = $config->get('remote_site');
+	}
 	//get team
 	if ($action->origin == 1) {
 		$query = "SELECT t.id, t.name AS tname, t.alias AS talias, t.logo AS tlogo FROM #__teams AS t
@@ -117,11 +122,11 @@ foreach($actions as $action){
 		if ($action->origin == 1) {
 			$query = "SELECT logo FROM #__teams WHERE id='".$sponsor_id."' ";
 			$db->setQuery($query);
-			$sponsor_logo = $config->get('live_site') . '/' . $db->loadResult();
+			$sponsor_logo = $live_site . '/' . $db->loadResult();
 		} else {
 			$query = "SELECT logo FROM #__teams WHERE id='".$sponsor_id."' ";
 			$db_remote->setQuery($query);
-			$sponsor_logo = $config->get('remote_site') . '/' . $db_remote->loadResult();
+			$sponsor_logo = $live_site . '/' . $db_remote->loadResult();
 		}
 	}else{
 		$sponsor_logo='';
@@ -169,7 +174,7 @@ foreach($actions as $action){
 	if ($action->origin == 1) {
 		$link_team = JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
 	} else {
-		$link_team = $config->get('remote_site') . JRoute::_('index.php?option=com_teams&view=team&id='.$team->id.':'.$team->talias.'&Itemid=140');
+		$link_team = $live_site . '/index.php?option=com_teams&view=team&id='.$team->id.'&Itemid=140';
 	}
 	$data.= '{
             "type": "Point",
@@ -186,8 +191,8 @@ foreach($actions as $action){
             "sponsor_title": "","date": "'.$action->aaction_date_start.'","date_end": "'.$action->aaction_date_end.'","dates": "'.$dates.'",
             "title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'",
             "content": "'.str_replace(array("\r\n","\r"),"",htmlspecialchars($action->short_description)).'",
-            "content_img": "http://www.synathina.gr/images/actions/main_images/'.$action->image.'",
-            "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "http://www.synathina.gr/'.$team->tlogo.'"
+            "content_img": "'.$live_site.'/images/actions/main_images/'.$action->image.'",
+            "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "'.$live_site.'/'.$team->tlogo.'"
       },';
 }
 $data = rtrim($data, ',');

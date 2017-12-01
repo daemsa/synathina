@@ -233,33 +233,46 @@ $subactions=$this->subactions;
 
 <?php
 	if ($action->origin == 1) {
-		$i=0;
-		$images=array();
+		$images = [];
 		foreach (glob('images/actions/'.$action->id.'/*.*') as $filename) {
 			$images[]=$filename;
-			$i++;
 		}
-
-		$p=1;
-		if($i>0){
-			echo '<div class="module module--synathina">
-							<h3 class="gallery-title">Gallery</h3>
-							<div class="gallery gallery--multirow" rel="js-start-gallery">';
-			for($c=1; $c<=$i; $c++){
-				if($c==1 || ($c-1)%6==0){
-					echo '<div class="gallery-frame" data-id="'.$p.'">';
-					$p++;
-				}
-				echo '<div class="gallery-item">
-								<a class="fill" class="magnifying-gallery" href="'.$images[$c-1].'" style="background-image:url(\''.$images[$c-1].'\'); "></a>
-							</div>';
-				if($c%6==0 || $c==$i){
-					echo '</div>';
-				}
+	} else {
+		$postdata = http_build_query (
+		    array (
+		        'action_id' => $action->id
+		    )
+		);
+		$opts = array('http' =>
+		    array(
+		        'method'  => 'POST',
+		        'header'  => 'Content-type: application/x-www-form-urlencoded',
+		        'content' => $postdata
+		    )
+		);
+		$context  = stream_context_create($opts);
+		$images = json_decode(file_get_contents($config->get('remote_site') .'/action_images.php', false, $context));
+	}
+	$i = count($images);
+	$p = 1;
+	if ($images) {
+		echo '	<div class="module module--synathina">
+					<h3 class="gallery-title">Gallery</h3>
+					<div class="gallery gallery--multirow" rel="js-start-gallery">';
+		for ($c = 1; $c <= $i; $c++) {
+			if ($c == 1 || ($c - 1) % 6 == 0) {
+				echo '	<div class="gallery-frame" data-id="'.$p.'">';
+				$p++;
 			}
-			echo '	</div>
-						</div>';
+			echo '			<div class="gallery-item">
+								<a class="fill" class="magnifying-gallery" href="'.$live_site.'/'.$images[$c-1].'" style="background-image:url(\''.$live_site.'/'.$images[$c-1].'\'); "></a>
+							</div>';
+			if($c%6==0 || $c==$i){
+				echo '	</div>';
+			}
 		}
+		echo '		</div>
+				</div>';
 	}
 
 	//get 9 similar actions
