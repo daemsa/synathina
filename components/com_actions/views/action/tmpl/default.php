@@ -64,6 +64,11 @@ $lang_code=$lang_code_array[0];
 $menu_params = $app->getMenu()->getActive()->params;
 $menu_link = $app->getMenu()->getActive()->link;
 
+//get live site url
+$live_site = $config->get('live_site');
+if ($action->origin == 2) {
+	$live_site = $config->get('remote_site');
+}
 
 $subactions=$this->subactions;
 
@@ -82,7 +87,7 @@ $subactions=$this->subactions;
 <?php
 	if($action->image!=''){
 ?>
-    <img src="images/actions/main_images/<?php echo $action->image; ?>" alt="<?php echo $action->name; ?>" style="width:100%; " />
+    <img src="<?php echo $live_site; ?>/images/actions/main_images/<?php echo $action->image; ?>" alt="<?php echo $action->name; ?>" style="width:100%; " />
 <?php
 	}
 ?>
@@ -173,19 +178,25 @@ $subactions=$this->subactions;
                      <br>
                      <ul class="inline-list inline-list--separated thematiki--list">
 <?php
- $activities_array=explode(',',$subaction->activities);
- for($i=0; $i<count($activities_array); $i++){
-	if($activities_array[$i]!=''){
-		echo '<div class="thematiki thematiki--perivallon">
+ 	$activities_array=explode(',',$subaction->activities);
+ 	for($i=0; $i<count($activities_array); $i++){
+		if($activities_array[$i]!=''){
+			echo '	<div class="thematiki thematiki--perivallon">
 						<img src="'.$activities_array_info[$activities_array[$i]][1].'" width="45" height="35" alt="'.$activities_array_info[$activities_array[$i]][0].'" title="'.$activities_array_info[$activities_array[$i]][0].'" />
 					</div>';
+		}
 	}
-
- }
+ 	if ($subaction->origin == 2) {
+			echo '	<div class="thematiki thematiki--perivallon">
+						<img src="images/activities/11.png" width="45" height="35" alt="ΜΕΤΑΝΑΣΤΕΣ & ΠΡΟΣΦΥΓΕΣ" title="ΜΕΤΑΝΑΣΤΕΣ & ΠΡΟΣΦΥΓΕΣ" />
+					</div>';
+ 	}
 ?>
                      </ul>
+<?php if ($subaction->area) { ?>
                      <br>
-                     <span><strong><?php echo $subaction->area; ?><sup>η</sup> Δημοτική Κοινότητα</strong></span>
+                     <span><strong><?php echo $subaction->area; ?><sup><?php echo ($lang_code == 'en' ? $english_suffixes[$subaction->area] : 'η'); ?></sup> <?php echo ($lang_code == 'en' ? 'District' : 'Δημοτική Κοινότητα'); ?></strong></span>
+<?php } ?>
                   </div>
 <?php
 	}
@@ -221,32 +232,34 @@ $subactions=$this->subactions;
 
 
 <?php
-	$i=0;
-	$images=array();
-	foreach (glob('images/actions/'.$action->id.'/*.*') as $filename) {
-		$images[]=$filename;
-		$i++;
-	}
-
-	$p=1;
-	if($i>0){
-		echo '<div class="module module--synathina">
-						<h3 class="gallery-title">Gallery</h3>
-						<div class="gallery gallery--multirow" rel="js-start-gallery">';
-		for($c=1; $c<=$i; $c++){
-			if($c==1 || ($c-1)%6==0){
-				echo '<div class="gallery-frame" data-id="'.$p.'">';
-				$p++;
-			}
-			echo '<div class="gallery-item">
-							<a class="fill" class="magnifying-gallery" href="'.$images[$c-1].'" style="background-image:url(\''.$images[$c-1].'\'); "></a>
-						</div>';
-			if($c%6==0 || $c==$i){
-				echo '</div>';
-			}
+	if ($action->origin == 1) {
+		$i=0;
+		$images=array();
+		foreach (glob('images/actions/'.$action->id.'/*.*') as $filename) {
+			$images[]=$filename;
+			$i++;
 		}
-		echo '	</div>
-					</div>';
+
+		$p=1;
+		if($i>0){
+			echo '<div class="module module--synathina">
+							<h3 class="gallery-title">Gallery</h3>
+							<div class="gallery gallery--multirow" rel="js-start-gallery">';
+			for($c=1; $c<=$i; $c++){
+				if($c==1 || ($c-1)%6==0){
+					echo '<div class="gallery-frame" data-id="'.$p.'">';
+					$p++;
+				}
+				echo '<div class="gallery-item">
+								<a class="fill" class="magnifying-gallery" href="'.$images[$c-1].'" style="background-image:url(\''.$images[$c-1].'\'); "></a>
+							</div>';
+				if($c%6==0 || $c==$i){
+					echo '</div>';
+				}
+			}
+			echo '	</div>
+						</div>';
+		}
 	}
 
 	//get 9 similar actions

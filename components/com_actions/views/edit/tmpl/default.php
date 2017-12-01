@@ -64,6 +64,11 @@ $user_team = $this->team;
 $action = $this->action;
 $subactions = $this->subactions;
 
+if ($action->origin ==2) {
+	header('Location: /');
+	die;
+}
+
 ?>
 <script>
 function openChild(file,window,id,lat,lng) {
