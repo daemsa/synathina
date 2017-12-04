@@ -215,8 +215,8 @@ if($isroot==1){
 				            <div class="form-group" id="address_fields_<?php echo $f; ?>" <?=(@$subactions[$f]->stegi_use==1?'style="display:none;"':'')?>>
 											<label class="is-block">ΔΙΕΥΘΥΝΣΗ:</label>
 											<input value="<?php echo stripslashes(@$subactions[$f]->address); ?>" type="text" name="address_<?php echo $f; ?>" id="address_<?php echo $f; ?>" onclick="openChild('<?php echo JURI::base(); ?>gmap_action2.php','win<?php echo $f; ?>',this.id,'lat_<?php echo $f; ?>','lng_<?php echo $f; ?>')" style="width:80%" />
-											<input value="<?php echo stripslashes(@$subactions[$f]->lat); ?>" type="hidden" name="lat_<?php echo $f; ?>" id="lat_<?php echo $f; ?>" value="" />
-											<input value="<?php echo stripslashes(@$subactions[$f]->lng); ?>" type="hidden" name="lng_<?php echo $f; ?>" id="lng_<?php echo $f; ?>" value="" />
+											<input value="<?php echo stripslashes(@$subactions[$f]->lat); ?>" type="hidden" name="lat_<?php echo $f; ?>" id="lat_<?php echo $f; ?>" />
+											<input value="<?php echo stripslashes(@$subactions[$f]->lng); ?>" type="hidden" name="lng_<?php echo $f; ?>" id="lng_<?php echo $f; ?>" />
 										</div>
 										<div class="form-group stegi_use" >
 											<input <?=(@$subactions[$f]->stegi_use==1?'checked="checked"':'')?> id="stegi_<?php echo $f; ?>" name="stegi_<?php echo $f; ?>" type="checkbox" data-href="<?php echo $f; ?>">
