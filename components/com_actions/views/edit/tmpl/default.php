@@ -244,7 +244,7 @@ if($isroot==1){
 		               	<div class="form-group">
 		               		<label for="from_date_<?php echo $f; ?>" class="is-block">Από</label>
 		               		<input value="<?php echo $action_date_start_new; ?>" type="text" class="from_date_edit" id="from_date_<?php echo $f; ?>" name="date_start_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
-											<label for="from_date_<?php echo $f; ?>" class="is-block">Έως</label>
+							<label for="to_date_<?php echo $f; ?>" class="is-block">Έως</label>
 		               		<input value="<?php echo $action_date_end_new; ?>" type="text" class="to_date_edit" id="to_date_<?php echo $f; ?>" name="date_end_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
 		               	</div>
 	               	</div>

@@ -216,7 +216,7 @@ function show_hide(f,show){
 		               	<div class="form-group">
 		               		<label for="from_date_<?php echo $f; ?>" class="is-block">Από</label>
 		               		<input type="text" class="from_date" id="from_date_<?php echo $f; ?>" name="date_start_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
-											<label for="from_date_<?php echo $f; ?>" class="is-block">Έως</label>
+							<label for="to_date_<?php echo $f; ?>" class="is-block">Έως</label>
 		               		<input type="text" class="to_date" id="to_date_<?php echo $f; ?>" name="date_end_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
 		               	</div>
 										<!--<div class="form-group">
