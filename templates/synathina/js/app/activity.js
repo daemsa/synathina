@@ -224,7 +224,9 @@ var Activities = (function(global) {
         //Check for activities that have identical coordinates and slighly alter them
         markersArrayAltered = [];
         //put first element in altered array
-        markersArrayAltered.push(coordinatesArray[0]);
+        if (coordinatesArray.length > 0) {
+            markersArrayAltered.push(coordinatesArray[0]);
+        }
 
         //iterate through all elements starting from the 2nd one
         for (var i = 1; i < coordinatesArray.length; i++) {
