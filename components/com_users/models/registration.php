@@ -760,6 +760,9 @@ class UsersModelRegistration extends JModelForm
 			}
 		}
 
+		if ($config->get('dev_mode')) {
+			$data['email'] = array($config->get('dev_email'));
+		}
 		// Send the registration email.
 		$emailBody_new = '<body style="margin:0px auto; padding:0px; background-color:#FFFFFF; color:#5d5d5d; font-family:Arial; outline:none; font-size:12px;" bgcolor="#FFFFFF">
 									<div style="background-color:#FFFFFF;margin:0px auto; font-family:Arial;color:#5d5d5d;">
