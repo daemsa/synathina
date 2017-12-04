@@ -25,8 +25,10 @@ $this->language = $lang->getTag();//$doc->language;
 $lang_code_array=explode('-',$this->language);
 $lang_code=$lang_code_array[0];
 
-$db = JFactory::getDbo();
 $config = JFactory::getConfig();
+
+//local db
+$db = JFactory::getDbo();
 
 // IMPORT EDITOR CLASS
 jimport( 'joomla.html.editor' );
@@ -76,7 +78,7 @@ foreach($teams_data as $team_data){
 		$support_actions=1;
 	}else{
 		$support_actions=0;
-	}	
+	}
 	$anonymous=$team_data->hidden;
 	$team_id=$team_data->id;
 	$team_or_org=$team_data->team_or_org;
@@ -110,13 +112,13 @@ foreach($teams_data as $team_data){
 	$contact_3_name=$team_data->contact_3_name;
 	$contact_3_email=$team_data->contact_3_email;
 	$contact_3_phone=$team_data->contact_3_phone;
-	$newsletter=$team_data->newsletter;	
+	$newsletter=$team_data->newsletter;
 	$query = "SELECT * FROM #__team_photos WHERE team_id='".$team_id."' ORDER BY ordering ASC";
 	$db->setQuery($query);
-	$photos = $db->loadObjectList();	
+	$photos = $db->loadObjectList();
 	$query = "SELECT path FROM #__team_files WHERE team_id='".$team_id."' ORDER BY ordering ASC LIMIT 1";
 	$db->setQuery($query);
-	$file_path = $db->loadResult();		
+	$file_path = $db->loadResult();
 }
 ?>
 
@@ -140,7 +142,7 @@ function delete_confirmation(id,path,abspath) {
 			}else{
 				return false;
 			}
- } 
+ }
 </script>
 
 <div class="l-register show-profile">
@@ -161,10 +163,10 @@ function delete_confirmation(id,path,abspath) {
 				<div class="alert alert-warning alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<?php echo $this->document->getBuffer('message');?>
-				</div>				
+				</div>
 <?php
 	}
-?>	
+?>
 			<form id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=profile.save'); ?>" method="post" class="form-validate form-horizontal well form" enctype="multipart/form-data">
 				<div class="form--bordered">
 					<div class="l-fg6">
@@ -175,19 +177,19 @@ function delete_confirmation(id,path,abspath) {
 						 <div class="form-group">
 								<label for="" class="is-block">ΕΠΑΝΑΛΗΨΗ EMAIL ΧΡΗΣΤΗ*</label>
 								<input type="email" name="jform[email2]" class="validate-email required" id="jform_email2" required="" value="<?php echo $this->data->email; ?>" aria-required="true">
-						 </div>							 
-					</div>						
+						 </div>
+					</div>
 					<div class="l-fg6">
 						 <div class="form-group">
 								<label for="" class="is-block">ΚΩΔΙΚΟΣ*</label>
-								<input type="password" name="jform[password1]" id="jform_password1" value="" autocomplete="off" class="validate-password required" maxlength="99" />
+								<input type="password" name="jform[password1]" id="jform_password1" value="" autocomplete="off" class="validate-password" maxlength="99" />
 						 </div>
 						 <div class="form-group">
 								<label for="" class="is-block">ΕΠΑΝΑΛΗΨΗ ΚΩΔΙΚΟΥ*</label>
-								<input type="password" name="jform[password2]" id="jform_password2" value="" autocomplete="off" class="validate-password required" maxlength="99" />
+								<input type="password" name="jform[password2]" id="jform_password2" value="" autocomplete="off" class="validate-password" maxlength="99" />
 						 </div>
-					</div>						
-				</div>				
+					</div>
+				</div>
 				<div class="form-inline form--bordered filters" rel="js-choose-action-type">
 					<div class="form-group">
 						<input id="box1" type="checkbox" name="jform[create_actions]" value="organizer" <?=($create_actions==1?'checked="checked"':'')?> />
@@ -202,9 +204,9 @@ function delete_confirmation(id,path,abspath) {
 						<label style="float:left;" for="hidden_team" class="label-horizontal">ΑΝΩΝΥΜΟΣ ΥΠΟΣΤΗΡΙΚΤΗΣ</label>
 						<a class="form-tooltip-jquery" href="#" title="<strong>Ανώνυμοι Υποστηρικτές</strong><br />Εάν επιθυμείτε να υποστηρίξετε τις δράσεις των ομάδων πολιτών που συμμετέχουν στο συνΑθηνά χωρίς να κοινοποιήσετε τα στοιχεία σας, μπορείτε να δημιουργήσετε ανώνυμο προφίλ χρήστη.<br />Κάθε φορά που υπάρχει ενδιαφέρον για την προσφορά σας, θα ενημερώνεστε με email για να συνδεθείτε με την εκάστοτε δράση.  Ενημερωτικά υπάρχει η δυνατότητα να αποκαλύψετε τα στοιχεία σας ανά πάσα στιγμή.">
 							<i class="fa fa-question-circle" aria-hidden="true"></i>
-						</a>	
-					</div>						
-				</div>	
+						</a>
+					</div>
+				</div>
 				<div class="form-inline form--bordered filters" >
 				 <div class="form-group">
 						 <input id="box3" type="radio" name="jform[team_or_org]" value="10" <?=($team_or_org==10?'checked="checked"':'')?>>
@@ -233,14 +235,14 @@ function delete_confirmation(id,path,abspath) {
 	if ($logo_path!='') {
 		echo '<br /><img src="'.$logo_path.'" alt="" style="width:80px;" />';
 	}
-?>					
+?>
 					</div>
 				</div>
 				<div class="form-inline filters" style="margin-bottom:0px;" rel="js-choose-legal-type">
 					<div class="form-group">
 						<label for="leag_title" style="font-size: 16px;font-weight: bold;color: #5d5d5d;" class="is-block">Νομική μορφή*:</label>
 						<small class="is-block is-italic small">Οι πληροφορίες που θα συμπληρώσετε εδώ χρησιμοποιούνται για στατιστικά στοιχεία του συνΑθηνά και δεν  θα είναι ορατές στο δημόσιο προφίλ σας.</small>
-					</div>					
+					</div>
 				</div>
 				<div class="form-inline form--bordered filters" style="padding-top: 0px;" rel="js-choose-legal-type">
 				 <div class="form-group">
@@ -261,13 +263,13 @@ function delete_confirmation(id,path,abspath) {
 						 <input id="box11" type="radio" name="organization_type" value="no" <?=($profit==1?'checked="checked"':'')?>>
 						 <label for="box11" class="label-horizontal">ΚΕΡΔΟΣΚΟΠΙΚΗ</label>
 					</div>
-				</div>	
+				</div>
 				<div class="form-inline form--bordered filters <?=($profit==1?'form-block--hidden':'')?>" rel="js-show-profit-types">
 <?php
 	$query = " SELECT id, name "
 			." FROM #__team_types WHERE published=1 "
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=12;
@@ -278,7 +280,7 @@ function delete_confirmation(id,path,abspath) {
 					</div>';
 		$i++;
 	}
-?>					
+?>
 					<div class="form-group">
 						 <label for="box150" class="is-inline-block">ΑΛΛΟ</label>
 						 <input id="box150" type="text" name="profit_custom" rel="js-other-profit" value="<?=($profit_custom!=''?$profit_custom:'')?>">
@@ -294,10 +296,10 @@ function delete_confirmation(id,path,abspath) {
 					<label for="activity_description" class="is-block">Θεματική δραστηριοποίησης*:</label>
 <?php
 	$query = " SELECT id, name "
-			." FROM #__team_activities 
+			." FROM #__team_activities
 			WHERE published=1"
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=1;
@@ -308,7 +310,7 @@ function delete_confirmation(id,path,abspath) {
 					</div>';
 		$i++;
 	}
-?>						
+?>
 				</div>
 				<div class="form-inline l-fg6 ">
 					<div class="form-group">
@@ -317,7 +319,7 @@ function delete_confirmation(id,path,abspath) {
 					</div>
 					<div class="form-group form-group--upload">
 						 <label for="gallery_upload" class="is-block">Φωτογραφίες:</label>
-						 
+
 <?php
 	$directory = 'images/team_photos/'.$team_id.'/';
 	$path = JPATH_SITE . '/' . $directory;
@@ -330,7 +332,7 @@ function delete_confirmation(id,path,abspath) {
 	{
 			//echo '<img style="width:80px; margin-right:5px;" src="' . JUri::root() . $directory . '/' . $image . '" alt="" />';
 			//echo $image.'<br>';
-	}	
+	}
 	foreach ($images as $image) {
 		$image_array=explode('.',$image);
 			echo '<div id="photo-gallery-'.$image_array[0].'" style="display:block; position:relative; float:left; vertical-align:top;width:80px; height:80px; margin:0px 2px 2px 0px;">
@@ -341,9 +343,9 @@ function delete_confirmation(id,path,abspath) {
 	echo '</div>';
 	}
 
-?>						
-					
-					<input type="file"  class="file-browser" id="gallery_upload" name="gallery_upload[]" multiple> 
+?>
+
+					<input type="file"  class="file-browser" id="gallery_upload" name="gallery_upload[]" multiple>
 						 <span class="is-block is-italic">Ανεβάστε μία ή περισσότερες φωτογραφίες της ομάδας σας
 				ή των δράσεων που έχετε διοργανώσει ή υποστηρίξει - Μέγιστο επιτρεπόμενο όριο φωτογραφίας: 1MB</span>
 					</div>
@@ -426,7 +428,7 @@ function delete_confirmation(id,path,abspath) {
 	if (file_exists($config->get( 'abs_path' ).'/images/team_files/'.$team_id.'/'.$file_path)) {
 		echo $file_path;
 	}
-?>						 
+?>
 						<input type="file" name="jform[files_upload]" id="files_upload" class="file-browser">
 						<span class="is-block is-italic">(Εδώ μπορείτε να ανεβάσετε αρχεία με αναλυτικότερες παρουσιάσεις, ισολογισμούς και οποιοδήποτε άλλο στοιχείο θεωρείτε ότι επεξηγεί καλύτερα τις δράσεις σας - Μέγιστο επιτρεπόμενο όριο αρχείου: 1MB)</span>
 
@@ -442,25 +444,25 @@ function delete_confirmation(id,path,abspath) {
 						 <input id="newsletter_no" type="radio" name="jform[newsletter]" value="no" <?=($newsletter==0?'checked="checked"':'')?> >
 						 <label for="newsletter_no" class="label-horizontal">ΟΧΙ</label>
 					</div>
-				</div>					
+				</div>
 				<div class="form-inline form--bordered filters <?=($support_actions==1?'':'form-block--hidden')?> registration-donations" rel="js-show-action-type">
 					<label for="activity_description" class="is-block">ΤΙ ΠΡΟΣΦΕΡΩ ΩΣ ΥΠΟΣΤΗΡΙΚΤΗΣ ΔΡΑΣΕΩΝ</label>
 <?php
 	$query = " SELECT id, name "
-			." FROM #__team_donation_types 
+			." FROM #__team_donation_types
 				WHERE published=1 AND parent_id=0	"
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=1;
 	$children=array();
 	foreach($rows as $row){
 		$query = " SELECT id, name "
-				." FROM #__team_donation_types 
+				." FROM #__team_donation_types
 					WHERE published=1 AND parent_id=".$row->id."	"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows1=$db->loadObjectList();
 		foreach($rows1 as $row1){
@@ -472,7 +474,7 @@ function delete_confirmation(id,path,abspath) {
 					</div>';
 		$i++;
 	}
-	
+
 	for($i=1; $i<count($children)+1; $i++){
 		for($y=0; $y<count($children[$i]); $y++){
 			if($y==0){
@@ -489,154 +491,30 @@ function delete_confirmation(id,path,abspath) {
 				}
 				if($children[$i][$y][2]==16){
 					$other_donation=$team_data->donation_technology;
-				}						
+				}
 				echo '<div class="form-group">
 								<label for="donation-'.$children[$i][$y][2].'-other" class="label-horizontal" style="display:inline-block">'.($lang_code=='en'?'Other':'Άλλο').'</label>
 								<input name="donation-'.$children[$i][$y][2].'-other" id="donation-'.$children[$i][$y][2].'-other"  type="text" value="'.str_replace('"','\'',$other_donation).'">
-							</div>';					
+							</div>';
 				echo '</div>';
-			}				
+			}
 		}
 
 	}
-?>						
+?>
 				</div>
 				<div class="form-group form-group--tail is-block clearfix">
 					<span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
 					<button type="submit" class="pull-right btn btn--coral btn--bold btn btn-primary validate">Ανανέωση</button>
 					<a class="pull-right btn btn--coral btn--bold btn btn-primary" href="<?php echo JRoute::_('index.php?option=com_users&view=profile'); ?>" title="<?php echo JText::_('JCANCEL'); ?>" style="color:#FFF; padding: 5px 10px; margin-right:5px;background: #fc8f0a;"><?php echo JText::_('JCANCEL'); ?></a>
-				</div>	
+				</div>
 				<input type="hidden" name="option" value="com_users" />
 				<input type="hidden" id="team_id" name="team_id" value="<?php echo $team_id; ?>" />
 				<input type="hidden" name="task" value="profile.save" />
 				<input type="hidden" name="jform[username]" id="jform_username" value="com_users" />
-				<?php echo JHtml::_('form.token'); ?>				
+				<?php echo JHtml::_('form.token'); ?>
 			</form>
 			</div>
 		</div>
 	</div>
 </div>
-
-<!--
-<div class="profile-edit<?php echo $this->pageclass_sfx?>">
-	<?php if ($this->params->get('show_page_heading')) : ?>
-		<div class="page-header">
-			<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-		</div>
-	<?php endif; ?>
-
-	<script type="text/javascript">
-		Joomla.twoFactorMethodChange = function(e)
-		{
-			var selectedPane = 'com_users_twofactor_' + jQuery('#jform_twofactor_method').val();
-
-			jQuery.each(jQuery('#com_users_twofactor_forms_container>div'), function(i, el) {
-				if (el.id != selectedPane)
-				{
-					jQuery('#' + el.id).hide(0);
-				}
-				else
-				{
-					jQuery('#' + el.id).show(0);
-				}
-			});
-		}
-	</script>
-
-	<form id="member-profile" action="<?php echo JRoute::_('index.php?option=com_users&task=profile.save'); ?>" method="post" class="form-validate form-horizontal well" enctype="multipart/form-data">
-	<?php // Iterate through the form fieldsets and display each one. ?>
-	<?php foreach ($this->form->getFieldsets() as $group => $fieldset) : ?>
-		<?php $fields = $this->form->getFieldset($group); ?>
-		<?php if (count($fields)) : ?>
-		<fieldset>
-			<?php // If the fieldset has a label set, display it as the legend. ?>
-			<?php if (isset($fieldset->label)) : ?>
-			<legend>
-				<?php echo JText::_($fieldset->label); ?>
-			</legend>
-			<?php endif;?>
-			<?php // Iterate through the fields in the set and display them. ?>
-			<?php foreach ($fields as $field) : ?>
-			<?php // If the field is hidden, just display the input. ?>
-				<?php if ($field->hidden) : ?>
-					<?php echo $field->input; ?>
-				<?php else : ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-							<?php if (!$field->required && $field->type != 'Spacer') : ?>
-								<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL'); ?></span>
-							<?php endif; ?>
-						</div>
-						<div class="controls">
-							<?php if ($field->fieldname == 'password1') : ?>
-								<?php // Disables autocomplete ?> <input type="password" style="display:none">
-							<?php endif; ?>
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php endif;?>
-			<?php endforeach;?>
-		</fieldset>
-		<?php endif;?>
-	<?php endforeach;?>
-
-	<?php if (count($this->twofactormethods) > 1) : ?>
-		<fieldset>
-			<legend><?php echo JText::_('COM_USERS_PROFILE_TWO_FACTOR_AUTH'); ?></legend>
-
-			<div class="control-group">
-				<div class="control-label">
-					<label id="jform_twofactor_method-lbl" for="jform_twofactor_method" class="hasTooltip"
-						   title="<?php echo '<strong>' . JText::_('COM_USERS_PROFILE_TWOFACTOR_LABEL') . '</strong><br />' . JText::_('COM_USERS_PROFILE_TWOFACTOR_DESC'); ?>">
-						<?php echo JText::_('COM_USERS_PROFILE_TWOFACTOR_LABEL'); ?>
-					</label>
-				</div>
-				<div class="controls">
-					<?php echo JHtml::_('select.genericlist', $this->twofactormethods, 'jform[twofactor][method]', array('onchange' => 'Joomla.twoFactorMethodChange()'), 'value', 'text', $this->otpConfig->method, 'jform_twofactor_method', false); ?>
-				</div>
-			</div>
-			<div id="com_users_twofactor_forms_container">
-				<?php foreach($this->twofactorform as $form) : ?>
-				<?php $style = $form['method'] == $this->otpConfig->method ? 'display: block' : 'display: none'; ?>
-				<div id="com_users_twofactor_<?php echo $form['method']; ?>" style="<?php echo $style; ?>">
-					<?php echo $form['form']; ?>
-				</div>
-				<?php endforeach; ?>
-			</div>
-		</fieldset>
-
-		<fieldset>
-			<legend>
-				<?php echo JText::_('COM_USERS_PROFILE_OTEPS'); ?>
-			</legend>
-			<div class="alert alert-info">
-				<?php echo JText::_('COM_USERS_PROFILE_OTEPS_DESC'); ?>
-			</div>
-			<?php if (empty($this->otpConfig->otep)) : ?>
-			<div class="alert alert-warning">
-				<?php echo JText::_('COM_USERS_PROFILE_OTEPS_WAIT_DESC'); ?>
-			</div>
-			<?php else : ?>
-			<?php foreach ($this->otpConfig->otep as $otep) : ?>
-			<span class="span3">
-				<?php echo substr($otep, 0, 4); ?>-<?php echo substr($otep, 4, 4); ?>-<?php echo substr($otep, 8, 4); ?>-<?php echo substr($otep, 12, 4); ?>
-			</span>
-			<?php endforeach; ?>
-			<div class="clearfix"></div>
-			<?php endif; ?>
-		</fieldset>
-	<?php endif; ?>
-
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn btn-primary validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
-				<a class="btn" href="<?php echo JRoute::_('index.php?option=com_users&view=profile'); ?>" title="<?php echo JText::_('JCANCEL'); ?>"><?php echo JText::_('JCANCEL'); ?></a>
-				<input type="hidden" name="option" value="com_users" />
-				<input type="hidden" name="task" value="profile.save" />
-			</div>
-		</div>
-		<?php echo JHtml::_('form.token'); ?>
-	</form>
-</div>
--->

@@ -85,6 +85,7 @@ var Activities = (function(global) {
     }
 
     function synathina(url) {
+        synathina_text = [];
         $.ajax({
             type: 'GET',
             url: url,
@@ -223,7 +224,9 @@ var Activities = (function(global) {
         //Check for activities that have identical coordinates and slighly alter them
         markersArrayAltered = [];
         //put first element in altered array
-        markersArrayAltered.push(coordinatesArray[0]);
+        if (coordinatesArray.length > 0) {
+            markersArrayAltered.push(coordinatesArray[0]);
+        }
 
         //iterate through all elements starting from the 2nd one
         for (var i = 1; i < coordinatesArray.length; i++) {
@@ -334,7 +337,7 @@ var Activities = (function(global) {
                         }
                     }
                 }
-                console.log(category.length);
+                //console.log(category.length);
                 // pushing markers to cluster
                 clusterer.clearMarkers();
                 clusterer.addMarkers(category);
@@ -362,7 +365,7 @@ var Activities = (function(global) {
 
             // threading with Filter
             saFilter = Filter(activities);
-            saFilter.initSliderFilter();
+            //saFilter.initSliderFilter();
             saFilter.initCategoryFilters();
 
 

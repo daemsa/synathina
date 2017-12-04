@@ -44,6 +44,7 @@ $( ".stegi_use_exists" ).click(function( event ) {
                 $( '#stegi_hours_popup' ).html(data);
                 //$('#stegi_hours').magnificPopup({
                 $.magnificPopup.open({
+                    tClose: '',
                     items: {
                         src: '#stegi_hours_popup'
                     },
@@ -227,30 +228,35 @@ $('.form-tooltip-jquery').click(function(e){
 
 $('.book-stegi').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 })
 
 $('.form-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.newsletter-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.opencall-tooltip').magnificPopup({
     type: 'inline',
-    preloader: false
+    preloader: false,
+    tClose: ''
 });
 
 $('.magnifying').magnificPopup({
-    type: 'image'
-    // other options
+    type: 'image',
+    tClose: ''
 });
 $('.magnifying-gallery').magnificPopup({
     type: 'image',
+    tClose: '',
     gallery: {
         enabled: true,
         navigateByImgClick: true,
@@ -263,6 +269,7 @@ $('.magnifying-gallery').magnificPopup({
 });
 $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
     disableOn: 700,
+    tClose: '',
     type: 'iframe',
     mainClass: 'mfp-fade',
     removalDelay: 160,
@@ -536,18 +543,38 @@ function createFromMysql(mysql_string)
     return result;
 }
 
+//check if refugees checkbox is on and display the remote checkbox
+function showRemote()
+{
+    remote = 0;
+    $('#create_action .remote-option').each(function () {
+        if ($(this).is(":checked")) {
+            remote = 1;
+        }
+    });
+
+    if (remote) {
+        console.log(remote)
+        $('#remote-checkbox input')[0].checked = true;
+        $('#remote-checkbox').removeClass('hidden');
+    } else {
+        console.log(remote)
+        $('#remote-checkbox input')[0].checked = false;
+        $('#remote-checkbox').addClass('hidden');
+    }
+}
+
 //actions form validations
 $(document).ready(function (){
-    if($('#team_root_id')){
+    if($('#team_root_id').length > 0){
         $('#team_root_id').change(function(){
-            $('#team_id').val($('#team_root_id').val());
-            $('#user_id').val($('#team_root_id option:selected').attr('data-user_id'));
+            $('#user_id').val($('#team_root_id').val());
         });
     }
     $( "#create_action" ).on('submit', function(e) {
         e.preventDefault();
-        if($('#team_root_id')){
-            if($('#team_id').val()=='' || $('#user_id').val()==''){
+        if($('#team_root_id').length > 0){
+            if($('#user_id').val()==''){
                 alert("Παρακαλώ εισάγετε ομάδα");
                 return false;
             }
@@ -649,6 +676,10 @@ $(document).ready(function (){
             if($('#form-block-'+f).css('display')!='none' && $('#from_date_'+f)){
                 if($('#ypotitlos_drashs_'+f).val()==''){
                     alert('Παρακαλώ συμπληρώστε τίτλο στην επιμέρους δράση');
+                    return false;
+                }
+                if($('#from_date_'+f).val()=='' || $('#to_date_'+f).val()==''){
+                    alert('Παρακαλώ συμπληρώστε ημερομηνία στην επιμέρους δράση');
                     return false;
                 }
                 var start = $('#from_date_'+f).val();

@@ -1,6 +1,6 @@
-configuration.php
+/configuration.php
 .idea/
-logs/
-images/
-attachments/
+/logs/
+/images/
+/attachments/
 .DS_Store

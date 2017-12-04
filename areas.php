@@ -44,19 +44,24 @@ require_once JPATH_BASE . '/includes/framework.php';
 JDEBUG ? $_PROFILER->setStart($startTime, $startMem)->mark('afterLoad') : null;
 
 //get lang variables
-$lang=@$_REQUEST['lang'];
-if($lang=='en'){
-}else{
+$lang = @$_REQUEST['lang'];
+if ($lang == 'en'){
+} else {
 	$lang='el';
 }
 
 // Instantiate the application.
 $app = JFactory::getApplication('site');
+$config = JFactory::getConfig();
 
+//local db
 $db = JFactory::getDbo();
+
+//remote db
+JLoader::registerPrefix('Remotedb', JPATH_BASE . '/remotedb');
+
 //$areas_colors=array(1=>'fbee66','00ffca','dbacb9','24c2e9 ','dd9e58','e55229','cf93ff');
 $areas_colors=array(1=>'F8E400','00FFCB','F79EB7','00C4F4 ','FF8700','E13200','C77FFF');
-$db = JFactory::getDbo();
 
 function ordinal_suffix($num){
     $num = $num % 100; // protect against large numbers
@@ -69,8 +74,43 @@ function ordinal_suffix($num){
     }
     return 'th';
 }
-$up_to_2016=array(				1=>1400,				2=>136,				3=>348,				4=>58,				5=>34,				6=>252,				7=>84);$up_to_2016_teams=array(				1=>148,				2=>16,				3=>59,				4=>9,				5=>5,				6=>40,				7=>10);echo '[';for($i=1; $i<8; $i++){	$query = "SELECT aa.id FROM #__actions AS a				INNER JOIN #__actions AS aa ON aa.action_id=a.id				WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";	$db->setQuery($query);	$db->execute();	$count = $db->getNumRows()+$up_to_2016[$i];
-	$query = "SELECT aa.team_id FROM #__actions AS a INNER JOIN #__actions AS aa ON aa.action_id=a.id WHERE aa.published='1' AND aa.area='".$i."' AND aa.action_id>0 AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."' GROUP BY a.team_id ";	$db->setQuery($query);	$db->execute();	$count_teams = $db->getNumRows()+$up_to_2016_teams[$i];
+$up_to_2016=array(
+    1=>1400,
+    2=>136,
+	3=>348,
+	4=>58,
+	5=>34,
+	6=>252,
+	7=>84
+);
+$up_to_2016_teams=array(
+	1=>148,
+	2=>16,
+	3=>59,
+	4=>9,
+	5=>5,
+	6=>40,
+	7=>10
+);
+
+$activityClass = new RemotedbActivity();
+
+echo '[';
+for($i=1; $i<8; $i++){
+    //remote db
+    $where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $count = $activityClass->getActivitiesCount($where) + $up_to_2016[$i];
+
+    $where = "a.accmr_team_id=0 AND a.origin=1 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $group_by = "GROUP BY a.team_id";
+    $count_teams_local = $activityClass->getActivitiesCountLimited($where, $group_by);
+
+    $where = "a.team_id=0 AND a.origin=2 AND a.remote=1 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.area='".$i."' AND aa.action_date_start>='2017-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
+    $group_by = "GROUP BY a.accmr_team_id";
+    $count_teams_remote = $activityClass->getActivitiesCountLimited($where, $group_by);
+
+    $count_teams = $count_teams_local + $count_teams_remote + $up_to_2016_teams[$i];
+
 	if($areas_colors[$i]!=''){
 		echo '{
       "details" : {

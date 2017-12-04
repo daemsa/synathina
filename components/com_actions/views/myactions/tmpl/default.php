@@ -39,11 +39,11 @@ $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 	if(@$_REQUEST['action_save']==1 && !$isroot){
 		echo '<p><strong>Αγαπητέ χρήστη, η δράση σας έχει υποβληθεί στο www.synathina.gr. Εντός 48 ωρών, θα λάβετε ειδοποίηση για τη δημοσίευτη της δράσης σας. Σας ευχαριστούμε, Η ομάδα του συνΑθηνά.</strong></p>';
 	}
-	
+
 	if(@$_REQUEST['action_error']==1 && !$isroot){
 		echo '<p style="color: red"><strong>Παρουσιάστηκε σφάλμα κατά την καταχώριση, προσπαθήστε ξανά.</strong></p>';
 	}
-?>					
+?>
    <!-- EOF Filters -->
    <div class="filter-results">
 <?php
@@ -56,8 +56,8 @@ $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 		//$date_from=$action_date_start_array1[2].' '.$months[(int)$action_date_start_array1[1]].' '.$action_date_start_array1[0];
 		//$action_date_end_array=explode(' ',$action->action_date_end);
 		//$action_date_end_array1=explode('-',$action_date_end_array[0]);
-		//$date_to=$action_date_end_array1[2].' '.$months[(int)$action_date_end_array1[1]].' '.$action_date_end_array1[0];	
-		
+		//$date_to=$action_date_end_array1[2].' '.$months[(int)$action_date_end_array1[1]].' '.$action_date_end_array1[0];
+
 		$link=JRoute::_('index.php?option=com_actions&view=action&id='.$action->id.'&Itemid='.@$_REQUEST['Itemid']);
 		$link1=JRoute::_('index.php?option=com_actions&view=edit&id='.$action->id.'&Itemid=144');
 		//$date_start_array=explode(' ',$action->action_date_start);
@@ -74,7 +74,7 @@ $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 						 </div>
 					</div>';
 	}
-?>	
+?>
 
    </div>
    <div class="inline-child-center">

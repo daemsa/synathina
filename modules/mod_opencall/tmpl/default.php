@@ -1,16 +1,18 @@
 <?php
 defined('_JEXEC') or die;
-//connect to db
-$db = JFactory::getDBO();
-$user = JFactory::getUser();
+
 $config = JFactory::getConfig();
+$user = JFactory::getUser();
 $abspath = $config->get( 'abs_path' );
 
-//get team state
-$query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
+//local db
+$db = JFactory::getDbo();
 
+//get team state
+$query = "SELECT * FROM #__teams
+			WHERE user_id='".$user->id."' LIMIT 1 ";
+$db->setQuery($query);
+$team = $db->loadObject();
 
 //language
 $doc = JFactory::getDocument();
@@ -231,7 +233,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
       <div class="open-call">
          <h3 class="popup-title">Open Call</h3>
 <?php
-	if ($user->id > 0 && $teams_activated == 1) {
+	if ($user->id > 0 && $team->published == 1) {
 ?>
          <form action="<?php echo JURI::current();?>" class="form form-inline" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -247,7 +249,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
             <div class="form-inline filters">
 							<label for="" class="is-block">Θεματική ενότητα*:</label>
 <?php
-	$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY name ASC";
+	$query = "SELECT * FROM #__team_activities WHERE published=1 ORDER BY id ASC";
 	$db->setQuery( $query );
 	$activities = $db->loadObjectList();
 	foreach ($activities as $activity) {
@@ -278,7 +280,7 @@ if (@$_REQUEST['open_call_title']!='' && @$_REQUEST['open_call_description'] != 
 			</div>
 		 </form>
 <?php
-	} elseif ($teams_activated == 0 && $user->id > 0) {
+	} elseif (isset($team) && $team->published == 0 && $user->id > 0) {
 ?>
 	Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα από το συνΑθηνά.
 <?php

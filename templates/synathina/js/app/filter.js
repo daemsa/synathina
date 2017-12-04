@@ -5,7 +5,7 @@
     function initSliderFilter() {
 			var cusid_ele = document.getElementsByClassName('time');
 			for (var i = 0; i < cusid_ele.length; ++i) {
-					var item = cusid_ele[i];  
+          var item = cusid_ele[i];
 					//item.style.display='block';
 					item.style.display='none';
 			}

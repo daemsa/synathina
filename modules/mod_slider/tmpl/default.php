@@ -28,20 +28,20 @@ function sortBy($field, &$array, $direction = 'desc')
 
 //NEW SLIDER
 //1st slider
-function count_actions($year){
-	$db = JFactory::getDBO();
-	$where='';
-	if($year==date('Y')){
-		$where=" AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
-	}else{
-		$where=" AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
+function count_actions($year)
+{
+	$where = "a.team_id>0 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
+	if ($year == date('Y')) {
+		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
+	} else {
+		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
 	}
-	$query = "SELECT aa.id AS `count` FROM #__actions AS a
-						INNER JOIN #__actions AS aa ON aa.action_id=a.id
-						WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00' ".$where." ";
-	$db->setQuery($query);
-	$db->execute();
-	return $db->getNumRows();
+
+	//remote db
+	$activityClass = new RemotedbActivity();
+	$activities_count = $activityClass->getActivitiesCount($where);
+
+	return $activities_count;
 }
 
 //get action by year
@@ -68,17 +68,19 @@ for($y=2014; $y<=date('Y'); $y++){
 }
 
 //get 2nd slider
-function teams_count($year){
+function teams_count($year)
+{
 	$db = JFactory::getDBO();
-	$query = "SELECT t.id , t.name
-				FROM #__teams AS t
-				INNER JOIN #__users AS u ON u.id=t.user_id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'";
+	$query = "SELECT COUNT(u.id) FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59' ";
 	$db->setQuery($query);
 	$db->execute();
-	$num_rows = $db->getNumRows();
-	return $num_rows;
+
+	return $db->loadResult();
 }
+
 $slider_2_2013 = 42;
 $slider_2_2014 = 119;
 $slider_2_2015 = 194;
@@ -143,20 +145,13 @@ if($current_year_3==2016){
 }else{
 	$activities_actions=array();
 	$total_action_count = 0;
-	foreach($activities_object as $activity){
-		$query = "SELECT aa.id AS `count` FROM #__actions AS a
-							INNER JOIN #__actions AS aa ON aa.action_id=a.id
-							WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('".$activity->id."',aa.activities)
-							AND aa.action_date_start>='".$current_year_3."-01-01 00:00:00' AND aa.action_date_start<='".date('Y-m-d H:i:s')."'";
-
-	  $db->setQuery($query);
-      $db->execute();
-      $actions_count = $db->getNumRows();
-
-      $total_action_count += $actions_count;
-
-      $activity->action_count = $actions_count;
-
+	foreach($activities_object as $activity) {
+		//remote db
+		$where = "a.team_id>0 AND aa.published=1 AND a.published=1 AND aa.action_id>0 AND find_in_set('" . $activity->id . "',aa.activities) AND aa.action_date_start>='" . $current_year_3 . "-01-01 00:00:00' AND aa.action_date_start<='" . date('Y-m-d H:i:s') . "'";
+		$activityClass = new RemotedbActivity();
+		$activities_count = $activityClass->getActivitiesCount($where);
+	    $total_action_count += $activities_count;
+	    $activity->action_count = $activities_count;
     }
 
 	foreach($activities_object as $activity) {

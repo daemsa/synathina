@@ -69,10 +69,10 @@ $params_editor = array( 'smilies'=> '0' ,
 				<div class="alert alert-warning alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<?php echo $this->document->getBuffer('message');?>
-				</div>				
+				</div>
 <?php
 	}
-?>				
+?>
 				<form id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register'); ?>" method="post" class="form-validate form-horizontal well form" enctype="multipart/form-data">
 					<div class="form--bordered">
 						<!--<div class="l-fg6">
@@ -89,8 +89,8 @@ $params_editor = array( 'smilies'=> '0' ,
 							 <div class="form-group">
 									<label for="" class="is-block">ΕΠΑΝΑΛΗΨΗ EMAIL ΧΡΗΣΤΗ*</label>
 									<input type="email" name="jform[email2]" class="validate-email required" id="jform_email2" value="<?php echo @$_REQUEST['jform[email2]']; ?>" required="" aria-required="true">
-							 </div>							 
-						</div>						
+							 </div>
+						</div>
 						<div class="l-fg6">
 							 <div class="form-group">
 									<label for="" class="is-block">ΚΩΔΙΚΟΣ*</label>
@@ -101,8 +101,8 @@ $params_editor = array( 'smilies'=> '0' ,
 									<label for="" class="is-block">ΕΠΑΝΑΛΗΨΗ ΚΩΔΙΚΟΥ*</label>
 									<input type="password" name="jform[password2]" id="jform_password2" value="" autocomplete="off" class="validate-password required" maxlength="99" required="" aria-required="true">
 							 </div>
-						</div>						
-					</div>				
+						</div>
+					</div>
 					<div class="form-inline form--bordered filters" rel="js-choose-action-type">
 						<div class="form-group">
 							<input id="box1" type="checkbox" name="jform[create_actions]" value="organizer" />
@@ -117,9 +117,9 @@ $params_editor = array( 'smilies'=> '0' ,
 							<label style="float:left;" for="hidden_team" class="label-horizontal">ΑΝΩΝΥΜΟΣ ΥΠΟΣΤΗΡΙΚΤΗΣ</label>
 							<a class="form-tooltip-jquery" href="#" title="<strong>Ανώνυμοι Υποστηρικτές</strong><br />Εάν επιθυμείτε να υποστηρίξετε τις δράσεις των ομάδων πολιτών που συμμετέχουν στο συνΑθηνά χωρίς να κοινοποιήσετε τα στοιχεία σας, μπορείτε να δημιουργήσετε ανώνυμο προφίλ χρήστη.<br />Κάθε φορά που υπάρχει ενδιαφέρον για την προσφορά σας, θα ενημερώνεστε με email για να συνδεθείτε με την εκάστοτε δράση.  Ενημερωτικά υπάρχει η δυνατότητα να αποκαλύψετε τα στοιχεία σας ανά πάσα στιγμή.">
 								<i class="fa fa-question-circle" aria-hidden="true"></i>
-							</a>	
-						</div>							
-					</div>	
+							</a>
+						</div>
+					</div>
 					<div class="form-inline form--bordered filters" >
 					 <div class="form-group">
 							 <input id="box3" type="radio" name="jform[team_or_org]" value="10">
@@ -154,7 +154,7 @@ $params_editor = array( 'smilies'=> '0' ,
 						<div class="form-group">
 							<label for="leag_title" style="font-size: 16px;font-weight: bold;color: #5d5d5d;" class="is-block">Νομική μορφή*:</label>
 							<small class="is-block is-italic small">Οι πληροφορίες που θα συμπληρώσετε εδώ χρησιμοποιούνται για στατιστικά στοιχεία του συνΑθηνά και δεν  θα είναι ορατές στο δημόσιο προφίλ σας.</small>
-						</div>					
+						</div>
 					</div>
 					<div class="form-inline form--bordered filters" style="padding-top: 0px;" rel="js-choose-legal-type">
 					 <div class="form-group">
@@ -175,13 +175,13 @@ $params_editor = array( 'smilies'=> '0' ,
 							 <input id="box11" type="radio" name="organization_type" value="no" disabled>
 							 <label for="box11" class="label-horizontal">ΚΕΡΔΟΣΚΟΠΙΚΗ</label>
 						</div>
-					</div>	
+					</div>
 					<div class="form-inline form--bordered filters form-block--hidden" rel="js-show-profit-types">
 <?php
 		$query = " SELECT id, name "
 				." FROM #__team_types WHERE published=1 "
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
 		$i=12;
@@ -192,7 +192,7 @@ $params_editor = array( 'smilies'=> '0' ,
 						</div>';
 			$i++;
 		}
-?>					
+?>
 						<div class="form-group">
 							 <label for="box150" class="is-inline-block">ΑΛΛΟ</label>
 							 <input id="box150" type="text" name="profit_custom" rel="js-other-profit" disabled>
@@ -200,17 +200,17 @@ $params_editor = array( 'smilies'=> '0' ,
 					</div>
 					<div class="form-group form-inline is-block">
 						<label for="activity_description" class="is-block">Περιγραφή*:</label>
-						<?php echo $editor->display('jform[description]', @$_REQUEST['jform[description]'], '', '200', '20', '20', true, null, null, null, $params_editor); ?>						
+						<?php echo $editor->display('jform[description]', @$_REQUEST['jform[description]'], '', '200', '20', '20', true, null, null, null, $params_editor); ?>
 						<span class="is-block is-italic">(Μια βασική περιγραφή για την ομάδα & τις δράσεις σας)</span>
 					</div>
 					<div class="form-inline filters registration-activities">
 						<label for="activity_description" class="is-block">Θεματική δραστηριοποίησης*:</label>
 <?php
 		$query = " SELECT id, name "
-				." FROM #__team_activities 
+				." FROM #__team_activities
 				WHERE published=1"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
 		$i=1;
@@ -221,7 +221,7 @@ $params_editor = array( 'smilies'=> '0' ,
 						</div>';
 			$i++;
 		}
-?>						
+?>
 					</div>
 					<div class="form-inline l-fg6 ">
 						<div class="form-group">
@@ -324,25 +324,25 @@ $params_editor = array( 'smilies'=> '0' ,
 							 <input id="newsletter_no" type="radio" name="jform[newsletter]" value="no">
 							 <label for="newsletter_no" class="label-horizontal">ΟΧΙ</label>
 						</div>
-					</div>					
+					</div>
 					<div class="form-inline form--bordered filters form-block--hidden registration-donations" rel="js-show-action-type">
 						<label for="activity_description" class="is-block">ΤΙ ΠΡΟΣΦΕΡΩ ΩΣ ΥΠΟΣΤΗΡΙΚΤΗΣ ΔΡΑΣΕΩΝ</label>
 <?php
 		$query = " SELECT id, name "
-				." FROM #__team_donation_types 
+				." FROM #__team_donation_types
 					WHERE published=1 AND parent_id=0	"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows=$db->loadObjectList();
 		$i=1;
 		$children=array();
 		foreach($rows as $row){
 			$query = " SELECT id, name "
-					." FROM #__team_donation_types 
+					." FROM #__team_donation_types
 						WHERE published=1 AND parent_id=".$row->id."	"
 					." ORDER BY id ASC ";
-					
+
 			$db->setQuery($query);
 			$rows1=$db->loadObjectList();
 			foreach($rows1 as $row1){
@@ -354,7 +354,7 @@ $params_editor = array( 'smilies'=> '0' ,
 						</div>';
 			$i++;
 		}
-		
+
 		for($i=1; $i<count($children)+1; $i++){
 			for($y=0; $y<count($children[$i]); $y++){
 				if($y==0){
@@ -368,30 +368,30 @@ $params_editor = array( 'smilies'=> '0' ,
 					echo '<div class="form-group">
 									<label for="donation-'.$children[$i][$y][2].'-other" class="label-horizontal" style="display:inline-block">'.($lang_code=='en'?'Other':'Άλλο').'</label>
 									<input name="donation-'.$children[$i][$y][2].'-other" id="donation-'.$children[$i][$y][2].'-other"  type="text">
-								</div>';						
+								</div>';
 					echo '</div>';
-				}				
+				}
 			}
 
 		}
-?>						
+?>
 					</div>
 					<div class="form-inline l-fg6 form--bordered">
 						<div class="form-group">
 							<input id="terms" type="checkbox" name="terms" value="terms" required />
-							<label for="terms" class="is-block">* Αποδοχή <a href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=6&Itemid=119');?>" target="_blank">όρων χρήσης</a></label>							
-						</div>							
+							<label for="terms" class="is-block">* Αποδοχή <a href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=6&Itemid=119');?>" target="_blank">όρων χρήσης</a></label>
+						</div>
 					</div>
-					
+
 					<div class="form-group form-group--tail is-block clearfix">
 						<span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
 						<button type="submit" class="pull-right btn btn--coral btn--bold btn btn-primary validate">Καταχώριση</button>
-					</div>	
+					</div>
 					<input type="hidden" name="option" value="com_users" />
 					<input type="hidden" name="jform[username]" id="jform_username" value="com_users" />
 					<input type="hidden" name="task" value="registration.register" />
-					<?php echo JHtml::_('form.token');?>					
-				
+					<?php echo JHtml::_('form.token');?>
+
 <!--
 <fieldset>
 	<legend>Εγγραφή Χρήστη</legend>
@@ -476,7 +476,7 @@ $params_editor = array( 'smilies'=> '0' ,
 														</div>
 													</div>
 												</fieldset>
-											
+
 					<?php // Iterate through the form fieldsets and display each one. ?>
 					<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
 						<?php $fields = $this->form->getFieldset($fieldset->name);?>
@@ -516,10 +516,10 @@ $params_editor = array( 'smilies'=> '0' ,
 							<input type="hidden" name="jform[task" value="registration.register" />
 						</div>
 					</div>
-					<?php echo JHtml::_('form.token');?>-->	
-				</form>	
+					<?php echo JHtml::_('form.token');?>-->
+				</form>
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
 
