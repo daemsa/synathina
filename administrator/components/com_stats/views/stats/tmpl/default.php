@@ -184,7 +184,7 @@ $total_stegi = count($actions_stegi);
 		<option value="1" <?=(@$_REQUEST['municipality_use']==1?'selected="selected"':'')?>>ΝΑΙ</option>
 	</select>
 </p>
-<input type="submit" name="submit" value="Προβολή" />
+<input type="submit" class="btn btn-primary" name="submit" value="Προβολή" />
 </form>
 
 <?php

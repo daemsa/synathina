@@ -70,7 +70,7 @@ $total = count($teams);
 	<input class="input" <?=@$_REQUEST['team']=='on'?'checked="checked"':''?> type="checkbox" id="team" name="team" />&nbsp;<label style="display:inline-block" for="team">Διοργανωτής</label>&nbsp;&nbsp;+&nbsp;&nbsp;
 	<input class="input" <?=@$_REQUEST['supporter']=='on'?'checked="checked"':''?> type="checkbox" id="supporter" name="supporter" />&nbsp;<label style="display:inline-block" for="supporter">Υποστηρικτής</label>
 </p>
-<input type="submit" name="submit" value="Προβολή" />
+<input type="submit" class="btn btn-primary"  name="submit" value="Προβολή" />
 </form>
 
 <?php
