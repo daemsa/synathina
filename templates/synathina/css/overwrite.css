@@ -849,9 +849,9 @@ h4.alert-heading{
     position:relative; width:268px;
 }
 
-.badge-image{
+/* .badge-image{
     position:absolute; z-index:0; width:100%;
-}
+} */
 .badge-icon{
     position:absolute; z-index:1; width:100%;
 }
