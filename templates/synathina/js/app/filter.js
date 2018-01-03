@@ -129,7 +129,7 @@
               //do nothing
             }
           }
-          console.log(filters.length);
+          //console.log(filters.length);
           Activities.setActivitiesVisibility(Activities.current_polygon, filters);
         });
       }
