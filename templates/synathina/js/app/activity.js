@@ -209,17 +209,6 @@ var Activities = (function(global) {
 
         coordinatesArray = createMarkersArray(collection);
 
-        // for (var i = 0; i < 10; i++) {
-        //     var currentRow = markersArraySorted[i];
-
-        //     for (var j = 0; j < markersArraySorted.length; j++) {
-        //         if (markersArraySorted[j].lat != '37.980522' && markersArraySorted[j].lng != '23.726839' && currentRow.lat == markersArraySorted[j].lat && currentRow.lng == markersArraySorted[j].lng) {
-        //             coordinatesArray[j].lat = markersArraySorted[j].lat + (Math.random() - .5) / 1500;
-        //             coordinatesArray[j].lng = markersArraySorted[j].lng + (Math.random() - .5) / 1500;
-        //         }
-        //     }
-        // }
-
         //Check for activities that have identical coordinates and slighly alter them
         markersArrayAltered = [];
         //put first element in altered array
@@ -300,76 +289,55 @@ var Activities = (function(global) {
         });
 
         /**
-         * [if user clicks on polygon and already have used filtering, use the latter year ranges also for the next polygon]
-         * @param  {[boolean]} Activities.is_filtered []
-         */
+       * [if user clicks on polygon and already have used filtering, use the latter year ranges also for the next polygon]
+       * @param  {[boolean]} Activities.is_filtered []
+       */
 
-        if (Activities.is_filtered_bySlider == true && Activities.yearRangeBuffer !== null && cat_filter === undefined) {
+        var thematic_check_exists = 1;
+        if (cat_filter == undefined || cat_filter == '') {
+            thematic_check_exists = 0;
+        }
+
+        if (cat_filter !== undefined && thematic_check_exists == 1) {
+            var allMarkers = [];
             for (var i = 0; i < coordinatesArray.length; i += 1) {
-                activities[i].marker.setVisible(false)
-            }
-            filterActivities(Activities.yearRangeBuffer);
-
-        } else {
-            var thematic_check_exists = 0;
-            $('.categories input[type=checkbox]').each(function() {
-                if (this.checked) {
-                    thematic_check_exists = 1;
-                }
-            });
-
-            if (cat_filter !== undefined && thematic_check_exists == 1) {
-                Filter.run = true;
-                var allMarkers = [];
-                for (var i = 0; i < coordinatesArray.length; i += 1) {
-
-                    var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-                    if (polygon.Contains(point)) {
-                        index = findIn(cat_filter, activities[i].marker.db_data.category_id);
-                        if (index) {
-                            activities[i].marker.setVisible(true);
-                            category.push(activities[i].marker);
-                        } else {
-                            activities[i].marker.setVisible(false);
-                        }
-                    }
-                }
-                console.log(category.length);
-                // pushing markers to cluster
-                clusterer.clearMarkers();
-                clusterer.addMarkers(category);
-                category.length = 0;
-
-            } else {
-
-                for (var i = 0; i < coordinatesArray.length; i += 1) {
-
-                    var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-
-                    if (polygon.Contains(point)) {
+                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+                if (polygon.Contains(point)) {
+                    //index = findIn(cat_filter, activities[i].marker.db_data.category_id);
+                    index = cat_filter.indexOf(parseInt(activities[i].marker.db_data.category_id));
+                    if (index > -1) {
                         activities[i].marker.setVisible(true);
-                        checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
                         category.push(activities[i].marker);
                     } else {
                         activities[i].marker.setVisible(false);
                     }
                 }
-
-                clusterer.clearMarkers();
-                clusterer.addMarkers(category);
-                category.length = 0;
             }
+            //console.log(category.length);
+            // pushing markers to cluster
+            clusterer.clearMarkers();
+            clusterer.addMarkers(category);
+            category = [];
 
-            // threading with Filter
+        } else {
+            for (var i = 0; i < coordinatesArray.length; i += 1) {
+                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+                if (polygon.Contains(point)) {
+                    activities[i].marker.setVisible(true);
+                    category.push(activities[i].marker);
+                } else {
+                    activities[i].marker.setVisible(false);
+                }
+            }
+            clusterer.clearMarkers();
+            clusterer.addMarkers(category);
+            category = [];
+
+            // threading with Filter, initialize it here so it adds event listener to filters when area is clicked
             saFilter = Filter(activities);
-            saFilter.initSliderFilter();
+            // //saFilter.initSliderFilter();
             saFilter.initCategoryFilters();
-
-
         }
-    }
-
-    function checkSameLocation(a) {
     }
 
     function createLocationSpace(a) {

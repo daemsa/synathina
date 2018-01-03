@@ -5,7 +5,7 @@
     function initSliderFilter() {
 			var cusid_ele = document.getElementsByClassName('time');
 			for (var i = 0; i < cusid_ele.length; ++i) {
-					var item = cusid_ele[i];  
+					var item = cusid_ele[i];
 					//item.style.display='block';
 					item.style.display='none';
 			}
@@ -92,40 +92,56 @@
         return indexOf.call(this, needle) > -1;
     };
 
+    // function initCategoryFilters(){
+    //
+    //     checkboxes = Filter.category_filters.category_NodeList;
+    //     RECORDS = Filter.category_filters.category_entity;
+    //
+    //     var filters = [];
+    //
+    //     for ( var i = 1; i < checkboxes.length; i++ ){
+    //         checkboxes[i].addEventListener('click', function(evt) {
+    //           //hasRun = 1;
+    //           //run = 'true';
+    //           evt.stopPropagation();
+    //           evt.stopImmediatePropagation();
+    //             if(this.checked === false) {
+    //                 filters.pop(parseInt(this.dataset.id));
+    //                 Activities.setActivitiesVisibility(Activities.current_polygon, filters)
+    //             } else if(this.checked === true) {
+    //                 filters.push(parseInt(this.dataset.id));
+    //                 Activities.setActivitiesVisibility(Activities.current_polygon, filters)
+    //                 //evt.target.checked =false;
+    //             }
+    //         });
+    //     }
+    // }
+
     function initCategoryFilters(){
-
-        checkboxes = Filter.category_filters.category_NodeList;
-        RECORDS = Filter.category_filters.category_entity;
-
-        var filters = [];
-
-        for ( var i = 1; i < checkboxes.length; i++ ){
-            checkboxes[i].addEventListener('click', function(evt) {
-              //hasRun = 1;
-              //run = 'true';
-              evt.stopPropagation();
-              evt.stopImmediatePropagation();
-                if(this.checked === false) {
-
-                    filters.pop(parseInt(this.dataset.id));
-                    Activities.setActivitiesVisibility(Activities.current_polygon, filters)
-                } else if(this.checked === true) {
-                    filters.push(parseInt(this.dataset.id));
-                    Activities.setActivitiesVisibility(Activities.current_polygon, filters)
-                    //evt.target.checked =false;
-                }
-            });
-        }
+      checkboxes = document.querySelectorAll('.categories .form-group input[type=checkbox]');
+      for (var i = 0; i < checkboxes.length; i++){
+        checkboxes[i].addEventListener('click', function(evt) {
+          var filters = [];
+          for (var j = 0; j < checkboxes.length; j++) {
+            if(checkboxes[j].checked === true) {
+              filters.push(parseInt(checkboxes[j].dataset.id));
+            } else {
+              //do nothing
+            }
+          }
+          console.log(filters.length);
+          Activities.setActivitiesVisibility(Activities.current_polygon, filters);
+        });
+      }
     }
 
-
-    var accesor, range, activities, category_filters, input_filters = [], hasRun = 0;
+    var accesor, range, activities, category_filters, input_filters = [], hasRun = 0, checkboxes = [];
     //EVT.on('init-filter', setupFilter);
 
     return {
-      initSliderFilter :initSliderFilter,
-      initCategoryFilters :initCategoryFilters,
-      count : countFacts,
+      //initSliderFilter :initSliderFilter,
+      initCategoryFilters: initCategoryFilters,
+      count: countFacts,
       //filterByCategory : filterByCategory,
       activities:'',
       category_filters:'',
