@@ -454,6 +454,7 @@ if($isroot==1){
               }
               ?>
             <?php if ($isroot) { ?>
+            	<div class="clearfix"></div>
 				<div class="form-group form--padded">
 					<input id="remote" type="checkbox" name="remote" <?=($action->remote == 1 ? 'checked="checked"' : '')?> />
 					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>

@@ -371,6 +371,7 @@ function show_hide(f,show){
                     <?php }
                 }
                 ?>
+                <div class="clearfix"></div>
 				<div class="form-group form--padded hidden" id="remote-checkbox">
 					<input id="remote" type="checkbox" name="remote">
 					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>
