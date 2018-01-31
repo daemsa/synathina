@@ -738,6 +738,8 @@ class ActionsModelEdit extends JModelItem
 			}
 
 			//email to supporters
+			$email_counter;
+			$thematikes = [];
 			if ($donations_ids != '' && $activities_send == 0) {
 				$supporters_exist = 0;
 				$emails = [];
@@ -749,6 +751,8 @@ class ActionsModelEdit extends JModelItem
 				$donations_valid_text = $this->donations_valid(true);
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
+						$email_counter++;
+						array_push($thematikes, $d);
 						$team_user_ids_text = $this->getUserIdsCommaDel($donations_array[$d], $team_id);
 						if ($team_user_ids_text) {
 							$query = "SELECT email FROM #__users
@@ -765,6 +769,29 @@ class ActionsModelEdit extends JModelItem
 						}
 					}
 				}
+
+				$thematikes = implode ("", $thematikes);
+				//$thematikes = serialize($thematikes);
+				//$thematikes_string = mysql_escape_string(serialize($thematikes));
+				//$thematikes="'".$thematikes."'";
+				// Get a db connection.
+				$db = JFactory::getDbo();
+				// Create a new query object.
+				$query = $db->getQuery(true);
+				// Insert columns.
+				$columns = array('counter', 'thematikes');
+				// Insert values.
+				$values = array($email_counter, $thematikes);
+				// Prepare the insert query.
+				$query
+				    ->insert($db->quoteName('#__counter_thematikon'))
+				    ->columns($db->quoteName($columns))
+				    ->values(implode(',', $values));
+
+				// Set the query using our newly populated query object and execute it.
+				$db->setQuery($query);
+				$db->execute();
+
 				if (!empty($supporters_emails)) {
 					$team_link = 'http://www.synathina.gr'.JRoute::_('index.php?option=com_teams&view=team&id='.$team_id.'&Itemid=140');
 					$drasi_url = $config->get( 'main_url' ).JRoute::_('index.php?option=com_actions&view=action&id='.$parent_id.'&Itemid=138');
