@@ -193,7 +193,7 @@ $subactions=$this->subactions;
  	}
 ?>
                      </ul>
-<?php if ($subaction->area) { ?>
+<?php if ($subaction->area!=0) { ?>
                      <br>
                      <span><strong><?php echo $subaction->area; ?><sup><?php echo ($lang_code == 'en' ? $english_suffixes[$subaction->area] : 'η'); ?></sup> <?php echo ($lang_code == 'en' ? 'District' : 'Δημοτική Κοινότητα'); ?></strong></span>
 <?php } ?>
