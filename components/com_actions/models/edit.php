@@ -738,7 +738,7 @@ class ActionsModelEdit extends JModelItem
 			}
 
 			//email to supporters
-			$email_counter;
+			$email_counter = 0;
 			$thematikes = [];
 			if ($donations_ids != '' && $activities_send == 0) {
 				$supporters_exist = 0;
@@ -751,7 +751,6 @@ class ActionsModelEdit extends JModelItem
 				$donations_valid_text = $this->donations_valid(true);
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
-						$email_counter++;
 						array_push($thematikes, $d);
 						$team_user_ids_text = $this->getUserIdsCommaDel($donations_array[$d], $team_id);
 						if ($team_user_ids_text) {
@@ -760,12 +759,17 @@ class ActionsModelEdit extends JModelItem
 							$db->setQuery($query);
 							$emails_results = $db->loadObjectList();
 							foreach ($emails_results as $emails_result) {
+								$email_counter++;
 								$emails[] = $emails_result->email;
 								$supporters_emails[$donations_array[$d]][] = $emails_result->email;
 								$supporters_donation_titles[$donations_array[$d]] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 							}
 							$donation_text[] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 							$supporters_exist = 1;
+
+							$query_activities_update = "UPDATE #__actions SET activities_send = 1 WHERE id='".$donations_array[$d]."' LIMIT 1";
+							$db_remote->setQuery($query_activities_update);
+							$db_remote->execute();
 						}
 					}
 				}
@@ -809,9 +813,6 @@ class ActionsModelEdit extends JModelItem
 						}
 					}
 				}
-				$query_activities_update = "UPDATE #__actions SET activities_send = 1 WHERE id='".$action_id."' LIMIT 1";
-				$db_remote->setQuery($query_activities_update);
-				$db_remote->execute();
 			}
 
 			//email to user
