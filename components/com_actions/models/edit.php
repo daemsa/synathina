@@ -739,7 +739,7 @@ class ActionsModelEdit extends JModelItem
 
 			//email to supporters
 			$email_counter = 0;
-			$thematikes = [];
+			$donations_used = [];
 			if ($donations_ids != '' && $activities_send == 0) {
 				$supporters_exist = 0;
 				$emails = [];
@@ -751,7 +751,7 @@ class ActionsModelEdit extends JModelItem
 				$donations_valid_text = $this->donations_valid(true);
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
-						array_push($thematikes, $d);
+						array_push($donations_used, $d);
 						$team_user_ids_text = $this->getUserIdsCommaDel($donations_array[$d], $team_id);
 						if ($team_user_ids_text) {
 							$query = "SELECT email FROM #__users
@@ -766,26 +766,21 @@ class ActionsModelEdit extends JModelItem
 							}
 							$donation_text[] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 							$supporters_exist = 1;
-
-							$query_activities_update = "UPDATE #__actions SET activities_send = 1 WHERE id='".$donations_array[$d]."' LIMIT 1";
-							$db_remote->setQuery($query_activities_update);
-							$db_remote->execute();
 						}
 					}
 				}
 
-				$thematikes = implode ("", $thematikes);
-				//$thematikes = serialize($thematikes);
-				//$thematikes_string = mysql_escape_string(serialize($thematikes));
-				//$thematikes="'".$thematikes."'";
-				// Get a db connection.
-				$db = JFactory::getDbo();
+				$query_activities_update = "UPDATE #__actions SET activities_send = 1 WHERE id='".$action_id."' LIMIT 1";
+				$db_remote->setQuery($query_activities_update);
+				$db_remote->execute();
+
+				$donations_used = implode ("", $donations_used);
 				// Create a new query object.
 				$query = $db->getQuery(true);
 				// Insert columns.
-				$columns = array('counter', 'thematikes');
+				$columns = array('counter', 'donations');
 				// Insert values.
-				$values = array($email_counter, $thematikes);
+				$values = array($email_counter, $donations_used);
 				// Prepare the insert query.
 				$query
 				    ->insert($db->quoteName('#__counter_thematikon'))
