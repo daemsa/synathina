@@ -210,17 +210,6 @@ var Activities = (function(global) {
 
         coordinatesArray = createMarkersArray(collection);
 
-        // for (var i = 0; i < 10; i++) {
-        //     var currentRow = markersArraySorted[i];
-
-        //     for (var j = 0; j < markersArraySorted.length; j++) {
-        //         if (markersArraySorted[j].lat != '37.980522' && markersArraySorted[j].lng != '23.726839' && currentRow.lat == markersArraySorted[j].lat && currentRow.lng == markersArraySorted[j].lng) {
-        //             coordinatesArray[j].lat = markersArraySorted[j].lat + (Math.random() - .5) / 1500;
-        //             coordinatesArray[j].lng = markersArraySorted[j].lng + (Math.random() - .5) / 1500;
-        //         }
-        //     }
-        // }
-
         //Check for activities that have identical coordinates and slighly alter them
         markersArrayAltered = [];
         //put first element in altered array
@@ -370,9 +359,6 @@ var Activities = (function(global) {
 
 
         }
-    }
-
-    function checkSameLocation(a) {
     }
 
     function createLocationSpace(a) {
