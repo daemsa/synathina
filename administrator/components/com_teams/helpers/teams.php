@@ -49,7 +49,7 @@ class TeamsHelper extends JHelperContent
 
 		// Get the options.
 		$db->setQuery($query);
-		$types=array(0=>array('value'=>10, 'text'=>'Ομάδα πολιτών'),array('value'=>11, 'text'=>'Φορέας Οργανισμός'),array('value'=>12, 'text'=>'Επιχείρηση/Εταιρεία'));
+		$types = [['value'=>10, 'text'=>'Ομάδα πολιτών'], ['value'=>11, 'text'=>'Φορέας Οργανισμός'], ['value'=>12, 'text'=>'Επιχείρηση/Εταιρεία'], ['value'=>13, 'text'=>'Ιδιώτης/Δημότης']];
 		$options1 = json_decode(json_encode($types), FALSE);
 		//print_r($options1);
 		try
@@ -70,7 +70,7 @@ class TeamsHelper extends JHelperContent
 
 		return $options;
 	}
-	
+
 	public static function getSupportersOptions()
 	{
 		$options = array();
@@ -105,7 +105,7 @@ class TeamsHelper extends JHelperContent
 		}
 
 		return $options;
-	}	
+	}
 
 
 }
