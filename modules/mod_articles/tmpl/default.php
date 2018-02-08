@@ -18,7 +18,7 @@ $articles = $db->loadObjectList();
 $query="SELECT COUNT(id) FROM #__content WHERE state=1 AND catid='".$params1->catid."' AND publish_up<'".date('Y-m-d H:i:s')."' ";
 $db->setQuery($query);
 $articles_all = $db->loadResult();
-	
+
 ?>
 
 <div class="thumbnail-list articles-view">
@@ -26,7 +26,7 @@ $articles_all = $db->loadResult();
 <?php	$a=1;
 	foreach($articles as $article){
 		$article->slug    = $article->id . ':' . $article->alias;
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language).'&art=1'); 
+		$link = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language).'&art=1');
 		$attribs1  = json_decode($article->attribs);
 ?>
 	<div class="thumbnail-list__item">
@@ -44,12 +44,12 @@ $articles_all = $db->loadResult();
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.youtubeID($img->link).'" frameborder="0" allowfullscreen></iframe>
 							</div>';
 			}else{
-				list($width, $height) = getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
-				echo '<a href="'.$link.'"><img src="images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive" style="" /></a>';				
+				list($width, $height) = @getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
+				echo '<a href="'.$link.'"><img src="images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive" style="" /></a>';
 				if(count($imgs)==0){
 					echo '<a href="'.$link.'"><img src="http://placehold.it/511x310" class="img-responsive" style="height:310px" /></a>';
-				}	
-			}				
+				}
+			}
 		}
 		$i++;
 	}
@@ -59,7 +59,7 @@ $articles_all = $db->loadResult();
 		$text=strip_tags($article->introtext,'<strong><a>');
 	}
 	$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $text);
-?>		 
+?>
 				<div class="caption">
 					 <h3><a style="color:#5d5d5d" href="<?php echo $link; ?>"><?php echo $article->title; ?></a></h3>
 					 <time><?php echo JHTML::_('date', $article->created, 'd/m/Y');?></time>
@@ -69,19 +69,18 @@ $articles_all = $db->loadResult();
 					 </p>
 				</div>
 		 </article>
-	</div>	
-<?php 			if($a%2==0){				echo '<div class="articles_by_two">&nbsp;</div>';			}			$a++;}?>	
+	</div>
+<?php 			if($a%2==0){				echo '<div class="articles_by_two">&nbsp;</div>';			}			$a++;}?>
 </div>
 <div class="more-articles"></div>
-<button class="load-more-btn more-articles-button" rel="js-load-more-articles"></button>		
+<button class="load-more-btn more-articles-button" rel="js-load-more-articles"></button>
 <input type="hidden" class="articles_counter" name="articles_counter" value="4" />
 <input type="hidden" class="article_url_parameter" name="article_url_parameter" value="&art=1" />
 <input type="hidden" class="articles_itemid" name="articles_itemid" value="<?php echo @$_REQUEST['Itemid']; ?>" />
-<input type="hidden" class="all_articles_counter" name="all_articles_counter" value="<?php echo $articles_all; ?>" />	
+<input type="hidden" class="all_articles_counter" name="all_articles_counter" value="<?php echo $articles_all; ?>" />
 <input type="hidden" class="param_catid" name="param_catid" value="<?php echo $params1->catid; ?>" />
 
-			
-			
-			
-			
-			
+
+
+
+

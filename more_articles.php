@@ -68,7 +68,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 //get more articles
 if($note=='opencalls'){
 	$query="SELECT * FROM #__content WHERE ".($isroot==1?'':'state=1 AND')." ".($isroot==1?'':'publish_up<\''.date('Y-m-d H:i:s').'\' AND')." catid='".@$_REQUEST['catid']."' ORDER BY created DESC LIMIT ".@$_REQUEST['counter'].",8 ";
-	
+
 	$db->setQuery($query);
 	$articles = $db->loadObjectList();
 	/*$new_Lead_items = new ArrayObject();
@@ -82,7 +82,7 @@ if($note=='opencalls'){
 	usort($new_Lead_items1, function($a, $b)
 	{
 			return strcmp($b->opencall_date, $a->opencall_date);
-	});		
+	});
 	$articles = new ArrayObject();
 	$i=0;
 	//echo '<div style="display:none">'.print_r($new_Lead_items1).'</div>';
@@ -92,7 +92,7 @@ if($note=='opencalls'){
 		}
 		$i++;
 	endforeach;*/
-	
+
 }else{
 	$query="SELECT * FROM #__content WHERE ".($isroot==1?'':'state=1 AND')." ".($isroot==1?'':'publish_up<\''.date('Y-m-d H:i:s').'\' AND')." catid='".@$_REQUEST['catid']."' ORDER BY created DESC LIMIT ".@$_REQUEST['counter'].",4 ";
 	$db->setQuery($query);
@@ -116,14 +116,14 @@ function youtubeID($url){
 
 $a=1;
 $i=0;
-require_once (JPATH_SITE . '/components/com_content/helpers/route.php'); 
+require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
 echo '<div class="more--articles more--articles-hidden"><div class="thumbnail-list">';
 	$extralink=@$_REQUEST['extralink'];
 
 	foreach($articles as $article){
-		//$link = JRoute::_('index.php?option=com_content&view=article&id='.$article->id).'&Itemid='.$itemid.$extralink; 
+		//$link = JRoute::_('index.php?option=com_content&view=article&id='.$article->id).'&Itemid='.$itemid.$extralink;
 		$article->slug    = $article->id . ':' . $article->alias;
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language).'&Itemid='.$itemid.$extralink); 
+		$link = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language).'&Itemid='.$itemid.$extralink);
 		//echo 'index.php?option=com_content&view=article&id='.$article->id.'&Itemid='.$itemid.$extralink;
 		$attribs1  = json_decode($article->attribs);
 ?>
@@ -142,13 +142,13 @@ echo '<div class="more--articles more--articles-hidden"><div class="thumbnail-li
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.youtubeID($img->link).'" frameborder="0" allowfullscreen></iframe>
 							</div>';
 			}else{
-				list($width, $height) = getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
+				list($width, $height) = @getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
 				//style="height:'.($height<310?$height.'px; margin-bottom:'.ceil(310-$height).'px':'310px').'"
-				echo '<a href="'.$link.'"><img src="'.JURI::root( true ).'/images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive"  /></a>';				
+				echo '<a href="'.$link.'"><img src="'.JURI::root( true ).'/images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive"  /></a>';
 				if(count($imgs)==0){
 					echo '<a href="'.$link.'"><img src="http://placehold.it/511x310" class="img-responsive" style="height:310px" /></a>';
-				}	
-			}				
+				}
+			}
 		}
 		$i++;
 	}
@@ -169,12 +169,12 @@ echo '<div class="more--articles more--articles-hidden"><div class="thumbnail-li
 					echo '<a href="'.$link.'"><img src="'.JUri::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive" style="height:'.($height<310?$height.'px; margin:'.ceil((310-$height)/2).'px 0px':'310px').'" /></a>';
 					if(count($imgs)==0){
 						echo '<a href="'.$link.'"><img src="http://placehold.it/511x310" class="img-responsive" style="height:310px" /></a>';
-					}				
+					}
 				}
 				$i++;
 			}
 		}*/
-?>		 
+?>
 				<div class="caption">
 					 <h3><a style="color:#5d5d5d" href="<?php echo $link; ?>"><?php echo $article->title; ?></a><?=($isroot==1&&$article->state==0?' <span style="color:red;">ανενεργό</span>':'')?></h3>
 					 <time><?=($note=='opencalls'?'Deadline: ':'')?><?php echo JHTML::_('date', ($note=='opencalls'?@$attribs1->opencall_date:$article->created), 'd/m/Y');?></time>
@@ -183,7 +183,7 @@ echo '<div class="more--articles more--articles-hidden"><div class="thumbnail-li
 				</div>
 		 </article>
 	</div>
-<?php 
+<?php
 		if($a%2==0){
 			echo '<div class="articles_by_two">&nbsp;</div>';
 		}

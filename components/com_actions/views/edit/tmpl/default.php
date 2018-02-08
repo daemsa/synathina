@@ -15,11 +15,7 @@ $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
 //activities
-$query="SELECT a.*
-				FROM #__team_activities AS a
-				WHERE a.published=1 ";
-$db->setQuery( $query );
-$activities = $db->loadObjectList();
+$activities = $this->activities;
 $activities_array_info=array();
 foreach($activities as $activity){
 	$activities_array_info[$activity->id]=array($activity->name, $activity->image);
@@ -37,12 +33,6 @@ $this->language = $lang->getTag();//$doc->language;
 $lang_code_array=explode('-',$this->language);
 $lang_code=$lang_code_array[0];
 $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
-//get menu clues
-//$menu_params = $app->getMenu()->getActive()->params;
-//$menu_link = $app->getMenu()->getActive()->link;
-
-//$action=$this->action[0];
-//$subactions=$this->subactions;
 
 // IMPORT EDITOR CLASS
 jimport( 'joomla.html.editor' );
@@ -70,13 +60,14 @@ $params_editor = array( 'smilies'=> '0' ,
     'clear_entities'=>'0'
 );
 
-$user_team=$this->team[0];
-$action=$this->action[0];
-$subactions=$this->subactions;
-/*echo '<pre>';
-print_r($action);
-print_r($subactions);
-echo '</pre>';*/
+$user_team = $this->team;
+$action = $this->action;
+$subactions = $this->subactions;
+
+if ($action->origin ==2) {
+	header('Location: /');
+	die;
+}
 
 ?>
 <script>
@@ -158,14 +149,14 @@ if($isroot==1){
 ?>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
-									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice==1?'checked="checked"':'')?> />
-									 <label for="best_practice" class="is-block">Best practice:</label>
+									 <input id="best_practice" name="best_practice" type="checkbox" <?=($action->best_practice == 1 ? 'checked = "checked"' : '') ?> />
+									 <label for="best_practice" class="is-block">Best practice</label>
 								</div>
 							</div>
 							<div class="form-inline l-fg6 max-600">
 								<div class="form-group">
 									 <input id="published" name="published" type="checkbox" <?=($action->published==1?'checked="checked"':'')?> />
-									 <label for="published" class="is-block">Published:</label>
+									 <label for="published" class="is-block">Published</label>
 								</div>
 							</div>
 <?php
@@ -224,8 +215,8 @@ if($isroot==1){
 				            <div class="form-group" id="address_fields_<?php echo $f; ?>" <?=(@$subactions[$f]->stegi_use==1?'style="display:none;"':'')?>>
 											<label class="is-block">ΔΙΕΥΘΥΝΣΗ:</label>
 											<input value="<?php echo stripslashes(@$subactions[$f]->address); ?>" type="text" name="address_<?php echo $f; ?>" id="address_<?php echo $f; ?>" onclick="openChild('<?php echo JURI::base(); ?>gmap_action2.php','win<?php echo $f; ?>',this.id,'lat_<?php echo $f; ?>','lng_<?php echo $f; ?>')" style="width:80%" />
-											<input value="<?php echo stripslashes(@$subactions[$f]->lat); ?>" type="hidden" name="lat_<?php echo $f; ?>" id="lat_<?php echo $f; ?>" value="" />
-											<input value="<?php echo stripslashes(@$subactions[$f]->lng); ?>" type="hidden" name="lng_<?php echo $f; ?>" id="lng_<?php echo $f; ?>" value="" />
+											<input value="<?php echo stripslashes(@$subactions[$f]->lat); ?>" type="hidden" name="lat_<?php echo $f; ?>" id="lat_<?php echo $f; ?>" />
+											<input value="<?php echo stripslashes(@$subactions[$f]->lng); ?>" type="hidden" name="lng_<?php echo $f; ?>" id="lng_<?php echo $f; ?>" />
 										</div>
 										<div class="form-group stegi_use" >
 											<input <?=(@$subactions[$f]->stegi_use==1?'checked="checked"':'')?> id="stegi_<?php echo $f; ?>" name="stegi_<?php echo $f; ?>" type="checkbox" data-href="<?php echo $f; ?>">
@@ -253,13 +244,9 @@ if($isroot==1){
 		               	<div class="form-group">
 		               		<label for="from_date_<?php echo $f; ?>" class="is-block">Από</label>
 		               		<input value="<?php echo $action_date_start_new; ?>" type="text" class="from_date_edit" id="from_date_<?php echo $f; ?>" name="date_start_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
-											<label for="from_date_<?php echo $f; ?>" class="is-block">Έως</label>
+							<label for="to_date_<?php echo $f; ?>" class="is-block">Έως</label>
 		               		<input value="<?php echo $action_date_end_new; ?>" type="text" class="to_date_edit" id="to_date_<?php echo $f; ?>" name="date_end_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
 		               	</div>
-										<!--<div class="form-group">
-											<input id="box22" type="checkbox">
-											<label for="box22" class="label-horizontal"><small>ΕΠΑΝΑΛΑΜΒΑΝΟΜΕΝΗ ΣΤΕΓΗ</small></label>
-										</div>-->
 	               	</div>
 	               </div>
 								<div class="form-inline filters form--padded form--bordered">
@@ -293,7 +280,6 @@ if($isroot==1){
 	$partners=explode(',',$action->partners);
 	array_filter($partners);
 	foreach($this->teams AS $team){
-		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$partners)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
 ?>
@@ -320,7 +306,6 @@ if($isroot==1){
 	array_filter($supporters);
 
 	foreach($this->supporters AS $team){
-		//echo '<option value="'.$team->id.'" '.(in_array($team->id,$partners)?'selected="selected"':'').'>'.$team->name.'</option>';
 		echo '<option '.(in_array($team->id,$supporters)?'selected="selected"':'').' value="'.$team->id.'" rel="'.JURI::base().($team->logo!=''?$team->logo:'images/template/no-team.jpg').'" id="team_logo_'.$team->id.'">'.$team->name.'</option>';
 	}
 ?>
@@ -383,13 +368,6 @@ if($isroot==1){
                                         <span class="is-block is-italic">(Επεξηγήστε με σαφήνεια τη μορφή υποστήριξης που θέλετε να λάβετε. Το μήνυμά σας θα προωθηθεί στις αρμόδιες δημοτικές υπηρεσίες)</span>
 									</div>
 								</div>
-								<!--<div class="form-group">
-									<label for="box70" class="is-block">Θέλω να...:</label>
-									<select name="" id="">
-										<option value=""></option>
-										<option value=""></option>
-									</select>
-								</div>-->
 							</div>
 							<div class="form-inline form--bordered filters " rel="">
 								<label for="activity_description" class="is-block">Θα επιθυμούσα την υποστήριξη σε:</label>
@@ -400,13 +378,7 @@ if($isroot==1){
 		array_filter($donations);
 	}
 
-		$query = " SELECT id, name "
-				." FROM #__team_donation_types
-					WHERE published=1 AND parent_id=0	"
-				." ORDER BY id ASC ";
-
-		$db->setQuery($query);
-		$rows=$db->loadObjectList();
+		$rows=$this->team_donation_types;
 		$i=1;
 		$children=array();
 		foreach($rows as $row){
@@ -468,32 +440,39 @@ if($isroot==1){
             foreach($messageDivArray as $parentKey => $subArray) {
                 if(count($subArray['children'])){
                   foreach($subArray['children'] as $child) { ?>
-                      <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
+                      <div class="form-group form--padded donation-message child-donation-message textarea-donation-<?php echo $parentKey."-".$child[1] ?>" <?php if(@$messagesToSupporters[$child[1]] == '') { echo 'style="display:none"'; } ?>>
                           <label for="support_message" class="is-block">Μήνυμα προς <?php echo $child[0] ?>*:</label>
-                          <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" <?php if($messagesToSupporters[$child[1]] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$child[1]]; ?></textarea>
+                          <textarea class="form-control max-600" id="support_message-<?php echo $parentKey."-".$child[1] ?>" rows="8" name="support_message-<?php echo $parentKey."-".$child[1] ?>" <?php if(@$messagesToSupporters[$child[1]] != ''){ echo 'required="required"'; } ?>><?php echo @$messagesToSupporters[$child[1]]; ?></textarea>
                       </div>
                   <?php }
                 } else { ?>
-                    <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>"  <?php if($messagesToSupporters[$parentKey] == '') { echo 'style="display:none"'; } ?>>
+                    <div class="form-group form--padded donation-message parent-donation-message textarea-donation-<?php echo $parentKey ?>"  <?php if(@$messagesToSupporters[$parentKey] == '') { echo 'style="display:none"'; } ?>>
                         <label for="support_message" class="is-block">Μήνυμα προς <?php echo $subArray['name']; ?>*:</label>
-                        <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" <?php if($messagesToSupporters[$parentKey] != ''){ echo 'required="required"'; } ?>><?php echo $messagesToSupporters[$parentKey]; ?></textarea>
+                        <textarea class="form-control max-600" class="support_message" id="support_message-<?php echo $parentKey ?>" rows="8" name="support_message-<?php echo $parentKey ?>" <?php if(@$messagesToSupporters[$parentKey] != ''){ echo 'required="required"'; } ?>><?php echo @$messagesToSupporters[$parentKey]; ?></textarea>
                     </div>
                 <?php }
               }
               ?>
-               <div class="form-group form-group--tail is-block clearfix">
-                  <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
-                  <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
-               </div>
-							<input type="hidden" name="option" value="com_actions" />
-							<input type="hidden" name="task" value="edit.save" />
-							<input type="hidden" name="team_id" value="<?php echo $user_team->id; ?>" />
-							<input type="hidden" name="action_id" value="<?php echo $action->id; ?>" />
-							<input type="hidden" name="user_id" value="<?php echo $user_team->user_id; ?>" />
-							<input type="hidden" name="editform" value="<?php echo $editform_session; ?>" />
-							<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143');?>" />
-							<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
-							<?php echo JHtml::_('form.token');?>
+            <?php if ($isroot) { ?>
+            	<div class="clearfix"></div>
+				<div class="form-group form--padded">
+					<input id="remote" type="checkbox" name="remote" <?=($action->remote == 1 ? 'checked="checked"' : '')?> />
+					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>
+				</div>
+			<?php } ?>
+               	<div class="form-group form-group--tail is-block clearfix">
+                	<span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
+                  	<button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
+               	</div>
+				<input type="hidden" name="option" value="com_actions" />
+				<input type="hidden" name="task" value="edit.save" />
+				<input type="hidden" name="team_id" value="<?php echo $user_team->id; ?>" />
+				<input type="hidden" name="action_id" value="<?php echo $action->id; ?>" />
+				<input type="hidden" name="user_id" value="<?php echo $user_team->user_id; ?>" />
+				<input type="hidden" name="editform" value="<?php echo $editform_session; ?>" />
+				<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143');?>" />
+				<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
+				<?php echo JHtml::_('form.token');?>
             </form>
         </div>
       </div>

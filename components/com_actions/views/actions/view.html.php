@@ -20,10 +20,10 @@ class ActionsViewActions extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items = $this->get('Msg');
-		$this->activities = $this->get('Activities');
-		$this->bestpractices = $this->get('Bestpractices');
-		$this->pagination = $this->get('Pagination');					
+		$this->items = $this->get('Activities');
+		$this->team_activities = $this->get('TeamActivities');
+		$this->bestpractices = $this->get('BestPractices');
+		$this->pagination = $this->get('Pagination');
 		parent::display($tpl);
 	}
 }

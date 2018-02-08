@@ -9,16 +9,16 @@ $newform_session=$session->get( 'newform' );
 
 //db connection
 $db = JFactory::getDBO();
+
 $config = JFactory::getConfig();
+
 $user = JFactory::getUser();
 $isroot = $user->authorise('core.admin');
 
-//get team state
-$query = "SELECT published FROM #__teams WHERE user_id='".$user->id."' LIMIT 1 ";
-$db->setQuery($query);
-$teams_activated = $db->loadResult();
+//get team
+$initial_team = $this->team;
 
-if($teams_activated!=1 && $isroot!=1){
+if (isset($initial_team->published) && $initial_team->published != 1 && $isroot != 1) {
 	echo '<div class="l-register">
 				 <div class="module module--synathina">
 						<div class="module-skewed">
@@ -30,19 +30,9 @@ if($teams_activated!=1 && $isroot!=1){
 						</div>
 					</div>
 				</div>';
-}else{
-//activities
-$query="SELECT a.*
-				FROM #__team_activities AS a
-				WHERE a.published=1 ";
-$db->setQuery( $query );
-$activities = $db->loadObjectList();
-$activities_array_info=array();
-foreach($activities as $activity){
-	$activities_array_info[$activity->id]=array($activity->name, $activity->image);
-}
+} else {
 
-$months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
+$months = array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
 
 
 $app = JFactory::getApplication();
@@ -87,10 +77,6 @@ $params_editor = array( 'smilies'=> '0' ,
     'clear_entities'=>'0'
 );
 
-$user_team=@$this->team[0];
-//echo '<pre>';
-//print_r(@$_REQUEST);
-//echo '</pre>';
 $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 ?>
 <script>
@@ -129,24 +115,6 @@ function show_hide(f,show){
 
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="l-register">
 <?php
 		foreach ($breadcumbs_modules as $breadcumbs_module){
@@ -173,8 +141,8 @@ function show_hide(f,show){
 									<select name="team_id" id="team_root_id" style="padding:2px; border:1px solid #000; width:100%;">
 										<option value="">--επιλέξτε ομάδα--</option>
 <?php
-	foreach($this->teams_users AS $team){
-		echo '<option value="'.$team->team_id.'" data-user_id="'.$team->user_id.'">'.$team->name.'</option>';
+	foreach($this->teams_users AS $team_user){
+		echo '<option value="'.$team_user->id.'">'.$team_user->name.'</option>';
 	}
 ?>
 
@@ -206,7 +174,7 @@ function show_hide(f,show){
 								<?php echo $editor->display('activity_description', @$_REQUEST['activity_description'], '', '200', '20', '20', true, null, null, null, $params_editor); ?>
 								<span class="is-block is-italic">(το δελτίο τύπου της δράσης σας)</span>
 							</div>
-	            <div class="form-group form--bordered">
+	            			<div class="form-group form--bordered">
 								<label class="is-block">Link δράσης:</label>
 								<input type="text" name="web_link"  class="input--medium" id="web_link" />
 								<span class="is-block is-italic">(https://www.facebook.com/events/123456789/)</span>
@@ -248,7 +216,7 @@ function show_hide(f,show){
 		               	<div class="form-group">
 		               		<label for="from_date_<?php echo $f; ?>" class="is-block">Από</label>
 		               		<input type="text" class="from_date" id="from_date_<?php echo $f; ?>" name="date_start_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
-											<label for="from_date_<?php echo $f; ?>" class="is-block">Έως</label>
+							<label for="to_date_<?php echo $f; ?>" class="is-block">Έως</label>
 		               		<input type="text" class="to_date" id="to_date_<?php echo $f; ?>" name="date_end_<?php echo $f; ?>" <?=($f==0?'required=""':'')?>  />
 		               	</div>
 										<!--<div class="form-group">
@@ -260,9 +228,9 @@ function show_hide(f,show){
 								<div class="form-inline filters form--padded form--bordered">
 									<label for="activity_description" class="is-block">Θεματικές δραστηριοποίησης*:</label>
 <?php
-	foreach($this->activities AS $activity){
+	foreach($this->team_activities AS $activity){
 		echo '<div class="form-group">
-						 <input id="activity_'.$activity->id.'_'.$f.'" name="activity_'.$activity->id.'_'.$f.'" type="checkbox">
+						 <input id="activity_'.$activity->id.'_'.$f.'" name="activity_'.$activity->id.'_'.$f.'" type="checkbox" '.($activity->id == 12 ? 'class="remote-option" onclick="showRemote();"' : '').' />
 						 <label for="activity_'.$activity->id.'_'.$f.'" class="label-horizontal">'.$activity->name.'</label>
 					</div>';
 	}
@@ -403,14 +371,19 @@ function show_hide(f,show){
                     <?php }
                 }
                 ?>
+                <div class="clearfix"></div>
+				<div class="form-group form--padded hidden" id="remote-checkbox">
+					<input id="remote" type="checkbox" name="remote">
+					<label for="remote" class="label-horizontal"><small>*Δέχομαι να καταχωρηθεί η δράση μου στο accmr.gr</small></label>
+				</div>
                <div class="form-group form-group--tail is-block clearfix" style="clear:both">
                   <span class="pull-left"><em>*Υποχρεωτικά πεδία</em></span>
                   <button type="submit" class="pull-right btn btn--coral btn--bold">Καταχώριση</button>
                </div>
 							<input type="hidden" name="option" value="com_actions" />
 							<input type="hidden" name="task" value="form.save" />
-							<input type="hidden" name="team_id" id="team_id" value="<?php echo @$user_team->id; ?>" />
-							<input type="hidden" name="user_id" id="user_id" value="<?php echo @$user_team->user_id; ?>" />
+							<input type="hidden" name="team_id" id="team_id" value="<?php echo @$initial_team->id; ?>" />
+							<input type="hidden" name="user_id" id="user_id" value="<?php echo @$initial_team->user_id; ?>" />
 							<input type="hidden" name="return" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_save=1');?>" />
 							<input type="hidden" name="return_false" value="<?php echo JRoute::_('index.php?option=com_actions&view=myactions&Itemid=143&action_error=1');?>" />
 							<input type="hidden" name="newform" value="<?php echo $newform_session; ?>" />

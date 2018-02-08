@@ -47,5 +47,8 @@ JDEBUG ? $_PROFILER->setStart($startTime, $startMem)->mark('afterLoad') : null;
 // Instantiate the application.
 $app = JFactory::getApplication('administrator');
 
+//remote db
+JLoader::registerPrefix('Remotedb', JPATH_SITE . '/remotedb');
+
 // Execute the application.
 $app->execute();

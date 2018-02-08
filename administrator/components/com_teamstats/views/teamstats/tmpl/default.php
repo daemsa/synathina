@@ -29,7 +29,7 @@ if(@$_REQUEST['date_to']!=''){
 	$to_array=explode('/',@$_REQUEST['date_to']);
 	$new_to=$to_array[2].'-'.$to_array[1].'-'.$to_array[0].' 23:59:59';
 	$where.=" AND t.created<='".$new_to."' ";
-}			
+}
 
 if(@$_REQUEST['team']=='on'){
 	$where.=" AND t.create_actions=1 ";
@@ -38,15 +38,15 @@ if(@$_REQUEST['supporter']=='on'){
 	$where.=" AND t.support_actions=1 ";
 }
 
-$query = "SELECT t.* 
+$query = "SELECT t.*
 					FROM #__teams AS t
 					INNER JOIN #__users AS u ON u.id=t.user_id
 					WHERE u.block=0 AND u.activation='' AND t.published=1 ".$where." ORDER BY t.created DESC ";
-					
+
 //echo $query;
 //die;
 $db->setQuery( $query );
-$teams = $db->loadObjectList();					 
+$teams = $db->loadObjectList();
 $total = count($teams);
 
 
@@ -63,14 +63,14 @@ $total = count($teams);
   } );
   </script>
 <form name="activities_teamstats" id="activities_teamstats" method="post"  action="index.php?option=com_teamstats&view=teamstats">
-<h3>Ημερομηνίες</h3> 
+<h3>Ημερομηνίες</h3>
 <p>Ημερομηνία από: <input value="<?=@$_REQUEST['date_from']?>" type="text" id="date_from" name="date_from" />&nbsp;&nbsp;&nbsp;&nbsp;Ημερομηνία έως: <input value="<?=@$_REQUEST['date_to']?>" type="text" id="date_to" name="date_to" /></p>
 <h3>Φίλτρα</h3>
 <p>
-	<input class="input" <?=@$_REQUEST['team']=='on'?'checked="checked"':''?> type="checkbox" id="team" name="team" />&nbsp;<label style="display:inline-block" for="team">Διοργανωτής</label>&nbsp;&nbsp;&nbsp;	
+	<input class="input" <?=@$_REQUEST['team']=='on'?'checked="checked"':''?> type="checkbox" id="team" name="team" />&nbsp;<label style="display:inline-block" for="team">Διοργανωτής</label>&nbsp;&nbsp;+&nbsp;&nbsp;
 	<input class="input" <?=@$_REQUEST['supporter']=='on'?'checked="checked"':''?> type="checkbox" id="supporter" name="supporter" />&nbsp;<label style="display:inline-block" for="supporter">Υποστηρικτής</label>
 </p>
-<input type="submit" name="submit" value="Προβολή" />
+<input type="submit" class="btn btn-primary"  name="submit" value="Προβολή" />
 </form>
 
 <?php

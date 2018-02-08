@@ -8,6 +8,10 @@
  */
 
 defined('_JEXEC') or die;
+$config = JFactory::getConfig();
+
+//remote db
+$activityClass = new RemotedbActivity();
 
 // Note. It is important to remove spaces between elements.
 ?>

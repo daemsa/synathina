@@ -2,7 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-$team=$this->team[0];
+$team = $this->team;
+$team_files = $this->team_files;
 
 $document = JFactory::getDocument();
 $document->setTitle($team->name);
@@ -36,7 +37,7 @@ foreach($activities as $activity){
 }
 
 $months=array(1=>'ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
-			
+
 $config= new JConfig();
 $app = JFactory::getApplication();
 $templateDir = JURI::base() . 'templates/' . $app->getTemplate();
@@ -80,13 +81,13 @@ if(!$team || $team->hidden==1){
             <div class="media-left text-center">
 <?php
 	if($team->logo!=''){
-?>						
+?>
                <a href="">
                   <img src="<?php echo $team->logo; ?>" style="max-width:200px" alt="">
                </a>
 <?php
 	}
-?>							 
+?>
                <ul class="inline-list social-icons">
 <?php
 	if($team->fb_link!=''){
@@ -94,7 +95,7 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->fb_link,0,4);
 		if($prefix!='http'){
 			$fb_link1='http://'.$team->fb_link;
-		}		
+		}
 		echo '<a href="'.$fb_link1.'" target="_blank"><span class="fa fa-facebook"></span></a>';
 	}
 	if($team->tw_link!=''){
@@ -102,7 +103,7 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->tw_link,0,4);
 		if($prefix!='http'){
 			$tw_link1='http://'.$team->tw_link;
-		}			
+		}
 		echo '<a href="'.$tw_link1.'" target="_blank"><span class="fa fa-twitter"></span></a>';
 	}
 	if($team->pn_link!=''){
@@ -110,7 +111,7 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->pn_link,0,4);
 		if($prefix!='http'){
 			$pn_link1='http://'.$team->pn_link;
-		}			
+		}
 		echo '<a href="'.$pn_link1.'" target="_blank"><span class="fa fa-pinterest"></span></a>';
 	}
 	if($team->in_link!=''){
@@ -118,7 +119,7 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->in_link,0,4);
 		if($prefix!='http'){
 			$in_link1='http://'.$team->in_link;
-		}			
+		}
 		echo '<a href="'.$in_link1.'" target="_blank"><span class="fa fa-instagram"></span></a>';
 	}
 	if($team->li_link!=''){
@@ -126,7 +127,7 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->li_link,0,4);
 		if($prefix!='http'){
 			$li_link1='http://'.$team->li_link;
-		}			
+		}
 		echo '<a href="'.$li_link1.'" target="_blank"><span class="fa fa-linkedin"></span></a>';
 	}
 	if($team->go_link!=''){
@@ -134,31 +135,31 @@ if(!$team || $team->hidden==1){
 		$prefix=substr($team->go_link,0,4);
 		if($prefix!='http'){
 			$go_link1='http://'.$team->go_link;
-		}			
+		}
 		echo '<a href="'.$go_link1.'" target="_blank"><span class="fa fa-google-plus"></span></a>';
-	}	
+	}
 	if($team->yt_link!=''){
 		$yt_link1=$team->yt_link;
 		$prefix=substr($team->yt_link,0,4);
 		if($prefix!='http'){
 			$yt_link1='http://'.$team->yt_link;
-		}			
+		}
 		echo '<a href="'.$yt_link1.'" target="_blank"><span class="fa fa-youtube"></span></a>';
-	}	
-?>							 
+	}
+?>
                </ul>
                <a href="mailto:<?php echo $team->contact_1_email; ?>" class="mail-to" target="_top">Επικοινωνία</a>
             </div>
             <div class="media-body">
 <?php
 	if($user->id==$team->user_id){
-?>						
+?>
                <div class="edit-zone">
                   <a href="index.php?option=com_users&view=profile" class="pull-right"><i class="fa fa-pencil"></i></a>
                </div>
 <?php
 	}
-?>							 
+?>
 <?php
 	if($team->web_link!=''){
 		$weblink1=$team->web_link;
@@ -166,54 +167,43 @@ if(!$team || $team->hidden==1){
 		if($prefix!='http'){
 			$weblink1='http://'.$team->web_link;
 		}
-?>							 
+?>
                <dl class="dl-horizontal">
                    <dt>Website</dt>
                    <dd><a target="_blank" href="<?php echo $weblink1; ?>"><?php echo $team->web_link; ?></a></dd>
                </dl>
 <?php
 	}
-	foreach (glob('images/team_files/'.$team->id.'/'.$team->path.'*.*') as $filename) {
-?>							 							 
+	foreach ($team_files as $team_file) {
+		$file_array = (explode('.', $team_file->path));
+		if ($file_array) {
+?>
                <dl class="dl-horizontal">
-                  <dt><a href="<?php echo $filename; ?>" target="_blank">Παρουσίαση ομάδας</a></dt>
+                  <dt><a href="<?php echo 'images/team_files/'.$team->id.'/'.$team->id.'.'.end($file_array); ?>" target="_blank">Παρουσίαση ομάδας</a></dt>
                </dl>
 <?php
+		}
 	}
-?>							 
+?>
                <dl class="dl-horizontal">
                   <dt>Θεματικές Δραστηριοποίησης</dt>
                   <dd>
                      <ul class="inline-list inline-list--separated thematiki--list">
 <?php
-	$query="SELECT a.name, a.image 
+	$query="SELECT a.name, a.image
 					FROM #__team_activities AS a
 					WHERE FIND_IN_SET(id, '".$team->activities."') AND a.published=1 ";
 	$db->setQuery( $query );
-	$activities = $db->loadObjectList();		
+	$activities = $db->loadObjectList();
 	foreach($activities as $activity){
 		echo '<span class="thematiki thematiki--perivallon">
 						 <img src="'.$activity->image.'" width="45" height="35" alt="" title="'.$activity->name.'" />
 					</span>';
 	}
-?>			
+?>
                      </ul>
                   </dd>
                </dl>
-<!--fix when action will have parnters-->					
-<!--		 
-               <dl class="dl-horizontal">
-                  <dt>Έχουμε συνεργαστεί με:</dt>
-                  <dd>
-                     <ul class="inline-list--separated inline-list thematiki--list">
-                       <a href="" class="synergatis--item"><img src="img/icons/synergatis.icon.png" width="41" height="41" alt=""></a>
-                       <a href="" class="synergatis--item"><img src="img/icons/synergatis.icon.png" width="41" height="41" alt=""></a>
-                     </ul>
-                  </dd>
-               </dl>
--->
-<!--end fixing-->							 
-
                <h4 class="media-heading">
                  <?php echo $team->name; ?>
                </h4>
@@ -224,9 +214,9 @@ if(!$team || $team->hidden==1){
 					</a>&nbsp;
 					<a href="http://twitter.com/home?status=<?php echo $team->name; ?> <?php echo urlencode(JUri::current());?>"  onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;">
 						<img src="<?php echo JURI::base(); ?>images/template/tweet.png" alt="twitter" />
-					</a>			
-				</div>			   
-            </div>				
+					</a>
+				</div>
+            </div>
          </div>
       </div>
    </div>
@@ -253,18 +243,16 @@ if(!$team || $team->hidden==1){
 						</div>';
 			if($c%6==0 || $c==$i){
 				echo '</div>';
-			}		
+			}
 		}
 		echo '	</div>
 					</div>';
-	}	
+	}
 
-?>	
+?>
 <?php
 	$i=1;
-	$query = "SELECT a.name, a.alias, a.image, a.id FROM #__actions AS a WHERE a.published=1 AND a.action_id=0 AND find_in_set('".$team->id."',a.supporters) AND a.team_id!='".$team->id."' ORDER BY a.id DESC ";	
-	$db->setQuery( $query );
-	$actions = $db->loadObjectList();		
+	$actions = $this->activities_support;
 	if(count($actions)>0){
 		echo '<div class="module module--synathina no-margin">
 						<h3 class="gallery-title">Δράσεις που υποστηρίξαμε</h3>
@@ -282,16 +270,14 @@ if(!$team || $team->hidden==1){
 								</article>
 							</div>';
 			$i++;
-		}						
+		}
 		echo '	</div>
 					</div>';
 	}
-?> 
+?>
 <?php
 	$i=1;
-	$query = "SELECT a.name, a.alias, a.image, a.id FROM #__actions AS a WHERE a.published=1 AND a.action_id=0 AND a.team_id='".$team->id."' ORDER BY a.id DESC ";	
-	$db->setQuery( $query );
-	$actions = $db->loadObjectList();		
+	$actions = $this->activities_team;
 	if(count($actions)>0){
 		echo '<div class="module module--synathina">
 						<h3 class="gallery-title">Δράσεις που οργανώσαμε</h3>
@@ -309,9 +295,9 @@ if(!$team || $team->hidden==1){
 								</article>
 							</div>';
 			$i++;
-		}						
+		}
 		echo '	</div>
 					</div>';
 	}
-?> 
+?>
 </div>

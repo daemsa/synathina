@@ -85,6 +85,7 @@ var Activities = (function(global) {
     }
 
     function synathina(url) {
+        synathina_text = [];
         $.ajax({
             type: 'GET',
             url: url,
@@ -212,7 +213,9 @@ var Activities = (function(global) {
         //Check for activities that have identical coordinates and slighly alter them
         markersArrayAltered = [];
         //put first element in altered array
-        markersArrayAltered.push(coordinatesArray[0]);
+        if (coordinatesArray.length > 0) {
+            markersArrayAltered.push(coordinatesArray[0]);
+        }
 
         //iterate through all elements starting from the 2nd one
         for (var i = 1; i < coordinatesArray.length; i++) {
@@ -289,54 +292,72 @@ var Activities = (function(global) {
         });
 
         /**
-       * [if user clicks on polygon and already have used filtering, use the latter year ranges also for the next polygon]
-       * @param  {[boolean]} Activities.is_filtered []
-       */
+         * [if user clicks on polygon and already have used filtering, use the latter year ranges also for the next polygon]
+         * @param  {[boolean]} Activities.is_filtered []
+         */
 
-        var thematic_check_exists = 1;
-        if (cat_filter == undefined || cat_filter == '') {
-            thematic_check_exists = 0;
-        }
-
-        if (cat_filter !== undefined && thematic_check_exists == 1) {
-            var allMarkers = [];
+        if (Activities.is_filtered_bySlider == true && Activities.yearRangeBuffer !== null && cat_filter === undefined) {
             for (var i = 0; i < coordinatesArray.length; i += 1) {
-                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-                if (polygon.Contains(point)) {
-                    //index = findIn(cat_filter, activities[i].marker.db_data.category_id);
-                    index = cat_filter.indexOf(parseInt(activities[i].marker.db_data.category_id));
-                    if (index > -1) {
+                activities[i].marker.setVisible(false)
+            }
+            filterActivities(Activities.yearRangeBuffer);
+
+        } else {
+            var thematic_check_exists = 0;
+            $('.categories input[type=checkbox]').each(function() {
+                if (this.checked) {
+                    thematic_check_exists = 1;
+                }
+            });
+
+            if (cat_filter !== undefined && thematic_check_exists == 1) {
+                Filter.run = true;
+                var allMarkers = [];
+                for (var i = 0; i < coordinatesArray.length; i += 1) {
+
+                    var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+                    if (polygon.Contains(point)) {
+                        index = findIn(cat_filter, activities[i].marker.db_data.category_id);
+                        if (index) {
+                            activities[i].marker.setVisible(true);
+                            category.push(activities[i].marker);
+                        } else {
+                            activities[i].marker.setVisible(false);
+                        }
+                    }
+                }
+                //console.log(category.length);
+                // pushing markers to cluster
+                clusterer.clearMarkers();
+                clusterer.addMarkers(category);
+                category.length = 0;
+
+            } else {
+
+                for (var i = 0; i < coordinatesArray.length; i += 1) {
+
+                    var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
+
+                    if (polygon.Contains(point)) {
                         activities[i].marker.setVisible(true);
+                        checkSameLocation([coordinatesArray[i].lat, coordinatesArray[i].lng])
                         category.push(activities[i].marker);
                     } else {
                         activities[i].marker.setVisible(false);
                     }
                 }
-            }
-            //console.log(category.length);
-            // pushing markers to cluster
-            clusterer.clearMarkers();
-            clusterer.addMarkers(category);
-            category = [];
 
-        } else {
-            for (var i = 0; i < coordinatesArray.length; i += 1) {
-                var point = new google.maps.LatLng(coordinatesArray[i].lat, coordinatesArray[i].lng);
-                if (polygon.Contains(point)) {
-                    activities[i].marker.setVisible(true);
-                    category.push(activities[i].marker);
-                } else {
-                    activities[i].marker.setVisible(false);
-                }
+                clusterer.clearMarkers();
+                clusterer.addMarkers(category);
+                category.length = 0;
             }
-            clusterer.clearMarkers();
-            clusterer.addMarkers(category);
-            category = [];
 
-            // threading with Filter, initialize it here so it adds event listener to filters when area is clicked
+            // threading with Filter
             saFilter = Filter(activities);
-            // //saFilter.initSliderFilter();
+            //saFilter.initSliderFilter();
             saFilter.initCategoryFilters();
+
+
         }
     }
 

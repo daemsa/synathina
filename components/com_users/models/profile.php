@@ -400,21 +400,24 @@ class UsersModelProfile extends JModelForm
 
 		// Null the user groups so they don't get overwritten
 		$user->groups = null;
-		
+
 		//dennis code started
-		
+
 		//general
 		$config = JFactory::getConfig();
-		$db	= JFactory::getDBO();			
-		
+
+		//local db
+		$db = JFactory::getDbo();
+
 		//requests
 		$team_id=@$_REQUEST['team_id'];
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));
+		$user->name = $team_name;
 		//$alias=JApplication::stringURLSafe($_REQUEST['jform']['name']);
 		$alias=JFilterOutput::stringURLSafe($team_name);
 		$query = "SELECT id FROM #__teams WHERE alias='".$alias."' LIMIT 1";
 		$db->setQuery($query);
-		$same_alias = $db->loadResult();		
+		$same_alias = $db->loadResult();
 		if(@$_REQUEST['jform']['create_actions']=='organizer'){
 			$create_actions=1;
 		}else{
@@ -425,16 +428,16 @@ class UsersModelProfile extends JModelForm
 		}else{
 			$support_actions=0;
 		}
-		$hidden_team=0;		
+		$hidden_team=0;
 		if(@$_REQUEST['jform']['hidden_team']=='hidden_team' && @$_REQUEST['jform']['support_actions']=='supporter' && @$_REQUEST['jform']['create_actions']!='organizer'){
 			$hidden_team=1;
-		}		
+		}
 		$team_or_org=@$_REQUEST['jform']['team_or_org'];
 		if(@$_REQUEST['has_legal_type']=='yes'){
 			$legal_form=1;
 		}else{
 			$legal_form=0;
-		}	
+		}
 		if(@$_REQUEST['organization_type']=='yes'){
 			$profit=0;
 		}else{
@@ -446,7 +449,7 @@ class UsersModelProfile extends JModelForm
 			$profit_id=0;
 		}else{
 			$profit_id=@$_REQUEST['profit_id'];
-		}	
+		}
 		$team_description=addslashes($_REQUEST['jform']['description']);
 		//activities
 		$query = "SELECT id FROM #__team_activities WHERE published=1";
@@ -477,7 +480,7 @@ class UsersModelProfile extends JModelForm
 		$donations = $db->loadObjectList();
 		$donations_ids='';
 		$donation_other_1=addslashes(@$_REQUEST['donation-1-other']);
-		$donation_other_16=addslashes(@$_REQUEST['donation-16-other']);		
+		$donation_other_16=addslashes(@$_REQUEST['donation-16-other']);
 		foreach($donations as $donation){
 			if($donation->parent_id==0){
 				if(@$_REQUEST['donation-'.$donation->id]=='show'){
@@ -486,19 +489,14 @@ class UsersModelProfile extends JModelForm
 			}else{
 				if(@$_REQUEST['donation-'.$donation->parent_id.'-'.$donation->id]=='on'){
 					$donations_ids.=$donation->id.',';
-				}	
+				}
 			}
 		}
 		if(@$_REQUEST['jform']['newsletter']=='yes'){
 			$newsletter=1;
 		}else{
 			$newsletter=0;
-		}	
-		//test before insertion
-		//echo $alias;
-		//print_r($_FILES);
-		//print_r($_REQUEST);
-		//die;			
+		}
 
 		// Store the data.
 		if (!$user->save())
@@ -507,25 +505,34 @@ class UsersModelProfile extends JModelForm
 
 			return false;
 		}
-		
+
 		//check alias
 		$userid=$user->id;
 		if($same_alias>0){
 			$alias=$alias.'_'.$userid;
 		}
-		
+
 		//team management
 		$query = "SELECT MAX(ordering) FROM #__teams ";
 		$db->setQuery($query);
-		$max_ordering = $db->loadResult()+1;		
+		$max_ordering = $db->loadResult() + 1;
+
+		$query = "LOCK TABLES #__teams WRITE";
+		$db->setQuery($query);
+		$db->execute();
+
 		$query = "UPDATE #__teams SET  hidden='".$hidden_team."',name='".$team_name."', alias='".$alias."', create_actions='".$create_actions."', support_actions='".$support_actions."', legal_form='".$legal_form."', profit='".$profit."', profit_id='".$profit_id."' , profit_custom='".$profit_custom."',
-							team_or_org='".$team_or_org."', activities='".$activities_ids."', org_donation='".$donations_ids."',donation_eidos='".$donation_other_1."',donation_technology='".$donation_other_16."', description='".$team_description."', web_link='".$web_link."', fb_link='".$fb_link."', tw_link='".$tw_link."', in_link='".$in_link."', 
-							li_link='".$li_link."', yt_link='".$yt_link."', 
+							team_or_org='".$team_or_org."', activities='".$activities_ids."', org_donation='".$donations_ids."',donation_eidos='".$donation_other_1."',donation_technology='".$donation_other_16."', description='".$team_description."', web_link='".$web_link."', fb_link='".$fb_link."', tw_link='".$tw_link."', in_link='".$in_link."',
+							li_link='".$li_link."', yt_link='".$yt_link."',
 							contact_1_name='".$contact_1_name."',contact_1_email='".$contact_1_email."',contact_1_phone='".$contact_1_phone."',contact_2_name='".$contact_2_name."',contact_2_email='".$contact_2_email."',contact_2_phone='".$contact_2_phone."',
 							contact_3_name='".$contact_3_name."',contact_3_email='".$contact_3_email."',contact_3_phone='".$contact_3_phone."',	newsletter='".$newsletter."', modified='".date('Y-m-d H:i:s',time())."'  WHERE id='".$team_id."' LIMIT 1 ";
 		$db->setQuery($query);
-		$db->execute();			
-		
+		$db->execute();
+
+		$query = "UNLOCK TABLES";
+		$db->setQuery($query);
+		$db->execute();
+
 		//logo management
 		$logo_path='';
 		if(@$_FILES['jform']['error']['logo']==0){
@@ -542,7 +549,7 @@ class UsersModelProfile extends JModelForm
 					$new_logo_path='images/team_logos/'.$team_id.'.'.$ext;
 					$query = "UPDATE #__teams SET logo='".$new_logo_path."' WHERE id='".$team_id."' LIMIT 1";
 					$db->setQuery($query);
-					$db->execute();		
+					$db->execute();
 
 				}
 			}else{
@@ -553,7 +560,7 @@ class UsersModelProfile extends JModelForm
 			//logo issue
 			$this->setError(JText::sprintf('Παρουσιάστηκε σφάλμα με το λογότυπο.', $user->getError()));
 		}
-		
+
 		//files_upload management
 		if(@$_FILES['jform']['error']['files_upload']==0){
 			if(@$_FILES['jform']['size']['files_upload']<1000000){
@@ -566,15 +573,15 @@ class UsersModelProfile extends JModelForm
 					$db->setQuery($query);
 					$file_path = $db->loadResult();
 					if($file_path!=''){
-						unlink($config->get( 'abs_path' ).'/images/team_files/'.$team_id.'/'.$file_path);	
-						$query="DELETE FROM #__team_files WHERE team_id='".$team_id."' LIMIT 1";	
+						unlink($config->get( 'abs_path' ).'/images/team_files/'.$team_id.'/'.$file_path);
+						$query="DELETE FROM #__team_files WHERE team_id='".$team_id."' LIMIT 1";
 						$db->setQuery($query);
-						$db->execute();						
-					}					
+						$db->execute();
+					}
 					//file uploaded
 					$query="INSERT INTO #__team_files VALUES ('','".$team_id."','".$new_file_name."','')";
 					$db->setQuery($query);
-					$db->execute();						
+					$db->execute();
 				}
 			}else{
 				//files_upload max size
@@ -583,8 +590,8 @@ class UsersModelProfile extends JModelForm
 		}else{
 			//files_upload issue
 			$this->setError(JText::sprintf('Παρουσιάστηκε σφάλμα με το αρχείο.', $user->getError()));
-		}		
-		
+		}
+
 		//gallery management
 		$imgs_count=count(@$_FILES['gallery_upload']['name']);
 		if($imgs_count>0){
@@ -601,7 +608,7 @@ class UsersModelProfile extends JModelForm
 							//file uploaded - insert to db
 							$query="INSERT INTO #__team_photos VALUES ('','".$team_id."','".$new_img_name."','".$max_photo_ordering."')";
 							$db->setQuery($query);
-							$db->execute();					
+							$db->execute();
 							$max_photo_ordering++;
 						}
 					}else{
@@ -614,15 +621,8 @@ class UsersModelProfile extends JModelForm
 				}
 			}
 		}
-		
 
-		
-		//test after insertion
-		//print_r($_FILES);
-		//print_r($_REQUEST);
-		//die;		
-		
-		//dennis code ended		
+		//dennis code ended
 
 
 

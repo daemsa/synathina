@@ -15,14 +15,14 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 //JHtml::_('behavior.caption');
 
-$breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
-$article_modules=JModuleHelper::getModules('articles');
+$breadcumbs_modules = JModuleHelper::getModules('breadcumbs');
+$article_modules = JModuleHelper::getModules('articles');
 
 //connect to db
 $db = JFactory::getDBO();
 
 //get menu item notes
-$note='';
+$note = '';
 $query = "SELECT note FROM #__menu WHERE id='".@$_REQUEST['Itemid']."' ";
 $db->setQuery($query);
 $note = $db->loadResult();
@@ -30,62 +30,65 @@ $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $menuname = $menu->getActive()->title;
 
-function teams_count2($year){
+function teams_count2($year)
+{
 	$db = JFactory::getDBO();
-	$query = "SELECT t.id , t.name
-				FROM #__teams AS t
-				INNER JOIN #__users AS u ON u.id=t.user_id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'";
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
 	$db->setQuery($query);
 	$db->execute();
-	$num_rows = $db->getNumRows();
-	return $num_rows;
+
+	return $db->loadResult();
 }
 
-function donators_count() {
+function donators_count()
+{
 	$db = JFactory::getDBO();
-	$query= "SELECT t.id , t.name
-			FROM #__teams AS t
-			INNER JOIN #__users AS u ON u.id=t.user_id
-			WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1";
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1 ";
 	$db->setQuery($query);
 	$db->execute();
-	return $db->getNumRows();
+
+	return $db->loadResult();
 }
 
-function count_actions_1($year){
-	$db = JFactory::getDBO();
-	$where='';
-	if($year==date('Y')){
-		$where=" AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
-	}else{
-		$where=" AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
+function count_actions_1($year)
+{
+	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
+	if ($year == date('Y')) {
+		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
+	} else {
+		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
 	}
-	$query = "SELECT aa.id AS `count` FROM #__actions AS a
-						INNER JOIN #__actions AS aa ON aa.action_id=a.id
-						WHERE aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00' ".$where." ";
-	$db->setQuery($query);
-	$db->execute();
-	return $db->getNumRows();
-}
-	
-function youtubeID($url){
- $res = explode("v=",$url);
- if(isset($res[1])) {
-	$res1 = explode('&',$res[1]);
-	if(isset($res1[1])){
-		$res[1] = $res1[0];
-	}
-	$res1 = explode('#',$res[1]);
-	if(isset($res1[1])){
-		$res[1] = $res1[0];
-	}
- }
- return substr($res[1],0,12);
-	 return false;
+	//remote db
+	$activityClass = new RemotedbActivity();
+	$activities_count = $activityClass->getActivitiesCount($where);
+
+	return $activities_count;
 }
 
-if($note=='synathina'){
+function youtubeID($url)
+{
+	$res = explode("v=",$url);
+	if(isset($res[1])) {
+		$res1 = explode('&',$res[1]);
+		if(isset($res1[1])){
+			$res[1] = $res1[0];
+		}
+		$res1 = explode('#',$res[1]);
+		if(isset($res1[1])){
+			$res[1] = $res1[0];
+		}
+	}
+
+	return substr($res[1],0,12);
+}
+
+if ($note == 'synathina') {
 /*---------SYNATHINA TEMPLATE--------*/
 ?>
 <div class="l-synathina">
@@ -100,7 +103,7 @@ if($note=='synathina'){
 		$this->item = & $item;
 		echo $this->loadTemplate('item');
 		$s++;
-	endforeach; 
+	endforeach;
 ?>
 </div>
 
@@ -115,17 +118,17 @@ if($note=='synathina'){
 	foreach ($this->lead_items as $key => &$item) :
 		$this->item = & $item;
 		echo $this->loadTemplate('item');
-	endforeach; 	
+	endforeach;
 	echo '		</div>
 					</div>';
-	if (count($team_modules)>0) : 
+	if (count($team_modules)>0) :
 		foreach ($team_modules as $team_module){
 			echo JModuleHelper::renderModule($team_module);
 		}
 	endif;
 	echo '</div>';
-/*-----END OF TEAMS TEMPLATE-----*/	
-/*-----START OF EU TEMPLATE-----*/	
+/*-----END OF TEAMS TEMPLATE-----*/
+/*-----START OF EU TEMPLATE-----*/
 }elseif($note=='eu'){
 ?>
 <div class="l-synathina">
@@ -133,11 +136,11 @@ if($note=='synathina'){
 	foreach ($this->lead_items as $key => &$item) :
 		$this->item = & $item;
 		echo $this->loadTemplate('item');
-	endforeach; 
+	endforeach;
 ?>
 </div>
 <?php
-/*-----END OF EU TEMPLATE-----*/	
+/*-----END OF EU TEMPLATE-----*/
 }elseif($note=='opencalls'){
 
 ?>
@@ -173,17 +176,17 @@ if($note=='synathina'){
 			}
 			$i++;
 		}
-	endforeach; 
-	
-?>		
+	endforeach;
+
+?>
 	</div>
 	<div class="more-articles"></div>
-	<button class="load-more-btn more-articles-button" rel="js-load-more-articles"></button>		
+	<button class="load-more-btn more-articles-button" rel="js-load-more-articles"></button>
 	<input type="hidden" class="articles_counter" name="articles_counter" value="8" />
 	<input type="hidden" class="article_url_parameter" name="article_url_parameter" value="" />
 	<input type="hidden" class="articles_itemid" name="articles_itemid" value="<?php echo @$_REQUEST['Itemid']; ?>" />
-	<input type="hidden" class="all_articles_counter" name="all_articles_counter" value="<?php echo count($this->lead_items); ?>" />	
-	<input type="hidden" class="param_catid" name="param_catid" value="<?php echo $this->category->id; ?>" />	
+	<input type="hidden" class="all_articles_counter" name="all_articles_counter" value="<?php echo count($this->lead_items); ?>" />
+	<input type="hidden" class="param_catid" name="param_catid" value="<?php echo $this->category->id; ?>" />
 	<div class="latest-articles odd-even">
 
 	</div>
@@ -204,17 +207,17 @@ if($note=='synathina'){
 	foreach ($this->intro_items as $key => &$item) :
 		$this->item = & $item;
 		echo $this->loadTemplate('item');
-	endforeach; 
+	endforeach;
 ?>
 	</div>
 	<?php echo $this->pagination->getPagesLinks(); ?>
 <?php
-	if (count($article_modules)>0) : 
+	if (count($article_modules)>0) :
 		foreach ($article_modules as $article_module){
 			echo JModuleHelper::renderModule($article_module);
 		}
 	endif;
-?>		
+?>
 </div>
 <?php
 }

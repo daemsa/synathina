@@ -136,6 +136,9 @@ class UsersModelRegistration extends JModelForm
 
 				if ($usercreator->authorise('core.create', 'com_users'))
 				{
+					if ($config->get('dev_mode') == 1) {
+						$row->email = $config->get('dev_email');
+					}
 					$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBody);
 
 					// Check for an error.
@@ -174,6 +177,9 @@ class UsersModelRegistration extends JModelForm
 				$data['username']
 			);
 
+			if ($config->get('dev_mode') == 1) {
+				$data['email'] = $config->get('dev_email');
+			}
 			$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
 
 			// Check for an error.
@@ -232,7 +238,7 @@ class UsersModelRegistration extends JModelForm
 
 			// Get the default new user group, Registered if not specified.
 			$system = $params->get('new_usertype', 2);
-			
+
 			//dennis change of groups
 			$system=@$_REQUEST['jform']['team_or_org'];
 
@@ -256,10 +262,6 @@ class UsersModelRegistration extends JModelForm
 				$this->data = false;
 			}
 		}
-		
-		//print_r($this->data);
-		//print_r($_REQUEST);
-		//die;
 
 		return $this->data;
 	}
@@ -402,20 +404,21 @@ class UsersModelRegistration extends JModelForm
 
 		// Load the users plugin group.
 		JPluginHelper::importPlugin('user');
-		
+
 		//dennis code started
-		
+
 		//general
 		$config = JFactory::getConfig();
-		$db	= JFactory::getDBO();			
-		
+		//local db
+		$db = JFactory::getDbo();
+
 		//requests
 		$team_name=addslashes(strip_tags(htmlspecialchars($_REQUEST['jform']['name'])));
 		//$alias=JApplication::stringURLSafe($_REQUEST['jform']['name']);
 		$alias=JFilterOutput::stringURLSafe($team_name);
 		$query = "SELECT id FROM #__teams WHERE alias='".$alias."' LIMIT 1";
 		$db->setQuery($query);
-		$same_alias = $db->loadResult();		
+		$same_alias = $db->loadResult();
 		if(@$_REQUEST['jform']['create_actions']=='organizer'){
 			$create_actions=1;
 		}else{
@@ -426,16 +429,16 @@ class UsersModelRegistration extends JModelForm
 		}else{
 			$support_actions=0;
 		}
-		$hidden_team=0;		
+		$hidden_team=0;
 		if(@$_REQUEST['jform']['hidden_team']=='hidden_team' && @$_REQUEST['jform']['support_actions']=='supporter' && @$_REQUEST['jform']['create_actions']!='organizer'){
 			$hidden_team=1;
-		}			
+		}
 		$team_or_org=@$_REQUEST['jform']['team_or_org'];
 		if(@$_REQUEST['has_legal_type']=='yes'){
 			$legal_form=1;
 		}else{
 			$legal_form=0;
-		}	
+		}
 		if(@$_REQUEST['organization_type']=='yes'){
 			$profit=0;
 		}else{
@@ -447,7 +450,7 @@ class UsersModelRegistration extends JModelForm
 			$profit_id=0;
 		}else{
 			$profit_id=@$_REQUEST['profit_id'];
-		}	
+		}
 		$team_description=addslashes($_REQUEST['jform']['description']);
 		//activities
 		$query = "SELECT id FROM #__team_activities WHERE published=1";
@@ -478,7 +481,7 @@ class UsersModelRegistration extends JModelForm
 		$donations = $db->loadObjectList();
 		$donations_ids='';
 		$donation_other_1=addslashes(@$_REQUEST['donation-1-other']);
-		$donation_other_16=addslashes(@$_REQUEST['donation-16-other']);		
+		$donation_other_16=addslashes(@$_REQUEST['donation-16-other']);
 		foreach($donations as $donation){
 			if($donation->parent_id==0){
 				if(@$_REQUEST['donation-'.$donation->id]=='show'){
@@ -487,19 +490,14 @@ class UsersModelRegistration extends JModelForm
 			}else{
 				if(@$_REQUEST['donation-'.$donation->parent_id.'-'.$donation->id]=='on'){
 					$donations_ids.=$donation->id.',';
-				}	
+				}
 			}
 		}
 		if(@$_REQUEST['jform']['newsletter']=='yes'){
 			$newsletter=1;
 		}else{
 			$newsletter=0;
-		}	
-		//test before insertion
-		//echo $alias;
-		//print_r($_FILES);
-		//print_r($_REQUEST);
-		//die;			
+		}
 
 		// Store the data.
 		if (!$user->save())
@@ -508,46 +506,55 @@ class UsersModelRegistration extends JModelForm
 
 			return false;
 		}
-		
+
 		//check alias
 		$userid=$user->id;
 		if($same_alias>0){
 			$alias=$alias.'_'.$userid;
 		}
-		
+
 		//team management
 		$query = "SELECT MAX(ordering) FROM #__teams ";
 		$db->setQuery($query);
-		$max_ordering = $db->loadResult()+1;		
-		$query = "INSERT INTO #__teams VALUES 
-							('', '', 0, ".$userid.", '".$team_name."', '".$alias."', '', '".$create_actions."', '".$support_actions."', '".$legal_form."', '".$profit."', '".$profit_id."' , '".$profit_custom."', '".$team_or_org."', '".$activities_ids."',
-							'".$donations_ids."', '".$donation_other_1."','".$donation_other_16."', '".$team_description."', '', '".$web_link."', '".$fb_link."', '".$tw_link."', '', '".$in_link."', '', '".$li_link."', '".$yt_link."', 
-							'".$contact_1_name."','".$contact_1_email."','".$contact_1_phone."','".$contact_2_name."','".$contact_2_email."','".$contact_2_phone."','".$contact_3_name."','".$contact_3_email."','".$contact_3_phone."', 
-							'".$newsletter."','".$hidden_team."','".time()."', 0, 1, '".$max_ordering."', '*', '".date('Y-m-d H:i:s',time())."', '', ".$userid.", '', '', '', '')";
-		$db->setQuery($query);
-		$db->execute();			
-		$teamid=$db->insertid();
-		
-		//assets
-		$query = "SELECT rgt FROM #__assets WHERE name LIKE '#__teams.%' ORDER BY id DESC LIMIT 1";
-		$db->setQuery($query);
-		$assoc_rgt = $db->loadResult()+1;
-		$query = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__teams.".$teamid."','#__teams.".$teamid."','{}') ";
+		$max_ordering = $db->loadResult() + 1;
+
+		$query = "LOCK TABLES #__teams WRITE";
 		$db->setQuery($query);
 		$db->execute();
-		$asset_id=$db->insertid();
-		
+
+		$query = "INSERT INTO #__teams VALUES
+							('', '', 0, ".$userid.", '".$team_name."', '".$alias."', '', '".$create_actions."', '".$support_actions."', '".$legal_form."', '".$profit."', '".$profit_id."' , '".$profit_custom."', '".$team_or_org."', '".$activities_ids."',
+							'".$donations_ids."', '".$donation_other_1."','".$donation_other_16."', '".$team_description."', '', '".$web_link."', '".$fb_link."', '".$tw_link."', '', '".$in_link."', '', '".$li_link."', '".$yt_link."',
+							'".$contact_1_name."','".$contact_1_email."','".$contact_1_phone."','".$contact_2_name."','".$contact_2_email."','".$contact_2_phone."','".$contact_3_name."','".$contact_3_email."','".$contact_3_phone."',
+							'".$newsletter."','".$hidden_team."','".time()."', 0, 1, '".$max_ordering."', '*', '".date('Y-m-d H:i:s',time())."', '', ".$userid.", '', '', '', '')";
+		$db->setQuery($query);
+		$db->execute();
+		$teamid = $db->insertid();
+
+		$query = "UNLOCK TABLES";
+		$db->setQuery($query);
+		$db->execute();
+
+		//assets
+		// $query = "SELECT rgt FROM #__assets WHERE name LIKE '#__teams.%' ORDER BY id DESC LIMIT 1";
+		// $db->setQuery($query);
+		// $assoc_rgt = $db->loadResult()+1;
+		// $query = "INSERT INTO #__assets VALUES ('',1,'".$assoc_rgt."','".($assoc_rgt+1)."',1,'#__teams.".$teamid."','#__teams.".$teamid."','{}') ";
+		// $db->setQuery($query);
+		// $db->execute();
+		// $asset_id=$db->insertid();
+
 		//create directories
 		if (!file_exists($config->get( 'abs_path' ).'/images/team_photos/'.$teamid)) {
 			mkdir($config->get( 'abs_path' ).'/images/team_photos/'.$teamid, 0777);
 		}
 		//if (!file_exists($config->get( 'abs_path' ).'/images/team_logos/'.$teamid)) {
 		//	mkdir($config->get( 'abs_path' ).'/images/team_logos/'.$teamid, 0777);
-		//}	
+		//}
 		if (!file_exists($config->get( 'abs_path' ).'/images/team_files/'.$teamid)) {
 			mkdir($config->get( 'abs_path' ).'/images/team_files/'.$teamid, 0777);
-		}			
-		
+		}
+
 		//logo management
 		$logo_path='';
 		if(@$_FILES['jform']['error']['logo']==0){
@@ -565,7 +572,7 @@ class UsersModelRegistration extends JModelForm
 			//logo issue
 			$this->setError(JText::sprintf('Παρουσιάστηκε σφάλμα με το λογότυπο.', $user->getError()));
 		}
-		
+
 		//files_upload management
 		if(@$_FILES['jform']['error']['files_upload']==0){
 			if(@$_FILES['jform']['size']['files_upload']<1000000){
@@ -576,7 +583,7 @@ class UsersModelRegistration extends JModelForm
 					//file uploaded
 					$query="INSERT INTO #__team_files VALUES ('','".$teamid."','".$new_file_name."','')";
 					$db->setQuery($query);
-					$db->execute();						
+					$db->execute();
 				}
 			}else{
 				//files_upload max size
@@ -585,8 +592,8 @@ class UsersModelRegistration extends JModelForm
 		}else{
 			//files_upload issue
 			$this->setError(JText::sprintf('Παρουσιάστηκε σφάλμα με το αρχείο.', $user->getError()));
-		}		
-		
+		}
+
 		//gallery management
 		$imgs_count=count(@$_FILES['gallery_upload']['name']);
 		if($imgs_count>0){
@@ -600,7 +607,7 @@ class UsersModelRegistration extends JModelForm
 							//file uploaded - insert to db
 							$query="INSERT INTO #__team_photos VALUES ('','".$teamid."','".$new_img_name."','".($i+1)."')";
 							$db->setQuery($query);
-							$db->execute();							
+							$db->execute();
 						}
 					}else{
 						//image max size
@@ -612,23 +619,18 @@ class UsersModelRegistration extends JModelForm
 				}
 			}
 		}
-		
-		
+
+
 		//update teams with: asset, logo
-		$query = "UPDATE #__teams SET asset_id='".$asset_id."', logo='".$logo_path."' WHERE id='".$teamid."' LIMIT 1";
-		$db->setQuery($query);
-		$db->execute();		
-		
-		//test after insertion
-		//print_r($_FILES);
-		//print_r($_REQUEST);
-		//die;		
-		
+		//$query = "UPDATE #__teams SET asset_id='".$asset_id."', logo='".$logo_path."' WHERE id='".$teamid."' LIMIT 1";
+		//$db->setQuery($query);
+		//$db->execute();
+
 		//dennis code ended
 
-		$config = JFactory::getConfig();
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
+		// $config = JFactory::getConfig();
+		// $db = $this->getDbo();
+		// $query = $db->getQuery(true);
 
 		// Compile the notification mail values.
 		$data = $user->getProperties();
@@ -758,12 +760,18 @@ class UsersModelRegistration extends JModelForm
 			}
 		}
 
+		if ($config->get('dev_mode')) {
+			$data['email'] = array($config->get('dev_email'));
+		}
 		// Send the registration email.
 		$emailBody_new = '<body style="margin:0px auto; padding:0px; background-color:#FFFFFF; color:#5d5d5d; font-family:Arial; outline:none; font-size:12px;" bgcolor="#FFFFFF">
 									<div style="background-color:#FFFFFF;margin:0px auto; font-family:Arial;color:#5d5d5d;">
 										<div style="margin:0px auto; width:640px; text-align:left; background-color:#ebebeb; font-family:Arial; padding:20px;color:#5d5d5d;">
 										<div style="text-align:right;"><img src="'.$config->get( 'live_site' ).'/images/template/synathina_logo.jpg" alt="συνΑθηνά" /></div>
 										<div style="font-size: 18px;font-weight:bold; color:#05c0de;padding-bottom: 10px;">'.JText::_('COM_USERS_ACTIVATION_TITLE').'</div>'.$emailBody.'</div></div></body>';
+		if ($config->get('dev_mode') == 1) {
+			$data['email'] = $config->get('dev_email');
+		}
 		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody_new,true);
 
 		// Send Notification mail to administrators
@@ -809,6 +817,9 @@ class UsersModelRegistration extends JModelForm
 												<div style="margin:0px auto; width:640px; text-align:left; background-color:#ebebeb; font-family:Arial; padding:20px;color:#5d5d5d;">
 												<div style="text-align:right;"><img src="'.$config->get( 'live_site' ).'/images/template/synathina_logo.jpg" alt="συνΑθηνά" /></div>
 												<div style="font-size: 18px;font-weight:bold; color:#05c0de;padding-bottom: 10px;">'.JText::_('COM_USERS_REGISTRATION').'</div>'.$emailBodyAdmin.'</div></div></body>';
+				if ($config->get('dev_mode') == 1) {
+					$row->email = $config->get('dev_email');
+				}
 				$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin_new,true);
 
 				// Check for an error.

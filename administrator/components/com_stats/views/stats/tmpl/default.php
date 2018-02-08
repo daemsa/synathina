@@ -17,19 +17,21 @@ $userId    = $user->get('id');
 
 $db = JFactory::getDBO();
 
+$remoteClass = new RemotedbConnection();
+$db_remote = $remoteClass->connect();
+
 $query = "SELECT *
 					FROM #__team_activities
 					WHERE published=1 ORDER BY id ASC ";
-					//echo $query;
+
 $db->setQuery($query);
-$thematikes = $db->loadObjectList();	
+$thematikes = $db->loadObjectList();
 
 $query = "SELECT *
 					FROM #__team_donation_types
 					WHERE published=1 AND parent_id=0 ORDER BY id ASC ";
-					//echo $query;
 $db->setQuery($query);
-$donations = $db->loadObjectList();	
+$donations = $db->loadObjectList();
 
 $where='';
 $or_sql='';
@@ -50,7 +52,7 @@ if(@$_REQUEST['date_to']!=''){
 	$new_to=$to_array[2].'-'.$to_array[1].'-'.$to_array[0].' 23:59:59';
 	$where.=" AND aa.action_date_start<='".$new_to."' ";
 	$where_stegi.=" AND date_start<='".$new_to."' ";
-}			
+}
 
 //areas
 $or=0;
@@ -65,7 +67,7 @@ if($or==1){
 		if(@$_REQUEST['koinotita_'.$i]=='on'){
 			$or_sql.="aa.area='".$i."' OR ";
 		}
-	}	
+	}
 	$or_sql=rtrim($or_sql,'OR ').")";
 }
 //activities
@@ -82,9 +84,9 @@ if($or1==1){
 			//$or_sql1.="aa.activity='".$i."' OR ";
 			$or_sql1.=" find_in_set('".$i."',aa.activities) OR ";
 		}
-	}	
+	}
 	$or_sql1=rtrim($or_sql1,'OR ').")";
-}	
+}
 if(@$_REQUEST['stegi_use']==1){
 	$or_sql2=" AND aa.stegi_use=1 ";
 }
@@ -106,25 +108,26 @@ if($or2==1){
 		}
 	}
 	$or_sql4=rtrim($or_sql4,'OR ').")";
-}	
+}
 $query="SELECT aa.id
-				FROM #__actions AS aa INNER JOIN #__teams AS t ON aa.team_id=t.id INNER JOIN #__actions AS a ON aa.action_id=a.id WHERE a.id>0 
-				".$where." ".$or_sql." ".$or_sql1." ".$or_sql2." ".$or_sql3." ".$or_sql4." 
-				AND aa.action_id>0 AND a.published=1 AND t.published=1 
+				FROM #__actions AS aa INNER JOIN #__actions AS a ON aa.action_id=a.id WHERE a.id>0 AND a.origin=1
+				".$where." ".$or_sql." ".$or_sql1." ".$or_sql2." ".$or_sql3." ".$or_sql4."
+				AND aa.action_id>0 AND a.published=1
 				ORDER BY aa.action_date_start DESC ";
-//echo $query;
-//die;
-$db->setQuery( $query );
-$actions = $db->loadObjectList();					 
+//previous inner withour remote actions
+//INNER JOIN #__teams AS t ON aa.team_id=t.id
+
+$db_remote->setQuery( $query );
+$actions = $db_remote->loadObjectList();
 $total = count($actions);
 
-$query="SELECT id 
-				FROM #__stegihours 
-				WHERE id>0 
-				".$where_stegi." 
+$query="SELECT id
+				FROM #__stegihours
+				WHERE id>0
+				".$where_stegi."
 				AND action_id=0 AND published=1";
 $db->setQuery( $query );
-$actions_stegi = $db->loadObjectList();					 
+$actions_stegi = $db->loadObjectList();
 $total_stegi = count($actions_stegi);
 
 //print_r(@$_REQUEST);
@@ -140,8 +143,8 @@ $total_stegi = count($actions_stegi);
   } );
   </script>
 <form name="activities_stats" id="activities_stats" method="post"  action="index.php?option=com_stats&view=stats">
-<h3>Ημερομηνίες</h3> 
-<p>Ημερομηνία από: <input style="cursor:default" readonly="true" value="<?=@$_REQUEST['date_from']?>" type="text" id="date_from" name="date_from" />&nbsp;&nbsp;&nbsp;&nbsp;Ημερομηνία έως: <input style="cursor:default" readonly="true" value="<?=@$_REQUEST['date_to']?>" type="text" id="date_to" name="date_to" /></p>
+<h3>Ημερομηνίες</h3>
+<p><label for="date_from">Ημερομηνία από:</label> <input style="cursor:default" readonly="true" value="<?=@$_REQUEST['date_from']?>" type="text" id="date_from" name="date_from" /><label for="date_to">Ημερομηνία έως:</label> <input style="cursor:default" readonly="true" value="<?=@$_REQUEST['date_to']?>" type="text" id="date_to" name="date_to" /></p>
 <h3>Φίλτρα</h3>
 <h4>Θεματικές:</h4>
 <p>
@@ -181,7 +184,7 @@ $total_stegi = count($actions_stegi);
 		<option value="1" <?=(@$_REQUEST['municipality_use']==1?'selected="selected"':'')?>>ΝΑΙ</option>
 	</select>
 </p>
-<input type="submit" name="submit" value="Προβολή" />
+<input type="submit" class="btn btn-primary" name="submit" value="Προβολή" />
 </form>
 
 <?php

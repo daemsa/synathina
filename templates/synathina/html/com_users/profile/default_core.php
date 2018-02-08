@@ -8,8 +8,11 @@
  */
 
 defined('_JEXEC') or die;
-$db = JFactory::getDbo();
+
 $config = JFactory::getConfig();
+
+//local db
+$db = JFactory::getDbo();
 
 jimport('joomla.filesystem.folder');
 
@@ -32,7 +35,7 @@ foreach($teams_data as $team_data){
 		$support_actions=1;
 	}else{
 		$support_actions=0;
-	}	
+	}
 	$team_id=$team_data->id;
 	$anonymous=$team_data->hidden;
 	$team_or_org=$team_data->team_or_org;
@@ -61,13 +64,13 @@ foreach($teams_data as $team_data){
 	$contact_3_name=$team_data->contact_3_name;
 	$contact_3_email=$team_data->contact_3_email;
 	$contact_3_phone=$team_data->contact_3_phone;
-	$newsletter=$team_data->newsletter;	
+	$newsletter=$team_data->newsletter;
 	$query = "SELECT * FROM #__team_photos WHERE team_id='".$team_id."' ORDER BY ordering ASC";
 	$db->setQuery($query);
-	$photos = $db->loadObjectList();	
+	$photos = $db->loadObjectList();
 	$query = "SELECT path FROM #__team_files WHERE team_id='".$team_id."' ORDER BY ordering ASC LIMIT 1";
 	$db->setQuery($query);
-	$file_path = $db->loadResult();		
+	$file_path = $db->loadResult();
 }
 
 ?>
@@ -78,8 +81,8 @@ foreach($teams_data as $team_data){
 								<label for="" class="is-block">EMAIL ΧΡΗΣΤΗ*</label>
 								<?php echo $this->data->email; ?>
 						 </div>
-					</div>						
-				</div>				
+					</div>
+				</div>
 				<div class="form-inline form--bordered filters" rel="js-choose-action-type">
 					<div class="form-group">
 						<input id="box1" type="checkbox" name="jform[create_actions]" value="organizer" <?=($create_actions==1?'checked="checked"':'')?> disabled />
@@ -96,8 +99,8 @@ foreach($teams_data as $team_data){
 						<label for="hidden_team" class="label-horizontal">ΑΝΩΝΥΜΟΣ ΥΠΟΣΤΗΡΙΚΤΗΣ</label>
 					</div>';
 	}
-?>						
-				</div>	
+?>
+				</div>
 				<div class="form-inline form--bordered filters" >
 				 <div class="form-group">
 						 <input id="box3" type="radio" name="jform[team_or_org]" value="10" <?=($team_or_org==10?'checked="checked"':'')?> disabled>
@@ -133,7 +136,7 @@ foreach($teams_data as $team_data){
 				<div class="form-inline filters" style="margin-bottom:0px;" rel="js-choose-legal-type">
 					<div class="form-group">
 						<label for="leag_title" style="font-size: 16px;font-weight: bold;color: #5d5d5d;" class="is-block">Νομική μορφή*:</label>
-					</div>					
+					</div>
 				</div>
 				<div class="form-inline form--bordered filters" style="padding-top: 0px;" rel="js-choose-legal-type">
 				 <div class="form-group">
@@ -154,13 +157,13 @@ foreach($teams_data as $team_data){
 						 <input id="box11" type="radio" name="organization_type" value="no" <?=($profit==1?'checked="checked"':'')?> disabled>
 						 <label for="box11" class="label-horizontal">ΚΕΡΔΟΣΚΟΠΙΚΗ</label>
 					</div>
-				</div>	
+				</div>
 				<div class="form-inline form--bordered filters <?=($profit==1?'form-block--hidden':'')?>" rel="js-show-profit-types">
 <?php
 	$query = " SELECT id, name "
 			." FROM #__team_types WHERE published=1 "
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=12;
@@ -171,7 +174,7 @@ foreach($teams_data as $team_data){
 					</div>';
 		$i++;
 	}
-?>					
+?>
 					<div class="form-group">
 						 <label for="box150" class="is-inline-block">ΑΛΛΟ</label>
 						 <input id="box150" type="text" name="profit_custom" rel="js-other-profit" value="<?=($profit_custom!=''?$profit_custom:'')?>" disabled>
@@ -185,10 +188,10 @@ foreach($teams_data as $team_data){
 					<label for="activity_description" class="is-block">Θεματική δραστηριοποίησης*:</label>
 <?php
 	$query = " SELECT id, name "
-			." FROM #__team_activities 
+			." FROM #__team_activities
 			WHERE published=1"
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=1;
@@ -199,7 +202,7 @@ foreach($teams_data as $team_data){
 					</div>';
 		$i++;
 	}
-?>						
+?>
 				</div>
 				<div class="form-inline l-fg6 ">
 					<div class="form-group">
@@ -218,12 +221,12 @@ foreach($teams_data as $team_data){
 	{
 			echo '<img style="width:80px; margin:0px 5px 5px 0px;" src="' . JUri::root() . $directory . '/' . $image . '" alt="" />';
 	}
-	
+
 	foreach ($photos as $photo) {
 			//echo '<img src="images/team_photos/'.$team_id.'/'.$photo->path.'" alt="" width="80" />&nbsp;';
 	}
 
-?>						 
+?>
 						 <!--<span class="is-block is-italic">Ανεβάστε μία ή περισσότερες φωτογραφίες της ομάδας σας
 				ή των δράσεων που έχετε διοργανώσει ή υποστηρίξει </span>-->
 					</div>
@@ -305,7 +308,7 @@ foreach($teams_data as $team_data){
 	if (file_exists($config->get( 'abs_path' ).'/images/team_files/'.$team_id.'/'.$file_path)) {
 		echo $file_path;
 	}
-?>						 
+?>
 						 <!--<span class="is-block is-italic"><small>(Ανεβάστε μία ή περισσότερες παρουσιάσεις της ομάδας σας σε μορφή *.doc ή *.pdf )</small></span>-->
 
 					</div>
@@ -320,25 +323,25 @@ foreach($teams_data as $team_data){
 						 <input id="newsletter_no" type="radio" name="jform[newsletter]" value="no" <?=($newsletter==0?'checked="checked"':'')?> disabled>
 						 <label for="newsletter_no" class="label-horizontal">ΟΧΙ</label>
 					</div>
-				</div>					
+				</div>
 				<div class="form-inline form--bordered filters  <?=($support_actions==1?'':'form-block--hidden')?> registration-donations" rel="js-show-action-type">
 					<label for="activity_description" class="is-block">ΔΙΑΣΥΝΔΕΣΗ ΥΠΟΣΤΗΡΙΚΤΩΝ  ΜΕ ΔΙΟΡΓΑΝΩΤΕΣ</label>
 <?php
 	$query = " SELECT id, name "
-			." FROM #__team_donation_types 
+			." FROM #__team_donation_types
 				WHERE published=1 AND parent_id=0	"
 			." ORDER BY id ASC ";
-			
+
 	$db->setQuery($query);
 	$rows=$db->loadObjectList();
 	$i=1;
 	$children=array();
 	foreach($rows as $row){
 		$query = " SELECT id, name "
-				." FROM #__team_donation_types 
+				." FROM #__team_donation_types
 					WHERE published=1 AND parent_id=".$row->id."	"
 				." ORDER BY id ASC ";
-				
+
 		$db->setQuery($query);
 		$rows1=$db->loadObjectList();
 		foreach($rows1 as $row1){
@@ -350,7 +353,7 @@ foreach($teams_data as $team_data){
 					</div>';
 		$i++;
 	}
-	
+
 	for($i=1; $i<count($children)+1; $i++){
 		for($y=0; $y<count($children[$i]); $y++){
 			if($y==0){
@@ -367,17 +370,17 @@ foreach($teams_data as $team_data){
 				}
 				if($children[$i][$y][2]==16){
 					$other_donation=$team_data->donation_technology;
-				}						
+				}
 				echo '<div class="form-group">
 								<label for="donation-'.$children[$i][$y][2].'-other" class="label-horizontal" style="display:inline-block">'.($lang_code=='en'?'Other':'Άλλο').'</label>
 								<input name="donation-'.$children[$i][$y][2].'-other" id="donation-'.$children[$i][$y][2].'-other"  type="text" disabled value="'.str_replace('"','\'',$other_donation).'">
-							</div>';				
+							</div>';
 				echo '</div>';
-			}				
+			}
 		}
 
 	}
-?>						
+?>
 				</div>
 				<div class="form-inline form--bordered filters">
 					Αν θες να επεξεργαστείς τα στοιχεία σου κάνε κλικ <a style="vertical-align:top" href="<?php echo JRoute::_('index.php?option=com_users&task=profile.edit&user_id=' . (int) $this->data->id);?>">εδώ</a>
