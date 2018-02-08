@@ -117,7 +117,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
 							Ημερομηνία εγγραφής
-						</th>						
+						</th>
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
@@ -197,14 +197,32 @@ JFactory::getDocument()->addScriptDeclaration('
 						</td>
 						<td class="nowrap has-context">
 							<div class="pull-left">
-								<?php echo ($this->escape($item->team_or_org)==12?'Επιχείρηση/Εταιρεία':($this->escape($item->team_or_org)==10?'Ομάδα πολιτών':'Φορέας Οργανισμός')); ?>
+								<?php
+									switch($this->escape($item->team_or_org)) {
+										case 12:
+											$org_type = 'Επιχείρηση/Εταιρεία';
+											break;
+										case 10:
+											$org_type = 'Ομάδα πολιτών';
+											break;
+										case 13:
+											$org_type = 'Ιδιώτης/Δημότης';
+											break;
+										case 11:
+											$org_type = 'Φορέας Οργανισμός';
+											break;
+										default:
+											$org_type = '';
+									}
+								?>
+								<?php echo $org_type; ?>
 							</div>
 						</td>
 						<td class="nowrap has-context">
 							<div class="pull-left">
 								<?php echo JHTML::_('date', $item->created, 'd-m-Y H:i:s');?>
 							</div>
-						</td>						
+						</td>
 						<td align="center" class="small hidden-phone">
 							<?php echo $item->access_level; ?>
 						</td>
