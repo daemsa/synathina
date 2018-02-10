@@ -1,6 +1,9 @@
 /configuration.php
 .idea/
 /logs/
-/images/
+images/*
 /attachments/
 .DS_Store
+/images_/
+/old_before_accmr/
+/old_before_accmr_unused/
