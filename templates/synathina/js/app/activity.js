@@ -361,6 +361,9 @@ var Activities = (function(global) {
         }
     }
 
+    function checkSameLocation(a) {
+    }
+
     function createLocationSpace(a) {
     }
 
