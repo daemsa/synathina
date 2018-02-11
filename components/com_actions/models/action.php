@@ -101,8 +101,9 @@ class ActionsModelAction extends JModelItem
 	public function getSubactions()
 	{
 		$activityClass = new RemotedbActivity();
-
-		$where = "action_id='".@$_REQUEST['id']."' AND published=1";
+		$user = JFactory::getUser();
+		$isroot = $user->authorise('core.admin');
+		$where = "action_id='".@$_REQUEST['id']."'".($isroot ? '' : ' AND published=1');
 
 		return $activityClass->getActivities([], $where);
 	}
