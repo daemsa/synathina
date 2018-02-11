@@ -229,6 +229,23 @@ class ActionsModelEdit extends JModelItem
 		return $donations_array;
 	}
 
+	//GET Teams Ids from remote site with Comma Delimiter
+	public function getUserIdsCommaDelRemote($donations_id)
+	{
+		//remote connections
+		$dbRemoteClass = new RemotedbConnection();
+		$db_remote = $dbRemoteClass->remoteConnect();
+
+		$query = "SELECT user_id FROM #__teams
+					WHERE published=1 AND support_actions = 1 AND FIND_IN_SET(".$donations_id.",`org_donation`) ";
+		$db_remote->setQuery($query);
+		$team_user_ids = $db_remote->loadAssocList();
+
+		return implode(', ', array_map(function ($entry) {
+		  return $entry['user_id'];
+		}, $team_user_ids));
+	}
+
 	public function getTeam()
 	{
 		$user = JFactory::getUser();
@@ -561,6 +578,8 @@ class ActionsModelEdit extends JModelItem
 			$activities = $this->getActivities();
 			$stegi_exists_in_general = 0;
 
+			//check if refugees exist in activities
+			$refugees_activity = 0;
 			//insert subactions
 			for ($f = 0; $f < 11; $f++) {
 				if (@$_REQUEST['ypotitlos_drashs_'.$f] != '' && @$_REQUEST['date_start_'.$f] != '' && @$_REQUEST['date_end_'.$f] != '') {
@@ -655,6 +674,10 @@ class ActionsModelEdit extends JModelItem
 					foreach ($activities as $activity) {
 						if (@$_REQUEST['activity_'.$activity->id.'_'.$f] == 'on') {
 							$activities_ids .= $activity->id.',';
+							//check if refugees exist
+							if ($activity->id == 12) {
+								$refugees_activity = 1;
+							}
 							//check if refugees is selected and update only if root
 							if ($isroot) {
 								if ($activity->id == 12 && $remote == 1) {
@@ -742,11 +765,11 @@ class ActionsModelEdit extends JModelItem
 				$supporters_exist = 0;
 				$emails = [];
 				$supporters_emails = [];
-				$donation_text = '';
 				$donations_array = explode(',',$donations_ids);
 				array_filter($donations_array);
 				$donations_valid = $this->donations_valid();
 				$donations_valid_text = $this->donations_valid(true);
+				$db_accmr = $dbRemoteClass->remoteConnect();
 				for ($d = 0; $d < count($donations_array); $d++) {
 					if (in_array($donations_array[$d], $donations_valid)) {
 						$team_user_ids_text = $this->getUserIdsCommaDel($donations_array[$d], $team_id);
@@ -760,8 +783,23 @@ class ActionsModelEdit extends JModelItem
 								$supporters_emails[$donations_array[$d]][] = $emails_result->email;
 								$supporters_donation_titles[$donations_array[$d]] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 							}
-							$donation_text[] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
 							$supporters_exist = 1;
+						}
+						//get remote supporters
+						if ($refugees_activity == 1) {
+							$team_user_ids_text_remote = $this->getUserIdsCommaDelRemote($donations_array[$d]);
+							if ($team_user_ids_text_remote) {
+								$query = "SELECT email FROM #__users
+												WHERE id IN (".$team_user_ids_text_remote.") ";
+								$db_accmr->setQuery($query);
+								$emails_results_remote = $db_accmr->loadObjectList();
+								foreach ($emails_results_remote as $emails_result) {
+									//$emails[] = $emails_result->email;
+									$supporters_emails[$donations_array[$d]][] = $emails_result->email;
+									$supporters_donation_titles[$donations_array[$d]] = $donations_valid_text[array_search($donations_array[$d], $donations_valid)];
+								}
+								$supporters_exist = 1;
+							}
 						}
 					}
 				}

@@ -554,11 +554,9 @@ function showRemote()
     });
 
     if (remote) {
-        console.log(remote)
         $('#remote-checkbox input')[0].checked = true;
         $('#remote-checkbox').removeClass('hidden');
     } else {
-        console.log(remote)
         $('#remote-checkbox input')[0].checked = false;
         $('#remote-checkbox').addClass('hidden');
     }
