@@ -114,7 +114,7 @@ function clear_form(counter, id1, id2){
 	<div class="filter-search">
 		 <form action="<?php echo JURI::current(); ?><?=$anchor?>" class="form" method="get" name="search_teams_form" id="search_teams_form">
 				<div class="input-group">
-						<input type="text" class="form-control" placeholder="<?php echo JText::_('COM_TEAMS_PLACEHOLDER'); ?>" name="search_teams" id="search_teams" value="<?php echo @$_REQUEST['search_teams'];?>" />
+						<input type="text" class="form-control" placeholder="<?php echo JText::_('COM_TEAMS_PLACEHOLDER'); ?>" name="search_teams" id="search_teams" value="<?php echo strip_tags(@$_REQUEST['search_teams']);?>" />
 						<!--<span class="input-group-btn">
 							<button class="btn btn-search" type="submit"><i class="fa fa-search"></i></button>
 						</span>-->
@@ -197,7 +197,7 @@ function clear_form(counter, id1, id2){
 <div class="filters">
 	<div class="filter-search">
 				<div class="input-group">
-						<input type="text" class="form-control" placeholder="<?php echo JText::_('COM_TEAMS_PLACEHOLDER'); ?>" name="search_supporters" id="search_supporters" value="<?php echo @$_REQUEST['search_supporters'];?>" />
+						<input type="text" class="form-control" placeholder="<?php echo JText::_('COM_TEAMS_PLACEHOLDER'); ?>" name="search_supporters" id="search_supporters" value="<?php echo strip_tags(@$_REQUEST['search_supporters']);?>" />
 						<!--<span class="input-group-btn">
 								 <button class="btn btn-search" type="button"><i class="fa fa-search"></i></button>
 						</span>-->

@@ -77,7 +77,7 @@ function ordinal_suffix($num){
    <div class="filters">
       <div class="filter-search">
 				<div class="input-group">
-					<input type="text" class="form-control" name="search_name" placeholder="<?=($lang_code=='en'?'Search...':'Αναζήτηση για...')?>" value="<?php echo @$_REQUEST['search_name']; ?>" />
+					<input type="text" class="form-control" name="search_name" placeholder="<?=($lang_code=='en'?'Search...':'Αναζήτηση για...')?>" value="<?php echo strip_tags(@$_REQUEST['search_name']); ?>" />
 				</div><!-- /input-group -->
       </div>
 			<div class="block"></div>
@@ -92,11 +92,11 @@ function ordinal_suffix($num){
       <div class="block"></div>
       <div class="form-group">
          <label for=""><?=($lang_code=='en'?'From':'Από')?>:</label>
-         <input type="text" class="form-control" name="from" value="<?php echo @$_REQUEST['from']; ?>" rel="js-datepicker-from" readonly="true" />
+         <input type="text" class="form-control" name="from" value="<?php echo strip_tags(@$_REQUEST['from']); ?>" rel="js-datepicker-from" readonly="true" />
       </div>
       <div class="form-group">
          <label for=""><?=($lang_code=='en'?'To':'Έως')?>:</label>
-         <input type="text" class="form-control" name="to" value="<?php echo @$_REQUEST['to']; ?>" rel="js-datepicker-to" readonly="true" />
+         <input type="text" class="form-control" name="to" value="<?php echo strip_tags(@$_REQUEST['to']); ?>" rel="js-datepicker-to" readonly="true" />
       </div>
       <div class="form-group" style="margin-right: 0px;">
 				<input id="box8" type="checkbox" name="best" <?=(@$_REQUEST['best']=='on'?'checked="checked"':'')?>>
@@ -114,7 +114,6 @@ function ordinal_suffix($num){
 					</div>';
 	}
 ?>
-		<input type="hidden" />
 		<div class="block"></div>
 		<button type="submit" style="padding: 5px 10px;" class="pull-right btn btn--coral btn--bold btn btn-primary validate"><?=($lang_code=='en'?'SEARCH':'ΑΝΑΖΗΤΗΣΗ')?></button>
 		<button type="reset" onclick="document.getElementById('search_actions').reset();$('#search_actions input[type=checkbox]').attr('checked',false);" style="padding: 5px 10px; margin-right:10px;" class="pull-right btn btn--grey btn--bold btn btn-primary validate"><?=($lang_code=='en'?'RESET':'ΚΑΘΑΡΙΣΜΟΣ')?></button>
