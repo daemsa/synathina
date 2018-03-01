@@ -254,7 +254,7 @@ class PHPMailer
      * Be aware that in PHP >= 5.6 this requires that the server's certificates are valid.
      * @var boolean
      */
-    public $SMTPAutoTLS = false;
+    public $SMTPAutoTLS = true;
 
     /**
      * Whether to use SMTP authentication.
