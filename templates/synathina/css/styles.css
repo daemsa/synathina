@@ -6376,7 +6376,7 @@ button {
 .inline-list--socialmedia > li a.youtube-icon {
 	background-image: url('../images/youtube-metro-icon.png') !important; }
 
-	.fa-youtube:before {
+	.inline-list--socialmedia .fa-youtube:before {
     content: "";
 }
 .inline-list--socialmedia .inline-list__label {
