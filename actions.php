@@ -73,7 +73,7 @@ $date_now=date('Y-m-d').' 00:00:00';
 //common db
 
 //all actions
-$fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
+$fields = ['a.*', 'aa.subtitle', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND a.action_id=0";
 $order_by = "aa.lat DESC";
 $activityClass = new RemotedbActivity();
@@ -190,7 +190,7 @@ foreach($actions as $action){
             "team_name": "'.htmlspecialchars($team->tname).'",
             "team_members": "<span style=\'font-size:28px\'>'.(count($partners_array)+1).'</span><br />'.$members.'","address": "'.trim(htmlspecialchars($action->aaddress)).'",
             "sponsor_title": "","date": "'.$action->aaction_date_start.'","date_end": "'.$action->aaction_date_end.'","dates": "'.$dates.'",
-            "title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->name))).'",
+            "title": "'.trim(str_replace(array("\r\n","\r"),"",htmlspecialchars($action->subtitle))).'",
             "content": "'.str_replace(array("\r\n","\r"),"",htmlspecialchars($action->short_description)).'",
             "content_img": "'.$live_site.'/images/actions/main_images/'.$action->image.'",
             "logo": "","logo_sponsor": "'.$sponsor_logo.'","logo_team": "'.$live_site.'/'.$team->tlogo.'"
