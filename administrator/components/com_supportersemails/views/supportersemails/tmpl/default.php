@@ -56,7 +56,6 @@ if (isset($request['donations']) && $request['donations'] ) {
 $query = "SELECT SUM(counter)
 			FROM #__donations_counter
 			WHERE id > 0 ".$where;
-			echo $query;
 $db->setQuery($query);
 $total = $db->loadResult();
 
