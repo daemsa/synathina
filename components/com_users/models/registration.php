@@ -509,7 +509,7 @@ class UsersModelRegistration extends JModelForm
 
 		//check alias
 		$userid=$user->id;
-		if($same_alias>0){
+		if($same_alias>0 || !$alias){
 			$alias=$alias.'_'.$userid;
 		}
 
