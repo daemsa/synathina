@@ -433,19 +433,20 @@ $(document).ready(function (){
         if($('#box2').is(':checked')){
             var donations=0;
             var sub_donations=1;
-            $('input', $('.registration-donations')).each(function () {
-                //console.log($(this)); //log every element found to console output
+            message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια κατηγορία υποστήριξης';
+            $('.registration-donations-parent').each(function () {
+
                 if($(this).is(':checked')){
 
                     donations=1;
 
                     if( $('#donation-1').is(':checked') || $('#donation-16').is(':checked') ) {
 
-                        sub_donations=0;
-
                         if ( $('#donation-1').is(':checked') ) {
 
-                            $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε είδος';
+                            sub_donations=0;
+
+                            message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε είδος';
 
                             $('input', $('#subcat1')).each(function () {
                                 if($(this).is(':checked')){
@@ -459,7 +460,7 @@ $(document).ready(function (){
 
                             sub_donations=0;
 
-                            $message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε τεχνογνωσία';
+                            message = 'Παρακαλούμε επιλέξτε τουλάχιστον μια υποκατηγορία σε Προσφορά σε τεχνογνωσία';
 
                             $('input', $('#subcat2')).each(function () {
                                 if($(this).is(':checked')){
@@ -471,7 +472,7 @@ $(document).ready(function (){
 
                     } else {
                         if(!($('#donation-27').is(':checked') || $('#donation-28').is(':checked') || $('#donation-35').is(':checked'))) {
-                            $message = 'Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής';
+                            message = 'Επιλέξτε τουλαχιστον μία υποκατηγορία για την προσφορά σας ως υποστηρικτής';
                         } else {
                             donations = 1;
                         }
@@ -481,12 +482,12 @@ $(document).ready(function (){
 
             if( donations==0 || sub_donations==0 ){
                 if(donations==0) {
-                    alert($message);
+                    alert(message);
                     return false;
                 }
 
                 if(sub_donations==0){
-                    alert($message);
+                    alert(message);
                     return false;
                 }
             }

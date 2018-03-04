@@ -349,7 +349,7 @@ $params_editor = array( 'smilies'=> '0' ,
 				$children[$i][]=array($row1->id, $row1->name,$row->id);
 			}
 			echo '<div class="form-group">
-							 <input name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').' disabled>
+							 <input class="registration-donations-parent" name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').' disabled>
 							 <label for="donation-'.$row->id.'" class="label-horizontal">'.$row->name.'</label>
 						</div>';
 			$i++;

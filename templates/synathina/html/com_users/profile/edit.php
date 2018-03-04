@@ -220,6 +220,10 @@ function delete_confirmation(id,path,abspath) {
 						 <input id="box41" type="radio" name="jform[team_or_org]" value="12" <?=($team_or_org==12?'checked="checked"':'')?>>
 						 <label for="box41" class="label-horizontal">ΕΙΜΑΙ ΕΠΙΧΕΙΡΙΣΗ/ΕΤΑΙΡΕΙΑ</label>
 					</div>
+					<div class="form-group">
+						 <input id="box42" type="radio" name="jform[team_or_org]" value="13" <?=($team_or_org==13?'checked="checked"':'')?>>
+						 <label for="box42" class="label-horizontal">ΕΙΜΑΙ ΙΔΙΩΤΗΣ/ΔΗΜΟΤΗΣ</label>
+					</div>
 				</div>
 				<div class="form-inline l-fg6">
 					<div class="form-group">
@@ -469,7 +473,7 @@ function delete_confirmation(id,path,abspath) {
 			$children[$i][]=array($row1->id, $row1->name,$row->id);
 		}
 		echo '<div class="form-group">
-						 <input class="donation-change" name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').' '.(in_array($row->id,$org_donation)?'checked="checked"':'').'>
+						 <input class="donation-change registration-donations-parent" name="donation-'.$row->id.'" id="donation-'.$row->id.'" type="checkbox" value="show"  '.(@count($children[$i])>0?'data-href="#subcat'.$i.'"':'').' '.(in_array($row->id,$org_donation)?'checked="checked"':'').'>
 						 <label for="donation-'.$row->id.'" class="label-horizontal">'.$row->name.'</label>
 					</div>';
 		$i++;
