@@ -817,9 +817,13 @@ class ActionsModelEdit extends JModelItem
 						$supporters_message = unserialize(base64_decode($supporters_message));
 					}
 					foreach ($supporters_emails as $key => $emails) {
-						//$s_array = array($team_link, $team_info->name, implode(', ', $donation_text), '"'.$supporters_message[$key].'"', $drasi_url, $name, $team_info->contact_1_name, $team_info->contact_1_email, $team_info->contact_1_phone);
 						$s_array = array($team_link, $team_info->name, $supporters_donation_titles[$key], '"'.$supporters_message[$key].'"', $drasi_url, $name, $team_info->contact_1_name, $team_info->contact_1_email, $team_info->contact_1_phone);
 						$emails_unique = array_unique($emails);
+						//count emails per donations
+						$query_donations_counter = "INSERT INTO #__donations_counter
+													VALUES ('', '".date('Y-m-d H:i:s')."', '".count($emails_unique)."', '".$key."' )";
+						$db->setQuery($query_donations_counter);
+						$db->execute();
 						foreach ($emails_unique as $email) {
 							synathina_email('action_created_supporters', $s_array, [$email], '');
 						}
