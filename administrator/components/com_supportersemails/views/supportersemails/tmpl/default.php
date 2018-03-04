@@ -66,8 +66,8 @@ $total = $db->loadResult();
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( "#date_from" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: new Date(2017, 0, 1) });
-		$( "#date_to" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: new Date(2017, 0, 1) });
+    $( "#date_from" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: new Date(2018, 3, 1) });
+		$( "#date_to" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: new Date(2017, 3, 1) });
   } );
   </script>
 <form name="activities_stats" id="activities_stats" method="post"  action="index.php?option=com_supportersemails&view=supportersemails">
