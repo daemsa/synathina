@@ -328,7 +328,9 @@ $note = $db->loadResult();
 				<div class="form-group">
 					 <button type="submit" class="btn btn--coral btn--bold"><?php echo JText::_('MOD_NEWSLETTER_SUBMIT'); ?></button>
 				</div>
+        <?php if (!$config->get('dev_mode')) { ?>
 				<div class="g-recaptcha" data-sitekey="6Ld4fykUAAAAAHJhqJLKxvf8k0gRWVQIjPtnTcuD"></div>
+        <?php } ?>
 			</form>
 		</div>
 	</div>

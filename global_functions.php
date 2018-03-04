@@ -32,12 +32,6 @@ function synathina_email($type, $parameters, $emails, $attachment)
 			$recipients = array($config->get( 'mailfrom' ));
 		}
 
-		if ($config->get('dev_mode')) {
-			$recipients = array($config->get('dev_email'));
-		}
-
-		$mailer->addRecipient($recipients);
-
 		$mailer->setSubject($custom_email->subject);
 		if ($config->get('dev_mode')) {
 			$mailer->setSubject('DEV MODE: ' . $custom_email->subject);
@@ -48,6 +42,9 @@ function synathina_email($type, $parameters, $emails, $attachment)
 								<div style="margin:0px auto; width:640px; text-align:left; background-color:#ebebeb; font-family:Arial; padding:20px;color:#5d5d5d;">
 								<div style="text-align:right;"><img src="'.$config->get( 'live_site' ).'/images/template/synathina_logo.jpg" alt="συνΑθηνά" /></div>
 								<div style="font-size: 18px;font-weight:bold; color:#05c0de;padding-bottom: 10px;">'.$custom_email->email_title.'</div>';
+		if ($config->get('dev_mode')) {
+			$body .= '<div>'.implode(',', $recipients).'</div>';
+		}
 		$s_array = array();
 		for ($i = 0; $i < count($parameters); $i++) {
 			$s_array[] = '%s'.($i + 1);
@@ -58,6 +55,12 @@ function synathina_email($type, $parameters, $emails, $attachment)
 			$body.= $custom_email->body;
 		}
 		$body .= '</div></div></body>';
+
+		if ($config->get('dev_mode')) {
+			$recipients = array($config->get('dev_email'));
+		}
+
+		$mailer->addRecipient($recipients);
 
 		$mailer->isHTML(true);
 		$mailer->Encoding = 'base64';
