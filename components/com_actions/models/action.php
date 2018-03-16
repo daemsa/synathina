@@ -104,8 +104,9 @@ class ActionsModelAction extends JModelItem
 		$user = JFactory::getUser();
 		$isroot = $user->authorise('core.admin');
 		$where = "action_id='".@$_REQUEST['id']."'".($isroot ? '' : ' AND published=1');
+		$order = "action_date_start ASC";
 
-		return $activityClass->getActivities([], $where);
+		return $activityClass->getActivities([], $where, $order);
 	}
 
 	public function getTeamActivities()
