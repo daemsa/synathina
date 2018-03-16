@@ -315,7 +315,7 @@ function draw_calendar($month,$year,$actions_date_array1,$lang, $db){
 	$current_month=gmmktime(0, 0, 0, (date('n')), 1, date('Y'));
 	for($m=0; $m<$months; $m++){
 		$next_month=gmmktime(0, 0, 0, (6+$m), 1, 2016);
-		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">'.$current_month.' == '.$next_month.'
+		echo '<div id="tab-'.($m+1).'" class="tab '.($current_month==$next_month?'active':'').'">
 						<div class="diary diary--month">
 						'.draw_calendar(date('n',$next_month),date('Y',$next_month),$actions_date_array1,$lang_code, $db).'
 						</div>
