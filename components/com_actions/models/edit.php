@@ -256,10 +256,12 @@ class ActionsModelEdit extends JModelItem
 			$action = $this->getAction();
 			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
 				INNER JOIN #__users AS u
+				ON u.id=t.user_id
 				WHERE t.id='".$action->team_id."' LIMIT 1";
 		} else {
 			$query = "SELECT t.*, u.email AS user_email FROM #__teams AS t
 				INNER JOIN #__users AS u
+				ON u.id=t.user_id
 				WHERE t.user_id='".$user->id."' LIMIT 1";
 		}
 		$db->setQuery( $query );
