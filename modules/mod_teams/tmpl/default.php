@@ -71,19 +71,13 @@ $db->setQuery( $query );
 $teams_supporters = $db->loadObjectList();
 $count_teams_supporters = count($teams_supporters);
 
-//test
+//anchors
 $anchor='#teams-results';
-//$where='';
-if (count(@$_REQUEST['activities']) > 0) {
+if (count(@$_REQUEST['activities']) > 0 || @$_REQUEST['search_teams'] != '') {
 	$anchor='#teams-results';
 }
-if (@$_REQUEST['search_teams'] != '') {
-	$anchor='#teams-results';
-}
-if (count(@$_REQUEST['activities_s']) > 0) {
-	$anchor='#supporters-results';
-}
-if (@$_REQUEST['search_supporters'] != '') {
+
+if (count(@$_REQUEST['activities_s']) > 0 || @$_REQUEST['search_supporters'] != '') {
 	$anchor='#supporters-results';
 }
 
