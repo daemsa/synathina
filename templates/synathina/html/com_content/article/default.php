@@ -36,6 +36,7 @@ if(@$_REQUEST['art']==1 || $note=='press' || $note=='opencalls'){
 }else{
 	$new=1;
 }
+$new=0;
 
 date_default_timezone_set('Europe/Athens');
 
@@ -172,20 +173,19 @@ if($note=='stegi'){
 		}
 		echo '<br /></figure>';
 	}
-	if($note=='press'){
+	if ($note == 'press') {
 		$new_text=$this->item->introtext;
-	}else{
-		if($new==0){
-			if($this->item->fulltext==''){
-				$new_text=strip_tags($this->item->introtext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
+	} else {
+		if ($new == 0) {
+			if ($this->item->fulltext == '') {
+				$new_text = strip_tags($this->item->introtext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
 			}else{
-				$new_text=strip_tags($this->item->fulltext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
+				$new_text = strip_tags($this->item->fulltext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
 			}
-			//$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $text);
-		}elseif($note!=''){
-			$new_text=preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);
-		}else{
-			$new_text=$this->item->introtext;
+		} elseif($note != '') {
+			$new_text = preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);
+		} else {
+			$new_text = $this->item->text;
 		}
 	}
 ?>

@@ -618,6 +618,7 @@ h4.alert-heading{
 .chart{
     background-color:#FFF;
     margin-bottom:0px;
+    margin-top: 0px;
 }
 .chart--1 {
     background-color: #ececec;
@@ -641,11 +642,11 @@ h4.alert-heading{
 .alert-danger {
   background-color: transparent;
 }
+*/
 
-
-.gallery--charts .chart{
-	background-color:transparent;
-}*/
+.gallery--charts {
+	margin-top: 0px;
+}
 
 .categories{
     max-width:138px;

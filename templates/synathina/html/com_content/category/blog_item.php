@@ -157,28 +157,25 @@ if($note=='synathina'){
 	</div>
 <?php
 /*-----END OF OPEN CALLS TEMPLATE-----*/
-}else{
+} else {
 	//get di images
 	$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC LIMIT 1";
 	$db->setQuery($query);
 	$imgs = $db->loadObjectList();
 ?>
-
-<article>
-	 <figure class="media-img">
-<?php
-	foreach($imgs as $img){
-		echo '<a href="'. $link .'"><i class="fill" style="padding-bottom: 33.666667%; background-position: '.(@$attribs->news_image==''?'center':@$attribs->news_image).' center; background-image:url('.JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.')"></i></a>';
-	}
-?>
-			<!--<i class="fill" style="background-image:url(<?php echo $images->image_intro; ?>)"></i>-->
-	 </figure>
-	 <div class="media">
-			<div class="media-left">
-				 <time><?php echo JHTML::_('date', $this->item->created, 'd M Y');?></time>
+	<div class="media">
+		<div class="media-left badge-item" >
+<?php foreach ($imgs as $img) { ?>
+			<div class="badge-image">
+				<a href="<?php echo $link; ?>">
+					<img class="results-img-width" src="<?php echo JURI::base().'images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename; ?>" alt="<?php echo $this->item->title; ?>" />
+				</a>
 			</div>
-			<div class="media-body">
-				 <h3 class="media-title"><a href="<?php echo $link; ?>" style="color: #5d5d5d;font-style: normal;"><?php echo $this->item->title; ?><br><?php echo $attribs->news_subtitle; ?></a></h3>
+<?php } ?>
+		</div>
+		 <div class="media-body">
+				<h3 class="media-title"><a href="<?php echo $link; ?>"><?php echo $this->item->title; ?></a></h3>
+				<time><?php echo JHTML::_('date', $this->item->created, 'd M Y');?></time>
 <?php
 	if($this->item->introtext==''){
 		$newtext=strip_tags($this->item->fulltext,'<strong><a>');
@@ -187,13 +184,16 @@ if($note=='synathina'){
 	}
 ?>
 				 <p>
-						<?php echo str_replace('<a ','<a target="_blank" ',$newtext); ?>
-						<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>
+					<?php echo str_replace('<a ','<a target="_blank" ',$newtext); ?>
+					<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>
 				 </p>
-			</div>
-	 </div>
-</article>
+		 </div>
+	</div>
 <?php
+	if ($this->item->counter % 2 == 0) {
+		echo '<div class="articles_by_two">&nbsp;</div>';
+	}
+	$this->item->counter++;
 }
 ?>
 <?php //echo $this->item->event->afterDisplayContent; ?>
