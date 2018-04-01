@@ -174,50 +174,6 @@ function ordinal_suffix($num){
 			echo JModuleHelper::renderModule($toolkits_module);
 		}
 ?>
-   <h3 class="gallery-title"><?php echo JText::_('COM_ACTIONS_BEST_PRACTICES'); ?></h3>
-   <div class="module module--synathina more_actions">
-      <div class="gallery gallery--singlerow gallery--filter" rel="js-start-gallery">
-<?php
-	$bestpractices=$this->bestpractices;
-	$a=1;
-	require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
-	foreach($bestpractices as $all_action){
-		//$link=JRoute::_('index.php?option=com_content&view=article&id='.$all_action->id.':'.$all_action->alias.'&art=1');
-		$all_action->slug    = $all_action->id . ':' . $all_action->alias;
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($all_action->slug, $all_action->catid, $all_action->language).'&art=1');
-		//get di images
-		$query = "SELECT * FROM #__di_images WHERE object_id='".$all_action->id."' ORDER BY ordering ASC";
-		$db->setQuery($query);
-		$imgs = $db->loadObjectList();
-		foreach($imgs as $img){
-			$image='images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename;
-			if($a==1){
-				list($width, $height) = @getimagesize($image);
-				//192 155
-				if($width>$height){
-					$max_height='max-height:310px;';
-					$bg_height='auto';
-					$bg_width='100%';
-				}else{
-					$max_height='max-height:155px;';
-					$max_width='max-width:392px;';
-					$bg_width='auto';
-					$bg_height='100%';
-				}
-			}
-			$a++;
-		}
-		echo '<div class="gallery-item-2" style="position:relative">
-						<a href="'.$link.'" class="fill" style="background-color:#FFF; background-size: '.@$bg_width.' '.@$bg_height.'; background-position: center center;'.@$max_width.@$max_height.';background-image:url(\''.$image.'\')"></a>';
-    echo '  <div class="caption">
-							<a href="'.$link.'"><span style="margin-top:0px" class="caption-title">'.stripslashes($all_action->title).'</span></a>
-							<em class="caption-italic">'.JText::_('COM_ACTIONS_BY').' '.stripslashes($all_action->tname).'</em>
-						 </div>
-					</div>';
-	}
-?>
-      </div>
-   </div>
 </div>
 </form>
 

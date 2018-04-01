@@ -142,8 +142,8 @@ if($note=='synathina'){
 	if($this->item->introtext == ''){
 		$newtext = strip_tags($this->item->fulltext, '<strong><a><em>');
 	} else {
-		if ($note == 'opencalls') {
-			$newtext = strip_tags($this->item->introtext);
+		if ($note == 'opencalls' || $note == 'bestpractices') {
+			$newtext = strip_tags($this->item->introtext, '<br>');
 		} else {
 			$newtext = strip_tags($this->item->introtext, '<strong><a><em>');
 		}
@@ -155,7 +155,7 @@ if($note=='synathina'){
 		echo '<div class="thumbnail"><time>Deadline: '. @JHTML::_('date', $attribs1->opencall_date, 'd/m/Y') .'</time></div>';
 	}
 ?>
-				<p <?php echo ($note == 'opencalls' ? 'style="max-height:208px; overflow:hidden;"' : ''); ?>>
+				<p <?php echo ($note == 'opencalls' || $note == 'bestpractices' ? 'style="max-height:208px; overflow:hidden;"' : ''); ?>>
 					<?php echo str_replace('<a ','<a target="_blank" ',$newtext); ?>
 				</p>
 				<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>

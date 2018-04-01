@@ -162,7 +162,11 @@ if (count($imgs)>0) {
 		$new_text = $this->item->introtext;
 	} else {
     	if ($note != '') {
-			$new_text = preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);
+    		if ($this->item->fulltext == '') {
+				$new_text = preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->introtext);
+			} else {
+				$new_text = preg_replace('#\s*\[caption[^]]*\].*?\[/caption\]\s*#is', '', $this->item->fulltext);
+			}
 		} else {
 			if ($this->item->fulltext == '') {
 				$new_text = strip_tags($this->item->introtext,'<strong><a><br><br /><br/><p><img><ul><li><i><u><em>');
