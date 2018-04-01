@@ -116,7 +116,7 @@ if($note=='synathina'){
 <?php
 /*-----END OF EU TEMPLATE-----*/
 /*-----START OF OPEN CALLS TEMPLATE-----*/
-}elseif($note=='opencalls'){
+}elseif($note=='opencalls1'){
 		$attribs1  = json_decode($this->item->attribs);
 ?>
 	<div class="thumbnail-list__item">
@@ -179,6 +179,9 @@ if($note=='synathina'){
 <?php
 	if($this->item->introtext==''){
 		$newtext=strip_tags($this->item->fulltext,'<strong><a>');
+		if ($note == 'opencalls') {
+
+		}
 	}else{
 		$newtext=strip_tags($this->item->introtext,'<strong><a>');
 	}

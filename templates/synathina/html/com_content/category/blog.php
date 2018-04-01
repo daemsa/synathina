@@ -141,7 +141,7 @@ if ($note == 'synathina') {
 </div>
 <?php
 /*-----END OF EU TEMPLATE-----*/
-}elseif($note=='opencalls'){
+}elseif($note=='opencalls1'){
 
 ?>
 <div class="l-news l-news--list opencalls">
