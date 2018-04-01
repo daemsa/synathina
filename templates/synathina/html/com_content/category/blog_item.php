@@ -95,7 +95,7 @@ if($note=='synathina'){
 
 <?php
 /*-----END OF SYNATHINA TEMPLATE-----*/
-}elseif($note=='teams'){
+} elseif ($note == 'teams' || $note == 'supporters') {
 /*---------TEAMS TEMPLATE--------*/
 	echo '<div class="module-wrapper">
 					<h3 class="module-title">'.$this->item->title.'</h3>

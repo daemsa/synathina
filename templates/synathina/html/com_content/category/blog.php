@@ -109,7 +109,7 @@ if ($note == 'synathina') {
 
 <?php
 /*-----END OF SYNATHINA TEMPLATE-----*/
-}elseif($note=='teams'){
+}elseif($note=='teams' || $note=='supporters'){
 /*---------TEAMS TEMPLATE--------*/
 	$team_modules=JModuleHelper::getModules('teams');
 	echo '<div class="l-teams l-teams--listing">
