@@ -115,48 +115,6 @@ if($note=='synathina'){
 	 </div>
 <?php
 /*-----END OF EU TEMPLATE-----*/
-/*-----START OF OPEN CALLS TEMPLATE-----*/
-}elseif($note=='opencalls1'){
-		$attribs1  = json_decode($this->item->attribs);
-?>
-	<div class="thumbnail-list__item">
-		 <article class="thumbnail">
-<?php
-	if(@$attribs1->article_video!=''){
-		echo '<div class="module-embed">
-						<iframe width="560" height="315" src="https://www.youtube.com/embed/'.youtubeID($attribs1->article_video).'" frameborder="0" allowfullscreen></iframe>
-					</div>';
-	}else{
-		//get di images
-		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC";
-		$db->setQuery($query);
-		$imgs = $db->loadObjectList();
-		$i=0;
-		foreach($imgs as $img){
-			if($i==0){
-				list($width, $height) = @getimagesize('images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename);
-				//style="height:'.($height<310?$height.'px; margin-bottom:'.ceil(310-$height).'px':'310px').'"
-				echo '<a href="'.$link.'"><img src="images/di/'.$img->object_id.'_'.$img->object_image_id.'_'.$img->filename.'" class="img-responsive" style="max-height:310px;"  /></a>';
-			}
-			if(count($imgs)==0){
-				echo '<a href="'.$link.'"><img src="http://placehold.it/511x310" class="img-responsive" style="height:310px" /></a>';
-			}
-			$i++;
-		}
-	}
-?>
-				<div class="caption">
-					 <h3><a style="color:#5d5d5d" href="<?php echo $link; ?>"><?php echo $this->item->title; ?></a><?=($isroot==1&&$this->item->state==0?' <span style="color:red;">ανενεργό</span>':'')?></h3>
-					 <time>Deadline: <?php echo @JHTML::_('date', $attribs1->opencall_date, 'd/m/Y');?></time>
-					 <p>
-						<p style="max-height:208px; overflow:hidden;"><?php echo str_replace('<a ','<a target="_blank" ',strip_tags(($this->item->introtext==''?$this->item->fulltext:$this->item->introtext),'<br/><br><strong><a><br />')); ?></p>
-						<a class="caption-more" href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>
-					 </p>
-				</div>
-		 </article>
-	</div>
-<?php
-/*-----END OF OPEN CALLS TEMPLATE-----*/
 } else {
 	//get di images
 	$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC LIMIT 1";
@@ -175,21 +133,32 @@ if($note=='synathina'){
 		</div>
 		 <div class="media-body">
 				<h3 class="media-title"><a href="<?php echo $link; ?>"><?php echo $this->item->title; ?></a></h3>
-				<time><?php echo JHTML::_('date', $this->item->created, 'd M Y');?></time>
 <?php
-	if($this->item->introtext==''){
-		$newtext=strip_tags($this->item->fulltext,'<strong><a>');
-		if ($note == 'opencalls') {
-
-		}
-	}else{
-		$newtext=strip_tags($this->item->introtext,'<strong><a>');
+	if ($note != 'opencalls') {
+		echo '<time>'. @JHTML::_('date', $this->item->created, 'd M Y') .'</time>';
 	}
 ?>
-				 <p>
+<?php
+	if($this->item->introtext == ''){
+		$newtext = strip_tags($this->item->fulltext, '<strong><a><em>');
+	} else {
+		if ($note == 'opencalls') {
+			$newtext = strip_tags($this->item->introtext);
+		} else {
+			$newtext = strip_tags($this->item->introtext, '<strong><a><em>');
+		}
+	}
+?>
+<?php
+	if ($note == 'opencalls') {
+		$attribs1  = json_decode($this->item->attribs);
+		echo '<div class="thumbnail"><time>Deadline: '. @JHTML::_('date', $attribs1->opencall_date, 'd/m/Y') .'</time></div>';
+	}
+?>
+				<p <?php echo ($note == 'opencalls' ? 'style="max-height:208px; overflow:hidden;"' : ''); ?>>
 					<?php echo str_replace('<a ','<a target="_blank" ',$newtext); ?>
-					<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>
-				 </p>
+				</p>
+				<a href="<?php echo $link; ?>"><?php echo JText::_('COM_CONTENT_FEED_READMORE'); ?></a>
 		 </div>
 	</div>
 <?php
