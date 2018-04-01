@@ -154,18 +154,6 @@ if ($note == 'synathina') {
 		<h2 class="thumbnail-list__title"><?php echo $this->category->title; ?></h2>
 <?php
 	$i=1;
-	/*$new_Lead_items = new ArrayObject();
-	foreach ($this->lead_items as $key => &$item) :
-		$attribs  = json_decode($item->attribs);
-		$item->opencall_date=$attribs->opencall_date;
-		$new_Lead_items->append($item);
-	endforeach;
-	$new_Lead_items1 = $new_Lead_items->getArrayCopy();
-	//print_r($new_Lead_items1);
-	usort($new_Lead_items1, function($a, $b)
-	{
-			return strcmp($b->opencall_date, $a->opencall_date);
-	});	*/
 	foreach ($this->lead_items as $key => &$item) :
 		//print_r($item);
 		if($i<9){
@@ -192,21 +180,24 @@ if ($note == 'synathina') {
 	</div>
 </div>
 <?php
-}else{
+} else {
 
 ?>
-<div class="l-news l-news--list">
+<div class="l-draseis">
 <?php
 		foreach ($breadcumbs_modules as $breadcumbs_module){
 			echo JModuleHelper::renderModule($breadcumbs_module);
 		}
 ?>
 
-	<div class="latest-articles odd-even">
+	<div class="filter-results">
 <?php
+	$c = 1;
 	foreach ($this->intro_items as $key => &$item) :
 		$this->item = & $item;
+		$this->item->counter = $c;
 		echo $this->loadTemplate('item');
+		$c++;
 	endforeach;
 ?>
 	</div>
