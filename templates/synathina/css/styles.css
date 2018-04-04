@@ -5867,7 +5867,7 @@ button {
   margin-top: 30px; }
   .nav-menu .menu li + li {
     margin-top: 5px; }
-  .nav-menu .menu li.selected a, .nav-menu .menu li:focus a, .nav-menu .menu li:hover a {
+  .nav-menu .menu li.selected a, .nav-menu .menu li:focus a, .nav-menu .menu li a:hover {
     color: #05c1df; }
   .nav-menu a {
     font-size: 16px;
