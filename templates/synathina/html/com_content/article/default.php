@@ -100,8 +100,8 @@ if (count($imgs)>0) {
 	<article class="c-article">
 		<h1 style="margin-bottom:20px;"><?php echo $this->escape($this->item->title); ?></h1>
 <?php
-		echo '<figure role="complementary">';
 		if ($note == 'opencalls') {
+			echo '<figure role="complementary">';
 			//activities
 			$query="SELECT a.*
 							FROM #__team_activities AS a
@@ -137,12 +137,14 @@ if (count($imgs)>0) {
 			if (count($activities_array) > 0) {
 				echo '</ul></div>';
 			}
+			echo '<br /></figure>';
 		}
 		//get di images
 		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC";
 		$db->setQuery($query);
 		$imgs = $db->loadObjectList();
 		if (count($imgs)>0) {
+			echo '<figure role="complementary">';
 			foreach ($imgs as $img) {
 				if ($img->link != '') {
 					echo '<a href="javascript:void(null)" class="figure-item video-container">
@@ -155,11 +157,11 @@ if (count($imgs)>0) {
 								</a>';
 				}
 			}
-
+			echo '<br /></figure>';
 		}
-		echo '<br /></figure>';
-	if ($note == 'press') {
-		$new_text = $this->item->introtext;
+	if ($note == 'press' || $note == 'stats') {
+		$new_text = $this->item->text;
+		echo $this->item->event->afterDisplayContent;
 	} else {
     	if ($note != '') {
     		if ($this->item->fulltext == '') {
@@ -240,5 +242,4 @@ $doc->setMetaData( 'og:title', $this->escape($this->item->title) );
 $doc->setMetaData( 'og:description', addslashes(strip_tags($note=='stegi'?$this->item->introtext:$new_text)) );
 $doc->setMetaData( 'og:image', $article_image );
 ?>
-
 
