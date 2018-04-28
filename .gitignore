@@ -11,3 +11,4 @@ error_log
 templates/synathina/package.json
 templates/synathina/node_modules
 templates/synathina/Gruntfile.js
+templates/.sass-cache/
