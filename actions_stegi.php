@@ -68,7 +68,7 @@ $date_now=date('Y-m-d').' 00:00:00';
 //local actions
 $fields = ['a.*', 'aa.address AS aaddress', 'aa.activities AS aactivities', 'aa.action_date_start AS aaction_date_start', 'aa.action_date_end AS aaction_date_end', 'aa.lat AS alat', 'aa.lng AS alng'];
 $where = "aa.action_date_end>='".$date_now."' AND a.published='1' AND aa.stegi_use=1 AND a.action_id=0";
-$order_by = "aa.lat DESC";
+$order_by = "aa.action_date_start ASC";
 $activityClass = new RemotedbActivity();
 $actions = $activityClass->getActivitiesSubactivities($fields, $where, $order_by);
 
