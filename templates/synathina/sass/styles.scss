@@ -1,0 +1,18 @@
+// FRAMEWORK
+@import '$core/core';
+@import '_config';
+// MIXINS
+@import 'mixins';
+// SMACSS
+	// States
+   @import 'state';
+	// Base
+	@import 'base';
+	// Layout
+   @import 'layout/$_imports';
+	// Component
+	@import 'components/$_imports';
+	// Module
+	@import 'modules/$_imports';
+	// Typography
+   @import 'typography';
