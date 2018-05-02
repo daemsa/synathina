@@ -1,5 +1,6 @@
 {
     "env": {
+        "node": true,
         "browser": true,
         "commonjs": true,
         "es6": true
@@ -8,15 +9,18 @@
     "parserOptions": {
         "sourceType": "module"
     },
+    "overrides": [{
+        "files": ["**/**webpack.config.js"],
+        "rules": {
+            "node/no-unpublished-require": 0,
+            "node/no-missing-require": 0
+        }
+    }],
     "rules": {
         "indent": [
             "error",
             4
         ],
-        // "linebreak-style": [
-        //     "error",
-        //     "unix"
-        // ],
         "quotes": [
             "error",
             "single"
