@@ -15,3 +15,6 @@ templates/.sass-cache/
 
 # node modules
 node_modules
+
+# dist folder (bundle folder)
+dist
