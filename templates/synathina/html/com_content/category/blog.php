@@ -36,7 +36,7 @@ function teams_count2($year)
 	$query = "SELECT COUNT(u.id)	FROM #__users AS u
 				INNER JOIN #__teams AS t
 				ON t.user_id=u.id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
+				WHERE u.block=0 AND u.activation='' AND t.hidden=0 AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
 	$db->setQuery($query);
 	$db->execute();
 
