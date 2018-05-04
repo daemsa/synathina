@@ -17,4 +17,4 @@ templates/.sass-cache/
 node_modules
 
 # dist folder (bundle folder)
-dist
+templates/synathina/dist
