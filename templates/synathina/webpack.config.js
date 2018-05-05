@@ -2,12 +2,13 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
+
 const buildPath = path.resolve(__dirname, 'dist');
 const extractSass = new ExtractTextPlugin({
     publicPath:  buildPath,
     filename: 'styles.css'
 });
-const cssnano = require('cssnano');
 const env = process.env.NODE_ENV;
 const isDev = (env !== 'production');
 const plugins = [
