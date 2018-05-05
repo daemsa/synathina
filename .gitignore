@@ -5,6 +5,8 @@
 .DS_Store
 error_log
 
+images/*
+
 templates/synathina/node_modules
 templates/synathina/Gruntfile.js
 templates/.sass-cache/
