@@ -222,7 +222,7 @@ $subactions=$this->subactions;
 				<a href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo $action->name;?>&amp;p[summary]=<?php echo addslashes(strip_tags($desc));?>&amp;p[url]=<?php echo JUri::current();?>&amp;p[images][0]=<?php echo 'http://www.synathina.gr/images/actions/main_images/'.$action->image; ?>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600'); return false;">
 					<img src="<?php echo JURI::base(); ?>images/template/facebook.png" alt="facebook" />
 				</a>&nbsp;
-				<a href="http://twitter.com/home?status=<?php echo clean($action->name); ?> <?php echo urlencode(JUri::current());?>"  onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;">
+				<a href="http://twitter.com/home?status=<?php echo clean(str_replace('|', '', $action->name)); ?> <?php echo urlencode(JUri::current());?>"  onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;">
 					<img src="<?php echo JURI::base(); ?>images/template/tweet.png" alt="twitter" />
 				</a>
 			</div>

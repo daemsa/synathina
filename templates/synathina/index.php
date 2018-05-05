@@ -94,11 +94,11 @@ $note = $db->loadResult();
     <jdoc:include type="head" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/styles.css">
-		<link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/overwrite.css">
-		<link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/jquery-ui-timepicker-addon.css">
-		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
-		<link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/jquery.tokenize.css">
+    <link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/dist/styles.css">
+    <link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/overwrite.css">
+    <link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/css/jquery.tokenize.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,700&subset=latin,greek' rel='stylesheet' type='text/css'>
 	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<?php unset($this->_scripts[$this->baseurl.'/templates/'.$this->template.'/js/template.js']); ?>
