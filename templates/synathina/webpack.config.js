@@ -2,7 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const buildPath = path.resolve(__dirname, 'templates/synathina/dist');
+const buildPath = path.resolve(__dirname, 'dist');
 const extractSass = new ExtractTextPlugin({
     publicPath:  buildPath,
     filename: 'styles.css'
@@ -34,9 +34,10 @@ if (!isDev) {
 
 const config = {
     devtool: 'source-map',
+    mode: isDev ? 'development' : 'production',
     entry: {
-        app: './templates/synathina/js/app/app.js',
-        styles: './templates/synathina/sass/styles.scss'
+        app: './js/app/app.js',
+        styles: './sass/styles.scss'
     },
     output: {
         path: buildPath,
