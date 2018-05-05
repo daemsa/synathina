@@ -1,20 +1,15 @@
 /configuration.php
 .idea/
 /logs/
-images/*
 /attachments/
 .DS_Store
-/images_/
-/old_before_accmr/
-/old_before_accmr_unused/
 error_log
-templates/synathina/package.json
+
+images/*
+
 templates/synathina/node_modules
 templates/synathina/Gruntfile.js
 templates/.sass-cache/
-
-# node modules
-node_modules
 
 # dist folder (bundle folder)
 templates/synathina/dist
