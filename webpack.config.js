@@ -42,6 +42,9 @@ const config = {
         path: buildPath,
         filename: '[name].js'
     },
+    watchOptions: {
+        poll: 1000
+    },
     module: {
         rules: [
             {
