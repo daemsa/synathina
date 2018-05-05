@@ -8,6 +8,7 @@ You will need to have [npm](https://www.npmjs.com) and [node.js](https://nodejs.
 
 ### Run
 ```
+cd templates/synathina
 npm install
 ```
 (this might take a little while on the 1st run since it will take care of all the dependencies for you)
