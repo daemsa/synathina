@@ -82,13 +82,13 @@ const config = {
                     'file-loader',
                     {
                         loader: 'image-webpack-loader',
-                        options: {
+                        options: !isDev ? {
                             bypassOnDebug: true,
                             pngquant: {
                                 quality: '65-90',
                                 speed: 4
                             }
-                        },
+                        } : {},
                     },
                 ],
             },
