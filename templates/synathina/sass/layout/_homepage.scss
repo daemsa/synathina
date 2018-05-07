@@ -2,6 +2,7 @@
    width: 100%;
    height: 100%;
    overflow: hidden;
+   position: relative;
 }
 
 .l-homepage {
@@ -14,6 +15,13 @@
       position : absolute;
       right: calc(5% + 40px) !important;
       bottom: 5% !important
+   }
+
+   .categories {
+       top: 20px;
+       left: 20px;
+       max-width:138px;
+       position: absolute;
    }
 }
 .clip-circle {

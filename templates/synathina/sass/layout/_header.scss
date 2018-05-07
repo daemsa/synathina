@@ -1,4 +1,168 @@
 .l-header {
-   overflow: hidden;
-   width: 100%;
+    @include display-grid;
+    padding-right: $grid-gutter-width / 2;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr;
+    justify-content: space-between;
+    align-content: center;
+    @media(min-width: $screen-md) {
+        grid-template-areas: "logo nav actions";
+    }
+    @media(min-width: $screen-md) and (max-width: $screen-lg) {
+        .menu a {
+            font-size: 14px;
+        }
+    }
+    // mobile
+    @media (max-width: $screen-md) {
+        // grid-gap: 15px;
+        grid-template-rows: minmax(30px, 80px) 1fr;
+        grid-template-columns: auto 1fr minmax(40px, auto);
+        grid-template-areas: "logo actions hamburger"
+                             "nav nav nav";
+        padding-right: 0;
+    }
+
+    @media (max-width: $screen-xs) {
+        // grid-gap: 15px;
+        grid-template-rows: minmax(30px, 50px) 1fr;
+    }
 }
+
+.l-header__logo {
+    padding-top: $grid-gutter-width / 2;
+    grid-area: logo;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    @media (max-width: $screen-md) {
+        padding-top: 0;
+    }
+}
+
+.l-header__nav {
+    padding-top: $grid-gutter-width / 2;
+    grid-area: nav;
+    display: grid;
+    grid-row: span 2;
+    grid-area: nav;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:  "logonew"
+                          "menu";
+    @media (max-width: $screen-md) {
+        grid-template-rows: 1fr;
+        grid-template-areas: "logonew";
+        padding-top: 0;
+    }
+    align-content: center;
+    justify-content: end;
+    height: 100%;
+
+    &__logo {
+        grid-area: logonew;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media (max-width: $screen-md) {
+            max-width: 300px;
+            place-self: center;
+        }
+
+        @media (max-width: $screen-xs) {
+            max-width: 260px;
+            place-self: center;
+        }
+    }
+
+    &__menu {
+        margin-top: $grid-gutter-width / 2;
+        grid-area: menu;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media (max-width: $screen-md) {
+            display: none;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.l-header__actions {
+    padding-top: $grid-gutter-width / 2;
+    grid-area: actions;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    align-content: space-between;
+    justify-content: space-between;
+
+    @media (min-width: $screen-xs) and (max-width: $screen-md) {
+        justify-content: end;
+        flex-direction: column;
+        li {
+            line-height: 20px;
+        }
+        padding-top: 10px;
+        .i18n-actions a, .account-actions a {
+            line-height: 24px;
+        }
+    }
+
+    @media (max-width: $screen-xs) {
+        justify-content: end;
+        flex-direction: column;
+        li {
+            line-height: 13px;
+        }
+        padding-top: 10px;
+        .i18n-actions a, .account-actions a {
+            font-size: 11px;
+            line-height: 11px;
+        }
+    }
+
+    @media (max-width: $screen-xs) {
+        padding-top: 10px;
+    }
+
+    .synathina-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        @media (max-width: $screen-md) {
+            display: none;
+            .i18n-actions a, .account-actions a {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.l-header__hambuger {
+    grid-area: hamburger;
+    display: flex;
+    justify-content: center;
+    // mobile
+    @media (min-width: $screen-md) {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        position: relative;
+        top: 10px;
+        padding-right: 15px;
+    }
+}
+
+
