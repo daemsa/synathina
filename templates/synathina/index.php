@@ -144,19 +144,14 @@ $note = $db->loadResult();
             <div class="l-header__nav">
                 <a class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
                 <ul class="l-header__nav__menu menu menu--inline">
-                    <li><a href="#">Αρχική</a></li>
-                    <li><a href="http://#">συνΑθηνά</a></li>
-                    <li><a href="http://#">Νέα</a></li>
-                    <li><a href="http://#">Δράσεις</a></li>
-                    <li><a href="http://#">Ομάδες</a></li>
-                    <li><a href="http://#">Στέγη</a></li>
-                    <li><a href="http://#">Open Calls</a></li>
+                    <jdoc:include type="modules" name="mainmenu" style="none" />
                 </ul>
             </div>
             <div class="l-header__actions">
                 <ul class="i18n-actions">
                     <li><a>ελ</a></li>
                     <li><a>en</a></li>
+                    <!-- jdoc:include type="modules" name="localesmenu" style="none" /-->
                 </ul>
                 <ul class="account-actions">
                     <li><a>Είσοδος</a></li>
@@ -168,11 +163,11 @@ $note = $db->loadResult();
                 </ul>
             </div>
             <div class="l-header__hambuger">
-                <div class="hamburger hamburger--squeeze pull-right <?=($homepage&&!$mobile_detect->isMobile()?'is-active':'')?>" rel="js-toggle-menu">
+                <a class="hamburger hamburger--squeeze <?=($homepage&&!$mobile_detect->isMobile()?'is-active':'')?>" rel="js-toggle-menu">
                     <div class="hamburger-box ">
                         <div class="hamburger-inner"></div>
                     </div>
-                </div>
+                </a>
             </div>
         </header>
         <main style="background-color: #fff">
@@ -283,6 +278,41 @@ $note = $db->loadResult();
             <?php } ?>
         </main>
         <footer></footer>
+        <nav class="mobile-menu" rel="js-mobile-menu">
+            <ul class="mobile-menu__list menu">
+                <a class="mobile-menu-close" rel="js-mobile-menu-close"></a>
+                <li><a href="">Αρχική</a></li>
+                <li>
+                    <a>συνΑθηνά</a>
+                    <ul class="menu">
+                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
+                        <li><a href="http://#">Στατιστικά</a></li>
+                        <li><a href="http://#">Δίκτυο</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Αρχική</a></li>
+                <li><a href="">Αρχική</a></li>
+                <li>
+                    <a>συνΑθηνά</a>
+                    <ul class="menu">
+                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
+                        <li><a href="http://#">Στατιστικά</a></li>
+                        <li><a href="http://#">Δίκτυο</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Αρχική</a></li>
+                <li><a href="">Αρχική</a></li>
+                <li>
+                    <a>συνΑθηνά</a>
+                    <ul class="menu">
+                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
+                        <li><a href="http://#">Στατιστικά</a></li>
+                        <li><a href="http://#">Δίκτυο</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Αρχική</a></li>
+            </ul>
+        </nav>
     </div>
     <div class="module module--synathina module--popup mfp-hide" id="newsletter-message" style="margin: 0px auto;">
         <div class="module-skewed">
@@ -315,7 +345,6 @@ $note = $db->loadResult();
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/eventemitter2.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/_plugins.js"></script>
     <?php if($homepage) { ?>
-
         <!-- IF in home page load application source files and dependecies -->
         <!-- Application Dependecies-->
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/togeojson.js"></script>
@@ -324,9 +353,7 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dc.min.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/d3.slider.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/markerclusterer.js"></script>
-
         <script async defer  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
-
         <!-- Application -->
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/filter.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/ajax.js"></script>
@@ -339,7 +366,6 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/cross<?=$lang_code=='en'?'_en':''?>.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/slider.js"></script>
-
     <?php } else { ?>
         <!-- ELSE load web site source files and dependecies -->
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dev_menu.js"></script>
@@ -347,15 +373,13 @@ $note = $db->loadResult();
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.magnific-popup.min.js"></script>
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jscrollpane.js"></script>
-
-
-
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/main.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>
     <?php 	} ?>
 	<script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.tokenize.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/extra.js"></script>
+    <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/index.js"></script>
     <script>
         $body = $("body");
 
