@@ -38,6 +38,7 @@ const config = {
     mode: isDev ? 'development' : 'production',
     entry: {
         app: './js/app/app.js',
+        site: './js/site/index.js',
         styles: './sass/styles.scss'
     },
     output: {
