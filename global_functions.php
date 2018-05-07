@@ -54,6 +54,9 @@ function synathina_email($type, $parameters, $emails, $attachment)
 		} else {
 			$body.= $custom_email->body;
 		}
+		$body .= '	<div style="font-size: 10px;">
+						<p>Παρακαλούμε μην απαντήσετε σε αυτό το αυτοματοποιημένο email. Για να επικοινωνήσετε με την ομάδα του συνΑθηνά, μπορείτε να στείλετε email στο synathina@athens.gr ή στο synathinaplatform@gmail.com.</p>
+					</div>';
 		$body .= '</div></div></body>';
 
 		if ($config->get('dev_mode')) {

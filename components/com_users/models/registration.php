@@ -768,7 +768,9 @@ class UsersModelRegistration extends JModelForm
 									<div style="background-color:#FFFFFF;margin:0px auto; font-family:Arial;color:#5d5d5d;">
 										<div style="margin:0px auto; width:640px; text-align:left; background-color:#ebebeb; font-family:Arial; padding:20px;color:#5d5d5d;">
 										<div style="text-align:right;"><img src="'.$config->get( 'live_site' ).'/images/template/synathina_logo.jpg" alt="συνΑθηνά" /></div>
-										<div style="font-size: 18px;font-weight:bold; color:#05c0de;padding-bottom: 10px;">'.JText::_('COM_USERS_ACTIVATION_TITLE').'</div>'.$emailBody.'</div></div></body>';
+										<div style="font-size: 18px;font-weight:bold; color:#05c0de;padding-bottom: 10px;">'.JText::_('COM_USERS_ACTIVATION_TITLE').'</div>'.$emailBody;
+		$emailBody_new .= JText::_('COM_EMAIL_NOTE');
+		$emailBody_new .= '</div></div></body>';
 		if ($config->get('dev_mode') == 1) {
 			$data['email'] = $config->get('dev_email');
 		}
