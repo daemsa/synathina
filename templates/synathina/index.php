@@ -128,7 +128,8 @@ $note = $db->loadResult();
         ga('send', 'pageview');
     </script>
 	<!-- End Google Analytics -->
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/dist/site.js"></script>
 </head>
 
 <body>
@@ -266,7 +267,7 @@ $note = $db->loadResult();
                 </div>
                 <div class="l-homepage__featured" rel="js-drawer">
                     <div class="is-relative">
-                        <div class="c-featured">
+                        <div class="c-featured" rel="js-mobile-gallery">
                             <div class="featured-item c-featured__super featured-item--with-filter" style="background-image: url(/images/synathina_featured_main.jpg)">
                                 <div>
                                     <h3 class="featured-item-title">
@@ -418,6 +419,7 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dc.min.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/d3.slider.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/markerclusterer.js"></script>
+        <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/slick.min.js"></script>
         <script async defer  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
         <!-- Application -->
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/filter.js"></script>
@@ -431,6 +433,7 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/cross<?=$lang_code=='en'?'_en':''?>.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/slider.js"></script>
+
     <?php } else { ?>
         <!-- ELSE load web site source files and dependecies -->
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dev_menu.js"></script>
@@ -444,7 +447,7 @@ $note = $db->loadResult();
 	<script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/jquery.tokenize.js"></script>
     <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/extra.js"></script>
-    <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/site/index.js"></script>
+
     <script>
         $body = $("body");
 
