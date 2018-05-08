@@ -138,7 +138,6 @@
 }
 
 .nav-social-links {
-   margin-top: 35px;
    a {
       margin-top: 25px;
       color: #bdbdbd;
@@ -166,27 +165,23 @@
 }
 
 .nav-site-com {
-   .menu {
-      a {
-         color: #bebebe;
-         font-size: 13px;
-         font-weight: bold;
-         & + a {
-            margin-top: 10px;
-         }
-      }
-   }
-}
+    @extend .i18n-actions;
+    @include inline-list($navLinksColor);
+    li {
+        margin-right: $grid-gutter-width / 2;
+    }
+    a:hover {
+        color: $navLinksColorSelected;
+    }
+ }
+
 .nav-extra-links {
-   margin-top: 30px;
+    a {
+        display: inline-block;
+    }
    img {
       @include img-responsive;
-   }
-   a {
-      display: block;
-      & + a {
-         margin-top: 20px;
-      }
+      margin-top: 0;
    }
 }
 

@@ -15,7 +15,6 @@
     }
     // mobile
     @media (max-width: $screen-md) {
-        // grid-gap: 15px;
         grid-template-rows: minmax(30px, 80px) 1fr;
         grid-template-columns: auto 1fr minmax(40px, auto);
         grid-template-areas: "logo actions hamburger"
@@ -24,7 +23,6 @@
     }
 
     @media (max-width: $screen-xs) {
-        // grid-gap: 15px;
         grid-template-rows: minmax(30px, 50px) 1fr;
     }
 }

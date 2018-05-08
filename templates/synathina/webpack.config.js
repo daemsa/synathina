@@ -55,6 +55,8 @@ const config = {
                     use: [{
                         loader: 'css-loader?sourceMap'
                     }, {
+                        loader: 'resolve-url-loader'
+                    }, {
                         loader: 'sass-loader?sourceMap',
                         options: {
                             sourceMap: true,
@@ -95,9 +97,9 @@ const config = {
                     },
                 ],
             },
-            { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
-            { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
+            // { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
+            // { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
+            // { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
             { test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/, loader: 'file-loader?url-loader?limit=100000' }
         ]
     },

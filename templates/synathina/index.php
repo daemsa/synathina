@@ -144,9 +144,7 @@ $note = $db->loadResult();
             </div>
             <div class="l-header__nav">
                 <a class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
-                <ul class="l-header__nav__menu menu menu--inline">
-                    <jdoc:include type="modules" name="mainmenu" style="none" />
-                </ul>
+                <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
             </div>
             <div class="l-header__actions">
                 <ul class="i18n-actions">
@@ -171,7 +169,10 @@ $note = $db->loadResult();
                 </a>
             </div>
         </header>
-        <main style="background-color: #fff">
+        <main style="background-color: #fff; position:relative;" class="l-main">
+            <div class="browser-message browser-message--open" rel="js-browser-message">
+                <p>😢 Λυπούμαστε, προς το παρών δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
+            </div>
             <?php if($homepage){ ?>
             <div class="l-homepage">
                 <div class="clip-circle"></div>
@@ -343,7 +344,27 @@ $note = $db->loadResult();
                 <br /><br />
             <?php } ?>
         </main>
-        <footer></footer>
+        <footer class="l-footer">
+            <div class="l-footer__sponsors nav-extra-links">
+                <a href="http://www.bloomberg.org/" target="_blank"><img src="/images/extra_links/bloomberg_img.png" alt="bloomberg img"></a>
+                <a href="http://mayorschallenge.bloomberg.org/" target="_blank"><img src="/images/extra_links/mayor_chalenge_img.png" alt="mayor chalenge img"></a>
+                <img src="/images/synathina_espa_logos_gr.png" width="100%" class="eu-logo">
+			</div>
+            <div class="l-footer__menus">
+                <ul class="menu nav-site-com">
+                    <li><a href="/el/eπικοινωνία.html">Eπικοινωνία</a></li>
+                    <li><a href="#newsletter-message" class="newsletter-tooltip">Newsletter</a></li>
+                    <li><a href="/el/βοήθεια.html">Βοήθεια</a></li>
+                </ul>
+                <div class="nav-social-links">
+                    <a href="https://www.facebook.com/SunAthina" target="_blank"><i class="fa fa-facebook"></i></a>
+                    <a href="https://twitter.com/synathina" target="_blank"><i class="fa fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/synathina" target="_blank"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/synathina" target="_blank"><i class="fa fa-linkedin"></i></a>
+                    <a href="https://www.youtube.com/channel/UCgA-jpbuZG4YMuQE5GGewZA" target="_blank"><i class="fa fa-youtube"></i></a>
+                </div>
+            </div>
+        </footer>
         <nav class="mobile-menu" rel="js-mobile-menu">
             <ul class="mobile-menu__list menu">
                 <a class="mobile-menu-close" rel="js-mobile-menu-close"></a>

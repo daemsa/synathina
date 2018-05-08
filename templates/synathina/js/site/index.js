@@ -1,4 +1,3 @@
-
 const _  = require('lodash');
 
 function SiteState () {
@@ -20,6 +19,7 @@ function SiteState () {
 (function(global) {
     const { document } = global;
     const stateInstance = new SiteState();
+    IEcheck(document);
 
     document.addEventListener('DOMContentLoaded', function() {
         mobileMenu(this);
@@ -40,6 +40,15 @@ function checkIfMobile () {
     }
 
     return false;
+}
+
+function IEcheck (context) {
+    if (navigator.userAgent.indexOf('MSIE')!==-1 || navigator.appVersion.indexOf('Trident/') > 0) {
+        var message = context.querySelector('[rel=js-browser-message]');
+        message.classList.add('browser-support--open');
+
+        return false;
+    }
 }
 
 function mobileMenu (context) {
@@ -83,7 +92,7 @@ function featuredSlider (window, state) {
         dots: true
     };
 
-    $(gallery).on('init', function(event, slick) {``
+    $(gallery).on('init', function(event, slick) {
         state.setState({sliderInitialized: true});
     });
 
@@ -102,6 +111,3 @@ function featuredSlider (window, state) {
     $(gallery).slick(options);
 }
 
-function updateSiteState(state, newState) {
-    return Object.assign({}, state, newState);
-}
