@@ -175,7 +175,7 @@ $note = $db->loadResult();
             <?php if($homepage){ ?>
             <div class="l-homepage">
                 <div class="clip-circle"></div>
-                <div id="map"></div>
+                <div id="map" class="synathina-map synathina-map--blur"></div>
                 <div class="bg"></div>
                 <div id="coords"></div>
                 <div class="cross" rel="js-cross">

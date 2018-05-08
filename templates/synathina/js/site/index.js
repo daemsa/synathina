@@ -63,11 +63,13 @@ function mobileMenu (context) {
 function featuredArticles (context) {
     const drawer = context.querySelector('[rel=js-drawer]');
     const toggleButton = context.querySelector('[rel=js-toggle-drawer]');
+    const map = context.querySelector('#map');
 
     if (!drawer || !toggleButton) return false;
 
     toggleButton.addEventListener('click', function() {
         drawer.classList.toggle('l-homepage__featured--up');
+        map.classList.toggle('synathina-map--blur');
     });
 }
 
