@@ -3,6 +3,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         mobileMenu(this);
+        featuredArticles(this);
     });
 })(window);
 
@@ -21,5 +22,16 @@ function mobileMenu (context) {
 
     closeButton.addEventListener('click', function() {
         menu.classList.remove('mobile-menu--active');
+    });
+}
+
+function featuredArticles (context) {
+    const drawer = context.querySelector('[rel=js-drawer]');
+    const toggleButton = context.querySelector('[rel=js-toggle-drawer]');
+
+    if (!drawer || !toggleButton) return false;
+
+    toggleButton.addEventListener('click', function() {
+        drawer.classList.toggle('l-homepage__featured--up');
     });
 }

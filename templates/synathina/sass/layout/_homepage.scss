@@ -24,6 +24,31 @@
        position: absolute;
    }
 }
+
+.l-homepage__featured {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 80px;
+    transform: translate3d(0, 0);
+    transform: translateY(0);
+    @include transition(transform 1s cubic-bezier(0.785, 0.135, 0.15, 0.86));
+
+    &--up {
+        transform: translateY(-100%);
+        .feature-toggler-label {
+            opacity: 0;
+            @include transition(opacity .225s ease);
+            @include transition-delay(1s);
+        }
+    }
+
+    .is-relative {
+        width: 100%;
+        height: 100%;
+    }
+}
 .clip-circle {
    -webkit-clip-path : circle(60px at center);
    clip-path: circle(60px at center);

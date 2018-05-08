@@ -1,0 +1,30 @@
+.c-featured {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "featured featured first second"
+                         "featured featured third fourth";
+    width: 100%;
+    height: 100%;
+
+    .c-featured__super {
+        grid-area: featured;
+        font-size: 16px;
+    }
+
+    .c-featured__first {
+        grid-area: first;
+    }
+
+    .c-featured__second {
+        grid-area: second;
+    }
+
+    .c-featured__third {
+        grid-area: third;
+    }
+
+    .c-featured__fourth {
+        grid-area: fourth;
+    }
+}

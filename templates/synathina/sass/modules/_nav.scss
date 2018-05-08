@@ -224,7 +224,7 @@
 .account-actions {
     @extend .i18n-actions;
     @extend .inline-list--separated;
-    @include inline-list($blue-ele, $blue-ele);
+    @include inline-list($navLinksColorSelected, navLinksColorSelected);
     li + li {
         margin-left: 0;
     }
