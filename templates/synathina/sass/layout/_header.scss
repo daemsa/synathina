@@ -5,6 +5,8 @@
     grid-template-rows: 1fr;
     justify-content: space-between;
     align-content: center;
+    padding-bottom: $grid-gutter-width / 2 ;
+
     @media(min-width: $screen-md) {
         grid-template-areas: "logo nav actions";
     }
