@@ -11,5 +11,7 @@ templates/synathina/node_modules
 templates/synathina/Gruntfile.js
 templates/.sass-cache/
 
+node_modules
+
 # dist folder (bundle folder)
 templates/synathina/dist
