@@ -74,6 +74,8 @@ const config = {
                     options: {
                         sourceMap: true,
                     },
+                },{
+                    loader: 'postcss-loader'
                 }, {
                     loader: 'resolve-url-loader'
                 }]
@@ -94,7 +96,6 @@ const config = {
                     },
                 ],
             },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?mimetype=application/vnd.ms-fontobject'},
             { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
             { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
