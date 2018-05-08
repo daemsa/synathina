@@ -8,7 +8,23 @@
                          "featured featured third fourth";
 
     text-shadow:1px 1.732px 4px rgba(0, 0, 0, 0.15);
+    @media (min-width: 1440px) {
+        .c-featured__super.featured-item {
+            font-size: 0.8vw;
+            & > div {
+                max-width: 50%;
+                padding: $grid-gutter-width / 2;
+            }
+        }
 
+        .featured-item:not(.c-featured__super) {
+            font-size: 0.55vw;
+            & > div {
+                max-width: 60%;
+                padding: $grid-gutter-width / 2;
+            }
+        }
+    }
     @media (min-width: $screen-lg) {
         grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-template-areas: "featured featured first second"
