@@ -25,6 +25,7 @@
    }
 
    .synathina-map {
+       transform: translateZ(0);
         -webkit-transition: 1s cubic-bezier(.19, 1, .22, 1) 0.4s;
         transition: 1s cubic-bezier(.19, 1, .22, 1) 0.4;
         will-change: transform;
