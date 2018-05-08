@@ -35,10 +35,11 @@
 
     &-cta {
         margin: $grid-gutter-width / 2 0 0 0;
+        cursor: pointer;
         text-align: right;
         display: block;
         font-size: 1.1em;
-        line-height: 1.125em;;
+        line-height: 1.14em;
         font-weight: bold;
         z-index: 1;
 
