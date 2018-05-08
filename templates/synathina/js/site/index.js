@@ -19,9 +19,10 @@ function SiteState () {
 (function(global) {
     const { document } = global;
     const stateInstance = new SiteState();
-    IEcheck(document);
+
 
     document.addEventListener('DOMContentLoaded', function() {
+        IEcheck(document);
         mobileMenu(this);
         featuredArticles(this);
         featuredSlider(global, stateInstance);
@@ -45,7 +46,8 @@ function checkIfMobile () {
 function IEcheck (context) {
     if (navigator.userAgent.indexOf('MSIE')!==-1 || navigator.appVersion.indexOf('Trident/') > 0) {
         var message = context.querySelector('[rel=js-browser-message]');
-        message.classList.add('browser-support--open');
+        if (!message) return false;
+        message.classList.add('browser-message--open');
 
         return false;
     }

@@ -170,7 +170,7 @@ $note = $db->loadResult();
             </div>
         </header>
         <main style="background-color: #fff; position:relative;" class="l-main">
-            <div class="browser-message browser-message--open" rel="js-browser-message">
+            <div class="browser-message" rel="js-browser-message">
                 <p>😢 Λυπούμαστε, προς το παρών δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
             </div>
             <?php if($homepage){ ?>
