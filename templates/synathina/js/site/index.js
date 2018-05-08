@@ -80,6 +80,7 @@ function featuredArticles (context) {
 
     toggleButton.addEventListener('click', function() {
         drawer.classList.toggle('l-homepage__featured--up');
+        EVT.emit('hide-cross');
         map.classList.toggle('synathina-map--blur');
     });
 }
