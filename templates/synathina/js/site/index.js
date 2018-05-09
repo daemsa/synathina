@@ -1,4 +1,5 @@
 const _  = require('lodash');
+const siblings = require('siblings');
 
 function SiteState () {
     this.state = {
@@ -26,6 +27,7 @@ function SiteState () {
         mobileMenu(this);
         featuredArticles(this);
         featuredSlider(global, stateInstance);
+        checkIfMobile() && createFooterMenu(global);
     });
 
     global.addEventListener('resize', _.debounce(function() {
@@ -41,6 +43,46 @@ function checkIfMobile () {
     }
 
     return false;
+}
+
+function createFooterMenu (window) {
+    const { document } = window;
+    const container = document.querySelector('[rel=js-create-footer-menu]');
+
+    if (!container ) return false;
+
+    const button = container.querySelector('[rel=js-toggle-footer-drown]');
+    const nodes = siblings(container, '[rel=js-footer-menu-item]');
+    const dropdown = container.querySelector('.dropdown');
+    const menu = dropdown.querySelector('.menu');
+
+    function closeDropDown (evt) {
+        const elemNoMatch = evt.target.id != 'footer-dropdown-menu' && ( !evt.target.closest('.l-footer__menus') || evt.target.closest('.l-footer__menus').length == 0);
+
+        if (elemNoMatch) {
+            document.body.removeEventListener('click', closeDropDown, false);
+            dropdown.classList.remove('dropdown--open');
+        }
+    }
+
+    if (!button, !nodes, !dropdown, !menu ) return false;
+
+    nodes.forEach(function(node) {
+        node.classList.remove('nav-site-com');
+        const li = document.createElement('li');
+        li.appendChild(node);
+        menu.appendChild(li);
+    });
+
+    dropdown.classList.add('dropdown--inverted');
+    container.classList.remove('hidden');
+
+    document.addEventListener('click', closeDropDown, false);
+
+    button.addEventListener('click', function () {
+        document.addEventListener('click', closeDropDown, false);
+        dropdown.classList.toggle('dropdown--open');
+    });
 }
 
 function IEcheck (context) {
