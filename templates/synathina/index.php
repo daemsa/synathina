@@ -351,17 +351,23 @@ $note = $db->loadResult();
                 <img src="/images/synathina_espa_logos_gr.png" width="100%" class="eu-logo">
 			</div>
             <div class="l-footer__menus">
-                <ul class="menu nav-site-com">
+                <ul class="menu nav-site-com" rel="js-footer-menu-item">
                     <li><a href="/el/eπικοινωνία.html">Eπικοινωνία</a></li>
                     <li><a href="#newsletter-message" class="newsletter-tooltip">Newsletter</a></li>
                     <li><a href="/el/βοήθεια.html">Βοήθεια</a></li>
                 </ul>
-                <div class="nav-social-links">
+                <div class="nav-social-links" rel="js-footer-menu-item">
                     <a href="https://www.facebook.com/SunAthina" target="_blank"><i class="fa fa-facebook"></i></a>
                     <a href="https://twitter.com/synathina" target="_blank"><i class="fa fa-twitter"></i></a>
                     <a href="https://www.instagram.com/synathina" target="_blank"><i class="fa fa-instagram"></i></a>
                     <a href="https://www.linkedin.com/company/synathina" target="_blank"><i class="fa fa-linkedin"></i></a>
                     <a href="https://www.youtube.com/channel/UCgA-jpbuZG4YMuQE5GGewZA" target="_blank"><i class="fa fa-youtube"></i></a>
+                </div>
+                <div class="l-footer__menus__dropdown hidden" rel="js-create-footer-menu">
+                    <div id="footer-dropdown-menu" class="dropdown" rel="js-close-footer-menu">
+                        <ul class="menu menu--vertical"></ul>
+                    </div>
+                    <button class="button btn btn--coral btn--bold btn btn-primary validate" rel="js-toggle-footer-drown">Επικοινωνια</button>
                 </div>
             </div>
         </footer>
