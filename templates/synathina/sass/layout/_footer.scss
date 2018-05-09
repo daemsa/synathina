@@ -8,6 +8,11 @@
     padding-right: $grid-gutter-width / 2;
     border-top: 2px solid $footerBorderColor;
 
+    @media (max-width: $screen-xs) {
+        padding-left: $grid-gutter-width / 4;
+        padding-right: $grid-gutter-width / 4;
+    }
+
     &__sponsors {
         display: flex;
         align-items: center;
@@ -15,9 +20,24 @@
         overflow: hidden;
         > * + * {
             margin-left: 15px;
+            @media (max-width: $screen-xs) {
+                margin-left: 5px;
+            }
         }
         .eu-logo {
             max-width: 200px;
+            @media (max-width: $screen-xs) {
+                max-width: 120px;
+            }
+        }
+        &.nav-extra-links img {
+            @media (max-width: $screen-xs) {
+                max-width: 48px;
+            }
+        }
+
+        &.nav-extra-links a + a {
+            margin-top: 0;
         }
     }
 
@@ -25,5 +45,37 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+    }
+    // css overwrites for markup that is generated with js
+    &__menus__dropdown {
+        position: relative;
+        .button {
+            padding: 0 5px; background-color: #78b7e3;
+            font-weight: 500;
+            transform: translateY(0);
+            @include transition(all .15s ease);
+        }
+        .dropdown > .menu {
+            padding: 0;
+
+            a {
+                font-size: 14px;
+            }
+        }
+        .dropdown > .menu > li:first-of-type {
+            border-top: 0;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+
+            > .menu li:first-of-type {
+                border-top: 0;
+            }
+            &:last-of-type {
+                padding-left: $grid-gutter-width / 2;
+                padding-right: $grid-gutter-width / 2;
+            }
+        }
     }
 }

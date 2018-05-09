@@ -44,6 +44,9 @@
 
 .menu li.parent {
     position: relative;
+    .dropdown {
+        min-width: 175px;
+    }
     &:hover, &.debug {
         > .dropdown {
             display: block;
