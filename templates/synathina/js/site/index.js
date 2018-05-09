@@ -25,7 +25,7 @@ function SiteState () {
     document.addEventListener('DOMContentLoaded', function() {
         IEcheck(document);
         mobileMenu(this);
-        featuredArticles(this);
+        animateFeaturedArticles(this, window);
         featuredSlider(global, stateInstance);
         checkIfMobile() && createFooterMenu(global);
     });
@@ -35,6 +35,8 @@ function SiteState () {
     }, 200));
 
 })(window);
+
+
 
 // optional for mobile device check
 function checkIfMobile () {
@@ -113,7 +115,7 @@ function mobileMenu (context) {
     });
 }
 
-function featuredArticles (context) {
+function animateFeaturedArticles (context, window) {
     const drawer = context.querySelector('[rel=js-drawer]');
     const toggleButton = context.querySelector('[rel=js-toggle-drawer]');
     const map = context.querySelector('#map');
@@ -121,11 +123,14 @@ function featuredArticles (context) {
     if (!drawer || !toggleButton) return false;
 
     toggleButton.addEventListener('click', function() {
-        drawer.classList.toggle('l-homepage__featured--up');
-        EVT.emit('hide-cross');
-        map.classList.toggle('synathina-map--blur');
+        window.requestAnimationFrame(function () {
+            drawer.classList.toggle('l-homepage__featured--up');
+            EVT.emit('hide-cross');
+            map.classList.toggle('synathina-map--blur');
+        });
     });
 }
+
 
 function featuredSlider (window, state) {
     const { document } = window;
