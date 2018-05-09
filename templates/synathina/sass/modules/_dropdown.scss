@@ -1,0 +1,16 @@
+.dropdown {
+    top: $grid-gutter-width;
+    position: absolute;
+    right: 0;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    min-width: 150px;
+    @include box-shadow;
+}
+
+.dropdown .menu {
+    li + li {
+        margin-left: 0;
+    }
+}

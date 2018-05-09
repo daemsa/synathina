@@ -152,7 +152,7 @@ $note = $db->loadResult();
                     <li><a>en</a></li>
                     <!-- jdoc:include type="modules" name="localesmenu" style="none" /-->
                 </ul>
-                <ul class="account-actions">
+                <ul class="account-actions inline-list--separated">
                     <li><a>Είσοδος</a></li>
                     <li><a>Εγγραφή</a></li>
                 </ul>

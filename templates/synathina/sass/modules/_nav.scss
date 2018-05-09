@@ -86,31 +86,6 @@
    }
 }
 
-// actual menu
-.menu {
-    &--inline {
-        @include inline-list(#666666);
-    }
-    li {
-        & + li {
-        margin-left: $grid-gutter-width / 1.8;
-        }
-        &.selected, &:focus, &:hover {
-            a {
-                color: $blue-ele;
-            }
-        }
-    }
-    a {
-        @include transition(color .225s ease);
-        cursor: pointer;
-        color: $navLinksColor;
-        font-size: 19px;
-        font-family: "Arial";
-        font-weight: bold;
-    }
-}
-
 .nav-activity {
    margin-top: 35px;
    ul {
@@ -209,8 +184,13 @@
     @extend .menu--inline;
     text-align: right;
     li + li {
-        margin-left: 5px;
+        margin-left: 5px !important;
     }
+
+    li.selected a {
+        color: $navLinksColorSelected;
+    }
+
     a {
         font-size: 17px;
     }
@@ -219,9 +199,12 @@
 .account-actions {
     @extend .i18n-actions;
     @extend .inline-list--separated;
-    @include inline-list($navLinksColorSelected, navLinksColorSelected);
+    @include inline-list($navLinksColorSelected, $navLinksColorSelected);
     li + li {
-        margin-left: 0;
+        margin-left: 0 !important
+    }
+    a {
+        color: $navLinksColorSelected !important;
     }
 }
 
