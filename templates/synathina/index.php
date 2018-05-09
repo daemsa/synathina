@@ -144,21 +144,14 @@ $note = $db->loadResult();
             </div>
             <div class="l-header__nav">
                 <a class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
-                <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
+                <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline" />
             </div>
             <div class="l-header__actions">
-                <ul class="i18n-actions">
-                    <li><a>ελ</a></li>
-                    <li><a>en</a></li>
-                    <!-- jdoc:include type="modules" name="localesmenu" style="none" /-->
-                </ul>
-                <ul class="account-actions inline-list--separated">
-                    <li><a>Είσοδος</a></li>
-                    <li><a>Εγγραφή</a></li>
-                </ul>
+                <jdoc:include type="modules" name="languages" style="none" />
+                <jdoc:include type="modules" name="usermenu" style="none" />
                 <ul class="synathina-actions menu">
-                    <li><a>Καταχώρηση Δράσης</a></li>
-                    <li><a>Καταχώρηση Open Call</a></li>
+                    <li><a href="<?php echo JRoute::_('index.php?option=com_actions&view=form&Itemid=139');?>"><?=($lang_code=='en'?'Register activity':'Καταχώριση δράσης')?></a></li>
+                    <li><a class="opencall-tooltip" href="#opencall-message"><?=($lang_code=='en'?'Register open call':'Καταχώριση open call')?></a></li>
                 </ul>
             </div>
             <div class="l-header__hambuger">
@@ -171,9 +164,9 @@ $note = $db->loadResult();
         </header>
         <main style="background-color: #fff; position:relative;" class="l-main">
             <div class="browser-message" rel="js-browser-message">
-                <p>😢 Λυπούμαστε, προς το παρών δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
+                <p>😢 Λυπούμαστε, προς το παρόν δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
             </div>
-            <?php if($homepage){ ?>
+            <?php if ($homepage) { ?>
             <div class="l-homepage">
                 <div class="clip-circle"></div>
                 <div id="map" class="synathina-map synathina-map--blur"></div>
@@ -286,11 +279,7 @@ $note = $db->loadResult();
                 <img src="/images/synathina_espa_logos_gr.png" width="100%" class="eu-logo">
 			</div>
             <div class="l-footer__menus">
-                <ul class="menu nav-site-com" rel="js-footer-menu-item">
-                    <li><a href="/el/eπικοινωνία.html">Eπικοινωνία</a></li>
-                    <li><a href="#newsletter-message" class="newsletter-tooltip">Newsletter</a></li>
-                    <li><a href="/el/βοήθεια.html">Βοήθεια</a></li>
-                </ul>
+                <jdoc:include type="modules" name="footermenu" style="none" />
                 <div class="nav-social-links" rel="js-footer-menu-item">
                     <a href="https://www.facebook.com/SunAthina" target="_blank"><i class="fa fa-facebook"></i></a>
                     <a href="https://twitter.com/synathina" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -307,39 +296,7 @@ $note = $db->loadResult();
             </div>
         </footer>
         <nav class="mobile-menu" rel="js-mobile-menu">
-            <ul class="mobile-menu__list menu">
-                <a class="mobile-menu-close" rel="js-mobile-menu-close"></a>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-            </ul>
+            <jdoc:include type="modules" name="mobilemenu" style="none" />
         </nav>
     </div>
     <div class="module module--synathina module--popup mfp-hide" id="newsletter-message" style="margin: 0px auto;">
