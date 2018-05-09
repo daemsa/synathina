@@ -149,10 +149,7 @@ $note = $db->loadResult();
             <div class="l-header__actions">
                 <jdoc:include type="modules" name="languages" style="none" />
                 <jdoc:include type="modules" name="usermenu" style="none" />
-                <ul class="synathina-actions menu">
-                    <li><a href="<?php echo JRoute::_('index.php?option=com_actions&view=form&Itemid=139');?>"><?=($lang_code=='en'?'Register activity':'Καταχώριση δράσης')?></a></li>
-                    <li><a class="opencall-tooltip" href="#opencall-message"><?=($lang_code=='en'?'Register open call':'Καταχώριση open call')?></a></li>
-                </ul>
+                <jdoc:include type="modules" name="topmenu" style="none" />
             </div>
             <div class="l-header__hambuger">
                 <a class="hamburger hamburger--squeeze <?=($homepage&&!$mobile_detect->isMobile()?'is-active':'')?>" rel="js-toggle-menu">

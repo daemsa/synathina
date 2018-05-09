@@ -27,6 +27,7 @@
 		<position>usermenu</position>
 		<position>mainmenu</position>
 		<position>mobilemenu</position>
+		<position>topmenu</position>
 		<position>footermenu</position>
 		<position>login</position>
 		<position>registration</position>
