@@ -9,7 +9,7 @@ function SiteState () {
 
     this.setState = function (newState) {
         this.state = Object.assign({}, this.state, newState);
-        console.log(this.state)
+
         return this.state;
     };
 
