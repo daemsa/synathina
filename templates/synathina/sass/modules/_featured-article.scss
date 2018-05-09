@@ -29,12 +29,13 @@
     &-description {
         margin: $grid-gutter-width / 2 0 0 0;
         font-size: 1.5em;
-        line-height: 1.625em;
+        line-height: 1.425em;
+
         z-index: 1;
     }
 
     &-cta {
-        margin: $grid-gutter-width / 2 0 0 0;
+        margin: 1.25em 0 0 0;
         cursor: pointer;
         text-align: right;
         display: block;
