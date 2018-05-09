@@ -23,13 +23,13 @@ $i = 0;
 $num_array = ['super', 'first', 'second', 'third', 'fourth'];
 
 foreach ($this->items as $i => $item) :
-
 	$attribs = json_decode($item->attribs);
 	$images = json_decode($item->images);
 	$urls = json_decode($item->urls);
-
 ?>
-	        <div class="featured-item c-featured__<?php echo $num_array[$i]; ?> featured-item--with-filter" style="background-image: url(<?php echo $images->image_intro; ?>)">
+	        <div
+	        	class="featured-item c-featured__<?php echo $num_array[$i]; ?> featured-item--with-filter <?php echo ($attribs->homepage_text_color == 'grey' ? 'featured-item--gray' : ''); ?>"
+	        	style="background-image: url(<?php echo $images->image_intro; ?>)">
 	            <div>
 	                <h3 class="featured-item-title">
 	                    <?php echo $item->title; ?>
@@ -37,12 +37,18 @@ foreach ($this->items as $i => $item) :
 	                <p class="featured-item-description">
 	                    <?php echo strip_tags($item->introtext); ?>
 	                </p>
-	                <a class="featured-item-cta" href="<?php echo $urls->urla; ?>"><?php echo JText::_('COM_CONTENT_READ_MORE_CAPS'); ?></a>
+	                <a <?php echo ($urls->targeta == 1 ? 'target="_blank"' : ''); ?> class="featured-item-cta" href="<?php echo $urls->urla; ?>"><?php echo JText::_('COM_CONTENT_READ_MORE_CAPS'); ?></a>
 	            </div>
 	        </div>
-
-<?php $i++; endforeach; ?>
+<?php
+	$i++;
+	endforeach;
+?>
 
 		</div>
+	    <div class="feature-toggler">
+	        <span class="feature-toggler-arrow"></span>
+	        <a rel="js-toggle-drawer" class="feature-toggler-label"><?php echo JText::_('COM_CONTENT_SHOW_MAP'); ?></a>
+	    </div>
 	</div>
 </div>

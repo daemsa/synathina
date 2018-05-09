@@ -84,13 +84,13 @@ foreach ($list as $i => &$item)
 	// The next item is deeper.
 	if ($item->deeper)
 	{
-		echo '<ul class="nav-child unstyled small">';
+		echo '<div class="dropdown"><ul class="menu menu--vertical">';
 	}
 	elseif ($item->shallower)
 	{
 		// The next item is shallower.
 		echo '</li>';
-		echo str_repeat('</ul></li>', $item->level_diff);
+		echo str_repeat('</ul></div></li>', $item->level_diff);
 	}
 	else
 	{
