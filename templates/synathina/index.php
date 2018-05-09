@@ -266,7 +266,8 @@ $note = $db->loadResult();
                     <span id="slider3textmin"></span>
                     <span id="slider3textmax"></span>
                 </div>
-                <div class="l-homepage__featured" rel="js-drawer">
+                <jdoc:include type="component" />
+<!--                 <div class="l-homepage__featured" rel="js-drawer">
                     <div class="is-relative">
                         <div class="c-featured" rel="js-mobile-gallery">
                             <div class="featured-item c-featured__super featured-item--with-filter" style="background-image: url(/images/synathina_featured_main.jpg)">
@@ -330,7 +331,7 @@ $note = $db->loadResult();
                             <a rel="js-toggle-drawer" class="feature-toggler-label">ΔΕΙΤΕ ΤΟΝ ΧΑΡΤH</a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
                 <?php } ?>
                 <?php if ($this->countModules('banner')) : ?>
