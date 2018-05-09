@@ -3,12 +3,13 @@ const siblings = require('siblings');
 
 function SiteState () {
     this.state = {
-        sliderInitialized: false
+        sliderInitialized: false,
+        lastViewportRatio: null
     };
 
     this.setState = function (newState) {
         this.state = Object.assign({}, this.state, newState);
-
+        console.log(this.state)
         return this.state;
     };
 
@@ -25,13 +26,15 @@ function SiteState () {
     document.addEventListener('DOMContentLoaded', function() {
         IEcheck(document);
         mobileMenu(this);
-        animateFeaturedArticles(this, window);
+        animateFeaturedArticles(this, global);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
         featuredSlider(global, stateInstance);
         checkIfMobile() && createFooterMenu(global);
     });
 
     global.addEventListener('resize', _.debounce(function() {
         featuredSlider(global, stateInstance);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
     }, 200));
 
 })(window);
@@ -68,6 +71,7 @@ function createFooterMenu (window) {
     }
 
     if (!button, !nodes, !dropdown, !menu ) return false;
+    if (!Array.isArray(nodes)) return false;
 
     nodes.forEach(function(node) {
         node.classList.remove('nav-site-com');
@@ -159,5 +163,30 @@ function featuredSlider (window, state) {
     }
 
     $(gallery).slick(options);
+}
+
+function fixFeaturedArticlesOnRatio (window, state) {
+    const { document } = window;
+    const { lastViewportRatio } = state.getState();
+    const currentViewportRatio = window.innerWidth / window.innerHeight;
+    const normalArticles = document.querySelectorAll('.featured-item:not(.c-featured__super)');
+    const BREAKPOINT_RATIO = 2;
+    const shouldUpdateMaxWidth = lastViewportRatio >= BREAKPOINT_RATIO;
+
+    if (!normalArticles && !Array.isArray(normalArticles) && normalArticles.length < 1) {
+        return false;
+    }
+
+    if (currentViewportRatio < BREAKPOINT_RATIO && !shouldUpdateMaxWidth ) return false;
+
+    normalArticles.forEach(function (article) {
+        if (shouldUpdateMaxWidth) {
+            article.firstElementChild.removeAttribute('style');
+        } else {
+            article.firstElementChild.setAttribute('style', 'max-width: 90%');
+        }
+    });
+
+    state.setState({lastViewportRatio: currentViewportRatio});
 }
 
