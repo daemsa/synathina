@@ -1,10 +1,33 @@
-const _  = require('lodash');
+const { debounce, includes }  = require('lodash');
 const siblings = require('siblings');
+const locales = require('./locales');
+
+(function(global) {
+    const { document } = global;
+    const stateInstance = new SiteState();
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        IEcheck(document);
+        mobileMenu(this);
+        animateFeaturedArticles(this, global, stateInstance);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
+        featuredSlider(global, stateInstance);
+        checkIfMobile() && createFooterMenu(global);
+    });
+
+    global.addEventListener('resize', debounce(function() {
+        featuredSlider(global, stateInstance);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
+    }, 200));
+
+})(window);
 
 function SiteState () {
     this.state = {
         sliderInitialized: false,
-        lastViewportRatio: null
+        lastViewportRatio: null,
+        isMapOpen: false
     };
 
     this.setState = function (newState) {
@@ -18,32 +41,10 @@ function SiteState () {
     };
 }
 
-(function(global) {
-    const { document } = global;
-    const stateInstance = new SiteState();
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-        IEcheck(document);
-        mobileMenu(this);
-        animateFeaturedArticles(this, global);
-        fixFeaturedArticlesOnRatio(global, stateInstance);
-        featuredSlider(global, stateInstance);
-        checkIfMobile() && createFooterMenu(global);
-    });
-
-    global.addEventListener('resize', _.debounce(function() {
-        featuredSlider(global, stateInstance);
-        fixFeaturedArticlesOnRatio(global, stateInstance);
-    }, 200));
-
-})(window);
-
-
-
-// optional for mobile device check
 function checkIfMobile () {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobileDevice) {
         return true;
     }
 
@@ -61,6 +62,9 @@ function createFooterMenu (window) {
     const dropdown = container.querySelector('.dropdown');
     const menu = dropdown.querySelector('.menu');
 
+    if ( !button || !nodes || !dropdown || !menu ) return false;
+    if (!Array.isArray(nodes)) return false;
+
     function closeDropDown (evt) {
         const elemNoMatch = evt.target.id != 'footer-dropdown-menu' && ( !evt.target.closest('.l-footer__menus') || evt.target.closest('.l-footer__menus').length == 0);
 
@@ -69,9 +73,6 @@ function createFooterMenu (window) {
             dropdown.classList.remove('dropdown--open');
         }
     }
-
-    if (!button, !nodes, !dropdown, !menu ) return false;
-    if (!Array.isArray(nodes)) return false;
 
     nodes.forEach(function(node) {
         node.classList.remove('nav-site-com');
@@ -82,8 +83,6 @@ function createFooterMenu (window) {
 
     dropdown.classList.add('dropdown--inverted');
     container.classList.remove('hidden');
-
-    document.addEventListener('click', closeDropDown, false);
 
     button.addEventListener('click', function () {
         document.addEventListener('click', closeDropDown, false);
@@ -119,18 +118,58 @@ function mobileMenu (context) {
     });
 }
 
-function animateFeaturedArticles (context, window) {
+function animateFeaturedArticles (context, window, state) {
     const drawer = context.querySelector('[rel=js-drawer]');
     const toggleButton = context.querySelector('[rel=js-toggle-drawer]');
     const map = context.querySelector('#map');
+    const lang = getLanguage();
+    const { isMapOpen } = state.getState();
 
-    if (!drawer || !toggleButton) return false;
+    let currentToggleButtonText = !isMapOpen ? locales[`${lang}`].openMapText :locales[`${lang}`].closeMapText;
+    let proccess1, proccess2;
+
+    if (!drawer || !toggleButton) {
+        return false;
+    }
+
+    toggleButton.textContent = currentToggleButtonText;
+
+    drawer.addEventListener('transitionend', function () {
+        const { isMapOpen } = state.getState();
+        let currentToggleButtonText = !isMapOpen ? locales[`${getLanguage()}`].openMapText :locales[`${getLanguage()}`].closeMapText;
+
+        function updateLocale () {
+            toggleButton.textContent = currentToggleButtonText;
+            toggleButton.removeEventListener('transitionend', updateLocale);
+        }
+
+        if (isMapOpen) {
+            toggleButton.classList.add('feature-toggler-label--hidden');
+            toggleButton.addEventListener('transitionend', updateLocale);
+            setTimeout(() => {
+                toggleButton.classList.add('feature-toggler-label--hidden');
+            }, 500);
+        }
+
+        if (!isMapOpen) {
+
+            toggleButton.textContent = currentToggleButtonText;
+            toggleButton.classList.remove('feature-toggler-label--hidden');
+        }
+
+    });
 
     toggleButton.addEventListener('click', function() {
+        const { isMapOpen } = state.getState();
+        proccess1 && cancelAnimationFrame(proccess1);
+        proccess2 && cancelAnimationFrame(proccess2);
+
         window.requestAnimationFrame(function () {
-            drawer.classList.toggle('l-homepage__featured--up');
-            EVT.emit('hide-cross');
-            map.classList.toggle('synathina-map--blur');
+            proccess1 = drawer.classList.toggle('l-homepage__featured--up');
+            state.setState({isMapOpen: !isMapOpen});
+        });
+        window.requestAnimationFrame(function () {
+            proccess2 = map.classList.toggle('synathina-map--blur');
         });
     });
 }
@@ -171,16 +210,18 @@ function fixFeaturedArticlesOnRatio (window, state) {
     const currentViewportRatio = window.innerWidth / window.innerHeight;
     const normalArticles = document.querySelectorAll('.featured-item:not(.c-featured__super)');
     const BREAKPOINT_RATIO = 2;
-    const shouldUpdateMaxWidth = lastViewportRatio >= BREAKPOINT_RATIO;
+    const shouldClearMaxWidth = lastViewportRatio >= BREAKPOINT_RATIO;
 
     if (!normalArticles && !Array.isArray(normalArticles) && normalArticles.length < 1) {
         return false;
     }
 
-    if (currentViewportRatio < BREAKPOINT_RATIO && !shouldUpdateMaxWidth ) return false;
+    if (currentViewportRatio < BREAKPOINT_RATIO && !shouldClearMaxWidth) {
+        return false;
+    }
 
     normalArticles.forEach(function (article) {
-        if (shouldUpdateMaxWidth) {
+        if (shouldClearMaxWidth) {
             article.firstElementChild.removeAttribute('style');
         } else {
             article.firstElementChild.setAttribute('style', 'max-width: 90%');
@@ -190,3 +231,19 @@ function fixFeaturedArticlesOnRatio (window, state) {
     state.setState({lastViewportRatio: currentViewportRatio});
 }
 
+function getLanguage () {
+    var lang = document.querySelector('html').getAttribute('lang');
+
+    if (lang && lang.includes(['en', 'el'], lang)) {
+        return lang;
+    }
+
+    if(window.location.href.indexOf('/en') !== -1){
+        return 'en';
+    }
+    if(window.location.href.indexOf('/el') !== -1){
+        return 'el';
+    }
+
+    return 'el';
+}
