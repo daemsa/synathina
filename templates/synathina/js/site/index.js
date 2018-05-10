@@ -261,6 +261,7 @@ function getLanguage () {
     if(window.location.href.indexOf('/en') !== -1){
         return 'en';
     }
+
     if(window.location.href.indexOf('/el') !== -1){
         return 'el';
     }
