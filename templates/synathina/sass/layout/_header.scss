@@ -85,6 +85,12 @@
         @media (max-width: $screen-md) {
             display: none;
         }
+        &.menu--inline > li + li {
+            margin-left: 0
+        }
+        &.menu--inline > li > a {
+            padding: 0  $grid-gutter-width / 3.6 $grid-gutter-width / 2;
+        }
     }
 
     &__actions {
