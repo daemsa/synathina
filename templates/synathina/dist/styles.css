@@ -4897,10 +4897,6 @@ body {
   height: 100%;
 }
 
-main {
-  width: 100%;
-}
-
 main:before,
 main:after {
   content: " ";
@@ -5488,6 +5484,12 @@ button {
   left: 20px;
   max-width: 138px;
   position: absolute;
+}
+
+@media (max-width: 768px) {
+  .l-homepage .categories {
+    display: none;
+  }
 }
 
 .l-homepage .synathina-map {
