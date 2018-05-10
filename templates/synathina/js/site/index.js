@@ -26,14 +26,15 @@ const locales = require('./locales');
 
 const scrollHandler = function () {
     const scrollView = document.querySelector('.l-main');
+    const header = document.querySelector('.l-header');
     const BREAKPOINT_OFFSET = 200;
 
     scrollView.addEventListener('scroll', function(e) {
         const scrollTop = e.target.scrollTop;
         if (scrollTop > BREAKPOINT_OFFSET ) {
-            scrollView.classList.add('l-main--scrolled');
+            header.classList.add('l-header--showshadow');
         } else {
-            scrollView.classList.remove('l-main--scrolled');
+            header.classList.remove('l-header--showshadow');
         }
     });
 };

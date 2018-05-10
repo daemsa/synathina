@@ -30,8 +30,7 @@
     overflow: hidden;
     overflow-y: scroll;
     max-height: 100%;
-    @include transition(border .225s ease);
-    border-top: 2px solid white;
+    @include transition(border, box-shadow .225s ease);
 
     &--scrolled {
         border-top: 2px solid $navBorderColor;

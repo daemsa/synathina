@@ -28,6 +28,11 @@
     @media (max-width: $screen-xs) {
         grid-template-rows: minmax(30px, 50px) 1fr;
     }
+    @include transition(box-shadow 0.3s ease);
+
+    &--showshadow {
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    }
 }
 
 .l-header__logo {
