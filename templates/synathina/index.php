@@ -161,7 +161,7 @@ $note = $db->loadResult();
         </header>
         <main style="background-color: #fff; position:relative;" class="l-main <?=(!$homepage ? 'l-main--scrollable' : '')?>">
             <div class="browser-message" rel="js-browser-message">
-                <p>😢 Λυπούμαστε, προς το παρόν δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
+                <?php echo JText::_('COM_IE_NOT_SUPPORTED'); ?>
             </div>
             <?php if ($homepage) { ?>
             <div class="l-homepage">
