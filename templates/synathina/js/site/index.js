@@ -172,7 +172,6 @@ function animateFeaturedArticles (context, window, state) {
         }
 
         if (!isMapOpen) {
-
             toggleButton.textContent = currentToggleButtonText;
             toggleButton.classList.remove('feature-toggler-label--hidden');
         }
@@ -258,11 +257,11 @@ function getLanguage () {
         return lang;
     }
 
-    if (window.location.href.indexOf('/en') !== -1){
+    if (window.location.href.indexOf('/en') !== -1) {
         return 'en';
     }
 
-    if (window.location.href.indexOf('/el') !== -1){
+    if (window.location.href.indexOf('/el') !== -1) {
         return 'el';
     }
 
