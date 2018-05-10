@@ -252,7 +252,7 @@ function fixFeaturedArticlesOnRatio (window, state) {
 }
 
 function getLanguage () {
-    var lang = document.querySelector('html').getAttribute('lang');
+    const lang = document.querySelector('html').getAttribute('lang');
 
     if (lang && lang.includes(['en', 'el'], lang)) {
         return lang;
