@@ -147,19 +147,9 @@ $note = $db->loadResult();
                 <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
             </div>
             <div class="l-header__actions">
-                <ul class="i18n-actions">
-                    <li><a>ελ</a></li>
-                    <li><a>en</a></li>
-                    <!-- jdoc:include type="modules" name="localesmenu" style="none" /-->
-                </ul>
-                <ul class="account-actions inline-list--separated">
-                    <li><a>Είσοδος</a></li>
-                    <li><a>Εγγραφή</a></li>
-                </ul>
-                <ul class="synathina-actions menu">
-                    <li><a>Καταχώρηση Δράσης</a></li>
-                    <li><a>Καταχώρηση Open Call</a></li>
-                </ul>
+                <jdoc:include type="modules" name="languages" style="none" />
+                <jdoc:include type="modules" name="usermenu" style="none" />
+                <jdoc:include type="modules" name="topmenu" style="none" />
             </div>
             <div class="l-header__hambuger">
                 <a class="hamburger hamburger--squeeze <?=($homepage&&!$mobile_detect->isMobile()?'is-active':'')?>" rel="js-toggle-menu">
@@ -171,9 +161,9 @@ $note = $db->loadResult();
         </header>
         <main style="background-color: #fff; position:relative;" class="l-main <?=(!$homepage ? 'l-main--scrollable' : '')?>">
             <div class="browser-message" rel="js-browser-message">
-                <p>😢 Λυπούμαστε, προς το παρών δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
+                <?php echo JText::_('COM_IE_NOT_SUPPORTED'); ?>
             </div>
-            <?php if($homepage){ ?>
+            <?php if ($homepage) { ?>
             <div class="l-homepage">
                 <div class="clip-circle"></div>
                 <div id="map" class="synathina-map synathina-map--blur"></div>
@@ -266,71 +256,6 @@ $note = $db->loadResult();
                     <span id="slider3textmin"></span>
                     <span id="slider3textmax"></span>
                 </div>
-                <div class="l-homepage__featured" rel="js-drawer">
-                    <div class="is-relative">
-                        <div class="c-featured" rel="js-mobile-gallery">
-                            <div class="featured-item c-featured__super featured-item--with-filter" style="background-image: url(/images/synathina_featured_main.jpg)">
-                                <div>
-                                    <h3 class="featured-item-title">
-                                        Πώς λειτουργεί η υποστήριξη στην ιστοσελίδα του συνΑθηνά
-                                    </h3>
-                                    <p class="featured-item-description">
-                                        H διασύνδεση ανάμεσα σε όσους υλοποιούν δράσεις για τη βελτίωση της ποιότητας ζωής στην πόλη και σε όσους επιθυμούν να υποστηρίξουν αυτές τις δράσεις
-                                    </p>
-                                    <a class="featured-item-cta ">ΔΙΑΒΑΣΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</a>
-                                </div>
-                            </div>
-                            <div class="featured-item c-featured__first featured-item--with-filter" style="background-image: url(/images/featured_hands.jpg)">
-                                <div>
-                                    <h3 class="featured-item-title">
-                                        Πώς λειτουργεί η υποστήριξη στην ιστοσελίδα του συνΑθηνά
-                                    </h3>
-                                    <p class="featured-item-description">
-                                        H διασύνδεση ανάμεσα σε όσους υλοποιούν δράσεις για τη βελτίωση της ποιότητας ζωής στην πόλη και σε όσους επιθυμούν να υποστηρίξουν αυτές τις δράσεις
-                                    </p>
-                                    <a class="featured-item-cta">ΔΙΑΒΑΣΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</a>
-                                </div>
-                            </div>
-                            <div class="featured-item c-featured__second featured-item--with-filter" style="background-image: url(/images/featured_hands.jpg)">
-                                <div>
-                                    <h3 class="featured-item-title">
-                                        Πώς λειτουργεί η υποστήριξη στην ιστοσελίδα του συνΑθηνά
-                                    </h3>
-                                    <p class="featured-item-description">
-                                        H διασύνδεση ανάμεσα σε όσους υλοποιούν δράσεις για τη βελτίωση της ποιότητας ζωής στην πόλη και σε όσους επιθυμούν να υποστηρίξουν αυτές τις δράσεις
-                                    </p>
-                                    <a class="featured-item-cta">ΔΙΑΒΑΣΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</a>
-                                </div>
-                            </div>
-                            <div class="featured-item c-featured__third featured-item--with-filter" style="background-image: url(/images/featured_hands.jpg)">
-                                <div>
-                                    <h3 class="featured-item-title">
-                                        Πώς λειτουργεί η υποστήριξη στην ιστοσελίδα του συνΑθηνά
-                                    </h3>
-                                    <p class="featured-item-description">
-                                        H διασύνδεση ανάμεσα σε όσους υλοποιούν δράσεις για τη βελτίωση της ποιότητας ζωής στην πόλη και σε όσους επιθυμούν να υποστηρίξουν αυτές τις δράσεις
-                                    </p>
-                                    <a class="featured-item-cta">ΔΙΑΒΑΣΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</a>
-                                </div>
-                            </div>
-                            <div class="featured-item c-featured__fourth featured-item--with-filter" style="background-image: url(/images/featured_hands.jpg)">
-                                <div>
-                                    <h3 class="featured-item-title">
-                                        Πώς λειτουργεί η υποστήριξη στην ιστοσελίδα του συνΑθηνά
-                                    </h3>
-                                    <p class="featured-item-description">
-                                        H διασύνδεση ανάμεσα σε όσους υλοποιούν δράσεις για τη βελτίωση της ποιότητας ζωής στην πόλη και σε όσους επιθυμούν να υποστηρίξουν αυτές τις δράσεις
-                                    </p>
-                                    <a class="featured-item-cta">ΔΙΑΒΑΣΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="feature-toggler">
-                            <span class="feature-toggler-arrow"></span>
-                            <a rel="js-toggle-drawer" class="feature-toggler-label">ΔΕΙΤΕ ΤΟΝ ΧΑΡΤH</a>
-                        </div>
-                    </div>
-                </div>
             </div>
                 <?php } ?>
                 <?php if ($this->countModules('banner')) : ?>
@@ -351,11 +276,7 @@ $note = $db->loadResult();
                 <img src="/images/synathina_espa_logos_gr.png" width="100%" class="eu-logo">
 			</div>
             <div class="l-footer__menus">
-                <ul class="menu nav-site-com" rel="js-footer-menu-item">
-                    <li><a href="/el/eπικοινωνία.html">Eπικοινωνία</a></li>
-                    <li><a href="#newsletter-message" class="newsletter-tooltip">Newsletter</a></li>
-                    <li><a href="/el/βοήθεια.html">Βοήθεια</a></li>
-                </ul>
+                <jdoc:include type="modules" name="footermenu" style="none" />
                 <div class="nav-social-links" rel="js-footer-menu-item">
                     <a href="https://www.facebook.com/SunAthina" target="_blank"><i class="fa fa-facebook"></i></a>
                     <a href="https://twitter.com/synathina" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -372,39 +293,7 @@ $note = $db->loadResult();
             </div>
         </footer>
         <nav class="mobile-menu" rel="js-mobile-menu">
-            <ul class="mobile-menu__list menu">
-                <a class="mobile-menu-close" rel="js-mobile-menu-close"></a>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-                <li><a href="">Αρχική</a></li>
-                <li>
-                    <a>συνΑθηνά</a>
-                    <ul class="menu">
-                        <li><a href="http://#">Σχετικά με Εμάς</a></li>
-                        <li><a href="http://#">Στατιστικά</a></li>
-                        <li><a href="http://#">Δίκτυο</a></li>
-                    </ul>
-                </li>
-                <li><a href="">Αρχική</a></li>
-            </ul>
+            <jdoc:include type="modules" name="mobilemenu" style="none" />
         </nav>
     </div>
     <div class="module module--synathina module--popup mfp-hide" id="newsletter-message" style="margin: 0px auto;">
