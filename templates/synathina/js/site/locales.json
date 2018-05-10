@@ -1,0 +1,10 @@
+{
+    "el": {
+        "openMapText": "ΔΕΙΤΕ ΤΟΝ ΧΑΡΤΗ",
+        "closeMapText": "ΚΛΕΙΣΤΕ ΤΟΝ ΧΑΡΤΗ"
+    },
+    "en": {
+        "openMapText": "REVEAL MAP",
+        "closeMapText": "HIDE MAP"
+    }
+}

@@ -85,27 +85,7 @@
       }
    }
 }
-// actual menu
-.nav-menu {
-   margin-top: 30px;
-   .menu {
-      li {
-         & + li {
-            margin-top: 5px;
-         }
-         &.selected, &:focus, &:hover {
-            a {
-               color: $blue-ele;
-            }
-         }
-      }
-   }
-   a {
-      font-size: 16px;
-      font-weight: 400;
-      color: #000;
-   }
-}
+
 .nav-activity {
    margin-top: 35px;
    ul {
@@ -133,7 +113,6 @@
 }
 
 .nav-social-links {
-   margin-top: 35px;
    a {
       margin-top: 25px;
       color: #bdbdbd;
@@ -161,32 +140,27 @@
 }
 
 .nav-site-com {
-   .menu {
-      a {
-         color: #bebebe;
-         font-size: 13px;
-         font-weight: bold;
-         & + a {
-            margin-top: 10px;
-         }
-      }
-   }
-}
+    @extend .i18n-actions;
+    @include inline-list($navLinksColor);
+    li {
+        margin-right: $grid-gutter-width / 2;
+    }
+    a:hover {
+        color: $navLinksColorSelected;
+    }
+ }
+
 .nav-extra-links {
-   margin-top: 30px;
+    a {
+        display: inline-block;
+    }
    img {
       @include img-responsive;
-   }
-   a {
-      display: block;
-      & + a {
-         margin-top: 20px;
-      }
+      margin-top: 0;
    }
 }
 
 .hamburger {
-   position: fixed !important;
    z-index: $zindex-navbar + 1;
    height: 55px;
    top: calc(50% - 55px);
@@ -203,4 +177,39 @@
       margin: 0 !important;
    }
 
+}
+
+.i18n-actions {
+    @extend .menu;
+    @extend .menu--inline;
+    text-align: right;
+    li + li {
+        margin-left: 5px !important;
+    }
+
+    li.selected a {
+        color: $navLinksColorSelected;
+    }
+
+    a {
+        font-size: 17px;
+    }
+}
+
+.account-actions {
+    @extend .i18n-actions;
+    @extend .inline-list--separated;
+    @include inline-list($navLinksColorSelected, $navLinksColorSelected);
+    li + li {
+        margin-left: 0 !important
+    }
+    a {
+        color: $navLinksColorSelected !important;
+    }
+}
+
+.synathina-actions {
+    a {
+        line-height: 24px;
+    }
 }

@@ -648,12 +648,6 @@ h4.alert-heading{
 	margin-top: 0px;
 }
 
-.categories{
-    max-width:138px;
-    top:120px;
-    left: 0px;
-}
-
 .nav-activity:before{
     height:0px;
 }
@@ -667,17 +661,10 @@ h4.alert-heading{
     padding-bottom: 2px;
 }
 
-
-
-.nav-menu{
-    margin-top:10px;
-}
 .nav-activity {
     margin-top: 10px;
 }
-.nav-social-links {
-    margin-top: 10px;
-}
+
 .nav-amea {
     margin-top: 10px;
 }

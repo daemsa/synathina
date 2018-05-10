@@ -26,6 +26,8 @@
 		<position>languages</position>
 		<position>usermenu</position>
 		<position>mainmenu</position>
+		<position>mobilemenu</position>
+		<position>topmenu</position>
 		<position>footermenu</position>
 		<position>login</position>
 		<position>registration</position>
@@ -60,7 +62,7 @@
 				<field name="logoFile" class="" type="media" default=""
 					label="TPL_SYNATHINA_LOGO_LABEL"
 					description="TPL_SYNATHINA_LOGO_DESC" />
-					
+
 				<field name="sitetitle"  type="text" default=""
 					label="JGLOBAL_TITLE"
 					description="JFIELD_ALT_PAGE_TITLE_LABEL"

@@ -27,7 +27,7 @@ if (!isDev) {
     }));
 
     plugins.push(new OptimizeCSSAssetsPlugin({
-        cssProcessor: cssnano,
+        cssProcessor: () => cssnano({reduceIdents: false}),
         cssProcessorOptions: { discardComments: { removeAll: true } },
         canPrint: false
     }));
@@ -37,7 +37,7 @@ const config = {
     devtool: 'source-map',
     mode: isDev ? 'development' : 'production',
     entry: {
-        app: './js/app/app.js',
+        site: './js/site/index.js',
         styles: './sass/styles.scss'
     },
     output: {
@@ -54,6 +54,8 @@ const config = {
                 use: extractSass.extract({
                     use: [{
                         loader: 'css-loader?sourceMap'
+                    }, {
+                        loader: 'resolve-url-loader'
                     }, {
                         loader: 'sass-loader?sourceMap',
                         options: {
@@ -73,6 +75,8 @@ const config = {
                     options: {
                         sourceMap: true,
                     },
+                },{
+                    loader: 'postcss-loader'
                 }, {
                     loader: 'resolve-url-loader'
                 }]
@@ -93,10 +97,9 @@ const config = {
                     },
                 ],
             },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?mimetype=application/vnd.ms-fontobject'},
-            { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
-            { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
+            // { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
+            // { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
+            // { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
             { test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/, loader: 'file-loader?url-loader?limit=100000' }
         ]
     },
