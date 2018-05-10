@@ -22,6 +22,10 @@
        left: 20px;
        max-width:138px;
        position: absolute;
+
+       @media (max-width: $screen-sm) {
+            display: none;
+        }
    }
 
    .synathina-map {

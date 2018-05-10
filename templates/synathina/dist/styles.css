@@ -5486,6 +5486,12 @@ button {
   position: absolute;
 }
 
+@media (max-width: 768px) {
+  .l-homepage .categories {
+    display: none;
+  }
+}
+
 .l-homepage .synathina-map {
   transform: translateZ(0);
   -webkit-transition: 1s cubic-bezier(0.19, 1, 0.22, 1) 0.4s;
