@@ -185,12 +185,29 @@ if ($note == 'synathina') {
 ?>
 <div class="l-draseis">
 <?php
+	$top_text_modules = JModuleHelper::getModules('top_text');
+	if (count($top_text_modules)) :
+		foreach ($top_text_modules as $top_text_module) {
+			echo '	<div class="module module--synathina" style="margin-bottom: 70px;">
+      					<div class="module-skewed module-skewed--gray">
+         					<div class="module-wrapper">
+								<h3 class="module-title">'.$top_text_module->title.'</h3>
+								'.$top_text_module->content.'
+							</div>
+						</div>
+					</div>';
+		}
+	else:
 		foreach ($breadcumbs_modules as $breadcumbs_module){
 			echo JModuleHelper::renderModule($breadcumbs_module);
 		}
+	endif;
 ?>
 
 	<div class="filter-results">
+<?php if (!count($top_text_modules)) { ?>
+		<h2 class="thumbnail-list__title"><?php echo $this->category->title; ?></h2>
+<?php } ?>
 <?php
 	$c = 1;
 	foreach ($this->intro_items as $key => &$item) :
@@ -218,7 +235,7 @@ $article_image='http://www.synathina.gr/images/template/synathina_big.jpg';
 $document = JFactory::getDocument();
 $document->setMetaData( 'twitter:card', 'summary_large_image' );
 $document->setMetaData( 'twitter:site', '@synathina' );
-$document->setMetaData( 'twitter:title', 'συνΑθηνά' );
+$document->setMetaData( 'twitter:title', 'ÏƒÏ…Î½Î‘Î¸Î·Î½Î¬' );
 $document->setMetaData( 'twitter:description', $menuname );
 $document->setMetaData( 'twitter:image', $article_image );
 ?>

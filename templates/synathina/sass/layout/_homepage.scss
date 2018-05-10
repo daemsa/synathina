@@ -34,11 +34,11 @@
    }
 
    .synathina-map--blur {
-        opacity: .7;
-        -webkit-transform: scale(.95);
-        transform: scale(.95);
-        -webkit-filter: blur(10px);
-        filter: blur(10px)
+        opacity: 1;
+        -webkit-transform: scale(1.7);
+        transform: scale(1.7);
+        -webkit-filter: blur(2px);
+        filter: blur(2px)
    }
 }
 
