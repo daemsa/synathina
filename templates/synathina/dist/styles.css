@@ -5300,6 +5300,25 @@ button {
   padding: 0 11.11111px 20px;
 }
 
+@media (min-width: 1360px) {
+  .l-header__nav__menu.menu--inline > li > a,
+  .l-header__nav__menu.i18n-actions > li > a,
+  .l-header__nav__menu.nav-site-com > li > a,
+  .l-header__nav__menu.account-actions > li > a {
+    padding: 0 20px 20px;
+  }
+}
+
+@media (min-width: 1240px) and (max-width: 1360px) {
+  .l-header__nav__menu.menu--inline > li > a,
+  .l-header__nav__menu.i18n-actions > li > a,
+  .l-header__nav__menu.nav-site-com > li > a,
+  .l-header__nav__menu.account-actions > li > a {
+    padding: 0 13.33333px 20px;
+    font-size: 16px;
+  }
+}
+
 .l-header__nav__actions {
   display: flex;
   flex-direction: column;
@@ -5481,11 +5500,11 @@ button {
 }
 
 .l-homepage .synathina-map--blur {
-  opacity: .7;
-  -webkit-transform: scale(0.95);
-  transform: scale(0.95);
-  -webkit-filter: blur(10px);
-  filter: blur(10px);
+  opacity: 1;
+  -webkit-transform: scale(1.7);
+  transform: scale(1.7);
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
 }
 
 .l-homepage__featured {
@@ -11802,7 +11821,7 @@ img.mfp-img {
   bottom: auto;
   margin: auto;
   text-align: center;
-  font-size: 30px;
+  font-size: 25px;
   color: #78B6E3;
   font-weight: 500;
   padding-top: 30px;
