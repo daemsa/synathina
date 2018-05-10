@@ -29,6 +29,10 @@ const scrollHandler = function () {
     const header = document.querySelector('.l-header');
     const BREAKPOINT_OFFSET = 200;
 
+    if (!scrollView.classList.contains('l-main--scrollable')) {
+        return false;
+    }
+
     scrollView.addEventListener('scroll', function(e) {
         const scrollTop = e.target.scrollTop;
         if (scrollTop > BREAKPOINT_OFFSET ) {
