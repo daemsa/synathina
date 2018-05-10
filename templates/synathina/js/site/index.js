@@ -6,7 +6,6 @@ const locales = require('./locales');
     const { document } = global;
     const stateInstance = new SiteState();
 
-
     document.addEventListener('DOMContentLoaded', function() {
         IEcheck(document);
         mobileMenu(this);
