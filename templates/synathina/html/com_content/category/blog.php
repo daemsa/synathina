@@ -206,7 +206,7 @@ if ($note == 'synathina') {
 
 	<div class="filter-results">
 <?php if (!count($top_text_modules)) { ?>
-		<h2 class="thumbnail-list__title"><?php echo $this->category->title; ?></h2>
+		<h2 class="thumbnail-list__title list-title"><?php echo $this->category->title; ?></h2>
 <?php } ?>
 <?php
 	$c = 1;

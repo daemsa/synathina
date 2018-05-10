@@ -1,3 +1,7 @@
+.list-title {
+    margin: 0px 0px 10px 0px;
+    padding-left: 0px;
+}
 .form-tooltip-jquery{
     font-size: 24px;
     display: inline-block;
