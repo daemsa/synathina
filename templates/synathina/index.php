@@ -143,7 +143,7 @@ $note = $db->loadResult();
                 </div>
             </div>
             <div class="l-header__nav">
-                <a class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
+                <a href="<?php echo JUri::base();?>" class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
                 <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
             </div>
             <div class="l-header__actions">
@@ -169,7 +169,7 @@ $note = $db->loadResult();
                 </a>
             </div>
         </header>
-        <main style="background-color: #fff; position:relative;" class="l-main">
+        <main style="background-color: #fff; position:relative;" class="l-main <?=(!$homepage ? 'l-main--scrollable' : '')?>">
             <div class="browser-message" rel="js-browser-message">
                 <p>😢 Λυπούμαστε, προς το παρών δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
             </div>
