@@ -45,6 +45,12 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+
+        @media(min-width: $screen-md) and (max-width: $screen-lg) {
+            .menu a {
+                font-size: 14px;
+            }
+        }
     }
     // css overwrites for markup that is generated with js
     &__menus__dropdown {
