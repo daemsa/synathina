@@ -3,7 +3,8 @@ const siblings = require('siblings');
 
 function SiteState () {
     this.state = {
-        sliderInitialized: false
+        sliderInitialized: false,
+        lastViewportRatio: null
     };
 
     this.setState = function (newState) {
@@ -25,16 +26,20 @@ function SiteState () {
     document.addEventListener('DOMContentLoaded', function() {
         IEcheck(document);
         mobileMenu(this);
-        featuredArticles(this);
+        animateFeaturedArticles(this, global);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
         featuredSlider(global, stateInstance);
         checkIfMobile() && createFooterMenu(global);
     });
 
     global.addEventListener('resize', _.debounce(function() {
         featuredSlider(global, stateInstance);
+        fixFeaturedArticlesOnRatio(global, stateInstance);
     }, 200));
 
 })(window);
+
+
 
 // optional for mobile device check
 function checkIfMobile () {
@@ -66,6 +71,7 @@ function createFooterMenu (window) {
     }
 
     if (!button, !nodes, !dropdown, !menu ) return false;
+    if (!Array.isArray(nodes)) return false;
 
     nodes.forEach(function(node) {
         node.classList.remove('nav-site-com');
@@ -113,7 +119,7 @@ function mobileMenu (context) {
     });
 }
 
-function featuredArticles (context) {
+function animateFeaturedArticles (context, window) {
     const drawer = context.querySelector('[rel=js-drawer]');
     const toggleButton = context.querySelector('[rel=js-toggle-drawer]');
     const map = context.querySelector('#map');
@@ -121,11 +127,14 @@ function featuredArticles (context) {
     if (!drawer || !toggleButton) return false;
 
     toggleButton.addEventListener('click', function() {
-        drawer.classList.toggle('l-homepage__featured--up');
-        EVT.emit('hide-cross');
-        map.classList.toggle('synathina-map--blur');
+        window.requestAnimationFrame(function () {
+            drawer.classList.toggle('l-homepage__featured--up');
+            EVT.emit('hide-cross');
+            map.classList.toggle('synathina-map--blur');
+        });
     });
 }
+
 
 function featuredSlider (window, state) {
     const { document } = window;
@@ -154,5 +163,30 @@ function featuredSlider (window, state) {
     }
 
     $(gallery).slick(options);
+}
+
+function fixFeaturedArticlesOnRatio (window, state) {
+    const { document } = window;
+    const { lastViewportRatio } = state.getState();
+    const currentViewportRatio = window.innerWidth / window.innerHeight;
+    const normalArticles = document.querySelectorAll('.featured-item:not(.c-featured__super)');
+    const BREAKPOINT_RATIO = 2;
+    const shouldUpdateMaxWidth = lastViewportRatio >= BREAKPOINT_RATIO;
+
+    if (!normalArticles && !Array.isArray(normalArticles) && normalArticles.length < 1) {
+        return false;
+    }
+
+    if (currentViewportRatio < BREAKPOINT_RATIO && !shouldUpdateMaxWidth ) return false;
+
+    normalArticles.forEach(function (article) {
+        if (shouldUpdateMaxWidth) {
+            article.firstElementChild.removeAttribute('style');
+        } else {
+            article.firstElementChild.setAttribute('style', 'max-width: 90%');
+        }
+    });
+
+    state.setState({lastViewportRatio: currentViewportRatio});
 }
 

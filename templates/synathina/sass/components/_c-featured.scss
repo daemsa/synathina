@@ -26,6 +26,25 @@
         }
     }
 
+    @media (min-width: 1440px) and (max-width: 1920px) {
+        .c-featured__super.featured-item {
+            font-size: 0.8vw;
+            & > div {
+                max-width: 50%;
+                padding: $grid-gutter-width / 2;
+            }
+        }
+
+        .featured-item:not(.c-featured__super) {
+            font-size: 0.55vw;
+            & > div {
+                max-width: 60%;
+                padding: $grid-gutter-width / 2;
+            }
+        }
+
+    }
+
     @media (min-width: 1440px) and (max-width: 1920px -1 ) {
         .c-featured__super.featured-item {
             font-size: 0.8vw;
