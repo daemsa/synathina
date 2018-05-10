@@ -87,7 +87,8 @@ const locales = __webpack_require__(/*! ./locales */ "./js/site/locales.json");
     const stateInstance = new SiteState();
 
     document.addEventListener('DOMContentLoaded', function() {
-        IEcheck(document);
+        applyLocales(this);
+        IEcheck(this);
         mobileMenu(this);
         animateFeaturedArticles(this, global, stateInstance);
         fixFeaturedArticlesOnRatio(global, stateInstance);
@@ -121,6 +122,10 @@ const scrollHandler = function () {
         }
     });
 };
+
+function applyLocales(context) {
+    context.querySelector('js-toggle-footer-drown')
+}
 
 function SiteState () {
     this.state = {
@@ -160,9 +165,12 @@ function createFooterMenu (window) {
     const nodes = siblings(container, '[rel=js-footer-menu-item]');
     const dropdown = container.querySelector('.dropdown');
     const menu = dropdown.querySelector('.menu');
+    const lang = getLanguage();
 
     if ( !button || !nodes || !dropdown || !menu ) return false;
     if (!Array.isArray(nodes)) return false;
+
+    button.textContent = locales[`${lang}`].buttonContactText;
 
     function closeDropDown (evt) {
         const elemNoMatch = evt.target.id != 'footer-dropdown-menu' && ( !evt.target.closest('.l-footer__menus') || evt.target.closest('.l-footer__menus').length == 0);
@@ -358,7 +366,7 @@ function getLanguage () {
 /*! exports provided: el, en, default */
 /***/ (function(module) {
 
-module.exports = {"el":{"openMapText":"ΔΕΙΤΕ ΤΟΝ ΧΑΡΤΗ","closeMapText":"ΚΛΕΙΣΤΕ ΤΟΝ ΧΑΡΤΗ"},"en":{"openMapText":"REVEAL MAP","closeMapText":"HIDE MAP"}};
+module.exports = {"el":{"openMapText":"ΔΕΙΤΕ ΤΟΝ ΧΑΡΤΗ","closeMapText":"ΚΛΕΙΣΤΕ ΤΟΝ ΧΑΡΤΗ","buttonContactText":"Eπικοινωνία"},"en":{"openMapText":"REVEAL MAP","closeMapText":"HIDE MAP","buttonContactText":"Contact us"}};
 
 /***/ }),
 
