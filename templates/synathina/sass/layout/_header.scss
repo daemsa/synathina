@@ -95,6 +95,17 @@
         }
         &.menu--inline > li > a {
             padding: 0  $grid-gutter-width / 3.6 $grid-gutter-width / 2;
+
+            @media (min-width: 1360px) {
+                padding: 0  $grid-gutter-width / 2 $grid-gutter-width / 2;
+
+            }
+
+            @media (min-width: $screen-lg) and (max-width: 1360px) {
+                padding: 0  $grid-gutter-width / 3 $grid-gutter-width / 2;
+                font-size: 16px;
+            }
+
         }
     }
 
