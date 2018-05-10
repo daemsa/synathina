@@ -14,13 +14,13 @@ templates/.sass-cache/
 node_modules
 
 # dist folder (bundle folder)
-templates/synathina/dist/*.svg
-templates/synathina/dist/*.png
-templates/synathina/dist/*.jpg
-templates/synathina/dist/*.woff2
-templates/synathina/dist/*.woff
-templates/synathina/dist/*.eot
-templates/synathina/dist/*.ttf
+#templates/synathina/dist/*.svg
+#templates/synathina/dist/*.png
+#templates/synathina/dist/*.jpg
+#templates/synathina/dist/*.woff2
+#templates/synathina/dist/*.woff
+#templates/synathina/dist/*.eot
+#templates/synathina/dist/*.ttf
 templates/synathina/dist/app.js
 templates/synathina/dist/app.js.map
 templates/synathina/dist/styles.js
