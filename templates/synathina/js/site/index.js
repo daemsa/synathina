@@ -7,7 +7,6 @@ const locales = require('./locales');
     const stateInstance = new SiteState();
 
     document.addEventListener('DOMContentLoaded', function() {
-        applyLocales(this);
         IEcheck(this);
         mobileMenu(this);
         animateFeaturedArticles(this, global, stateInstance);
@@ -42,10 +41,6 @@ const scrollHandler = function () {
         }
     });
 };
-
-function applyLocales(context) {
-    context.querySelector('js-toggle-footer-drown')
-}
 
 function SiteState () {
     this.state = {

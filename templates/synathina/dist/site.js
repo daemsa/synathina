@@ -87,7 +87,6 @@ const locales = __webpack_require__(/*! ./locales */ "./js/site/locales.json");
     const stateInstance = new SiteState();
 
     document.addEventListener('DOMContentLoaded', function() {
-        applyLocales(this);
         IEcheck(this);
         mobileMenu(this);
         animateFeaturedArticles(this, global, stateInstance);
@@ -122,10 +121,6 @@ const scrollHandler = function () {
         }
     });
 };
-
-function applyLocales(context) {
-    context.querySelector('js-toggle-footer-drown')
-}
 
 function SiteState () {
     this.state = {
