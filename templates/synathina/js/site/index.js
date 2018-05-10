@@ -188,6 +188,7 @@ function animateFeaturedArticles (context, window, state) {
         });
         window.requestAnimationFrame(function () {
             proccess2 = map.classList.toggle('synathina-map--blur');
+            EVT.emit('hide-cross');
         });
     });
 }

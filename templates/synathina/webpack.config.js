@@ -27,7 +27,7 @@ if (!isDev) {
     }));
 
     plugins.push(new OptimizeCSSAssetsPlugin({
-        cssProcessor: cssnano,
+        cssProcessor: () => cssnano({reduceIdents: false}),
         cssProcessorOptions: { discardComments: { removeAll: true } },
         canPrint: false
     }));
