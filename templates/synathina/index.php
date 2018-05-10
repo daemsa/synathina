@@ -288,7 +288,7 @@ $note = $db->loadResult();
                     <div id="footer-dropdown-menu" class="dropdown" rel="js-close-footer-menu">
                         <ul class="menu menu--vertical"></ul>
                     </div>
-                    <button class="button btn btn--coral btn--bold btn btn-primary validate" rel="js-toggle-footer-drown">Επικοινωνία</button>
+                    <button class="button btn btn--coral btn--bold btn btn-primary validate" rel="js-toggle-footer-drown"><?php echo JText::_('COM_CONTENT_CONTACT'); ?></button>
                 </div>
             </div>
         </footer>
