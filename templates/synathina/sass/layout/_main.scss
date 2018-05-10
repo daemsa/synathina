@@ -28,4 +28,12 @@
 
 .l-main {
     overflow: hidden;
+    overflow-y: scroll;
+    max-height: 100%;
+    @include transition(border .225s ease);
+    border-top: 2px solid white;
+
+    &--scrolled {
+        border-top: 2px solid $navBorderColor;
+    }
 }

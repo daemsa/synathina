@@ -14,6 +14,7 @@ const locales = require('./locales');
         fixFeaturedArticlesOnRatio(global, stateInstance);
         featuredSlider(global, stateInstance);
         checkIfMobile() && createFooterMenu(global);
+        scrollHandler();
     });
 
     global.addEventListener('resize', debounce(function() {
@@ -22,6 +23,20 @@ const locales = require('./locales');
     }, 200));
 
 })(window);
+
+const scrollHandler = function () {
+    const scrollView = document.querySelector('.l-main');
+    const BREAKPOINT_OFFSET = 200;
+
+    scrollView.addEventListener('scroll', function(e) {
+        const scrollTop = e.target.scrollTop;
+        if (scrollTop > BREAKPOINT_OFFSET ) {
+            scrollView.classList.add('l-main--scrolled');
+        } else {
+            scrollView.classList.remove('l-main--scrolled');
+        }
+    });
+};
 
 function SiteState () {
     this.state = {
