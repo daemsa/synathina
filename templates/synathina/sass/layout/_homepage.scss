@@ -54,10 +54,9 @@
 
     &--up {
         transform: translateY(-100%);
-        .feature-toggler-label {
-            opacity: 0;
-            @include transition(opacity .225s ease);
-            @include transition-delay(1s);
+        .feature-toggler-label.feature-toggler-label--hidden:hover, .feature-toggler-label.feature-toggler-label--hidden:focus {
+            opacity: 1;
+            @include transition-delay(0);
         }
     }
 

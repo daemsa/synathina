@@ -143,8 +143,8 @@ $note = $db->loadResult();
                 </div>
             </div>
             <div class="l-header__nav">
-                <a class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
-                <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline" />
+                <a href="<?php echo JUri::base();?>" class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
+                <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
             </div>
             <div class="l-header__actions">
                 <jdoc:include type="modules" name="languages" style="none" />
@@ -159,7 +159,7 @@ $note = $db->loadResult();
                 </a>
             </div>
         </header>
-        <main style="background-color: #fff; position:relative;" class="l-main">
+        <main style="background-color: #fff; position:relative;" class="l-main <?=(!$homepage ? 'l-main--scrollable' : '')?>">
             <div class="browser-message" rel="js-browser-message">
                 <p>😢 Λυπούμαστε, προς το παρόν δεν υποστηρίζουμε IE 11 και παλαιότερους browser, παρακαλώ επιλέξτε συγχρονους browser οπως firefox, chrome, safari, Microsoft edge.</p>
             </div>
@@ -288,7 +288,7 @@ $note = $db->loadResult();
                     <div id="footer-dropdown-menu" class="dropdown" rel="js-close-footer-menu">
                         <ul class="menu menu--vertical"></ul>
                     </div>
-                    <button class="button btn btn--coral btn--bold btn btn-primary validate" rel="js-toggle-footer-drown">Επικοινωνια</button>
+                    <button class="button btn btn--coral btn--bold btn btn-primary validate" rel="js-toggle-footer-drown">Επικοινωνία</button>
                 </div>
             </div>
         </footer>

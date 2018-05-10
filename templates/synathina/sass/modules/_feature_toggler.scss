@@ -33,4 +33,10 @@
     padding-top: 30px;
     @include transition(opacity .225s ease);
     @include horizontal-centerer;
+    // @include transition-delay(500ms);
+    opacity: 1;
+
+    &.feature-toggler-label--hidden {
+        opacity: 0;
+    }
 }
