@@ -4897,10 +4897,6 @@ body {
   height: 100%;
 }
 
-main {
-  width: 100%;
-}
-
 main:before,
 main:after {
   content: " ";
