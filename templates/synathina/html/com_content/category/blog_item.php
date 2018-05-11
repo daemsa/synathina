@@ -102,11 +102,6 @@ if($note=='synathina'){
 		 <div class="media-body">
 				<h3 class="media-title"><a href="<?php echo $link; ?>"><?php echo $this->item->title; ?></a></h3>
 <?php
-	if ($note != 'opencalls') {
-		echo '<time>'. @JHTML::_('date', $this->item->created, 'd M Y') .'</time>';
-	}
-?>
-<?php
 	if($this->item->introtext == ''){
 		$newtext = strip_tags($this->item->fulltext, '<strong><a><em>');
 	} else {
