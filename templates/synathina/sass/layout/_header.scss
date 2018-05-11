@@ -30,9 +30,7 @@
     }
     @include transition(box-shadow 0.3s ease);
 
-    &--showshadow {
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    }
+    border-bottom: 2px solid $navBorderColor;
 }
 
 .l-header__logo {

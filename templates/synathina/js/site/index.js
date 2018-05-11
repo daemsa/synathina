@@ -13,7 +13,6 @@ const locales = require('./locales');
         fixFeaturedArticlesOnRatio(global, stateInstance);
         featuredSlider(global, stateInstance);
         checkIfMobile() && createFooterMenu(global);
-        scrollHandler();
     });
 
     global.addEventListener('resize', debounce(function() {
@@ -22,25 +21,6 @@ const locales = require('./locales');
     }, 200));
 
 })(window);
-
-const scrollHandler = function () {
-    const scrollView = document.querySelector('.l-main');
-    const header = document.querySelector('.l-header');
-    const BREAKPOINT_OFFSET = 200;
-
-    if (!scrollView.classList.contains('l-main--scrollable')) {
-        return false;
-    }
-
-    scrollView.addEventListener('scroll', function(e) {
-        const scrollTop = e.target.scrollTop;
-        if (scrollTop > BREAKPOINT_OFFSET ) {
-            header.classList.add('l-header--showshadow');
-        } else {
-            header.classList.remove('l-header--showshadow');
-        }
-    });
-};
 
 function SiteState () {
     this.state = {

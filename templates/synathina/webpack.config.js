@@ -15,24 +15,6 @@ const plugins = [
     extractSass
 ];
 
-if (!isDev) {
-    plugins.push(new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-            ecma:8,
-            compress: {
-                warnings: false
-            }
-        }
-    }));
-
-    plugins.push(new OptimizeCSSAssetsPlugin({
-        cssProcessor: () => cssnano({reduceIdents: false}),
-        cssProcessorOptions: { discardComments: { removeAll: true } },
-        canPrint: false
-    }));
-}
-
 const config = {
     devtool: 'source-map',
     mode: isDev ? 'development' : 'production',
@@ -53,7 +35,7 @@ const config = {
                 test: /\.scss$/,
                 use: extractSass.extract({
                     use: [{
-                        loader: 'css-loader?sourceMap'
+                        loader: 'css-loader?sourceMap',
                     }, {
                         loader: 'resolve-url-loader'
                     }, {
@@ -62,7 +44,7 @@ const config = {
                             sourceMap: true,
                         }
                     }],
-                    // use style-loader in development
+                    // use style-loader in developmentcd ..
                     fallback: 'style-loader'
                 })
             },
@@ -82,9 +64,21 @@ const config = {
                 }]
             },
             {
-                test: /\.(gif|png|jpe?g|svg)$/i,
+                test: /\.(eot|woff|woff2|ttf|otf)$/,
                 use: [
-                    'file-loader',
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: './fonts/'
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(jpg|png|gif|svg)$/,
+                use: [
+                    'file-loader?name=[name].[ext]&outputPath=./img/',
                     {
                         loader: 'image-webpack-loader',
                         options: !isDev ? {
@@ -94,13 +88,27 @@ const config = {
                                 speed: 4
                             }
                         } : {},
-                    },
-                ],
-            },
-            // { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-            // { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
-            // { test: /.svg(\?v=\d+\.\d+\.\d+)?$|.svg$/, loader: 'file-loader?name=[path][name].[ext]&context=./src&mimetype=image/svg+xml'},
-            { test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/, loader: 'file-loader?url-loader?limit=100000' }
+                    }
+                ]
+            }
+        ]
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true,
+                uglifyOptions: {
+                    ecma:8,
+                    compress: {
+                        warnings: false
+                    }
+                }
+            }),
+            new OptimizeCSSAssetsPlugin({
+                cssProcessor: cssnano({reduceIdents: false, autoprefixer: false})
+            })
         ]
     },
     plugins: plugins

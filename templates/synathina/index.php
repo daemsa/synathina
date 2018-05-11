@@ -336,7 +336,7 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/d3.slider.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/markerclusterer.js"></script>
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/slick.min.js"></script>
-        <script async defer  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
+
         <!-- Application -->
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/filter.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/ajax.js"></script>
@@ -349,7 +349,7 @@ $note = $db->loadResult();
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/ui.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/cross<?=$lang_code=='en'?'_en':''?>.js"></script>
         <script src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/app/slider.js"></script>
-
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn_Z73vSnRqhaPNt76B8e_156YxREMefU&callback=initMap&libraries=geometry"></script>
     <?php } else { ?>
         <!-- ELSE load web site source files and dependecies -->
         <script type="text/javascript" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/js/vendor/dev_menu.js"></script>
