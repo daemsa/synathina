@@ -12324,7 +12324,7 @@ input[type="radio"]:checked + label span {
   font-size: 40px;
   color: #78b7e3;
   margin: 40px 0px 0px 0px;
-  line-height: 26px;
+  line-height: 40px;
 }
 
 .c-article h4,
