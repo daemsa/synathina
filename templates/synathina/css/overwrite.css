@@ -436,7 +436,9 @@ div.mceEditor{
     margin-top: 0px;
 }
 
-.l-stegh .module--synathina .module-title,.l-draseis .module--synathina .module-title, .l-teams--listing .module--synathina .module-title {
+.l-stegh .module--synathina .module-title,
+.l-draseis .module--synathina .module-title,
+.l-teams--listing .module--synathina .module-title {
     margin-top: 0!important;
 }
 

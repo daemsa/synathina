@@ -30,47 +30,6 @@ $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $menuname = $menu->getActive()->title;
 
-function teams_count2($year)
-{
-	$db = JFactory::getDBO();
-	$query = "SELECT COUNT(u.id)	FROM #__users AS u
-				INNER JOIN #__teams AS t
-				ON t.user_id=u.id
-				WHERE u.block=0 AND u.activation='' AND t.hidden=0 AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
-	$db->setQuery($query);
-	$db->execute();
-
-	return $db->loadResult();
-}
-
-function donators_count()
-{
-	$db = JFactory::getDBO();
-	$query = "SELECT COUNT(u.id)	FROM #__users AS u
-				INNER JOIN #__teams AS t
-				ON t.user_id=u.id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1 ";
-	$db->setQuery($query);
-	$db->execute();
-
-	return $db->loadResult();
-}
-
-function count_actions_1($year)
-{
-	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
-	if ($year == date('Y')) {
-		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
-	} else {
-		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
-	}
-	//remote db
-	$activityClass = new RemotedbActivity();
-	$activities_count = $activityClass->getActivitiesCount($where);
-
-	return $activities_count;
-}
-
 function youtubeID($url)
 {
 	$res = explode("v=",$url);
