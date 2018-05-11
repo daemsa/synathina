@@ -146,6 +146,16 @@
 
 	<fields name="attribs" label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
 		<fieldset name="basic" label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
+			<field name="homepage_options" type="note" label="Επιλογές για Homepage" />
+			<field
+				name="homepage_text_color"
+				type="list"
+				class="chzn-color"
+				label="Χρώμα"
+				description="Χρώμα κειμένου">
+				<option value="white">Λευκό</option>
+				<option value="grey">Γκρι</option>
+			</field>
 			<field name="opencall_options" type="note" label="Επιλογές για Open call" />
 			<field name="opencall_date" type="calendar" label="Ημερομηνία λήξης" />
 			<field name="opencall_activities" type="activities" label="Θεματικές" multiple="true" />
@@ -159,7 +169,7 @@
 				<option value="center">center</option>
 				<option value="top">top</option>
 				<option value="bottom">bottom</option>
-			</field>			
+			</field>
 			<field name="news_subtitle" type="text" label="Υπότιτλος" />
 			<field name="other_options" type="note" label="Επιλογές Core" />
 			<field
