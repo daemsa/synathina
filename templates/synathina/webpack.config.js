@@ -106,7 +106,9 @@ const config = {
                     }
                 }
             }),
-            new OptimizeCSSAssetsPlugin({})
+            new OptimizeCSSAssetsPlugin({
+                cssProcessor: cssnano({reduceIdents: false, autoprefixer: false})
+            })
         ]
     },
     plugins: plugins
