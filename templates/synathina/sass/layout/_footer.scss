@@ -52,6 +52,16 @@
                 font-size: 14px;
             }
         }
+        .menu--inline {
+            a:hover {
+                color: $navLinksColor;
+            }
+            a {
+                font-size: 17px;
+                color: $footerBorderColor;
+            }
+        }
+
     }
     // css overwrites for markup that is generated with js
     &__menus__dropdown {

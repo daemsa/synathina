@@ -6442,6 +6442,21 @@ button {
   }
 }
 
+.l-footer__menus .menu--inline a:hover,
+.l-footer__menus .i18n-actions a:hover,
+.l-footer__menus .nav-site-com a:hover,
+.l-footer__menus .account-actions a:hover {
+  color: #666666;
+}
+
+.l-footer__menus .menu--inline a,
+.l-footer__menus .i18n-actions a,
+.l-footer__menus .nav-site-com a,
+.l-footer__menus .account-actions a {
+  font-size: 17px;
+  color: #bdbdbd;
+}
+
 .l-footer__menus__dropdown {
   position: relative;
 }
