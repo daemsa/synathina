@@ -192,7 +192,7 @@
         color: $navLinksColorSelected;
     }
 
-    a {
+    li > a {
         font-size: 17px;
     }
 }
@@ -204,8 +204,10 @@
     li + li {
         margin-left: 0 !important
     }
-    a {
+
+    li > a {
         color: $navLinksColorSelected !important;
+        font-size: 17px;
     }
 }
 
