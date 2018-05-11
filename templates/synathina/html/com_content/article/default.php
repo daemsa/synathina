@@ -43,6 +43,46 @@ $canEdit = $params->get('access-edit');
 $user    = JFactory::getUser();
 $info    = $params->get('info_block_position', 0);
 
+function teams_count2($year)
+{
+	$db = JFactory::getDBO();
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.hidden=0 AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
+	$db->setQuery($query);
+	$db->execute();
+
+	return $db->loadResult();
+}
+
+function donators_count()
+{
+	$db = JFactory::getDBO();
+	$query = "SELECT COUNT(u.id)	FROM #__users AS u
+				INNER JOIN #__teams AS t
+				ON t.user_id=u.id
+				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1 ";
+	$db->setQuery($query);
+	$db->execute();
+
+	return $db->loadResult();
+}
+
+function count_actions_1($year)
+{
+	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
+	if ($year == date('Y')) {
+		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
+	} else {
+		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
+	}
+	//remote db
+	$activityClass = new RemotedbActivity();
+	$activities_count = $activityClass->getActivitiesCount($where);
+
+	return $activities_count;
+}
 
 $breadcumbs_modules=JModuleHelper::getModules('breadcumbs');
 $stegi_modules=JModuleHelper::getModules('stegi');
@@ -93,13 +133,56 @@ if (count($imgs)>0) {
 
 <div class="l-news--article">
 <?php
-		foreach ($breadcumbs_modules as $breadcumbs_module) {
-			echo JModuleHelper::renderModule($breadcumbs_module);
-		}
+	foreach ($breadcumbs_modules as $breadcumbs_module) {
+		echo JModuleHelper::renderModule($breadcumbs_module);
+	}
 ?>
 	<article class="c-article">
-		<h1 style="margin-bottom:20px;"><?php echo $this->escape($this->item->title); ?></h1>
 <?php
+		$top_text_modules = JModuleHelper::getModules('top_text');
+		if (count($top_text_modules)) :
+			//get action by year
+			$slider_1_2013=185+23;
+			$slider_1_2014=317+70;
+			$slider_1_2015=451+169;
+			$slider_1_2016=638+459;
+			for($y=2017; $y<=date('Y'); $y++){
+				${'slider_1_'.$y}=count_actions_1($y);
+			}
+			//total
+			$slider_1_all=0;
+			for($y=2013; $y<=date('Y'); $y++){
+				$slider_1_all+=${'slider_1_'.$y};
+			}
+			$slider_2_2013 = 42;
+			$slider_2_2014 = 77;
+			$slider_2_2015 = 75;
+			$slider_2_2016 = 87;
+			for($i=2017; $i<=date('Y'); $i++){
+				${'slider_2_'.$i} = teams_count2($i);
+			}
+			//total teams
+			$slider_2_all_teams=0;
+			for($y=2013; $y<=date('Y'); $y++){
+				$slider_2_all_teams+=${'slider_2_'.$y};
+			}
+
+			$total_donators = donators_count();
+			$replace_array=array($slider_1_all,$slider_2_all_teams,$total_donators);
+			$replace_array1=array('{total_actions}','{total_teams}','{total_donators}');
+			foreach ($top_text_modules as $top_text_module) {
+				echo '	<div class="module module--synathina" style="margin-bottom: 70px;">
+	      					<div class="module-skewed module-skewed--gray">
+	         					<div class="module-wrapper">
+									<h3 class="module-title">'.$top_text_module->title.'</h3>
+									' . str_replace($replace_array1, $replace_array, $top_text_module->content) . '
+								</div>
+							</div>
+						</div>';
+			}
+		else:
+			echo '<h1 style="margin-bottom:20px;">' . $this->escape($this->item->title) . '</h1>';
+		endif;
 		if ($note == 'opencalls') {
 			echo '<figure role="complementary">';
 			//activities

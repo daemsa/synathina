@@ -47,39 +47,7 @@ if($note=='synathina'){
 	<div class="module-skewed">
 		 <div class="module-wrapper">
 				<h3 class="module-title"><?php echo $this->item->title; ?></h3>
-<?php
-	//get action by year
-	$slider_1_2013=185+23;
-	$slider_1_2014=317+70;
-	$slider_1_2015=451+169;
-	$slider_1_2016=638+459;
-	for($y=2017; $y<=date('Y'); $y++){
-		${'slider_1_'.$y}=count_actions_1($y);
-	}
-	//total
-	$slider_1_all=0;
-	for($y=2013; $y<=date('Y'); $y++){
-		$slider_1_all+=${'slider_1_'.$y};
-	}
-	$slider_2_2013 = 42;
-	$slider_2_2014 = 77;
-	$slider_2_2015 = 75;
-	$slider_2_2016 = 87;
-	for($i=2017; $i<=date('Y'); $i++){
-		${'slider_2_'.$i} = teams_count2($i);
-	}
-	//total teams
-	$slider_2_all_teams=0;
-	for($y=2013; $y<=date('Y'); $y++){
-		$slider_2_all_teams+=${'slider_2_'.$y};
-	}
-
-	$total_donators = donators_count();
-
-	$replace_array=array($slider_1_all,$slider_2_all_teams,$total_donators);
-	$replace_array1=array('{total_actions}','{total_teams}','{total_donators}');
-?>
-	<?php echo str_replace($replace_array1,$replace_array,$this->item->introtext); ?>
+	<?php echo $this->item->introtext ?>
 		 </div>
 <?php
 	if($this->item->counter==$this->item->total){
