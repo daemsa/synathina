@@ -23,3 +23,8 @@ npm run watch
 npm run build
 ```
 
+### Troubleshooting
+
+#### errors with EPIPE
+In order to make a web pack bundle on Linux, you need to install `libpng16-dev` (`sudo apt-get install libpng16-dev`).
+
