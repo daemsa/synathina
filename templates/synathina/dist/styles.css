@@ -7102,14 +7102,14 @@ button {
 }
 
 .info a {
-  color: #05c1df !important;
+  color: #78b7e3 !important;
   font-weight: bold;
 }
 
 .info-title {
   font-size: 15.479px;
   font-family: "Roboto";
-  color: #05c1df;
+  color: #78b7e3;
   font-weight: bold;
 }
 
@@ -7144,7 +7144,7 @@ button {
 }
 
 .info-description a {
-  color: #05c1df !important;
+  color: #78b7e3 !important;
   font-weight: bold;
   font-style: italic;
 }
@@ -7755,13 +7755,13 @@ button {
   font-size: 32px;
   font-weight: 300;
   line-height: 32px;
-  color: #05c0de;
+  color: #78b7e3;
   padding-top: 34px;
 }
 
 .module--synathina .module-title--subtitle {
   font-size: 22px;
-  color: #05c0de;
+  color: #78b7e3;
   font-weight: 300;
 }
 
@@ -7772,7 +7772,7 @@ button {
 }
 
 .module--synathina a {
-  color: #05c0de;
+  color: #78b7e3;
   font-weight: bold;
 }
 
@@ -7823,7 +7823,7 @@ button {
   font-size: 20px;
   line-height: 22px;
   font-weight: bold;
-  color: #05c0de;
+  color: #78b7e3;
   margin: 0;
 }
 
@@ -8279,7 +8279,7 @@ button {
 .inline-list--headlines > li.selected a,
 .inline-list--headlines > li:hover a,
 .inline-list--headlines > li:focus a {
-  color: #05bddc;
+  color: #78b7e3;
 }
 
 .inline-list--socialmedia > li + li {
@@ -8322,7 +8322,7 @@ button {
 }
 
 .inline-list--socialmedia .inline-list__label {
-  color: #05bddc;
+  color: #78b7e3;
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
@@ -8354,7 +8354,7 @@ button {
 }
 
 .dl-horizontal a[mailto] {
-  color: #05c1df;
+  color: #78b7e3;
 }
 
 .dl-horizontal dt > a {
@@ -8368,7 +8368,7 @@ button {
 }
 
 a.list-item-title:hover {
-  color: #05c0de;
+  color: #78b7e3;
 }
 
 .list-group-item {
@@ -8418,7 +8418,7 @@ a.list-item-title:hover {
 .list-group--draseis .list-group-item-title {
   font-size: 24px;
   font-family: "Roboto";
-  color: #05c1df;
+  color: #78b7e3;
   font-weight: bold;
   line-height: 1.125;
   margin: 0;
@@ -8524,7 +8524,7 @@ a.list-item-title:hover {
 }
 
 .debug .dev_menu__forms a {
-  background-color: #05bddc !important;
+  background-color: #78b7e3 !important;
 }
 
 .debug .dev_menu__forms a:hover {
@@ -9710,7 +9710,7 @@ a.list-item-title:hover {
 }
 
 .thumbnail .caption-more {
-  color: #43c0ea;
+  color: #78b7e3;
   font-weight: bold;
   font-size: 21px;
   line-height: 21px;
@@ -9718,7 +9718,7 @@ a.list-item-title:hover {
 }
 
 .thumbnail .caption-more:focus {
-  color: #43c0ea;
+  color: #78b7e3;
 }
 
 .thumbnail > .fill {
@@ -9754,7 +9754,7 @@ a.list-item-title:hover {
 
 .thumbnail-list__title {
   margin: 32px 0;
-  color: #05c0de;
+  color: #78b7e3;
   font-size: 32px;
   font-weight: 300;
   line-height: 32px;
@@ -9791,7 +9791,7 @@ a.list-item-title:hover {
 }
 
 .btn--coral {
-  background: #05bddc;
+  background: #78b7e3;
   color: #fff;
 }
 
@@ -9861,7 +9861,7 @@ a.list-item-title:hover {
   line-height: 20px;
   color: #fff;
   text-align: center;
-  background-color: #05c0de;
+  background-color: #78b7e3;
   -webkit-transition: width .6s ease;
   -o-transition: width .6s ease;
   transition: width .6s ease;
@@ -9885,7 +9885,7 @@ a.list-item-title:hover {
   font-size: 32px;
   line-height: 20px;
   font-weight: bold;
-  color: #05c0de;
+  color: #78b7e3;
 }
 
 .social-icons {
@@ -12320,10 +12320,10 @@ input[type="radio"]:checked + label span {
 }
 
 .c-article h1 {
-  color: #5d5d5d;
   font-weight: 300;
-  font-size: 26px;
-  margin: 0;
+  font-size: 40px;
+  color: #78b7e3;
+  margin: 40px 0px 0px 0px;
   line-height: 26px;
 }
 
@@ -12346,7 +12346,7 @@ input[type="radio"]:checked + label span {
 }
 
 .c-article a {
-  color: #008cd1;
+  color: #78b7e3;
   text-decoration: none;
   font-weight: bold;
 }
@@ -12389,13 +12389,13 @@ input[type="radio"]:checked + label span {
 }
 
 .latest-articles .media-body a {
-  color: #43c0ea;
+  color: #78b7e3;
   font-style: italic;
   font-weight: bold;
 }
 
 .media-body a {
-  color: #43c0ea;
+  color: #78b7e3;
   font-style: italic;
   font-weight: bold;
 }
@@ -12444,13 +12444,13 @@ input[type="radio"]:checked + label span {
   font-size: 32px;
   font-weight: 300;
   line-height: 32px;
-  color: #05c1df;
+  color: #78b7e3;
   padding-top: 34px;
 }
 
 .module--synathina h4 {
   font-size: 22px;
-  color: #05c1df;
+  color: #78b7e3;
   font-weight: 300;
 }
 

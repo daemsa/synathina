@@ -1,13 +1,13 @@
 $text-color : #5d5d5d;
-$link-color : #008cd1;
+$link-color : #78b7e3;
 
 $gray : #d3d3d3; //rgb(211, 211, 211);
 $black : #000000; //rgb(0, 0, 0);
-$blue-ele :#05c1df;
+$blue-ele :#78b7e3;
 $yellow-selected :#f8e300;
 $gray-text : #5d5d5d;
 $orange : #fc8f0a;
-$color-more: #43c0ea;
+$color-more: #78b7e3;
 // article component content styles
 .c-article {
    // colors
@@ -17,10 +17,10 @@ $color-more: #43c0ea;
    font-size: 15px;
    font-weight: 400;
    h1 {
-      color: $text-color;
       font-weight: 300;
-      font-size: 26px;
-      margin:0;
+      font-size: 40px;
+      color: $navLinksColorSelected;
+      margin: 40px 0px 0px 0px;
       line-height: 26px;
    }
    h4, h5, h6 {
@@ -76,7 +76,7 @@ $color-more: #43c0ea;
          margin: 0;
       }
       a {
-         color: #43c0ea;
+         color: #78b7e3;
          font-style: italic;
          font-weight: bold;
       }
@@ -85,7 +85,7 @@ $color-more: #43c0ea;
 
 .media-body {
    a {
-      color: #43c0ea;
+      color: #78b7e3;
       font-style: italic;
       font-weight: bold;
    }

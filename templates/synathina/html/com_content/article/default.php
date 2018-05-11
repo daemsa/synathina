@@ -185,7 +185,7 @@ if (count($imgs)>0) {
 						</div>';
 			}
 		else:
-			echo '<h1 style="margin-bottom:20px;">' . $this->escape($this->item->title) . '</h1>';
+			echo '<h1>' . $this->escape($this->item->title) . '</h1>';
 		endif;
 		if ($note == 'opencalls') {
 			echo '<figure role="complementary">';
