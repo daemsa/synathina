@@ -161,9 +161,9 @@ var Map = (function(global) {
     global.map = map;
     global.initMap = initMap;
 
-    setTimeout(() => {
-        point = new google.maps.LatLng(37.9908372, 23.7383394);
-    }, 500);
+
+    point = new google.maps.LatLng(37.9908372, 23.7383394);
+
 
     return {
         containsLocation: containsLocation
