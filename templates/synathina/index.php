@@ -143,7 +143,7 @@ $note = $db->loadResult();
                 </div>
             </div>
             <div class="l-header__nav">
-                <a href="<?php echo JUri::base();?>" class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new.png" /></a>
+                <a href="<?php echo JUri::base();?>" class="l-header__nav__logo"><img class="img-responsive" src="<?php echo JUri::base(); ?>templates/<?php echo $this->template; ?>/img/icons/synathina_logo_new<?php echo ($lang_code == 'en' ? '_en' : ''); ?>.png" /></a>
                 <jdoc:include type="modules" name="mainmenu" style="none" class="l-header__nav__menu menu menu--inline"/>
             </div>
             <div class="l-header__actions">
