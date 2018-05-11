@@ -5312,6 +5312,18 @@ button {
   }
 }
 
+@media (min-width: 1360px) {
+  .l-header__nav__menu.menu--vertical {
+    padding: 0 20px 20px;
+  }
+}
+
+@media (min-width: 1240px) and (max-width: 1360px) {
+  .l-header__nav__menu.menu--vertical {
+    font-size: 16px;
+  }
+}
+
 .l-header__nav__actions {
   display: flex;
   flex-direction: column;
@@ -5325,6 +5337,15 @@ button {
   grid-template-rows: auto auto 1fr;
   align-content: space-between;
   justify-content: space-between;
+}
+
+@media (min-width: 1240px) and (max-width: 1360px) {
+  .l-header__actions .synathina-actions.menu > li > a,
+  .l-header__actions .synathina-actions.i18n-actions > li > a,
+  .l-header__actions .synathina-actions.nav-site-com > li > a,
+  .l-header__actions .synathina-actions.account-actions > li > a {
+    font-size: 16px;
+  }
 }
 
 @media (min-width: 480px) and (max-width: 992px) {
@@ -5389,6 +5410,15 @@ button {
   .l-header__actions .synathina-actions .account-actions a,
   .l-header__actions .synathina-actions .account-actions a {
     font-size: 12px;
+  }
+}
+
+@media (min-width: 1240px) and (max-width: 1360px) {
+  .l-header__actions .synathina-actions .menu a,
+  .l-header__actions .synathina-actions .i18n-actions a,
+  .l-header__actions .synathina-actions .nav-site-com a,
+  .l-header__actions .synathina-actions .account-actions a {
+    font-size: 14px;
   }
 }
 
@@ -6410,6 +6440,21 @@ button {
   .l-footer__menus .account-actions a {
     font-size: 14px;
   }
+}
+
+.l-footer__menus .menu--inline a:hover,
+.l-footer__menus .i18n-actions a:hover,
+.l-footer__menus .nav-site-com a:hover,
+.l-footer__menus .account-actions a:hover {
+  color: #666666;
+}
+
+.l-footer__menus .menu--inline a,
+.l-footer__menus .i18n-actions a,
+.l-footer__menus .nav-site-com a,
+.l-footer__menus .account-actions a {
+  font-size: 17px;
+  color: #bdbdbd;
 }
 
 .l-footer__menus__dropdown {
