@@ -147,11 +147,14 @@
         justify-content: end;
         flex-direction: column;
         li {
-            line-height: 20px;
+            line-height: 0px;
         }
         padding-top: 10px;
         .i18n-actions a, .account-actions a {
             line-height: 24px;
+            &:after {
+                margin: 0 10px;
+            }
         }
     }
 
@@ -159,7 +162,10 @@
         justify-content: end;
         flex-direction: column;
         li {
-            line-height: 13px;
+            line-height: 0px;
+            &:after {
+                margin: 0 10px;
+            }
         }
         padding-top: 10px;
         .i18n-actions a, .account-actions a {
@@ -200,6 +206,18 @@
     // mobile
     @media (min-width: $screen-md) {
         display: none;
+    }
+
+    @media (min-width: $screen-xs) and (max-width: $screen-md) {
+        .hamburger-inner {
+            margin-top: 6px
+        }
+    }
+
+    @media (max-width: $screen-xs) {
+        .hamburger-inner {
+            margin-top: -2px
+        }
     }
 
     .hamburger {
