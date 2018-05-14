@@ -44,7 +44,7 @@ const config = {
                             sourceMap: true,
                         }
                     }],
-                    // use style-loader in developmentcd ..
+                    // use style-loader in development
                     fallback: 'style-loader'
                 })
             },
