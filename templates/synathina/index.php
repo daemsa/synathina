@@ -183,9 +183,7 @@ $note = $db->loadResult();
                         <div class="cross-side cross-side--left"></div>
                         <div class="cross-side cross-side--center" >
                             <div class="cross-content">
-                            <div class="is-tablecell" rel="js-teams">
-                                    8 <br> ομάδες
-                            </div>
+                                <div class="is-tablecell" rel="js-teams">8 <br> ομάδες</div>
                             </div>
                         </div>
                         <div class="cross-side cross-side--right">
