@@ -11725,6 +11725,7 @@ img.mfp-img {
   align-items: center;
   justify-content: flex-start;
   margin-left: 0;
+  line-height: 25px;
 }
 
 .mobile-menu__list li + li {
@@ -11733,6 +11734,8 @@ img.mfp-img {
 
 .mobile-menu__list li a {
   display: inline-block;
+  font-size: 17px;
+  line-height: 18px;
 }
 
 .mobile-menu__list > li {

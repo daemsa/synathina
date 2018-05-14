@@ -41,6 +41,7 @@
         align-items: center;
         justify-content: flex-start;
         margin-left: 0;
+        line-height: 25px;
 
         & + li {
             margin-left: 0;
@@ -48,6 +49,8 @@
 
         a {
             display: inline-block;
+            font-size: 17px;
+            line-height: 18px;
         }
     }
     > li {
@@ -60,6 +63,7 @@
     }
     > li > a {
         padding-left: $grid-gutter-width / 2;
+
         + ul > li > a {
             padding-left: $grid-gutter-width;
         }
