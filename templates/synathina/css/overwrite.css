@@ -1,3 +1,7 @@
+.list-title {
+    margin: 0px 0px 10px 0px;
+    padding-left: 0px;
+}
 .form-tooltip-jquery{
     font-size: 24px;
     display: inline-block;
@@ -89,7 +93,6 @@
 .logo {
     width: 217px;
     height: 110px;
-    box-shadow: -1px 2px 5px 1px #bbb;
 }
 
 .logo-synathina, .logo-athens{
@@ -371,7 +374,7 @@ svg#output{
     line-height:18px;
 }
 #filters-closed:hover{
-    color: #05c1df;
+    color: #78b7e3;
 }
 
 .l-news--list .thumbnail-list {
@@ -432,7 +435,9 @@ div.mceEditor{
     margin-top: 0px;
 }
 
-.l-stegh .module--synathina .module-title,.l-draseis .module--synathina .module-title, .l-teams--listing .module--synathina .module-title {
+.l-stegh .module--synathina .module-title,
+.l-draseis .module--synathina .module-title,
+.l-teams--listing .module--synathina .module-title {
     margin-top: 0!important;
 }
 
@@ -618,6 +623,7 @@ h4.alert-heading{
 .chart{
     background-color:#FFF;
     margin-bottom:0px;
+    margin-top: 0px;
 }
 .chart--1 {
     background-color: #ececec;
@@ -641,16 +647,10 @@ h4.alert-heading{
 .alert-danger {
   background-color: transparent;
 }
+*/
 
-
-.gallery--charts .chart{
-	background-color:transparent;
-}*/
-
-.categories{
-    max-width:138px;
-    top:120px;
-    left: 0px;
+.gallery--charts {
+	margin-top: 0px;
 }
 
 .nav-activity:before{
@@ -666,17 +666,10 @@ h4.alert-heading{
     padding-bottom: 2px;
 }
 
-
-
-.nav-menu{
-    margin-top:10px;
-}
 .nav-activity {
     margin-top: 10px;
 }
-.nav-social-links {
-    margin-top: 10px;
-}
+
 .nav-amea {
     margin-top: 10px;
 }

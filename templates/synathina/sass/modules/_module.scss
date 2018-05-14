@@ -67,7 +67,7 @@
 // ** synathina variations **/
 
 .module--synathina {
-   $color-blue : #05c0de;
+   $color-blue : #78b7e3;
    @include clearfix;
    z-index: 1;
    position: relative;
@@ -240,12 +240,12 @@
          margin-bottom: 20px;
       }
       & > .form-inline.filters {
-         //margin-bottom: 20px;  
+         //margin-bottom: 20px;
       }
 
       label.is-block {
          margin-bottom: 5px;
-      }        
+      }
    }
    input[type=checkbox] + label:before, input[type=radio] + label:before {
       width: 20px;
@@ -263,9 +263,9 @@
             }
          }
          + .form-group + .inline {
-            
+
          }
-      }  
+      }
 
    }
    .form-group--tail {
@@ -287,13 +287,13 @@
    }
    .form--padded {
       padding-bottom: 24px;
-      padding-top: 24px;     
+      padding-top: 24px;
       &--16 {
          padding-bottom: 16px;
-         padding-top: 16px;              
+         padding-top: 16px;
       }
    }
-   
+
 }
 
 
@@ -337,7 +337,7 @@
 
 .pattern--dots {
    background-color: black;
-   background-image: linear-gradient(120deg, red 25%, transparent 0%, transparent 75%, red 75%, #ff4d54), 
+   background-image: linear-gradient(120deg, red 25%, transparent 0%, transparent 75%, red 75%, #ff4d54),
        linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);
    background-size:5px 5px;
    background-position: 0 0, 5px 5px;
@@ -403,7 +403,7 @@
       position: absolute;
       bottom: calc(-50% + 30px);
       left: 0;
-      right: 0;      
+      right: 0;
       margin: auto;
       font-weight: bold;
       color: #5c5c5c;

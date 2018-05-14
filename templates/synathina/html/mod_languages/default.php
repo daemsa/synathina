@@ -15,11 +15,8 @@ if ($params->get('dropdown', 1))
 	JHtml::_('formbehavior.chosen', 'select');
 }
 ?>
-<div class="inner">
-<div class="nav-lang">
-	<ul class="inline-list">
-<?php foreach ($list as $language) : ?>	
+<ul class="i18n-actions">
+<?php foreach ($list as $language) : ?>
 		<li class="<?php echo $language->active ? 'selected' : ''; ?>"><a href="<?php echo $language->link; ?>"><?php echo $language->sef; ?></a></li>
-<?php endforeach; ?>		
-	</ul>
-</div>
+<?php endforeach; ?>
+</ul>

@@ -30,47 +30,6 @@ $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $menuname = $menu->getActive()->title;
 
-function teams_count2($year)
-{
-	$db = JFactory::getDBO();
-	$query = "SELECT COUNT(u.id)	FROM #__users AS u
-				INNER JOIN #__teams AS t
-				ON t.user_id=u.id
-				WHERE u.block=0 AND u.activation='' AND t.hidden=0 AND t.published=1 AND t.created>='".$year."-01-01 00:00:00' AND t.created<='".$year."-31-21 23:59:59'  ";
-	$db->setQuery($query);
-	$db->execute();
-
-	return $db->loadResult();
-}
-
-function donators_count()
-{
-	$db = JFactory::getDBO();
-	$query = "SELECT COUNT(u.id)	FROM #__users AS u
-				INNER JOIN #__teams AS t
-				ON t.user_id=u.id
-				WHERE u.block=0 AND u.activation='' AND t.published=1 AND t.support_actions=1 ";
-	$db->setQuery($query);
-	$db->execute();
-
-	return $db->loadResult();
-}
-
-function count_actions_1($year)
-{
-	$where = "aa.published=1 AND a.published=1 AND aa.action_id>0 AND aa.action_date_start>='".$year."-01-01 00:00:00'";
-	if ($year == date('Y')) {
-		$where .= " AND aa.action_date_start<='".date('Y-m-d H:i:s')."' ";
-	} else {
-		$where .= " AND aa.action_date_start<='".$year."-31-21 23:59:59' ";
-	}
-	//remote db
-	$activityClass = new RemotedbActivity();
-	$activities_count = $activityClass->getActivitiesCount($where);
-
-	return $activities_count;
-}
-
 function youtubeID($url)
 {
 	$res = explode("v=",$url);
@@ -109,7 +68,7 @@ if ($note == 'synathina') {
 
 <?php
 /*-----END OF SYNATHINA TEMPLATE-----*/
-}elseif($note=='teams'){
+}elseif($note=='teams' || $note=='supporters'){
 /*---------TEAMS TEMPLATE--------*/
 	$team_modules=JModuleHelper::getModules('teams');
 	echo '<div class="l-teams l-teams--listing">
@@ -141,7 +100,7 @@ if ($note == 'synathina') {
 </div>
 <?php
 /*-----END OF EU TEMPLATE-----*/
-}elseif($note=='opencalls'){
+}elseif($note=='opencalls1'){
 
 ?>
 <div class="l-news l-news--list opencalls">
@@ -154,18 +113,6 @@ if ($note == 'synathina') {
 		<h2 class="thumbnail-list__title"><?php echo $this->category->title; ?></h2>
 <?php
 	$i=1;
-	/*$new_Lead_items = new ArrayObject();
-	foreach ($this->lead_items as $key => &$item) :
-		$attribs  = json_decode($item->attribs);
-		$item->opencall_date=$attribs->opencall_date;
-		$new_Lead_items->append($item);
-	endforeach;
-	$new_Lead_items1 = $new_Lead_items->getArrayCopy();
-	//print_r($new_Lead_items1);
-	usort($new_Lead_items1, function($a, $b)
-	{
-			return strcmp($b->opencall_date, $a->opencall_date);
-	});	*/
 	foreach ($this->lead_items as $key => &$item) :
 		//print_r($item);
 		if($i<9){
@@ -192,21 +139,41 @@ if ($note == 'synathina') {
 	</div>
 </div>
 <?php
-}else{
+} else {
 
 ?>
-<div class="l-news l-news--list">
+<div class="l-draseis">
 <?php
+	$top_text_modules = JModuleHelper::getModules('top_text');
+	if (count($top_text_modules)) :
+		foreach ($top_text_modules as $top_text_module) {
+			echo '	<div class="module module--synathina" style="margin-bottom: 70px;">
+      					<div class="module-skewed module-skewed--gray">
+         					<div class="module-wrapper">
+								<h3 class="module-title">'.$top_text_module->title.'</h3>
+								'.$top_text_module->content.'
+							</div>
+						</div>
+					</div>';
+		}
+	else:
 		foreach ($breadcumbs_modules as $breadcumbs_module){
 			echo JModuleHelper::renderModule($breadcumbs_module);
 		}
+	endif;
 ?>
 
-	<div class="latest-articles odd-even">
+	<div class="filter-results">
+<?php if (!count($top_text_modules)) { ?>
+		<h2 class="thumbnail-list__title list-title"><?php echo $this->category->title; ?></h2>
+<?php } ?>
 <?php
+	$c = 1;
 	foreach ($this->intro_items as $key => &$item) :
 		$this->item = & $item;
+		$this->item->counter = $c;
 		echo $this->loadTemplate('item');
+		$c++;
 	endforeach;
 ?>
 	</div>
@@ -227,7 +194,7 @@ $article_image='http://www.synathina.gr/images/template/synathina_big.jpg';
 $document = JFactory::getDocument();
 $document->setMetaData( 'twitter:card', 'summary_large_image' );
 $document->setMetaData( 'twitter:site', '@synathina' );
-$document->setMetaData( 'twitter:title', 'συνΑθηνά' );
+$document->setMetaData( 'twitter:title', 'ÏƒÏ…Î½Î‘Î¸Î·Î½Î¬' );
 $document->setMetaData( 'twitter:description', $menuname );
 $document->setMetaData( 'twitter:image', $article_image );
 ?>

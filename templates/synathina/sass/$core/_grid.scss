@@ -31,6 +31,11 @@
   @include container-fixed;
 }
 
+// Grid container
+.container-grid {
+    @include display-grid;
+}
+
 
 // Row
 //

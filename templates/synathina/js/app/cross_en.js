@@ -68,7 +68,7 @@ var Cross = ( function(global){
 
    EVT.on( 'show-cross', showCross );
 
-   //EVT.on( 'hide-cross', hideCross );
+   EVT.on( 'hide-cross', hideCross );
 
    EVT.on('send-polygon-details', getData);
 

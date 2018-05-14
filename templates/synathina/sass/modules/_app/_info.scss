@@ -4,22 +4,22 @@
    background-color: #fff;
    color: #5d5d5d;
    position: relative;
-   
+
   &:before {
    // /@include skew-side(6.4deg);
    //top: 9%;
    left: 0;
   }
   a {
-   color: #05c1df !important;
+   color: #78b7e3 !important;
    font-weight: bold;
-  }  
+  }
 }
 
 .info-title {
   font-size: 15.479px;
   font-family: "Roboto";
-  color: #05c1df;
+  color: #78b7e3;
   font-weight: bold;
 }
 
@@ -37,7 +37,7 @@
    max-height: 150px;
    overflow: auto;
    img {
-      @include img-responsive;      
+      @include img-responsive;
    }
    margin-top: 5px;
 }
@@ -48,7 +48,7 @@
   font-family: "Roboto";
   font-weight: 500;
   a {
-   color: #05c1df !important;
+   color: #78b7e3 !important;
    font-weight: bold;
    font-style: italic;
   }
@@ -79,11 +79,11 @@
             //height: 111.5%;
          }
       }
-      &:nth-of-type(3){         
+      &:nth-of-type(3){
          &:before {
           // height: 123%;
          }
-      }      
+      }
       .fill {
          @include fill($padding-bottom: 100%);
       }

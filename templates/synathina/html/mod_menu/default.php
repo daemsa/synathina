@@ -16,7 +16,10 @@ $activityClass = new RemotedbActivity();
 // Note. It is important to remove spaces between elements.
 ?>
 <?php // The menu class is deprecated. Use nav instead. ?>
-<ul class="<?php echo $class_sfx;?>">
+<ul class="<?php echo $class_sfx;?>" rel="<?php echo $params->get('tag_id'); ?>">
+<?php if ($module->position == 'mobilemenu') { ?>
+	<a class="mobile-menu-close" rel="js-mobile-menu-close"></a>
+<?php } ?>
 <?php
 foreach ($list as $i => &$item)
 {
@@ -57,7 +60,9 @@ foreach ($list as $i => &$item)
 
 	if ($item->parent)
 	{
-		$class .= ' parent';
+		if ($module->position != 'mobilemenu') {
+			$class .= ' parent';
+		}
 	}
 
 	if (!empty($class))
@@ -84,13 +89,16 @@ foreach ($list as $i => &$item)
 	// The next item is deeper.
 	if ($item->deeper)
 	{
-		echo '<ul class="nav-child unstyled small">';
+		if ($module->position != 'mobilemenu') {
+			echo '<div class="dropdown">';
+		}
+		echo '<ul class="menu '.($module->position != 'mobilemenu' ? 'menu--vertical' : '').'">';
 	}
 	elseif ($item->shallower)
 	{
 		// The next item is shallower.
 		echo '</li>';
-		echo str_repeat('</ul></li>', $item->level_diff);
+		echo str_repeat('</ul>' .($module->position != 'mobilemenu' ? '</div>' : ''). '</li>', $item->level_diff);
 	}
 	else
 	{
