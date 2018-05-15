@@ -31,9 +31,9 @@ foreach ($this->items as $i => $item) :
 	        	class="featured-item c-featured__<?php echo $num_array[$i]; ?> featured-item--with-filter <?php echo ($attribs->homepage_text_color == 'grey' ? 'featured-item--gray' : ''); ?>"
 	        	style="background-image: url(<?php echo $images->image_intro; ?>)">
 	            <div>
-	                <h3 class="featured-item-title">
-	                    <?php echo $item->title; ?>
-	                </h3>
+	                <a <?php echo ($urls->targeta == 1 ? 'target="_blank"' : ''); ?> href="<?php echo $urls->urla; ?>">
+                        <h3 class="featured-item-title"><?php echo $item->title; ?></h3>
+                    </a>
 	                <p class="featured-item-description">
 	                    <?php echo strip_tags($item->introtext); ?>
 	                </p>

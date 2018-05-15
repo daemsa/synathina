@@ -28,7 +28,7 @@
 
 .l-main {
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 100%;
     @include transition(border, box-shadow .225s ease);
 
