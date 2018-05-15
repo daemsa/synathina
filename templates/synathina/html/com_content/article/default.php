@@ -187,8 +187,8 @@ if (count($imgs)>0) {
 		else:
 			echo '<h1>' . $this->escape($this->item->title) . '</h1>';
 		endif;
+		echo '<figure role="complementary">';
 		if ($note == 'opencalls') {
-			echo '<figure role="complementary">';
 			//activities
 			$query="SELECT a.*
 							FROM #__team_activities AS a
@@ -224,14 +224,12 @@ if (count($imgs)>0) {
 			if (count($activities_array) > 0) {
 				echo '</ul></div>';
 			}
-			echo '<br /></figure>';
 		}
 		//get di images
 		$query = "SELECT * FROM #__di_images WHERE object_id='".$this->item->id."' ORDER BY ordering ASC";
 		$db->setQuery($query);
 		$imgs = $db->loadObjectList();
 		if (count($imgs)>0) {
-			echo '<figure role="complementary">';
 			foreach ($imgs as $img) {
 				if ($img->link != '') {
 					echo '<a href="javascript:void(null)" class="figure-item video-container">
@@ -244,8 +242,8 @@ if (count($imgs)>0) {
 								</a>';
 				}
 			}
-			echo '<br /></figure>';
 		}
+		echo '<br /></figure>';
 	if ($note == 'press' || $note == 'stats') {
 		$new_text = $this->item->text;
 		echo $this->item->event->afterDisplayContent;
