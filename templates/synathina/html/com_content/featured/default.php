@@ -28,7 +28,7 @@ foreach ($this->items as $i => $item) :
 	$urls = json_decode($item->urls);
 ?>
 	        <div
-	        	class="featured-item c-featured__<?php echo $num_array[$i]; ?> featured-item--with-filter <?php echo ($attribs->homepage_text_color == 'grey' ? 'featured-item--gray' : ''); ?>"
+	        	class="featured-item c-featured__<?php echo $num_array[$i]; ?> featured-item--with-filter <?php echo ($attribs->homepage_text_color == 'grey' ? 'featured-item--gray' : ($attribs->homepage_text_color == 'black' ? 'featured-item--black' : '')); ?>"
 	        	style="background-image: url(<?php echo $images->image_intro; ?>)">
 	            <div>
 	                <a <?php echo ($urls->targeta == 1 ? 'target="_blank"' : ''); ?> href="<?php echo $urls->urla; ?>">
