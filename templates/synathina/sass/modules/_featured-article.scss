@@ -61,7 +61,7 @@
         color: $navLinksColor;
     }
 
-    &--black > div > *, &--gray > div > a > h5 {
+    &--black > div > *, &--black > div > a > h5 {
         color: $black;
     }
 }
