@@ -55,7 +55,7 @@
     transform: translateZ(0);
     transform: translateY(0);
     @include transition(transform 1s cubic-bezier(0.785, 0.135, 0.15, 0.86));
-    z-index: $zIndex-homepage-featured;
+    z-index: $zindex-homepage-featured;
 
     &--up {
         transform: translateY(-100%);
