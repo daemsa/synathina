@@ -60,4 +60,8 @@
     &--gray > div > *{
         color: $navLinksColor;
     }
+
+    &--black > div > *{
+        color: $black;
+    }
 }

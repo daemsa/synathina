@@ -155,6 +155,7 @@
 				description="Χρώμα κειμένου">
 				<option value="white">Λευκό</option>
 				<option value="grey">Γκρι</option>
+				<option value="black">Μαύρο</option>
 			</field>
 			<field name="opencall_options" type="note" label="Επιλογές για Open call" />
 			<field name="opencall_date" type="calendar" label="Ημερομηνία λήξης" />
