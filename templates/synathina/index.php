@@ -164,7 +164,7 @@ $note = $db->loadResult();
                 <?php echo JText::_('COM_IE_NOT_SUPPORTED'); ?>
             </div>
             <?php if ($homepage) { ?>
-            <div class="l-homepage">
+            <div class="l-homepage c-google-map">
                 <div class="clip-circle"></div>
                 <div id="map" class="synathina-map synathina-map--blur"></div>
                 <div class="bg"></div>
