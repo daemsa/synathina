@@ -57,7 +57,10 @@
         }
     }
 
-    &--gray > div > *{
+    &--gray > div > *, &--gray > div > a > h5 {
         color: $navLinksColor;
+    }
+    &--black > div > *, &--gray > div > a > h5 {
+        color: $black;
     }
 }
