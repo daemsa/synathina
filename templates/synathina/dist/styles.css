@@ -5503,7 +5503,7 @@ button {
 
 .l-main {
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 100%;
   -webkit-transition: border, box-shadow 0.225s ease;
   -o-transition: border, box-shadow 0.225s ease;
