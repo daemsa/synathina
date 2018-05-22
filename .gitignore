@@ -6,7 +6,7 @@
 error_log
 
 images/*
-
+*.sql
 #templates/synathina/node_modules
 templates/synathina/Gruntfile.js
 templates/.sass-cache/
